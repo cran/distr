@@ -13,7 +13,7 @@
   where the boundary values at \eqn{x=0} or \eqn{x=1} are defined as
   by continuity (as limits).
 
-  C.f. \code{\link{rbeta}} 
+  C.f. \code{\link[stats:Beta]{rbeta}} 
 }
 \section{Objects from the Class}{
   Objects can be created by calls of the form \code{Beta(shape1, shape2)}.
@@ -65,7 +65,7 @@
   \code{\link{BetaParameter-class}}
   \code{\link{AbscontDistribution-class}}
   \code{\link{Reals-class}}
-  \code{\link{rbeta}}
+  \code{\link[stats:Beta]{rbeta}}
 }
 \examples{
 B <- Beta(shape1 = 1, shape2 = 1)
@@ -77,4 +77,4 @@ q(B)(.1) # Probability that x < 0.1 is 0.1.
 shape1(B) # shape1 of this distribution is 1.
 shape1(B) <- 2 # shape1 of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

@@ -43,4 +43,4 @@ liesIn(R,c(0,0)) # FALSE
 }
 
 
-\keyword{}
+\keyword{distribution}

@@ -13,7 +13,7 @@
   }
   where \eqn{\mu}{mu} is the mean of the distribution and
   \eqn{\sigma}{sigma} the standard deviation.
- C.f. \code{\link{rnorm}}
+ C.f. \code{\link[stats:Normal]{rnorm}}
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Norm(mean, sd)}.
@@ -72,7 +72,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 \code{\link{UniNormParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{rnorm}}
+\code{\link[stats:Normal]{rnorm}}
 
 }
 \examples{
@@ -86,4 +86,4 @@ sd(N)=2 # sd of this distribution is now 2.
 M=Norm() # M is a normal distribution with mean=0 and sd=1.
 O=M+N # O is a normal distribution with mean=1 (=1+0) and sd=sqrt(5) (=sqrt(2^2+1^2)).
 }
-\keyword{}
+\keyword{distribution}

@@ -5,7 +5,7 @@
 
 \title{Class "AbscontDistribution"}
 \description{The \code{AbscontDistribution}-class is the mother-class of the classes \code{Beta}, \code{Cauchy}, 
-\code{Chisq}, \code{Exp}, \code{F}, \code{Gamma}, \code{Lnorm}, \code{Logis}, \code{Norm}, \code{T}, \code{Unif} and 
+\code{Chisq}, \code{Exp}, \code{F}, \code{Gammad}, \code{Lnorm}, \code{Logis}, \code{Norm}, \code{T}, \code{Unif} and 
 \code{Weibull}. Further absolutely continuous distributions can be defined either by declaration of
 own random number generator, density, cumulative distribution and quantile functions, or as result of a 
 convolution of two absolutely continuous distributions or by application of a mathematical operator to an absolutely
@@ -72,7 +72,7 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
 \code{\link{Chisq-class}}
 \code{\link{Exp-class}}
 \code{\link{Fd-class}}
-\code{\link{Gamma-class}}
+\code{\link{Gammad-class}}
 \code{\link{Lnorm-class}}
 \code{\link{Logis-class}}
 \code{\link{Norm-class}}
@@ -95,4 +95,4 @@ d(A3)(0) # The (approximated) density for x=0 is 0.4379882.
 p(A3)(0) # The (approximated) probability that x <= 0 is 0.4562021.
 q(A3)(.1) # The (approximated) 10 percent quantile is 0.1.
 }
-\keyword{}
+\keyword{distribution}

@@ -98,4 +98,4 @@ Class \code{"Distribution"}, directly.
 \code{\link{RtoDPQ}}
 \code{\link{simplifyr-methods}}
 }
-\keyword{}
+\keyword{distribution}

@@ -1,4 +1,3 @@
-
 ################################
 ##
 ## Class: UnifParameter
@@ -69,3 +68,19 @@ setMethod("Max", "Unif", function(object) Max(param(object)))
 ## wrapped replace methods
 setMethod("Min<-", "Unif", function(object, value) new("Unif", Min = value, Max = Max(object)))
 setMethod("Max<-", "Unif", function(object, value) new("Unif", Min = Min(object), Max = value))
+
+## extra methods for Unif distribution
+setMethod("+", c("Unif","numeric"),
+          function(e1, e2){
+            new("Unif", Min = Min(e1) + e2, Max = Max(e1) + e2) 
+          })
+setMethod("*", c("Unif","numeric"),
+          function(e1, e2){
+            if(e2 == 0) return(new("Dirac", location = 0))
+            if(e2 > 0) 
+              new("Unif", Min = Min(e1) * e2, Max = Max(e1) * e2)
+            else
+              new("Unif", Min = Max(e1) * e2, Max = Min(e1) * e2)
+          })
+
+

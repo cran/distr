@@ -11,7 +11,7 @@
 
 \description{
 \pkg{``distr''} is a package for R from version 1.8.1 onwards that is distributed
-under GPL license 2.0. Its own current version is 1.4.
+under GPL license 2.0. Its own current version is 1.5.
 It requires package \pkg{setRNG} by Paul Gilbert, \email{pgilbert@bank-banque-canada.ca},
 to be installed from 
 

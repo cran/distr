@@ -13,7 +13,7 @@
     p(x) = \left. {m \choose x}{n \choose k-x} \right/ {m+n \choose k}%
   }{p(x) =      choose(m, x) choose(n, k-x) / choose(m+n, k)}
   for \eqn{x = 0, \ldots, k}{x = 0, ..., k}.
-  C.f. \code{\link{rhyper}} 
+  C.f. \code{\link[stats:Hypergeometric]{rhyper}} 
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Hyper(m, n, k)}.
@@ -59,7 +59,7 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 \code{\link{HyperParameter-class}}
 \code{\link{DiscreteDistribution-class}}
 \code{\link{Naturals-class}}
-\code{\link{rhyper}}
+\code{\link[stats:Hypergeometric]{rhyper}}
 }
 \examples{
 H=Hyper(m=3,n=3,k=3) # H is a hypergeometric distribution with m=3,n=3,k=3.
@@ -70,4 +70,4 @@ q(H)(.1) # x=1 is the smallest value x such that p(H)(x)>=0.1.
 m(H) # m of this distribution is 3.
 m(H)=2 # m of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

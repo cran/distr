@@ -11,7 +11,7 @@
     \left( 1 + \left(\frac{x - l}{s}\right)^2 \right)^{-1}%
   }{f(x) = 1 / (pi s (1 + ((x-l)/s)^2))}
   for all \eqn{x}.
-C.f. \code{\link{rcauchy}}
+C.f. \code{\link[stats:Cauchy]{rcauchy}}
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Cauchy(location, scale)}.
@@ -52,7 +52,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 \code{\link{CauchyParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{rcauchy}}
+\code{\link[stats:Cauchy]{rcauchy}}
 
 
 
@@ -68,4 +68,4 @@ q(C)(.1) # Probability that x<-2.077684 is 0.1.
 location(C) # location of this distribution is 1.
 location(C)=2 # location of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

@@ -12,7 +12,7 @@
   }{d(x) = 1/(sqrt(2 pi) sigma x) e^-((log x - mu)^2 / (2 sigma^2))}
   where \eqn{\mu}, by default \eqn{=0}, and \eqn{\sigma}, by default \eqn{=1}, are the mean and standard
   deviation of the logarithm.
-C.f. \code{\link{rlnorm}} }
+C.f. \code{\link[stats:Lognormal]{rlnorm}} }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Lnorm(meanlog, sdlog)}.
 This object is a log normal distribution.
@@ -59,7 +59,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 \code{\link{LnormParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{rlnorm}}
+\code{\link[stats:Lognormal]{rlnorm}}
 
 
 
@@ -75,4 +75,4 @@ q(L)(.1) # Probability that x<0.754612 is 0.1.
 meanlog(L) # meanlog of this distribution is 1.
 meanlog(L)=2 # meanlog of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

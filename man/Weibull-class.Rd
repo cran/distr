@@ -11,7 +11,7 @@
         d(x) = (a/b) (x/b)^(a-1) exp(- (x/b)^a)}
   for \eqn{x > 0}.
 
-C.f. \code{\link{rweibull}}
+C.f. \code{\link[stats:Weibull]{rweibull}}
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Weibull(shape, scale)}.
@@ -59,7 +59,7 @@ The cumulative is
 \code{\link{WeibullParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{rweibull}}
+\code{\link[stats:Weibull]{rweibull}}
 
 
 
@@ -75,4 +75,4 @@ q(W)(.1) # Probability that x<0.1053605 is 0.1.
 shape(W) # shape of this distribution is 1.
 shape(W)=2 # shape of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

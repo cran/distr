@@ -1,11 +1,11 @@
-\name{Gamma-class}
+\name{Gammad-class}
 \docType{class}
-\alias{Gamma-class}
-\alias{Gamma}
-\alias{initialize,Gamma-method}
+\alias{Gammad-class}
+\alias{Gammad}
+\alias{initialize,Gammad-method}
 
-\title{Class "Gamma"}
-\description{   The Gamma distribution with parameters \code{shape} \eqn{=\alpha}{= a},
+\title{Class "Gammad"}
+\description{   The Gammad distribution with parameters \code{shape} \eqn{=\alpha}{= a},
   by default \code{= 1}, and \code{scale} \eqn{=\sigma}{= s}, by default \code{= 1}, has 
   density
   \deqn{
@@ -14,10 +14,10 @@
   for \eqn{x > 0}, \eqn{\alpha > 0}{a > 0} and \eqn{\sigma > 0}{s > 0}.
   The mean and variance are
   \eqn{E(X) = \alpha\sigma}{E(X) = a*s} and
-  \eqn{Var(X) = \alpha\sigma^2}{Var(X) = a*s^2}. C.f. \code{\link{rgamma}} 
+  \eqn{Var(X) = \alpha\sigma^2}{Var(X) = a*s^2}. C.f. \code{\link[stats:GammaDist]{rgamma}} 
 }
 \section{Objects from the Class}{
-Objects can be created by calls of the form \code{Gamma(scale, shape)}.
+Objects can be created by calls of the form \code{Gammad(scale, shape)}.
 This object is a gamma distribution.
 }
 \section{Slots}{
@@ -39,11 +39,11 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 }
 \section{Methods}{
   \describe{
-    \item{initialize}{\code{signature(.Object = "Gamma")}: initialize method }
-    \item{scale}{\code{signature(object = "Gamma")}: returns the slot \code{scale} of the parameter of the distribution }
-    \item{scale<-}{\code{signature(object = "Gamma")}: modifies the slot \code{scale} of the parameter of the distribution }
-    \item{shape}{\code{signature(object = "Gamma")}: returns the slot \code{shape} of the parameter of the distribution }
-    \item{shape<-}{\code{signature(object = "Gamma")}: modifies the slot \code{shape} of the parameter of the distribution }
+    \item{initialize}{\code{signature(.Object = "Gammad")}: initialize method }
+    \item{scale}{\code{signature(object = "Gammad")}: returns the slot \code{scale} of the parameter of the distribution }
+    \item{scale<-}{\code{signature(object = "Gammad")}: modifies the slot \code{scale} of the parameter of the distribution }
+    \item{shape}{\code{signature(object = "Gammad")}: returns the slot \code{shape} of the parameter of the distribution }
+    \item{shape<-}{\code{signature(object = "Gammad")}: modifies the slot \code{shape} of the parameter of the distribution }
   }
 }
 
@@ -55,7 +55,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 \code{\link{GammaParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{rgamma}}
+\code{\link[stats:GammaDist]{rgamma}}
 
 
 
@@ -63,7 +63,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 
 }
 \examples{
-G=Gamma(scale=1,shape=1) # G is a gamma distribution with scale=1 and shape=1.
+G=Gammad(scale=1,shape=1) # G is a gamma distribution with scale=1 and shape=1.
 r(G)(1) # one random number generated from this distribution, e.g. 0.1304441
 d(G)(1) # Density of this distribution is 0.3678794 for x=1.
 p(G)(1) # Probability that x<1 is 0.6321206.
@@ -71,4 +71,4 @@ q(G)(.1) # Probability that x<0.1053605 is 0.1.
 scale(G) # scale of this distribution is 1.
 scale(G)=2 # scale of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

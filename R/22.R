@@ -33,7 +33,12 @@ RtoDPQ <- function(r, e = RtoDPQ.e, n = DefaultNrGridPoints){
   pfun <- function(x) pfun0(x)
   pfunx <- seq(from = min(zz), to = max(zz), length = n)
   pfuny <- pfun(pfunx)
+
+  pfunx <- tapply(pfunx, pfuny, min)
+  pfuny <- unique(pfuny)
+  
   qfun <- approxfun(x = pfuny, y = pfunx, rule = 2)
+  
   qfun1 <- function(x) ifelse(x > 1, NA,
                               ifelse(x < 0, NA, qfun(x))
                               )

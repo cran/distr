@@ -16,7 +16,7 @@
   This represents the number of failures
   which occur in a sequence of Bernoulli trials before a target number
   of successes is reached.
-  C.f. \code{\link{rnbinom}} 
+  C.f. \code{\link[stats:NegBinomial]{rnbinom}} 
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Nbinom(prob, size)}.
@@ -62,7 +62,7 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 \code{\link{NbinomParameter-class}}
 \code{\link{DiscreteDistribution-class}}
 \code{\link{Naturals-class}}
-\code{\link{rnbinom}}
+\code{\link[stats:NegBinomial]{rnbinom}}
 }
 \examples{
 N=Nbinom(prob=0.5,size=1) # N is a binomial distribution with prob=0.5 and size=1.
@@ -73,4 +73,4 @@ q(N)(.1) # x=0 is the smallest value x such that p(B)(x)>=0.1.
 size(N) # size of this distribution is 1.
 size(N)=2 # size of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

@@ -4,10 +4,10 @@
 \alias{initialize,GammaParameter-method}
 
 \title{Class "GammaParameter"}
-\description{ The parameter of a gamma distribution, used by \code{Gamma}-class}
+\description{ The parameter of a gamma distribution, used by \code{Gammad}-class}
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("GammaParameter", shape, scale)}.
-Usually an object of this class is not needed on its own, it is generated automatically when an object of the class \code{Gamma}
+Usually an object of this class is not needed on its own, it is generated automatically when an object of the class \code{Gammad}
 is instantiated. 
 }
 \section{Slots}{
@@ -36,7 +36,7 @@ Class \code{"Parameter"}, directly.
  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}}
 
 \seealso{
-\code{\link{Gamma-class}}
+\code{\link{Gammad-class}}
 \code{\link{Parameter-class}}
 }
 

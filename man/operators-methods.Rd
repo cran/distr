@@ -6,13 +6,13 @@
 \alias{-,UnivariateDistribution,ANY-method}
 \alias{*,Exp,numeric-method}
 \alias{*,numeric,UnivariateDistribution-method}
-\alias{*,Gamma,numeric-method}
+\alias{*,Gammad,numeric-method}
 \alias{+,AbscontDistribution,AbscontDistribution-method}
 \alias{+,DiscreteDistribution,AbscontDistribution-method}
 \alias{+,Chisq,Chisq-method}
 \alias{+,Exp,Exp-method}
 \alias{+,numeric,UnivariateDistribution-method}
-\alias{+,Gamma,Gamma-method}
+\alias{+,Gammad,Gammad-method}
 \alias{+,Nbinom,Nbinom-method}
 
 
@@ -57,6 +57,8 @@
 \alias{*,Norm,numeric-method}
 \alias{-,Norm,numeric-method}
 \alias{/,Norm,numeric-method}
+\alias{+,Unif,numeric-method}
+\alias{*,Unif,numeric-method}
 \alias{+,Binom,Binom-method}
 \alias{+,Pois,Pois-method}
 \title{ Methods for operators +,-,*,/ in Package `distr' }
@@ -233,6 +235,14 @@
 
       For the normal distribution the exact convolution formulas are implemented thereby improving the general numerical
     approximation.}
+  \item{*}{\code{signature(e1 = "Unif", e2 = "numeric")}:
+
+    multiplication of this uniform distribution by an object of
+    class `numeric'}
+  \item{+}{\code{signature(e1 = "Unif", e2 = "numeric")}:
+
+    addition of this uniform distribution to an object of class
+    `numeric'}
   \item{+}{\code{signature(e1 = "Binom", e2 = "Binom")}:
 
     For two binomial distributions with the same probabilities

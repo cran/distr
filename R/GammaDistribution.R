@@ -40,10 +40,10 @@ setValidity("GammaParameter", validGammaParameter)
 ##
 ################################
 
-setClass("Gamma", contains = "AbscontDistribution")
+setClass("Gammad", contains = "AbscontDistribution")
 
 ## Initialize method
-setMethod("initialize", "Gamma",
+setMethod("initialize", "Gammad",
           function(.Object, shape = 1, scale = 1) {
             .Object@img <- new("Reals")
             .Object@param <- new("GammaParameter", shape = shape, scale = scale, name = "Parameter of a gamma distribution")
@@ -63,26 +63,26 @@ setMethod("initialize", "Gamma",
           })
 
 ## wrapped access methods
-setMethod("shape", "Gamma", function(object) shape(param(object)))
-setMethod("scale", "Gamma", function(x, center = TRUE, scale = TRUE) scale(param(x)))
+setMethod("shape", "Gammad", function(object) shape(param(object)))
+setMethod("scale", "Gammad", function(x, center = TRUE, scale = TRUE) scale(param(x)))
 
 ## wrapped replace methods
-setMethod("shape<-", "Gamma", function(object, value) new("Gamma", shape = value, scale = scale(object)))
-setMethod("scale<-", "Gamma", function(object, value) new("Gamma", shape = shape(object), scale = value))
+setMethod("shape<-", "Gammad", function(object, value) new("Gammad", shape = value, scale = scale(object)))
+setMethod("scale<-", "Gammad", function(object, value) new("Gammad", shape = shape(object), scale = value))
 
-setMethod("+", c("Gamma","Gamma"),
+setMethod("+", c("Gammad","Gammad"),
           function(e1,e2){
             newshape <- shape(e1) + shape(e2)
             if(is.logical(all.equal(scale(e1),scale(e2))))    
-              return(new("Gamma", shape = newshape, scale = scale(e1)))
+              return(new("Gammad", shape = newshape, scale = scale(e1)))
             
             return(as(e1, "AbscontDistribution") + e2)
           })
-setMethod("*", c("Gamma","numeric"),
+setMethod("*", c("Gammad","numeric"),
           function(e1, e2){
             if(e2 == 0) return(new("Dirac", location = 0))
-            if(e2 > 0) return(Gamma(shape = shape(e1),
+            if(e2 > 0) return(Gammad(shape = shape(e1),
                                     scale = scale(e1) * e2))
-            return(-1 * as(Gamma(shape = shape(e1),
+            return(-1 * as(Gammad(shape = shape(e1),
                                  scale = scale(e1) * (-e2)), "AbscontDistribution"))
           })

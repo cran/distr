@@ -160,10 +160,7 @@ setMethod("Math", "DiscreteDistribution",
 
 setMethod("plot","DiscreteDistribution",
           function(x,y=NULL,...){
-            w0 <- options("warn")
-            options(warn = -1)
-            opar <- par()
-            par(mfrow = c(1,3))
+            opar <- par(mfrow = c(1,3))
 
             slots = slotNames(param(x))
             slots = slots[slots != "name"]
@@ -176,7 +173,15 @@ setMethod("plot","DiscreteDistribution",
             }
             else paramstring = ""
 
-            plot(support(x), d(x)(support(x)), type = "h", main = paste("Density of ", class(x)[1], paramstring), ...)
+            dx <- d(x)(support(x))
+
+            plot(support(x),
+                 dx,
+                 type = "h",
+                 main = paste("Density of ", class(x)[1], paramstring),
+                 ylim = c(0, max(dx)),
+                 ...)
+            
             points(support(x), d(x)(support(x)), pch = 16)
             lower <- min(support(x))
             upper <- max(support(x))
@@ -185,6 +190,5 @@ setMethod("plot","DiscreteDistribution",
             plot(grid, p(x)(grid), type = "l", main = paste("CDF of ", class(x)[1], paramstring), ...)
             plot(p(x)(grid), grid, type = "l", main = paste("Quantile of ", class(x)[1], paramstring), ...)
             par(opar)
-            options(w0)
           }
           )

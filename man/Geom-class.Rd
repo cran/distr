@@ -10,7 +10,7 @@
   \deqn{p(x) = p {(1-p)}^{x}}{p(x) = p (1-p)^x}
   for \eqn{x = 0, 1, 2, \ldots}{x = 0, 1, 2, ...}
   
-  C.f. \code{\link{rgeom}}
+  C.f. \code{\link[stats:Geometric]{rgeom}}
 }
 \section{Objects from the Class}{
   Objects can be created by calls of the form \code{Geom(prob)}.
@@ -66,7 +66,7 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 \code{\link{GeomParameter-class}}
 \code{\link{DiscreteDistribution-class}}
 \code{\link{Naturals-class}}
-\code{\link{rgeom}}
+\code{\link[stats:Geometric]{rgeom}}
 }
 \examples{
 G <- Geom(prob = 0.5) # G is a geometric distribution with prob = 0.5.
@@ -77,4 +77,4 @@ q(G)(.1) # x = 0 is the smallest value x such that p(G)(x) >= 0.1.
 prob(G) # prob of this distribution is 0.5.
 prob(G) <- 0.6 # prob of this distribution is now 0.6.
 }
-\keyword{}
+\keyword{distribution}

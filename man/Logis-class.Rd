@@ -16,7 +16,7 @@
   }{d(x) = 1/s exp((x-m)/s) (1 + exp((x-m)/s))^-2.}
 
   It is a long-tailed distribution with mean \eqn{\mu}{m} and variance
-  \eqn{\pi^2/3 \sigma^2}{pi^2 /3 s^2}. C.f. \code{\link{rlogis}} 
+  \eqn{\pi^2/3 \sigma^2}{pi^2 /3 s^2}. C.f. \code{\link[stats:Logistic]{rlogis}} 
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Logis(location, scale)}.
@@ -57,7 +57,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 \code{\link{LogisParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{rlogis}}
+\code{\link[stats:Logistic]{rlogis}}
 
 
 
@@ -74,4 +74,4 @@ q(L)(.1) # Probability that x < -1.197225 is 0.1.
 location(L) # location of this distribution is 1.
 location(L) <- 2 # location of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

@@ -11,7 +11,7 @@
     f(x) = lambda e^(- lambda x)}
   for \eqn{x \ge 0}.
 
-  C.f. \code{\link{rexp}}
+  C.f. \code{\link[stats:Exponential]{rexp}}
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Exp(rate)}.
@@ -60,7 +60,7 @@ This object is a exponential distribution.
 \code{\link{ExpParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{rexp}}
+\code{\link[stats:Exponential]{rexp}}
 }
 \examples{
 E <- Exp(rate = 1) # E is a exp distribution with rate = 1.
@@ -71,4 +71,4 @@ q(E)(.1) # Probability that x < 0.1053605 is 0.1.
 rate(E) # rate of this distribution is 1.
 rate(E) <- 2 # rate of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

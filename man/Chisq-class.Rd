@@ -23,7 +23,7 @@
   the sum of squares of \eqn{n} normals each with variance one,
   \eqn{\lambda} being the sum of squares of the normal means.
   
-  C.f. \code{\link{rchisq}}
+  C.f. \code{\link[stats:Chisquare]{rchisq}}
 }
 \section{Objects from the Class}{
   Objects can be created by calls of the form \code{Chisq(df, ncp)}.
@@ -76,7 +76,7 @@ Warning: The code for pchisq and qchisq is unreliable for values of ncp above ap
 \code{\link{ChisqParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{rchisq}}
+\code{\link[stats:Chisquare]{rchisq}}
 }
 \examples{
 C <- Chisq(df = 1, ncp = 1) # C is a chi-squared distribution with df=1 and ncp=1.
@@ -87,4 +87,4 @@ q(C)(.1) # Probability that x < 0.04270125 is 0.1.
 df(C) # df of this distribution is 1.
 df(C) <- 2 # df of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

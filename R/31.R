@@ -194,10 +194,7 @@ setMethod("Math", "AbscontDistribution",
 
 setMethod("plot","AbscontDistribution",
           function(x,y=NULL,...){
-            w0 <- options("warn")
-            options(warn = -1)
-            opar <- par()
-            par(mfrow = c(1,3))
+            opar <- par(mfrow = c(1,3))
 
             slots = slotNames(param(x))
             slots = slots[slots != "name"]
@@ -210,10 +207,10 @@ setMethod("plot","AbscontDistribution",
             }
             else paramstring = ""
 
-            if(q(x)(0) > - Inf) lower <- q(x)(0)
+            if(is.finite(q(x)(0))) lower <- q(x)(0)
             else lower <- q(x)(TruncQuantile)
    
-            if(q(x)(1) < Inf) upper <- q(x)(1)
+            if(is.finite(q(x)(1))) upper <- q(x)(1)
             else upper <- q(x)(1 - TruncQuantile)
 
             dist = upper - lower
@@ -222,6 +219,5 @@ setMethod("plot","AbscontDistribution",
             plot(grid, p(x)(grid), type = "l", main = paste("CDF of ", class(x)[1], paramstring), ...)
             plot(p(x)(grid), grid, type = "l", main = paste("Quantile of ", class(x)[1], paramstring), ...)
             par(opar)
-            options(w0)
           }
           )

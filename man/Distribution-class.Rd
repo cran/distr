@@ -13,8 +13,8 @@
     \item{\code{img}:}{Object of class \code{"Parameter"}: the space of the image }
     \item{\code{param}:}{Object of class \code{"function"}: the parameter }
     \item{\code{r}:}{Object of class \code{"function"}: generates random numbers}
-    \item{\code{d}:}{Object of class \code{"function"}: density function}
-    \item{\code{p}:}{Object of class \code{"function"}: cumulative distribution function}
+    \item{\code{d}:}{Object of class \code{"OptionalFunction"}: density function}
+    \item{\code{p}:}{Object of class \code{"OptionalFunction"}: cumulative distribution function}
     \item{\code{q}:}{Object of class \code{"OptionalFunction"}: quantile function}
   }
 }
@@ -40,4 +40,4 @@
 \code{\link{Parameter-class}}
 
 }
-\keyword{}
+\keyword{distribution}

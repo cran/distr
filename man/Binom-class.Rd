@@ -11,7 +11,7 @@
     p(x) = choose(n,x) p^x (1-p)^(n-x)}
   for \eqn{x = 0, \ldots, n}.
 
-  C.f.\code{\link{rbinom}}
+  C.f.\code{\link[stats:Binomial]{rbinom}}
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Binom(prob, size)}.
@@ -57,7 +57,7 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 \code{\link{BinomParameter-class}}
 \code{\link{DiscreteDistribution-class}}
 \code{\link{Naturals-class}}
-\code{\link{rbinom}}
+\code{\link[stats:Binomial]{rbinom}}
 }
 \examples{
 B=Binom(prob=0.5,size=1) # B is a binomial distribution with prob=0.5 and size=1.
@@ -72,4 +72,4 @@ D=Binom(prob=0.6,size=1) # D is a binomial distribution with prob=0.6 and size=1
 E=B+C # E is a binomial distribution with prob=0.5 and size=3.
 F=B+D # F is an object of class DiscreteDistribution.
 }
-\keyword{}
+\keyword{distribution}

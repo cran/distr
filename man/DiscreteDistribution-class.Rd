@@ -95,4 +95,4 @@ d(D4)(1) # The (approximated) density for x=1 is 0.1282716.
 p(D4)(1) # The (approximated) probability that x<=1 is 0.1282716.
 q(D4)(.5) # The (approximated) 50 percent quantile is 3.
 }
-\keyword{}
+\keyword{distribution}

@@ -1,10 +1,10 @@
 import("methods")
 import("stats")
-import("graphics")
+importFrom("graphics", "plot")
 
 export(Beta, Binom, Cauchy, Chisq, Contsimulation, Data, Data.c, Data.id, "Data<-", Dataclass, 
        DefaultNrFFTGridPointsExponent, DefaultNrGridPoints, Dirac, DistrResolution,
-       Exp, Fd, Gamma, Geom, Hyper, Lnorm, Logis, Max, "Max<-", Min, "Min<-", Nbinom, 
+       Exp, Fd, Gammad, Geom, Hyper, Lnorm, Logis, Max, "Max<-", Min, "Min<-", Nbinom, 
        Norm, Pois, RtoDPQ, RtoDPQ.d, RtoDPQ.e, Simulation, Td, TruncQuantile, Unif, Weibull, call.ev, 
        cload, d, df, df1, "df1<-", df2, "df2<-", "df<-", dimension, "dimension<-",
        distribution, distribution.c, "distribution.c<-", 
@@ -26,7 +26,7 @@ exportClass(BetaParameter, BinomParameter, CauchyParameter, ChisqParameter,
               UnifParameter,WeibullParameter,UniNormParameter)
 exportClass(Distribution)
 exportClass(UnivariateDistribution, AbscontDistribution, DiscreteDistribution, Beta, Binom,
-              Cauchy, Chisq, Dirac, Exp, Fd, Gamma, Geom, Hyper, Logis, Lnorm, Nbinom, Norm,
+              Cauchy, Chisq, Dirac, Exp, Fd, Gammad, Geom, Hyper, Logis, Lnorm, Nbinom, Norm,
               Pois, Td, Unif, Weibull)
 exportClass(vectororNULL, OptionalParameter)
 exportClass(Dataclass, Simulation, Contsimulation)

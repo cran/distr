@@ -14,7 +14,7 @@
   for all real \eqn{x}.
   It has mean \eqn{0} (for \eqn{\nu > 1}{n > 1}) and
   variance \eqn{\frac{\nu}{\nu-2}}{n/(n-2)} (for \eqn{\nu > 2}{n > 2}).
- C.f. \code{\link{rt}}   
+ C.f. \code{\link[stats:TDist]{rt}}   
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Td(df)}.
@@ -56,7 +56,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
   variables, \eqn{U \sim {\cal N}(0,1)}{U \~ N(0,1)}, and
 %%fails  \eqn{{\chi_{\nu}}^2}{(Chi(df))^2}
   \eqn{\chi^2_\nu}{Chi(df)^2}
-  is chi-squared, see \code{\link{pchisq}}.
+  is chi-squared, see \code{\link[stats:Chisquare]{rchisq}}.
 
   The most used applications are power calculations for \eqn{t}-tests:\cr
   Let \eqn{T= \frac{\bar{X} - \mu_0}{S/\sqrt{n}}}{T= (mX - m0) / (S/sqrt(n))}
@@ -75,7 +75,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 \code{\link{TParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{rt}}
+\code{\link[stats:TDist]{rt}}
 
 
 }
@@ -88,4 +88,4 @@ q(T)(.1) # Probability that x < -3.077684 is 0.1.
 df(T) # df of this distribution is 1.
 df(T) <- 2 # df of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

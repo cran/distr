@@ -5,7 +5,7 @@
 \alias{scale}
 \alias{scale<-}
 \alias{scale,GammaParameter-method}
-\alias{scale,Gamma-method}
+\alias{scale,Gammad-method}
 \alias{scale,LogisParameter-method}
 \alias{scale,Logis-method}
 \alias{scale,WeibullParameter-method}
@@ -13,7 +13,7 @@
 \alias{scale,CauchyParameter-method}
 \alias{scale,Cauchy-method}
 \alias{scale<-,GammaParameter-method}
-\alias{scale<-,Gamma-method}
+\alias{scale<-,Gammad-method}
 \alias{scale<-,LogisParameter-method}
 \alias{scale<-,Logis-method}
 \alias{scale<-,WeibullParameter-method}
@@ -28,8 +28,8 @@
 \item{scale}{\code{signature(object = "GammaParameter")}: returns the slot \code{scale} of the parameter of the distribution }
 \item{scale<-}{\code{signature(object = "GammaParameter")}: modifies the slot \code{scale} of the parameter of the distribution }
 
-\item{scale}{\code{signature(object = "Gamma")}: returns the slot \code{scale} of the parameter of the distribution }
-\item{scale<-}{\code{signature(object = "Gamma")}: modifies the slot \code{scale} of the parameter of the distribution }
+\item{scale}{\code{signature(object = "Gammad")}: returns the slot \code{scale} of the parameter of the distribution }
+\item{scale<-}{\code{signature(object = "Gammad")}: modifies the slot \code{scale} of the parameter of the distribution }
 
 \item{scale}{\code{signature(object = "LogisParameter")}: returns the slot \code{scale} of the parameter of the distribution }
 \item{scale<-}{\code{signature(object = "LogisParameter")}: modifies the slot \code{scale} of the parameter of the distribution }

@@ -9,7 +9,7 @@
   The uniform distribution has density
   \deqn{d(x) = \frac{1}{max-min}}{d(x) = 1/(max-min)}
   for \eqn{min}, by default \eqn{=0}, \eqn{\le x \le max}, by default \eqn{=1}.
-C.f. \code{\link{runif}} 
+C.f. \code{\link[stats:Uniform]{runif}} 
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Unif(Min, Max)}.
@@ -17,6 +17,10 @@ This object is a uniform distribution.
 }
 \section{Slots}{
   \describe{
+    \item{*}{\code{signature(e1 = "Unif", e2 = "numeric")}: multiplication of this uniform distribution by an object of
+    class `numeric'}
+    \item{+}{\code{signature(e1 = "Unif", e2 = "numeric")}: addition of this uniform distribution to an object of class
+    `numeric'}
     \item{\code{img}:}{Object of class \code{"Reals"}: The space of the image of this distribution has got dimension 1
     and the name "Real Space". }
     \item{\code{param}:}{Object of class \code{"UnifParameter"}: the parameter of this distribution (Min and Max),
@@ -50,7 +54,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 \code{\link{UnifParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{runif}}
+\code{\link[stats:Uniform]{runif}}
 
 }
 \examples{
@@ -62,4 +66,4 @@ q(U)(.1) # Probability that x<0.2 is 0.1.
 Min(U) # Min of this distribution is 0.
 Min(U)=1 # Min of this distribution is now 1.
 }
-\keyword{}
+\keyword{distribution}

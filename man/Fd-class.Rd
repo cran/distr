@@ -16,7 +16,7 @@
     (1 + (n1/n2) x)^-(n1 + n2)/2}
   for \eqn{x > 0}.
 
-  C.f. \code{\link{rf}}
+  C.f. \code{\link[stats:Fdist]{rf}}
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Fd(df1, df2)}.
@@ -64,7 +64,7 @@ numerator are allowed to have non-zero means and ncp is the sum of squares of th
 \code{\link{FParameter-class}}
 \code{\link{AbscontDistribution-class}}
 \code{\link{Reals-class}}
-\code{\link{rf}}
+\code{\link[stats:Fdist]{rf}}
 }
 \examples{
 F=Fd(df1=1,df2=1) # F is a F distribution with df=1 and df2=1.
@@ -75,4 +75,4 @@ q(F)(.1) # Probability that x<0.02508563 is 0.1.
 df1(F) # df1 of this distribution is 1.
 df1(F)=2 # df1 of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}

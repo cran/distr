@@ -12,7 +12,7 @@
   for \eqn{x = 0, 1, 2, \ldots}.  The mean and variance are
   \eqn{E(X) = Var(X) = \lambda}.
 
-  C.f. \code{\link{rpois}}
+  C.f. \code{\link[stats:Poisson]{rpois}}
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Pois(lambda)}.
@@ -73,7 +73,7 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 \code{\link{PoisParameter-class}}
 \code{\link{DiscreteDistribution-class}}
 \code{\link{Naturals-class}}
-\code{\link{rpois}}
+\code{\link[stats:Poisson]{rpois}}
 }
 \examples{
 P <- Pois(lambda = 1) # P is a Poisson distribution with lambda = 1.
@@ -86,4 +86,4 @@ lambda(P) <- 2 # lambda of this distribution is now 2.
 R <- Pois(lambda = 3) # R is a Poisson distribution with lambda = 2.
 S <- P + R # R is a Poisson distribution with lambda = 5(=2+3).
 }
-\keyword{}
+\keyword{distribution}

@@ -59,4 +59,4 @@ q(D)(.1) # q(D)(x) is always 0 (= location).
 location(D) # location of this distribution is 0.
 location(D) <- 2 # location of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
