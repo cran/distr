@@ -1,0 +1,62 @@
+\name{Dirac-class}
+\docType{class}
+\alias{Dirac-class}
+\alias{Dirac}
+\alias{initialize,Dirac-method}
+
+\title{Class "Dirac"  }
+\description{ The Dirac distribution with location \eqn{l}, by default \eqn{=0}, has density
+\eqn{d(x) = 1} for \eqn{x = l}, \eqn{0} else.
+}
+\section{Objects from the Class}{
+Objects can be created by calls of the form \code{Dirac(location)}.
+This object is a \code{Dirac} distribution. 
+}
+\section{Slots}{
+  \describe{
+    \item{\code{img}:}{Object of class \code{"Naturals"}: The space of the image of this
+     distribution has got dimension 1 and the name "Real Space". }
+    \item{\code{param}:}{Object of class \code{"DiracParameter"}: the parameter of this distribution (location),
+     declared at its instantiation }
+    \item{\code{r}:}{Object of class \code{"function"}: generates random numbers }
+    \item{\code{d}:}{Object of class \code{"function"}: density function }
+    \item{\code{p}:}{Object of class \code{"function"}: cumulative function }
+    \item{\code{q}:}{Object of class \code{"function"}: inverse of the cumulative function }
+    \item{\code{support}:}{Object of class \code{"numeric"}: a (sorted) vector containing the support of the discrete
+    density function}
+  }
+}
+\section{Extends}{
+Class \code{"DiscreteDistribution"}, directly.\cr
+Class \code{"UnivariateDistribution"}, by class \code{"DiscreteDistribution"}.\cr
+Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
+}
+\section{Methods}{
+  \describe{
+    \item{initialize}{\code{signature(.Object = "Dirac")}: initialize method }
+    \item{location}{\code{signature(object = "Dirac")}: returns the slot \code{location} of the parameter of the distribution }
+    \item{location<-}{\code{signature(object = "Dirac")}: modifies the slot \code{location} of the parameter of the distribution }
+  }
+}
+
+\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
+ Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}}
+
+\seealso{
+\code{\link{DiracParameter-class}}
+\code{\link{DiscreteDistribution-class}}
+\code{\link{Naturals-class}}
+}
+\examples{
+D <- Dirac(location = 0) # D is a Dirac distribution with location=0.
+r(D)(1)
+# r(D)(1) generates a pseudo-random-number according to a Dirac
+# distribution with location = 0,
+# which of course will take 0 as value almost surely.
+d(D)(0) # Density of this distribution is 1 for x = 0.
+p(D)(1) # Probability that x < 1 is 1.
+q(D)(.1) # q(D)(x) is always 0 (= location).
+location(D) # location of this distribution is 0.
+location(D) <- 2 # location of this distribution is now 2.
+}
+\keyword{}

@@ -1,0 +1,27 @@
+Beta <- function(shape1 = 1, shape2 = 2) new("Beta", shape1 = shape1, shape2 = shape2)
+Binom <- function(size = 1,prob = 0.5) new("Binom", size = size, prob = prob)
+Cauchy <- function(location = 0, scale = 1) new("Cauchy", location = location, scale = scale)
+Chisq <- function(df = 1, ncp = 0) new("Chisq", df = df, ncp = ncp)
+Dirac <- function(location = 0) new("Dirac", location = location)
+Exp <- function(rate = 1) new("Exp", rate = rate)
+F <- function(df1 = 1, df2 = 1) new("F", df1 = df1, df2 = df2)
+Gamma <- function(shape = 1, scale = 1) new("Gamma", shape = shape, scale = scale)
+Geom <- function(prob = 0.5) new("Geom", prob = prob)
+Hyper <- function(m = 1, n = 1, k = 1) new("Hyper", m = m, n = n, k = k)
+Logis <- function(location = 0, scale = 1) new("Logis", location = location, scale = scale)
+Lnorm <- function(meanlog = 0, sdlog = 1) new("Lnorm", meanlog = meanlog, sdlog = sdlog)
+Nbinom <- function(size = 1,prob = 0.5) new("Nbinom", size = size, prob = prob)
+Norm <- function(mean = 0, sd = 1) new("Norm", mean = mean, sd = sd)
+Pois <- function(lambda = 1) new("Pois", lambda = lambda)
+T <- function(df = 1) new("T", df = df)
+Unif <- function(Min = 0, Max = 1) new("Unif", Min = Min, Max = Max)
+Weibull <- function(shape = 1, scale = 1) new("Weibull", shape = shape, scale = scale)
+
+Simulation <- function(filename = NULL, runs = 100, samplesize = 10, seed = setRNG(), distribution = Norm())
+  new("Simulation", filename = filename, runs = runs, samplesize = samplesize, seed = seed, distribution = distribution)
+
+Contsimulation <- function(filename = NULL, runs = 100, samplesize = 10, seed = setRNG(), distribution.id = Norm(), distribution.c = Norm(sd =3), rate = 0.1)
+  new("Contsimulation",filename = filename, runs = runs, samplesize = samplesize, seed = seed,
+      distribution.id = distribution.id, distribution.c = distribution.c, rate)
+
+Dataclass <- function(filename = NULL, Data) new("Dataclass", filename = filename, Data = Data)

@@ -1,0 +1,33 @@
+import("methods")
+import("stats")
+import("graphics")
+
+export(Beta, Binom, Cauchy, Chisq, Contsimulation, Data, Data.c, Data.id, "Data<-", Dataclass, 
+       DefaultNrFFTGridPointsExponent, DefaultNrGridPoints, Dirac, DistrResolution,
+       Exp, F, Gamma, Geom, Hyper, Lnorm, Logis, Max, "Max<-", Min, "Min<-", Nbinom, 
+       Norm, Pois, RtoDPQ, RtoDPQ.d, RtoDPQ.e, Simulation, T, TruncQuantile, Unif, Weibull, call.ev, 
+       cload, d, df, df1, "df1<-", df2, "df2<-", "df<-", dimension, "dimension<-",
+       distribution, distribution.c, "distribution.c<-", 
+       distribution.id, "distribution.id<-", "distribution<-", distroptions, 
+       estimator, evaluate, filename, "filename<-", img, ind, k, "k<-", lambda, "lambda<-", liesIn, 
+       location, "location<-", m, "m<-", mean, "mean<-", meanlog,
+       "meanlog<-",
+       n, "n<-", name, "name<-", ncp, "ncp<-", p, param, plot, print, prob, "prob<-", 
+       q, r, rate, "rate<-", result, runs, "runs<-", samplesize,
+       "samplesize<-", savedata,
+       scale, "scale<-", sd, "sd<-", sdlog, "sdlog<-", seed, "seed<-", shape, shape1, "shape1<-", 
+       shape2, "shape2<-", "shape<-", simplifyr, simulate, size, "size<-", standardMethods,
+       summary, support)
+exportClass(rSpace, EuclideanSpace, Reals, Naturals)
+exportClass(Parameter)
+exportClass(UnivariateParameter, BetaParameter, BinomParameter, CauchyParameter, ChisqParameter,
+              DiracParameter,ExpParameter,FParameter,GammaParameter,GeomParameter,HyperParameter,
+              LogisParameter,LnormParameter,NbinomParameter,NormParameter,PoisParameter,TParameter,
+              UnifParameter,WeibullParameter,AbscontParameter,DiscreteParameter,UniNormParameter)
+exportClass(Distribution)
+exportClass(UnivariateDistribution, AbscontDistribution, DiscreteDistribution, Beta, Binom,
+              Cauchy, Chisq, Dirac, Exp, F, Gamma, Geom, Hyper, Logis, Lnorm, Nbinom, Norm,
+              Pois, T, Unif, Weibull)
+exportClass(vectororNULL)
+exportClass(Dataclass, Simulation, Contsimulation)
+exportClass(Evaluation)

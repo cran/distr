@@ -1,0 +1,74 @@
+\name{Gamma-class}
+\docType{class}
+\alias{Gamma-class}
+\alias{Gamma}
+\alias{initialize,Gamma-method}
+
+\title{Class "Gamma"}
+\description{   The Gamma distribution with parameters \code{shape} \eqn{=\alpha}{= a},
+  by default \code{= 1}, and \code{scale} \eqn{=\sigma}{= s}, by default \code{= 1}, has 
+  density
+  \deqn{
+    d(x)= \frac{1}{{\sigma}^{\alpha}\Gamma(\alpha)} {x}^{\alpha-1} e^{-x/\sigma}%
+  }{d(x)= 1/(s^a Gamma(a)) x^(a-1) e^-(x/s)}
+  for \eqn{x > 0}, \eqn{\alpha > 0}{a > 0} and \eqn{\sigma > 0}{s > 0}.
+  The mean and variance are
+  \eqn{E(X) = \alpha\sigma}{E(X) = a*s} and
+  \eqn{Var(X) = \alpha\sigma^2}{Var(X) = a*s^2}. C.f. \code{\link{rgamma}} 
+}
+\section{Objects from the Class}{
+Objects can be created by calls of the form \code{Gamma(scale, shape)}.
+This object is a gamma distribution.
+}
+\section{Slots}{
+  \describe{
+    \item{\code{img}:}{Object of class \code{"Reals"}: The space of the image of this distribution has got dimension 1
+    and the name "Real Space". }
+    \item{\code{param}:}{Object of class \code{"GammaParameter"}: the parameter of this distribution (scale and shape),
+     declared at its instantiation }
+    \item{\code{r}:}{Object of class \code{"function"}: generates random numbers (calls function rgamma)}
+    \item{\code{d}:}{Object of class \code{"function"}: density function (calls function dgamma)}
+    \item{\code{p}:}{Object of class \code{"function"}: cumulative function (calls function pgamma)}
+    \item{\code{q}:}{Object of class \code{"function"}: inverse of the cumulative function (calls function qgamma)}
+  }
+}
+\section{Extends}{
+Class \code{"AbscontDistribution"}, directly.\cr
+Class \code{"UnivariateDistribution"}, by class \code{"AbscontDistribution"}.\cr
+Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
+}
+\section{Methods}{
+  \describe{
+    \item{initialize}{\code{signature(.Object = "Gamma")}: initialize method }
+    \item{scale}{\code{signature(object = "Gamma")}: returns the slot \code{scale} of the parameter of the distribution }
+    \item{scale<-}{\code{signature(object = "Gamma")}: modifies the slot \code{scale} of the parameter of the distribution }
+    \item{shape}{\code{signature(object = "Gamma")}: returns the slot \code{shape} of the parameter of the distribution }
+    \item{shape<-}{\code{signature(object = "Gamma")}: modifies the slot \code{shape} of the parameter of the distribution }
+  }
+}
+
+\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
+ Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}}
+
+
+\seealso{
+\code{\link{GammaParameter-class}}
+\code{\link{AbscontDistribution-class}}
+\code{\link{Reals-class}}
+\code{\link{rgamma}}
+
+
+
+
+
+}
+\examples{
+G=Gamma(scale=1,shape=1) # G is a gamma distribution with scale=1 and shape=1.
+r(G)(1) # one random number generated from this distribution, e.g. 0.1304441
+d(G)(1) # Density of this distribution is 0.3678794 for x=1.
+p(G)(1) # Probability that x<1 is 0.6321206.
+q(G)(.1) # Probability that x<0.1053605 is 0.1.
+scale(G) # scale of this distribution is 1.
+scale(G)=2 # scale of this distribution is now 2.
+}
+\keyword{}

@@ -1,0 +1,74 @@
+\name{Exp-class}
+\docType{class}
+\alias{Exp-class}
+\alias{Exp}
+\alias{initialize,Exp-method}
+\title{Class "Exp"}
+\description{
+  The exponential distribution with rate \eqn{\lambda} has density
+  \deqn{
+    f(x) = \lambda {e}^{- \lambda x}}{
+    f(x) = lambda e^(- lambda x)}
+  for \eqn{x \ge 0}.
+
+  C.f. \code{\link{rexp}}
+}
+\section{Objects from the Class}{
+Objects can be created by calls of the form \code{Exp(rate)}.
+This object is a exponential distribution. 
+}
+\section{Slots}{
+  \describe{
+    \item{\code{img}:}{Object of class \code{"Reals"}:
+      The space of the image of this distribution has got dimension 1
+      and the name "Real Space".}
+    \item{\code{param}:}{Object of class \code{"ExpParameter"}:
+      the parameter of this distribution (rate), declared at its instantiation }
+    \item{\code{r}:}{Object of class \code{"function"}:
+      generates random numbers (calls function rexp)}
+    \item{\code{d}:}{Object of class \code{"function"}:
+      density function (calls function dexp)}
+    \item{\code{p}:}{Object of class \code{"function"}:
+      cumulative function (calls function pexp)}
+    \item{\code{q}:}{Object of class \code{"function"}:
+      inverse of the cumulative function (calls function qexp)}
+  }
+}
+\section{Extends}{
+  Class \code{"AbscontDistribution"}, directly.
+  Class \code{"UnivariateDistribution"}, by class \code{"AbscontDistribution"}.
+  Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
+}
+\section{Methods}{
+  \describe{
+    \item{initialize}{\code{signature(.Object = "Exp")}:
+      initialize method}
+    \item{rate}{\code{signature(object = "Exp")}:
+      returns the slot rate of the parameter of the distribution}
+    \item{rate<-}{\code{signature(object = "Exp")}:
+      modifies the slot rate of the parameter of the distribution}
+  }
+}
+
+\author{
+  Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr
+  Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
+  Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}
+}
+\seealso{
+\code{\link{ExpParameter-class}}
+\code{\link{AbscontDistribution-class}}
+\code{\link{Reals-class}}
+\code{\link{rexp}}
+}
+\examples{
+E <- Exp(rate = 1) # E is a exp distribution with rate = 1.
+r(E)(1) # one random number generated from this distribution, e.g. 0.4190765
+d(E)(1) # Density of this distribution is 0.3678794 for x = 1.
+p(E)(1) # Probability that x < 1 is 0.6321206.
+q(E)(.1) # Probability that x < 0.1053605 is 0.1.
+rate(E) # rate of this distribution is 1.
+rate(E) <- 2 # rate of this distribution is now 2.
+}
+\keyword{}
