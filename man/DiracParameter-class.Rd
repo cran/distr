@@ -34,7 +34,7 @@ Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \e
 
 \seealso{
 \code{\link{Dirac-class}}
-\code{\link{DiscreteParameter-class}}
+\code{\link{Parameter-class}}
 }
 
 \examples{

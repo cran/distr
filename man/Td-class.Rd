@@ -1,10 +1,10 @@
-\name{T-class}
-\docType{class}
-\alias{T-class}
-\alias{T}
-\alias{initialize,T-method}
+\name{Td-class}
+\docTdype{class}
+\alias{Td-class}
+\alias{Td}
+\alias{initialize,Td-method}
 
-\title{Class "T"}
+\title{Class "Td"}
 \description{  The \eqn{t} distribution with \code{df} \eqn{= \nu}{= n} degrees of
   freedom has density
   \deqn{
@@ -17,7 +17,7 @@
  C.f. \code{\link{rt}}   
 }
 \section{Objects from the Class}{
-Objects can be created by calls of the form \code{T(df)}.
+Objects can be created by calls of the form \code{Td(df)}.
 This object is a \eqn{t} distribution.
 }
 \section{Slots}{
@@ -39,9 +39,9 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 }
 \section{Methods}{
   \describe{
-    \item{initialize}{\code{signature(.Object = "T")}: initialize method }
-    \item{df}{\code{signature(object = "T")}: returns the slot df of the parameter of the distribution }
-    \item{df<-}{\code{signature(object = "T")}: modifies the slot df of the parameter of the distribution }
+    \item{initialize}{\code{signature(.Object = "Td")}: initialize method }
+    \item{df}{\code{signature(object = "Td")}: returns the slot df of the parameter of the distribution }
+    \item{df<-}{\code{signature(object = "Td")}: modifies the slot df of the parameter of the distribution }
   }
 }
 
@@ -80,7 +80,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 
 }
 \examples{
-T <- T(df = 1) # T is a t distribution with df = 1.
+T <- Td(df = 1) # T is a t distribution with df = 1.
 r(T)(1) # one random number generated from this distribution, e.g. -0.09697573
 d(T)(1) # Density of this distribution is 0.1591549 for x = 1.
 p(T)(1) # Probability that x < 1 is 0.75.

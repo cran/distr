@@ -1,10 +1,10 @@
 ################################
 ##
-## virtual Class: Parameter
+## Class: Parameter
 ##
 ################################
 
-setClass("Parameter", representation(name = "character"), contains = "VIRTUAL")
+setClass("Parameter", representation(name = "character"))
 
 ## Access Methoden
 if(!isGeneric("name")) setGeneric("name", function(object) standardGeneric("name"))

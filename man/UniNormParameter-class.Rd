@@ -48,7 +48,7 @@ Class \code{"Parameter"}, by class \code{"NormParameter"}.
 \seealso{
 \code{\link{Norm-class}}
 \code{\link{NormParameter-class}}
-\code{\link{AbscontParameter-class}}
+\code{\link{Parameter-class}}
 }
 \examples{
 W <- new("UniNormParameter", mean = 0, sd = 1)

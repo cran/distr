@@ -1,16 +1,15 @@
 ################################
 ##
-## virtual Class: Distribution
+## Class: Distribution
 ##
 ################################
 
 setClass("Distribution", representation(img = "rSpace",
-                                        param = "Parameter",
+                                        param = "OptionalParameter",
                                         r = "function",
-                                        d = "function",
-                                        p = "function",
-                                        q = "function"),
-         contains = "VIRTUAL")
+                                        d = "OptionalFunction",
+                                        p = "OptionalFunction",
+                                        q = "OptionalFunction"))
 
 ## Access Methoden
 if(!isGeneric("img")) setGeneric("img", function(object) standardGeneric("img"))
@@ -27,18 +26,6 @@ setMethod("p", "Distribution", function(object) object@p)
 setMethod("q", "Distribution", function(save = "default", status = 0, runLast = TRUE) save@q)
 
 
-
-
-
-################################
-##
-## Class: UnivariateParameter
-##
-################################
-
-setClass("UnivariateParameter", representation(), contains = c("Parameter", "VIRTUAL"))
-
-
 ################################
 ##
 ## Class: UnivariateDistribution
@@ -46,8 +33,7 @@ setClass("UnivariateParameter", representation(), contains = c("Parameter", "VIR
 ################################
 
 setClass("UnivariateDistribution", representation(),
-         contains = c("Distribution", "VIRTUAL"))
-
+         contains = "Distribution")
 
 
 setMethod("print", "UnivariateDistribution",

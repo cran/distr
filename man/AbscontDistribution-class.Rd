@@ -19,7 +19,7 @@ The result of this call is an absolutely continuous distribution.
   \describe{
     \item{\code{img}:}{Object of class \code{"Reals"}: the space of the image of this distribution which has dimension 1
     and the name "Real Space" }
-    \item{\code{param}:}{Object of class \code{"AbscontParameter"}: the parameter of this distribution, having only 
+    \item{\code{param}:}{Object of class \code{"Parameter"}: the parameter of this distribution, having only 
     the slot name "Parameter of an absolutely continuous distribution" }
     \item{\code{r}:}{Object of class \code{"function"}: generates random numbers}
     \item{\code{d}:}{Object of class \code{"function"}: density function}
@@ -65,18 +65,18 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}}
 
 \seealso{
-\code{\link{AbscontParameter-class}}
+\code{\link{Parameter-class}}
 \code{\link{UnivariateDistribution-class}}
 \code{\link{Beta-class}}
 \code{\link{Cauchy-class}}
 \code{\link{Chisq-class}}
 \code{\link{Exp-class}}
-\code{\link{F-class}}
+\code{\link{Fd-class}}
 \code{\link{Gamma-class}}
 \code{\link{Lnorm-class}}
 \code{\link{Logis-class}}
 \code{\link{Norm-class}}
-\code{\link{T-class}}
+\code{\link{Td-class}}
 \code{\link{Unif-class}}
 \code{\link{Weibull-class}}
 \code{\link{DiscreteDistribution-class}}

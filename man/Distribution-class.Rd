@@ -4,7 +4,9 @@
 
 \title{Class "Distribution"}
 \description{ The \code{Distribution-class} is the mother-class of the class \code{UnivariateDistribution}.}
-\section{Objects from the Class}{A virtual Class: No objects may be created from it.}
+\section{Objects from the Class}{
+  Objects can be created by calls of the form \code{new("Distribution")}.
+}
 
 \section{Slots}{
   \describe{
@@ -13,7 +15,7 @@
     \item{\code{r}:}{Object of class \code{"function"}: generates random numbers}
     \item{\code{d}:}{Object of class \code{"function"}: density function}
     \item{\code{p}:}{Object of class \code{"function"}: cumulative distribution function}
-    \item{\code{q}:}{Object of class \code{"function"}: quantile function}
+    \item{\code{q}:}{Object of class \code{"OptionalFunction"}: quantile function}
   }
 }
 }

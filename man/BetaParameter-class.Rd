@@ -44,7 +44,7 @@ Class \code{"Parameter"}, directly.
 }
 \seealso{
   \code{\link{Beta-class}}
-  \code{\link{AbscontParameter-class}}
+  \code{\link{Parameter-class}}
 }
 \examples{
 W <- new("BetaParameter", shape1 = 1, shape2 = 1)

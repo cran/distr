@@ -11,11 +11,11 @@ RtoDPQ(r, e = RtoDPQ.e, n = DefaultNrGridPoints)
   \item{e}{ \eqn{10^e} numbers are generated, a higher number leads to a better result. }
   \item{n}{ The number of grid points used to create the approximated functions, a higher number leads to a better result.}
 }
-\details
-{RtoDPQ generates \eqn{10^e} random numbers, by default \deqn{e = RtoDPQ.e}. The density is formed on the basis of \eqn{n}
+\details{
+RtoDPQ generates \eqn{10^e} random numbers, by default \deqn{e = RtoDPQ.e}. The density is formed on the basis of \eqn{n}
 points using approxfun and density, by default \deqn{n = DefaultNrGridPoints}.
 The cumulative distribution function and the quantile function are also created on the basis of \eqn{n} points using 
-\code{approxfun} and \code{ecdf}.  Of course, the results are usually not exact as they rely on random numbers. }
+\code{approxfun} and \code{ecdf}.  Of course, the results are usually not exact as they rely on random numbers.}
 \value{ \code{RtoDPQ} returns a list of functions.
   \item{dfun }{ density }
   \item{pfun }{ cumulative distribution function }

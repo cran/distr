@@ -35,7 +35,7 @@ Class \code{"Parameter"}, directly.
 
 \seealso{
 \code{\link{Unif-class}}
-\code{\link{AbscontParameter-class}}
+\code{\link{Parameter-class}}
 }
 
 \examples{

@@ -18,10 +18,14 @@ setReplaceMethod("size", "NbinomParameter", function(object, value){ object@size
 setReplaceMethod("prob", "NbinomParameter", function(object, value){ object@prob <- value; object})
 
 validNbinomParameter <- function(object){
+  if(length(prob(object)) != 1)
+    stop("prob has to be a numeric of length 1")    
   if(prob(object) <= 0)
     stop("prob has to be in (0,1)")
   if(prob(object) >= 1)
     stop("prob has to be in (0,1)")
+  if(length(size(object)) != 1)
+    stop("size has to be a numeric of length 1")    
   if(size(object) < 0)
     stop("size has to be a not negative natural")
   if(!identical(floor(size(object)), size(object)))
@@ -45,10 +49,18 @@ setMethod("initialize", "Nbinom",
             .Object@img <- new("Naturals")
             .Object@param <- new("NbinomParameter", size = size, prob = prob, name = "Parameter of a negative binomial distribution" )
             .Object@support <- 0:qnbinom(1 - TruncQuantile, size = size, prob = prob)
-            .Object@r <- function(n){ rnbinom(n, size = size, prob = prob) }
-            .Object@d <- function(x, ...){ dnbinom(x, size = size, prob = prob, ...) }
-            .Object@p <- function(p, ...){ pnbinom(p, size = size, prob = prob, ...) }
-            .Object@q <- function(q, ...){ qnbinom(q, size = size, prob = prob, ...) }
+            .Object@r <- function(n){ rnbinom(n, size = sizeSub, prob = probSub) }
+            body(.Object@r) <- substitute({ rnbinom(n, size = sizeSub, prob = probSub) },
+                                          list(sizeSub = size, probSub = prob))
+            .Object@d <- function(x, ...){ dnbinom(x, size = sizeSub, prob = probSub, ...) }
+            body(.Object@d) <- substitute({ dnbinom(x, size = sizeSub, prob = probSub, ...) },
+                                          list(sizeSub = size, probSub = prob))
+            .Object@p <- function(p, ...){ pnbinom(p, size = sizeSub, prob = probSub, ...) }
+            body(.Object@p) <- substitute({ pnbinom(p, size = sizeSub, prob = probSub, ...) },
+                                          list(sizeSub = size, probSub = prob))
+            .Object@q <- function(q, ...){ qnbinom(q, size = sizeSub, prob = probSub, ...) }
+            body(.Object@q) <- substitute({ qnbinom(q, size = sizeSub, prob = probSub, ...) },
+                                          list(sizeSub = size, probSub = prob))
             .Object
           })
 

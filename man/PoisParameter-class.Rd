@@ -5,7 +5,7 @@
 \title{Class "PoisParameter"}
 \description{ The parameter of a Poisson distribution, used by Pois-class}
 \section{Objects from the Class}{
-  bjects can be created by calls of the form \code{new("PoisParameter", lambda)}.
+  Objects can be created by calls of the form \code{new("PoisParameter", lambda)}.
   Usually an object of this class is not needed on its own, it is
   generated automatically when an object of the class Pois is prepared. 
 }
@@ -39,7 +39,7 @@ Class \code{"Parameter"}, directly.
 }
 \seealso{
 \code{\link{Pois-class}}
-\code{\link{DiscreteParameter-class}}
+\code{\link{Parameter-class}}
 }
 \examples{
 W <- new("PoisParameter",lambda = 1)

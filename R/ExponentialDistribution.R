@@ -14,6 +14,8 @@ if(!isGeneric("rate<-")) setGeneric("rate<-", function(object, value) standardGe
 setReplaceMethod("rate", "ExpParameter", function(object, value){ object@rate <- value; object})
 
 validExpParameter <- function(object){
+  if(length(rate(object)) != 1)
+    stop("rate has to be a numeric of length 1")    
   if(rate(object) <= 0)
     stop("rate has to be positive")
   else return(TRUE)
@@ -35,10 +37,18 @@ setMethod("initialize", "Exp",
           function(.Object, rate = 1) {
             .Object@img <- new("Reals")
             .Object@param <- new("ExpParameter", rate = rate, name = "Parameter of a exponential distribution")
-            .Object@r <- function(n){ rexp(n, rate = rate) }
-            .Object@d <- function(x, ...){ dexp(x, rate = rate, ...) }
-            .Object@p <- function(x, ...){ pexp(x, rate = rate, ...) }
-            .Object@q <- function(x, ...){ qexp(x, rate = rate, ...) }
+            .Object@r <- function(n){ rexp(n, rate = rateSub) }
+            body(.Object@r) <- substitute({ rexp(n, rate = rateSub) },
+                                          list(rateSub = rate))
+            .Object@d <- function(x, ...){ dexp(x, rate = rateSub, ...) }
+            body(.Object@d) <- substitute({ dexp(x, rate = rateSub, ...) },
+                                          list(rateSub = rate))
+            .Object@p <- function(x, ...){ pexp(x, rate = rateSub, ...) }
+            body(.Object@p) <- substitute({ pexp(x, rate = rateSub, ...) },
+                                          list(rateSub = rate))
+            .Object@q <- function(x, ...){ qexp(x, rate = rateSub, ...) }
+            body(.Object@q) <- substitute({ qexp(x, rate = rateSub, ...) },
+                                          list(rateSub = rate))
             .Object
           })
 

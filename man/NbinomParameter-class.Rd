@@ -38,7 +38,7 @@ Class \code{"Parameter"}, directly.
 
 \seealso{
 \code{\link{Nbinom-class}}
-\code{\link{DiscreteParameter-class}}
+\code{\link{Parameter-class}}
 }
 
 \examples{

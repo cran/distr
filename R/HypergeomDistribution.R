@@ -24,10 +24,16 @@ setReplaceMethod("k", "HyperParameter", function(object, value){ object@k <- val
 
 
 validHyperParameter <- function(object){
+  if(length(m(object)) != 1)
+    stop("m has to be a numeric of length 1")    
   if(m(object) < 0)
     stop("m has to be a not negative natural")
+  if(length(n(object)) != 1)
+    stop("n has to be a numeric of length 1")    
   if(n(object) < 0)
     stop("n has to be a not negative natural")
+  if(length(k(object)) != 1)
+    stop("k has to be a numeric of length 1")    
   if(k(object) < 0)
     stop("k has to be a not negative natural")
   
@@ -59,10 +65,18 @@ setMethod("initialize", "Hyper",
             .Object@img <- new("Naturals")
             .Object@param <- new("HyperParameter", m = m, n = n, k = k, name = "Parameter of a hypergeometric distribution" )
             .Object@support <- 0:k
-            .Object@r <- function(nn){ rhyper(nn, m = m, n = n, k = k) }
-            .Object@d <- function(x, ...){ dhyper(x, m = m, n = n, k = k, ...) }
-            .Object@p <- function(p, ...){ phyper(p, m = m, n = n, k = k, ...) }
-            .Object@q <- function(q, ...){ qhyper(q, m = m, n = n, k = k, ...) }
+            .Object@r <- function(nn){ rhyper(nn, m = mSub, n = nSub, k = kSub) }
+            body(.Object@r) <- substitute({ rhyper(nn, m = mSub, n = nSub, k = kSub) },
+                                          list(mSub = m, nSub = n, kSub = k))
+            .Object@d <- function(x, ...){ dhyper(x, m = mSub, n = nSub, k = kSub, ...) }
+            body(.Object@d) <- substitute({ dhyper(x, m = mSub, n = nSub, k = kSub, ...) },
+                                          list(mSub = m, nSub = n, kSub = k))
+            .Object@p <- function(p, ...){ phyper(p, m = mSub, n = nSub, k = kSub, ...) }
+            body(.Object@p) <- substitute({ phyper(p, m = mSub, n = nSub, k = kSub, ...) },
+                                          list(mSub = m, nSub = n, kSub = k))
+            .Object@q <- function(q, ...){ qhyper(q, m = mSub, n = nSub, k = kSub, ...) }
+            body(.Object@q) <- substitute({ qhyper(q, m = mSub, n = nSub, k = kSub, ...) },
+                                          list(mSub = m, nSub = n, kSub = k))
             .Object
           })
 

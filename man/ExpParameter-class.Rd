@@ -32,7 +32,7 @@ Class \code{"Parameter"}, directly.
 
 \seealso{
 \code{\link{Exp-class}}
-\code{\link{AbscontParameter-class}}
+\code{\link{Parameter-class}}
 }
 
 \examples{

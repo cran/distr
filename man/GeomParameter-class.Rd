@@ -34,7 +34,7 @@ Class \code{"Parameter"}, directly.
 
 \seealso{
 \code{\link{Geom-class}}
-\code{\link{DiscreteParameter-class}}
+\code{\link{Parameter-class}}
 }
 
 \examples{

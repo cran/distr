@@ -19,6 +19,10 @@ setReplaceMethod("location", "LogisParameter", function(object, value){ object@l
 setReplaceMethod("scale", "LogisParameter", function(object, value){ object@scale <- value; object})
 
 validLogisParameter <- function(object){
+  if(length(location(object)) != 1)
+    stop("location has to be a numeric of length 1")    
+  if(length(scale(object)) != 1)
+    stop("scale has to be a numeric of length 1")    
   if(scale(object) <= 0)
     stop("scale has to be positive")
   else return(TRUE)
@@ -40,10 +44,18 @@ setMethod("initialize", "Logis",
           function(.Object, location = 0, scale = 1) {
             .Object@img <- new("Reals")
             .Object@param <- new("LogisParameter", location = location, scale = scale, name = "Parameter of a logistic distribution")
-            .Object@r <- function(n){ rlogis(n, location = location, scale = scale) }
-            .Object@d <- function(x, ...){ dlogis(x, location = location, scale = scale, ...) }
-            .Object@p <- function(x, ...){ plogis(x, location = location, scale = scale, ...) }
-            .Object@q <- function(x, ...){ qlogis(x, location = location, scale = scale, ...) }
+            .Object@r <- function(n){ rlogis(n, location = locationSub, scale = scaleSub) }
+            body(.Object@r) <- substitute({ rlogis(n, location = locationSub, scale = scaleSub) },
+                                          list(locationSub = location, scaleSub = scale))
+            .Object@d <- function(x, ...){ dlogis(x, location = locationSub, scale = scaleSub, ...) }
+            body(.Object@d) <- substitute({ dlogis(x, location = locationSub, scale = scaleSub, ...) },
+                                          list(locationSub = location, scaleSub = scale))
+            .Object@p <- function(x, ...){ plogis(x, location = locationSub, scale = scaleSub, ...) }
+            body(.Object@p) <- substitute({ plogis(x, location = locationSub, scale = scaleSub, ...) },
+                                          list(locationSub = location, scaleSub = scale))
+            .Object@q <- function(x, ...){ qlogis(x, location = locationSub, scale = scaleSub, ...) }
+            body(.Object@q) <- substitute({ qlogis(x, location = locationSub, scale = scaleSub, ...) },
+                                          list(locationSub = location, scaleSub = scale))
             .Object
           })
 

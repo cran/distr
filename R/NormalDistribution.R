@@ -39,6 +39,10 @@ setReplaceMethod("sd", "NormParameter", function(object, value){ object@sd <- as
 setClass("UniNormParameter", contains = "NormParameter")
 
 validUniNormParameter <- function(object){
+  if(length(mean(object)) != 1)
+    stop("mean has to be a numeric of length 1")    
+  if(length(sd(object)) != 1)
+    stop("sd has to be a numeric of length 1")    
   sd <- as.numeric(sd(object))
   if(sd <= 0)
     stop("sd has to be positive")
@@ -61,10 +65,18 @@ setMethod("initialize", "Norm",
           function(.Object, mean = 0, sd = 1) {
             .Object@img <- new("Reals")
             .Object@param <- new("UniNormParameter", mean = mean, sd = sd, name = "Parameter of a univariate normal distribution")
-            .Object@r <- function(n){ rnorm(n, mean = mean, sd = sd) }
-            .Object@d <- function(x, ...){ dnorm(x, mean = mean, sd = sd, ...) }
-            .Object@p <- function(x, ...){ pnorm(x, mean = mean, sd = sd, ...) }
-            .Object@q <- function(x, ...){ qnorm(x, mean = mean, sd = sd, ...) }
+            .Object@r <- function(n){ rnorm(n, mean = meanSub, sd = sdSub) }
+            body(.Object@r) <- substitute({ rnorm(n, mean = meanSub, sd = sdSub) },
+                                          list(meanSub = mean, sdSub = sd))
+            .Object@d <- function(x, ...){ dnorm(x, mean = meanSub, sd = sdSub, ...) }
+            body(.Object@d) <- substitute({ dnorm(x, mean = meanSub, sd = sdSub, ...) },
+                                          list(meanSub = mean, sdSub = sd))
+            .Object@p <- function(x, ...){ pnorm(x, mean = meanSub, sd = sdSub, ...) }
+            body(.Object@p) <- substitute({ pnorm(x, mean = meanSub, sd = sdSub, ...) },
+                                          list(meanSub = mean, sdSub = sd))
+            .Object@q <- function(x, ...){ qnorm(x, mean = meanSub, sd = sdSub, ...) }
+            body(.Object@q) <- substitute({ qnorm(x, mean = meanSub, sd = sdSub, ...) },
+                                          list(meanSub = mean, sdSub = sd))
             .Object
           })
 

@@ -23,8 +23,12 @@ setReplaceMethod("shape2", "BetaParameter", function(object, value){ object@shap
 
 
 validBetaParameter <- function(object){
+  if(length(shape1(object)) != 1)
+    stop("shape1 has to be a numeric of length 1")    
   if(shape1(object) <= 0)
     stop("shape1 has to be positive")
+  if(length(shape2(object)) != 1)
+    stop("shape2 has to be a numeric of length 1")    
   if(shape2(object) <= 0)
     stop("shape2 has to be positive")
   else return(TRUE)
@@ -46,10 +50,18 @@ setMethod("initialize", "Beta",
           function(.Object, shape1 = 1, shape2 = 1) {
             .Object@img <- new("Reals")
             .Object@param <- new("BetaParameter", shape1 = shape1, shape2 = shape2, name = "Parameter of a beta distribution")
-            .Object@r <- function(n){ rbeta(n, shape1 = shape1, shape2 = shape2) }
-            .Object@d <- function(x, ...){ dbeta(x, shape1 = shape1, shape2 = shape2) }
-            .Object@p <- function(x, ...){ pbeta(x, shape1 = shape1, shape2 = shape2, ...) }
-            .Object@q <- function(x, ...){ qbeta(x, shape1 = shape1, shape2 = shape2, ...) }
+            .Object@r <- function(n){ rbeta(n, shape1 = shape1Sub, shape2 = shape2Sub) }
+            body(.Object@r) <- substitute({ rbeta(n, shape1 = shape1Sub, shape2 = shape2Sub) },
+                                          list(shape1Sub = shape1, shape2Sub = shape2))
+            .Object@d <- function(x, ...){ dbeta(x, shape1 = shape1Sub, shape2 = shape2Sub) }
+            body(.Object@d) <- substitute({ dbeta(x, shape1 = shape1Sub, shape2 = shape2Sub) },
+                                          list(shape1Sub = shape1, shape2Sub = shape2))
+            .Object@p <- function(x, ...){ pbeta(x, shape1 = shape1Sub, shape2 = shape2Sub, ...) }
+            body(.Object@p) <- substitute({ pbeta(x, shape1 = shape1Sub, shape2 = shape2Sub, ...) },
+                                          list(shape1Sub = shape1, shape2Sub = shape2))
+            .Object@q <- function(x, ...){ qbeta(x, shape1 = shape1Sub, shape2 = shape2Sub, ...) }
+            body(.Object@q) <- substitute({ qbeta(x, shape1 = shape1Sub, shape2 = shape2Sub, ...) },
+                                          list(shape1Sub = shape1, shape2Sub = shape2))
             .Object
           })
 

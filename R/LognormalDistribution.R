@@ -20,6 +20,8 @@ setReplaceMethod("sdlog", "LnormParameter", function(object, value){ object@sdlo
 
 
 validLnormParameter <- function(object){
+  if(length(sdlog(object)) != 1)
+    stop("sdlog has to be a numeric of length 1")    
   if(sdlog(object) <= 0)
     stop("sdlog has to be positive")
   else return(TRUE)
@@ -42,10 +44,18 @@ setMethod("initialize", "Lnorm",
           function(.Object, meanlog = 0, sdlog = 1) {
             .Object@img <- new("Reals")
             .Object@param <- new("LnormParameter", meanlog = meanlog, sdlog = sdlog, name = "Parameter of a lognormal distribution")
-            .Object@r <- function(n){ rlnorm(n, meanlog = meanlog, sdlog = sdlog) }
-            .Object@d <- function(x, ...){ dlnorm(x, meanlog = meanlog, sdlog = sdlog, ...) }
-            .Object@p <- function(x, ...){ plnorm(x, meanlog = meanlog, sdlog = sdlog, ...) }
-            .Object@q <- function(x, ...){ qlnorm(x, meanlog = meanlog, sdlog = sdlog, ...) }
+            .Object@r <- function(n){ rlnorm(n, meanlog = meanlogSub, sdlog = sdlogSub) }
+            body(.Object@r) <- substitute({ rlnorm(n, meanlog = meanlogSub, sdlog = sdlogSub) },
+                                          list(meanlogSub = meanlog, sdlogSub = sdlog))
+            .Object@d <- function(x, ...){ dlnorm(x, meanlog = meanlogSub, sdlog = sdlogSub, ...) }
+            body(.Object@d) <- substitute({ dlnorm(x, meanlog = meanlogSub, sdlog = sdlogSub, ...) },
+                                          list(meanlogSub = meanlog, sdlogSub = sdlog))
+            .Object@p <- function(x, ...){ plnorm(x, meanlog = meanlogSub, sdlog = sdlogSub, ...) }
+            body(.Object@p) <- substitute({ plnorm(x, meanlog = meanlogSub, sdlog = sdlogSub, ...) },
+                                          list(meanlogSub = meanlog, sdlogSub = sdlog))
+            .Object@q <- function(x, ...){ qlnorm(x, meanlog = meanlogSub, sdlog = sdlogSub, ...) }
+            body(.Object@q) <- substitute({ qlnorm(x, meanlog = meanlogSub, sdlog = sdlogSub, ...) },
+                                          list(meanlogSub = meanlog, sdlogSub = sdlog))
             .Object
           })
 

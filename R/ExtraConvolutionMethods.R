@@ -102,5 +102,8 @@ setMethod("+", c("DiscreteDistribution","AbscontDistribution"),
 
             options(w0)
 
-            return(new("AbscontDistribution", r = rnew, d = dnew4, p = pnew3, q = qfun2))
+            object <- new("AbscontDistribution", r = rnew, d = dnew4, p = pnew3, q = qfun2)
+            body(object@r) <- substitute({ f(n) + g(n) },
+                                         list(f = e1@r, g = e2@r))
+            object
           }) 

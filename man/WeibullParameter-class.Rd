@@ -39,7 +39,7 @@ Class \code{"Parameter"}, directly.
 
 \seealso{
 \code{\link{Weibull-class}}
-\code{\link{AbscontParameter-class}}
+\code{\link{Parameter-class}}
 }
 
 \examples{

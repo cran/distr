@@ -3,11 +3,11 @@
 \alias{FParameter-class}
 \alias{initialize,FParameter-method}
 \title{Class "FParameter"}
-\description{ The parameter of a F distribution, used by F-class}
+\description{ The parameter of a F distribution, used by Fd-class}
 \section{Objects from the Class}{
   Objects can be created by calls of the form \code{new("FParameter", df1, df2)}.
   Usually an object of this class is not needed on its own, it is
-  generated automatically when an object of the class F is instantiated. 
+  generated automatically when an object of the class Fd is instantiated. 
 }
 \section{Slots}{
   \describe{
@@ -41,8 +41,8 @@ Class \code{"Parameter"}, directly.
   Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}
 }
 \seealso{
-\code{\link{F-class}}
-\code{\link{AbscontParameter-class}}
+\code{\link{Fd-class}}
+\code{\link{Parameter-class}}
 }
 \examples{
 W <- new("FParameter", df1 = 1, df2 = 1)

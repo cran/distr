@@ -19,8 +19,12 @@ setReplaceMethod("df", "ChisqParameter", function(object, value){ object@df <- v
 setReplaceMethod("ncp", "ChisqParameter", function(object, value){ object@ncp <- value; object})
 
 validChisqParameter <- function(object){
+  if(length(df(object)) != 1)
+    stop("df has to be a numeric of length 1")    
   if(df(object) <= 0)
     stop("df has to be positive")
+  if(length(ncp(object)) != 1)
+    stop("ncp has to be a numeric of length 1")    
   if(ncp(object) < 0)
     stop("ncp has to be not negative")
   else return(TRUE)
@@ -42,10 +46,18 @@ setMethod("initialize", "Chisq",
           function(.Object, df = 1, ncp = 0) {
             .Object@img <- new("Reals")
             .Object@param <- new("ChisqParameter", df = df, ncp = ncp, name = "Parameter of a chi squared distribution" )
-            .Object@r <- function(n){ rchisq(n, df = df, ncp = ncp) }
-            .Object@d <- function(x, ...){ dchisq(x, df = df, ncp = ncp, ...) }
-            .Object@p <- function(x, ...){ pchisq(x, df = df, ncp = ncp, ...) }
-            .Object@q <- function(x, ...){ qchisq(x, df = df, ncp = ncp, ...) }
+            .Object@r <- function(n){ rchisq(n, df = dfSub, ncp = ncpSub) }
+            body(.Object@r) <- substitute({ rchisq(n, df = dfSub, ncp = ncpSub) },
+                                          list(dfSub = df, ncpSub = ncp))
+            .Object@d <- function(x, ...){ dchisq(x, df = dfSub, ncp = ncpSub, ...) }
+            body(.Object@d) <- substitute({ dchisq(x, df = dfSub, ncp = ncpSub, ...) },
+                                          list(dfSub = df, ncpSub = ncp))
+            .Object@p <- function(x, ...){ pchisq(x, df = dfSub, ncp = ncpSub, ...) }
+            body(.Object@p) <- substitute({ pchisq(x, df = dfSub, ncp = ncpSub, ...) },
+                                          list(dfSub = df, ncpSub = ncp))
+            .Object@q <- function(x, ...){ qchisq(x, df = dfSub, ncp = ncpSub, ...) }
+            body(.Object@q) <- substitute({ qchisq(x, df = dfSub, ncp = ncpSub, ...) },
+                                          list(dfSub = df, ncpSub = ncp))
             .Object
           })
 
@@ -63,4 +75,4 @@ setMethod("+", c("Chisq","Chisq"),
             newncp <- ncp(e1) + ncp(e2)
             return(new("Chisq", df = newdf, ncp = newncp))
           })
-          
+

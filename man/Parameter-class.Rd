@@ -3,11 +3,10 @@
 \alias{Parameter-class}
 \title{Class "Parameter"}
 \description{
-  Parameter is the mother-class of AbscontParameter and
-  DiscreteParameter.
+  Parameter is the mother-class of all Parameter classes.
 }
 \section{Objects from the Class}{
-  A virtual Class: No objects may be created from it.
+  Objects can be created by calls of the form \code{new("Parameter")}.
 }
 \section{Slots}{
   \describe{
@@ -31,7 +30,6 @@
   Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}
 }
 \seealso{
-\code{\link{UnivariateParameter-class}}
 \code{\link{Distribution-class}}
 }
 \keyword{}

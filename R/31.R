@@ -1,18 +1,3 @@
-################################
-##
-## class: abscontparameter
-##
-################################
-
-setClass("AbscontParameter", representation(), contains = "UnivariateParameter")
-
-## Initialize method
-setMethod("initialize", "AbscontParameter",
-          function(.Object) {
-            .Object@name <- "Parameter of an absolutely continuous Distribution" 
-            .Object
-          })
-
 setClass("AbscontDistribution", representation(), contains = "UnivariateDistribution")
 
 ## Initialize method
@@ -45,7 +30,7 @@ setMethod("initialize", "AbscontDistribution",
               qfun <- dpq$qfun}
             
             .Object@img <- new("Reals")
-            .Object@param <- new("AbscontParameter")
+            .Object@param <- NULL
             .Object@d <- dfun
             .Object@p <- pfun
             .Object@q <- qfun
@@ -117,7 +102,10 @@ setMethod("+", c("AbscontDistribution","AbscontDistribution"),
             
             rnew <- function(n) r(e1)(n) + r(e2)(n)
             
-            return(new("AbscontDistribution", r = rnew, d = dfun2, p = pfun2, q = qfun2))
+            object <- new("AbscontDistribution", r = rnew, d = dfun2, p = pfun2, q = qfun2)
+            body(object@r) <- substitute({ f(n) + g(n) },
+                                         list(f = e1@r, g = e2@r))
+            object
           })
 
 
@@ -168,7 +156,10 @@ setMethod("+", c("AbscontDistribution","numeric"),
             pnew <- function(x){ e1@p(x - e2) }
             qnew <- function(x){ e1@q(x) + e2 }
             
-            new("AbscontDistribution", r = rnew, d = dnew, p = pnew, q = qnew) 
+            object <- new("AbscontDistribution", r = rnew, d = dnew, p = pnew, q = qnew)            
+            body(object@r) <- substitute({ f(n) + g },
+                                         list(f = e1@r, g = e2))
+            object
           })
 
 
@@ -180,16 +171,22 @@ setMethod("*", c("AbscontDistribution","numeric"),
             pnew <- function(x){ e1@p(x / e2) * sign(e2) + (1-sign(e2))/2}
             qnew <- function(x){ e1@q((1-sign(e2))/2+sign(e2)*x) * e2 }
             
-            new("AbscontDistribution", r = rnew, d = dnew, p = pnew, q = qnew)
+            object <- new("AbscontDistribution", r = rnew, d = dnew, p = pnew, q = qnew)
+            body(object@r) <- substitute({ f(n) * g },
+                                         list(f = e1@r, g = e2))
+            object
           })
 
 ## Gruppe Math für absolutstetige
 setMethod("Math", "AbscontDistribution",
           function(x){
-            expr = parse(text=sys.call(),n=1)
-            fun = eval(expr)
-            rnew = function(n){fun(x@r(n)) }
-            new("AbscontDistribution", r = rnew)
+            expr <- parse(text=sys.call(),n=1)
+            fun <- eval(expr)
+            rnew <- function(n){ fun(x@r(n)) }
+            object <- new("AbscontDistribution", r = rnew)
+            body(object@r) <- substitute({ f(g(n)) },
+                                         list(f = as.name(.Generic), g = x@r))
+            object
           })
 
 
@@ -202,11 +199,11 @@ setMethod("plot","AbscontDistribution",
             opar <- par()
             par(mfrow = c(1,3))
 
-            slots = names(getSlots(class(param(x))))
+            slots = slotNames(param(x))
             slots = slots[slots != "name"]
             nrvalues = length(slots)
             if(nrvalues > 0){
-              values = 0
+              values = numeric(nrvalues)
               for(i in 1:nrvalues)
                 values[i] = attributes(attributes(x)$param)[[slots[i]]]
               paramstring = paste("(", paste(values, collapse = ", "), ")", sep = "")

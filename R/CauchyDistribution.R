@@ -19,6 +19,10 @@ setReplaceMethod("location", "CauchyParameter", function(object, value){ object@
 setReplaceMethod("scale", "CauchyParameter", function(object, value){ object@scale <- value; object})
 
 validCauchyParameter <- function(object){
+  if(length(location(object)) != 1)
+    stop("location has to be a numeric of length 1")    
+  if(length(scale(object)) != 1)
+    stop("scale has to be a numeric of length 1")    
   if(scale(object) <= 0)
     stop("scale has to be positive")
   else return(TRUE)
@@ -41,10 +45,18 @@ setMethod("initialize", "Cauchy",
           function(.Object, location = 0, scale = 1) {
             .Object@img <- new("Reals")
             .Object@param <- new("CauchyParameter", location = location, scale = scale, name = "Parameter of a Cauchy distribution")
-            .Object@r <- function(n){ rcauchy(n, location = location, scale = scale) }
-            .Object@d <- function(x, ...){ dcauchy(x, location = location, scale = scale, ...) }
-            .Object@p <- function(x, ...){ pcauchy(x, location = location, scale = scale, ...) }
-            .Object@q <- function(x, ...){ qcauchy(x, location = location, scale = scale, ...) }
+            .Object@r <- function(n){ rcauchy(n, location = locationSub, scale = scaleSub) }
+            body(.Object@r) <- substitute({ rcauchy(n, location = locationSub, scale = scaleSub) },
+                                          list(locationSub = location, scaleSub = scale))
+            .Object@d <- function(x, ...){ dcauchy(x, location = locationSub, scale = scaleSub, ...) }
+            body(.Object@d) <- substitute({ dcauchy(x, location = locationSub, scale = scaleSub, ...) },
+                                          list(locationSub = location, scaleSub = scale))
+            .Object@p <- function(x, ...){ pcauchy(x, location = locationSub, scale = scaleSub, ...) }
+            body(.Object@p) <- substitute({ pcauchy(x, location = locationSub, scale = scaleSub, ...) },
+                                          list(locationSub = location, scaleSub = scale))
+            .Object@q <- function(x, ...){ qcauchy(x, location = locationSub, scale = scaleSub, ...) }
+            body(.Object@q) <- substitute({ qcauchy(x, location = locationSub, scale = scaleSub, ...) },
+                                          list(locationSub = location, scaleSub = scale))
             .Object
           })
 

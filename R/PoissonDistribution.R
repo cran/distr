@@ -15,6 +15,8 @@ if(!isGeneric("lambda<-")) setGeneric("lambda<-", function(object, value) standa
 setReplaceMethod("lambda", "PoisParameter", function(object, value){ object@lambda <- value; object})
 
 validPoisParameter <- function(object){
+  if(length(lambda(object)) != 1)
+    stop("lambda has to be a numeric of length 1")    
   if(lambda(object) < 0)
     stop("lambda has to be not negative")
   else return(TRUE)
@@ -35,10 +37,18 @@ setMethod("initialize", "Pois",
             .Object@img <- new("Naturals")
             .Object@param <- new("PoisParameter", lambda = lambda, name = "Parameter of a Poisson distribution" )
             .Object@support <- 0:(qpois(1 - TruncQuantile, lambda = lambda) + 2)
-            .Object@r <- function(n){ rpois(n, lambda = lambda) }
-            .Object@d <- function(x, ...){ dpois(x, lambda = lambda, ...) }
-            .Object@p <- function(p, ...){ ppois(p, lambda = lambda, ...) }
-            .Object@q <- function(q, ...){ qpois(q, lambda = lambda, ...) }
+            .Object@r <- function(n){ rpois(n, lambda = lambdaSub) }
+            body(.Object@r) <- substitute({ rpois(n, lambda = lambdaSub) },
+                                          list(lambdaSub = lambda))
+            .Object@d <- function(x, ...){ dpois(x, lambda = lambdaSub, ...) }
+            body(.Object@d) <- substitute({ dpois(x, lambda = lambdaSub, ...) },
+                                          list(lambdaSub = lambda))
+            .Object@p <- function(p, ...){ ppois(p, lambda = lambdaSub, ...) }
+            body(.Object@p) <- substitute({ ppois(p, lambda = lambdaSub, ...) },
+                                          list(lambdaSub = lambda))
+            .Object@q <- function(q, ...){ qpois(q, lambda = lambdaSub, ...) }
+            body(.Object@q) <- substitute({ qpois(q, lambda = lambdaSub, ...) },
+                                          list(lambdaSub = lambda))
             .Object
           })
 

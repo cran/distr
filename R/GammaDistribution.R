@@ -20,8 +20,12 @@ setReplaceMethod("scale", "GammaParameter", function(object, value){ object@scal
 
 
 validGammaParameter <- function(object){
+  if(length(shape(object)) != 1)
+    stop("shape has to be a numeric of length 1")    
   if(shape(object) <= 0)
     stop("shape has to be positive")
+  if(length(scale(object)) != 1)
+    stop("scale has to be a numeric of length 1")    
   if(scale(object) <= 0)
     stop("scale has to be positive")
   else return(TRUE)
@@ -43,10 +47,18 @@ setMethod("initialize", "Gamma",
           function(.Object, shape = 1, scale = 1) {
             .Object@img <- new("Reals")
             .Object@param <- new("GammaParameter", shape = shape, scale = scale, name = "Parameter of a gamma distribution")
-            .Object@r <- function(n){ rgamma(n, shape = shape, scale = scale) }
-            .Object@d <- function(x, ...){ dgamma(x, shape = shape, scale = scale, ...) }
-            .Object@p <- function(x, ...){ pgamma(x, shape = shape, scale = scale, ...) }
-            .Object@q <- function(x, ...){ qgamma(x, shape = shape, scale = scale, ...) }
+            .Object@r <- function(n){ rgamma(n, shape = shapeSub, scale = scaleSub) }
+            body(.Object@r) <- substitute({ rgamma(n, shape = shapeSub, scale = scaleSub) },
+                                          list(shapeSub = shape, scaleSub = scale))
+            .Object@d <- function(x, ...){ dgamma(x, shape = shapeSub, scale = scaleSub, ...) }
+            body(.Object@d) <- substitute({ dgamma(x, shape = shapeSub, scale = scaleSub, ...) },
+                                          list(shapeSub = shape, scaleSub = scale))
+            .Object@p <- function(x, ...){ pgamma(x, shape = shapeSub, scale = scaleSub, ...) }
+            body(.Object@p) <- substitute({ pgamma(x, shape = shapeSub, scale = scaleSub, ...) },
+                                          list(shapeSub = shape, scaleSub = scale))
+            .Object@q <- function(x, ...){ qgamma(x, shape = shapeSub, scale = scaleSub, ...) }
+            body(.Object@q) <- substitute({ qgamma(x, shape = shapeSub, scale = scaleSub, ...) },
+                                          list(shapeSub = shape, scaleSub = scale))
             .Object
           })
 
@@ -70,7 +82,7 @@ setMethod("*", c("Gamma","numeric"),
           function(e1, e2){
             if(e2 == 0) return(new("Dirac", location = 0))
             if(e2 > 0) return(Gamma(shape = shape(e1),
-                                 scale = scale(e1) * e2))
+                                    scale = scale(e1) * e2))
             return(-1 * as(Gamma(shape = shape(e1),
                                  scale = scale(e1) * (-e2)), "AbscontDistribution"))
           })

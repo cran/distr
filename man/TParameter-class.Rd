@@ -4,11 +4,11 @@
 \alias{initialize,TParameter-method}
 
 \title{Class "TParameter"}
-\description{ The parameter of a t distribution, used by T-class}
+\description{ The parameter of a t distribution, used by Td-class}
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("TParameter", df)}.
 Usually an object of this class is not needed on its own, it is generated automatically when an object of the class
-\code{T} is instantiated. 
+\code{Td} is instantiated. 
 }
 \section{Slots}{
   \describe{
@@ -31,8 +31,8 @@ Class \code{"Parameter"}, directly.
  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}}
 
 \seealso{
-\code{\link{T-class}}
-\code{\link{AbscontParameter-class}}
+\code{\link{Td-class}}
+\code{\link{Parameter-class}}
 }
 
 \examples{

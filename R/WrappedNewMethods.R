@@ -4,7 +4,7 @@ Cauchy <- function(location = 0, scale = 1) new("Cauchy", location = location, s
 Chisq <- function(df = 1, ncp = 0) new("Chisq", df = df, ncp = ncp)
 Dirac <- function(location = 0) new("Dirac", location = location)
 Exp <- function(rate = 1) new("Exp", rate = rate)
-F <- function(df1 = 1, df2 = 1) new("F", df1 = df1, df2 = df2)
+Fd <- function(df1 = 1, df2 = 1) new("Fd", df1 = df1, df2 = df2)
 Gamma <- function(shape = 1, scale = 1) new("Gamma", shape = shape, scale = scale)
 Geom <- function(prob = 0.5) new("Geom", prob = prob)
 Hyper <- function(m = 1, n = 1, k = 1) new("Hyper", m = m, n = n, k = k)
@@ -13,7 +13,7 @@ Lnorm <- function(meanlog = 0, sdlog = 1) new("Lnorm", meanlog = meanlog, sdlog 
 Nbinom <- function(size = 1,prob = 0.5) new("Nbinom", size = size, prob = prob)
 Norm <- function(mean = 0, sd = 1) new("Norm", mean = mean, sd = sd)
 Pois <- function(lambda = 1) new("Pois", lambda = lambda)
-T <- function(df = 1) new("T", df = df)
+Td <- function(df = 1) new("Td", df = df)
 Unif <- function(Min = 0, Max = 1) new("Unif", Min = Min, Max = Max)
 Weibull <- function(shape = 1, scale = 1) new("Weibull", shape = shape, scale = scale)
 

@@ -1,10 +1,10 @@
-\name{F-class}
+\name{Fd-class}
 \docType{class}
-\alias{F-class}
-\alias{F}
-\alias{initialize,F-method}
+\alias{Fd-class}
+\alias{Fd}
+\alias{initialize,Fd-method}
 
-\title{Class "F"}
+\title{Class "Fd"}
 \description{   The F distribution with \code{df1 =} \eqn{n_1}{n1}, by default \code{= 1}, 
   and \code{df2 =} \eqn{n_2}{n2}, by default \code{= 1}, degrees of freedom has density
   \deqn{
@@ -19,7 +19,7 @@
   C.f. \code{\link{rf}}
 }
 \section{Objects from the Class}{
-Objects can be created by calls of the form \code{F(df1, df2)}.
+Objects can be created by calls of the form \code{Fd(df1, df2)}.
 This object is a F distribution.
 }
 \section{Slots}{
@@ -41,11 +41,11 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 }
 \section{Methods}{
   \describe{
-    \item{initialize}{\code{signature(.Object = "F")}: initialize method }
-    \item{df1}{\code{signature(object = "F")}: returns the slot \code{df1} of the parameter of the distribution }
-    \item{df1<-}{\code{signature(object = "F")}: modifies the slot \code{df1} of the parameter of the distribution }
-    \item{df2}{\code{signature(object = "F")}: returns the slot \code{df2} of the parameter of the distribution }
-    \item{df2<-}{\code{signature(object = "F")}: modifies the slot \code{df2} of the parameter of the distribution }
+    \item{initialize}{\code{signature(.Object = "Fd")}: initialize method }
+    \item{df1}{\code{signature(object = "Fd")}: returns the slot \code{df1} of the parameter of the distribution }
+    \item{df1<-}{\code{signature(object = "Fd")}: modifies the slot \code{df1} of the parameter of the distribution }
+    \item{df2}{\code{signature(object = "Fd")}: returns the slot \code{df2} of the parameter of the distribution }
+    \item{df2<-}{\code{signature(object = "Fd")}: modifies the slot \code{df2} of the parameter of the distribution }
   }
 }
 
@@ -67,7 +67,7 @@ numerator are allowed to have non-zero means and ncp is the sum of squares of th
 \code{\link{rf}}
 }
 \examples{
-F=F(df1=1,df2=1) # F is a F distribution with df=1 and df2=1.
+F=Fd(df1=1,df2=1) # F is a F distribution with df=1 and df2=1.
 r(F)(1) # one random number generated from this distribution, e.g. 29.37863
 d(F)(1) # Density of this distribution is 0.1591549 for x=1 .
 p(F)(1) # Probability that x<1 is 0.5.

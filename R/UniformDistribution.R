@@ -20,6 +20,10 @@ setReplaceMethod("Max", "UnifParameter", function(object, value){ object@Max <- 
 
 
 validUnifParameter <- function(object){
+  if(length(Min(object)) != 1)
+    stop("Min has to be a numeric of length 1")    
+  if(length(Max(object)) != 1)
+    stop("Max has to be a numeric of length 1")    
   if(Min(object) >= Max(object))
     stop("Min has to be less than Max")
   else return(TRUE)
@@ -43,10 +47,18 @@ setMethod("initialize", "Unif",
           function(.Object, Min = 0, Max = 1) {
             .Object@img <- new("Reals")
             .Object@param <- new("UnifParameter", Min = Min, Max = Max, name = "Parameter of a uniform distribution")
-            .Object@r <- function(n){ runif(n, min = Min, max = Max) }
+            .Object@r <- function(n){ runif(n, min = Min, max = Max) } 
+            body(.Object@r) <- substitute({ runif(n, min = MinSub, max = MaxSub) },
+                                          list(MinSub = Min, MaxSub = Max))
             .Object@d <- function(x, ...){ dunif(x, min = Min, max = Max, ...) }
+            body(.Object@d) <- substitute({ dunif(x, min = MinSub, max = MaxSub) },
+                                          list(MinSub = Min, MaxSub = Max))            
             .Object@p <- function(x, ...){ punif(x, min = Min, max = Max, ...) }
+            body(.Object@p) <- substitute({ punif(x, min = MinSub, max = MaxSub) },
+                                          list(MinSub = Min, MaxSub = Max))        
             .Object@q <- function(x, ...){ qunif(x, min = Min, max = Max, ...) }
+            body(.Object@q) <- substitute({ qunif(x, min = MinSub, max = MaxSub) },
+                                          list(MinSub = Min, MaxSub = Max))                    
             .Object
           })
 

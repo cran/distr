@@ -7,14 +7,15 @@
   The UnivariateDistribution-class is the mother-class of the classes
   AbscontDistribution and DiscreteDistribution.
 }
-\section{Objects from the Class}
-{A virtual Class: No objects may be created from it.}
+\section{Objects from the Class}{
+  Objects can be created by calls of the form \code{new("UnivariateDistribution")}.
+}
 \section{Slots}{
   \describe{
     \item{\code{img}:}{Object of class \code{"Reals"}:
       the space of the image of this distribution which has dimension 1
       and the name "Real Space"} 
-    \item{\code{param}:}{Object of class \code{"UnivariateParameter"}:
+    \item{\code{param}:}{Object of class \code{"Parameter"}:
       the parameter of this distribution}
     \item{\code{r}:}{Object of class \code{"function"}:
       generates random numbers}
@@ -89,7 +90,7 @@ Class \code{"Distribution"}, directly.
   Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}
 }
 \seealso{
-\code{\link{UnivariateParameter-class}}
+\code{\link{Parameter-class}}
 \code{\link{Distribution-class}}
 \code{\link{AbscontDistribution-class}} \cr
 \code{\link{DiscreteDistribution-class}} 

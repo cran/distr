@@ -37,7 +37,7 @@ Class \code{"Parameter"}, directly.
 
 \seealso{
 \code{\link{Binom-class}}
-\code{\link{DiscreteParameter-class}}
+\code{\link{Parameter-class}}
 }
 
 \examples{

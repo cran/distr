@@ -43,7 +43,7 @@ Class \code{"Parameter"}, directly.
 }
 \seealso{
 \code{\link{Norm-class}}
-\code{\link{AbscontParameter-class}}
+\code{\link{Parameter-class}}
 }
 \examples{
 W <- new("NormParameter", mean = 0, sd = 1)

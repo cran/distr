@@ -18,7 +18,7 @@ The result of this call is a discrete distribution.
   \describe{
     \item{\code{img}:}{Object of class \code{"Reals"}: the space of the image of this distribution which has dimension 1
     and the name "Real Space" }
-    \item{\code{param}:}{Object of class \code{"DiscreteParameter"}: the parameter of this distribution, having only the
+    \item{\code{param}:}{Object of class \code{"Parameter"}: the parameter of this distribution, having only the
     slot name "Parameter of a discrete distribution" }
     \item{\code{r}:}{Object of class \code{"function"}: generates random numbers}
     \item{\code{d}:}{Object of class \code{"function"}: density/probability function}
@@ -69,7 +69,7 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
 \note{ Working with a computer, we use a finite interval as support which carries at least mass \eqn{1-TruncQuantile}. }
 
 \seealso{
-\code{\link{DiscreteParameter-class}}
+\code{\link{Parameter-class}}
 \code{\link{UnivariateDistribution-class}}
 \code{\link{Binom-class}}
 \code{\link{Dirac-class}}

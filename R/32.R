@@ -1,18 +1,3 @@
-################################
-###
-### Class: DiscreteParameter
-###
-################################
-
-setClass("DiscreteParameter", representation(), contains = "UnivariateParameter")
-
-## Initialisierungsmethode
-setMethod("initialize", "DiscreteParameter",
-          function(.Object) {
-            .Object@name <- "Parameter of a Discrete Distribution" 
-            .Object
-          })
-
 setClass("DiscreteDistribution", representation(support = "numeric"), contains = "UnivariateDistribution")
 
 ## Initialize method
@@ -56,7 +41,7 @@ setMethod("initialize", "DiscreteDistribution",
             }
             
             .Object@img <- new("Reals")
-            .Object@param <- new("DiscreteParameter")
+            .Object@param <- NULL
             .Object@d <- dfun
             .Object@p <- pfun
             .Object@q <- qfun
@@ -114,7 +99,11 @@ setMethod("+", c("DiscreteDistribution","DiscreteDistribution"),
             
             rfun <- function(n) r(e1)(n) + r(e2)(n)
             
-            new("DiscreteDistribution", r = rfun, d = dfun, p = pfun, q = qfun, support = supportnew)
+            object <- new("DiscreteDistribution", r = rfun, d = dfun, p = pfun, q = qfun, support = supportnew)
+            body(object@r) <- substitute({ f(n) + g(n) },
+                                         list(f = e1@r, g = e2@r))
+            object
+
           })
 
 ## extra methods
@@ -128,7 +117,10 @@ setMethod("+", c("DiscreteDistribution","numeric"),
             pnew <- function(x){ e1@p(x - e2) }
             qnew <- function(x){ e1@q(x) + e2 }
             
-            new("DiscreteDistribution", r = rnew, d = dnew, p = pnew, q = qnew, support = supportnew) 
+            object <- new("DiscreteDistribution", r = rnew, d = dnew, p = pnew, q = qnew, support = supportnew)
+            body(object@r) <- substitute({ f(n) + g },
+                                         list(f = e1@r, g = e2))
+            object       
           })
 
 setMethod("*", c("DiscreteDistribution","numeric"),
@@ -145,7 +137,10 @@ setMethod("*", c("DiscreteDistribution","numeric"),
                 if(p(e1)(qnew1(x))==x)
                   {if(x!=0) {x=x-DistrResolution}}}}
                                   qnew1(x)}    
-            new("DiscreteDistribution", r = rnew, d = dnew, p = pnew, q = qnew2, support = supportnew)
+            object <- new("DiscreteDistribution", r = rnew, d = dnew, p = pnew, q = qnew2, support = supportnew)
+            body(object@r) <- substitute({ f(n) * g },
+                                         list(f = e1@r, g = e2))
+            object            
           })
 
 ## Gruppe Math für diskrete Verteilungen
@@ -154,7 +149,10 @@ setMethod("Math", "DiscreteDistribution",
             expr = parse(text=sys.call(),n=1)
             fun = eval(expr)
             rnew = function(n){fun(x@r(n)) }
-            new("DiscreteDistribution", r = rnew)
+            object <- new("DiscreteDistribution", r = rnew)
+            body(object@r) <- substitute({ f(g(n)) },
+                                         list(f = as.name(.Generic), g = x@r))
+            object
           })
 
 
@@ -167,11 +165,11 @@ setMethod("plot","DiscreteDistribution",
             opar <- par()
             par(mfrow = c(1,3))
 
-            slots = names(getSlots(class(param(x))))
+            slots = slotNames(param(x))
             slots = slots[slots != "name"]
             nrvalues = length(slots)
             if(nrvalues > 0){
-              values = 0
+              values = numeric(nrvalues)
               for(i in 1:nrvalues)
                 values[i] = attributes(attributes(x)$param)[[slots[i]]]
               paramstring = paste("(", paste(values, collapse = ", "), ")", sep = "")

@@ -13,6 +13,15 @@ setMethod("location", "DiracParameter", function(object) object@location)
 if(!isGeneric("location<-")) setGeneric("location<-", function(object, value) standardGeneric("location<-"))
 setReplaceMethod("location", "DiracParameter", function(object, value){ object@location <- value; object})
 
+validDiracParameter <- function(object){
+  if(length(location(object)) != 1)
+    stop("location has to be a numeric of length 1")    
+  else return(TRUE)
+}
+
+setValidity("DiracParameter", validDiracParameter)
+
+
 
 #################################
 ###

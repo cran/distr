@@ -20,8 +20,12 @@ setReplaceMethod("df1", "FParameter", function(object, value){ object@df1 <- val
 setReplaceMethod("df2", "FParameter", function(object, value){ object@df2 <- value; object})
 
 validFParameter <- function(object){
+  if(length(df1(object)) != 1)
+    stop("df1 has to be a numeric of length 1")    
   if(df1(object) <= 0)
     stop("df1 has to be positive")
+  if(length(df2(object)) != 1)
+    stop("df2 has to be a numeric of length 1")    
   if(df2(object) <= 0)
     stop("df2 has to be positive")
   else return(TRUE)
@@ -35,24 +39,32 @@ setValidity("FParameter", validFParameter)
 ##
 ################################
 
-setClass("F", contains = "AbscontDistribution")
+setClass("Fd", contains = "AbscontDistribution")
 
 ## Initialize method
-setMethod("initialize", "F",
+setMethod("initialize", "Fd",
           function(.Object, df1 = 1, df2 = 1) {
             .Object@img <- new("Reals")
             .Object@param <- new("FParameter", df1 = df1, df2 = df2, name = "Parameter of a F distribution")
-            .Object@r <- function(n){ rf(n, df1 = df1, df2 = df2) }
-            .Object@d <- function(x, ...){ df(x, df1 = df1, df2 = df2, ...) }
-            .Object@p <- function(x, ...){ pf(x, df1 = df1, df2 = df2, ...) }
-            .Object@q <- function(x, ...){ qf(x, df1 = df1, df2 = df2, ...) }
+            .Object@r <- function(n){ rf(n, df1 = df1Sub, df2 = df2Sub) }
+            body(.Object@r) <- substitute({ rf(n, df1 = df1Sub, df2 = df2Sub) },
+                                          list(df1Sub = df1, df2Sub = df2))
+            .Object@d <- function(x, ...){ df(x, df1 = df1Sub, df2 = df2Sub, ...) }
+            body(.Object@d) <- substitute({ df(x, df1 = df1Sub, df2 = df2Sub, ...) },
+                                          list(df1Sub = df1, df2Sub = df2))
+            .Object@p <- function(x, ...){ pf(x, df1 = df1Sub, df2 = df2Sub, ...) }
+            body(.Object@p) <- substitute({ pf(x, df1 = df1Sub, df2 = df2Sub, ...) },
+                                          list(df1Sub = df1, df2Sub = df2))
+            .Object@q <- function(x, ...){ qf(x, df1 = df1Sub, df2 = df2Sub, ...) }
+            body(.Object@q) <- substitute({ qf(x, df1 = df1Sub, df2 = df2Sub, ...) },
+                                          list(df1Sub = df1, df2Sub = df2))
             .Object
           })
 
 ## wrapped access methods
-setMethod("df1", "F", function(object) df1(param(object)))
-setMethod("df2", "F", function(object) df2(param(object)))
+setMethod("df1", "Fd", function(object) df1(param(object)))
+setMethod("df2", "Fd", function(object) df2(param(object)))
 
 ## wrapped replace methods
-setMethod("df1<-", "F", function(object, value) new("F", df1 = value, df2 = df2(object)))
-setMethod("df2<-", "F", function(object, value) new("F", df1 = df1(object), df2 = value))
+setMethod("df1<-", "Fd", function(object, value) new("Fd", df1 = value, df2 = df2(object)))
+setMethod("df2<-", "Fd", function(object, value) new("Fd", df1 = df1(object), df2 = value))
