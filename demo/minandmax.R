@@ -135,12 +135,6 @@ plot(Z)
 cat("Hit <enter> to continue...")
 readline()
 
-## Minimum und Maximum als S4 generische Funktionen
-if(!isGeneric("Minimum")) 
-    setGeneric("Minimum", function(e1, e2) standardGeneric("Minimum"))
-if(!isGeneric("Maximum")) 
-    setGeneric("Maximum", function(e1, e2) standardGeneric("Maximum"))
-
 
 setMethod("Minimum", signature(e1 = "DiscreteDistribution", 
                                e2 = "DiscreteDistribution"),

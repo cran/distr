@@ -43,7 +43,7 @@ Class \code{"Parameter"}, by class \code{"NormParameter"}.
   Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr
   Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
   Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
-  Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
 \seealso{
 \code{\link{Norm-class}}

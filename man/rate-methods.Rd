@@ -6,10 +6,8 @@
 \alias{rate<-}
 \alias{rate,ExpParameter-method}
 \alias{rate,Exp-method}
-\alias{rate,Contsimulation-method}
 \alias{rate<-,ExpParameter-method}
 \alias{rate<-,Exp-method}
-\alias{rate<-,Contsimulation-method}
 \title{ Methods for Function rate in Package `distr' }
 \description{rate-methods}
 
@@ -21,7 +19,5 @@
 \item{rate}{\code{signature(object = "Exp")}: returns the slot \code{rate} of the parameter of the distribution }
 \item{rate<-}{\code{signature(object = "Exp")}: modifies the slot \code{rate} of the parameter of the distribution }
 
-\item{rate}{\code{signature(object = "Contsimulation")}: returns the contamination rate }
-\item{rate<-}{\code{signature(object = "Contsimulation")}: modifies the contamination rate }
 }}
 \keyword{}

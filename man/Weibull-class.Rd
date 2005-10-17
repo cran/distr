@@ -45,7 +45,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 }
 
 \author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}}
+ Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 \note{ The density is \eqn{d(x)=0} for \eqn{x < 0}.\cr
 The cumulative is
   \eqn{p(x) = 1 - \exp(-{(x/\sigma)}^a)}{p(x) = 1 - exp(- (x/b)^a)},\cr

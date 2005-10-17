@@ -46,7 +46,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 }
 
 \author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}}
+ Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 \note{  The general \emph{non-central} \eqn{t}
   with parameters \eqn{(\nu,\delta)}{(df,Del)} \code{= (df, ncp)}
   is defined as a the distribution of

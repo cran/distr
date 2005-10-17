@@ -9,6 +9,6 @@
 \section{Methods}{\describe{
 
 \item{support}{\code{signature(object =
-    "DiscreteDistributionContsimulation")}: returns the support}
+    "DiscreteDistribution")}: returns the support}
 }}
 \keyword{}

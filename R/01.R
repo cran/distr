@@ -1,4 +1,6 @@
-.onLoad <- function(lib, pkg) {require(methods); require(setRNG)}
+.onLoad <- function(lib, pkg){
+    require("methods", character = TRUE, quietly = TRUE) 
+}
 
 setGeneric("log", function(x, base) standardGeneric("log"), group = "Math")
 setGeneric("log10", function(x) standardGeneric("log10"), group = "Math")

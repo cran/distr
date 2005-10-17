@@ -32,7 +32,7 @@ Class \code{"Distribution"}, directly.
 }
 \section{Methods}{
   \describe{
-    \item{initialize}{\code{signature(.Object =	"UnivariateDistribution")}:
+    \item{initialize}{\code{signature(.Object = "UnivariateDistribution")}:
 
       initialize method }
     \item{-}{\code{signature(e1 = "UnivariateDistribution")}:
@@ -87,7 +87,7 @@ Class \code{"Distribution"}, directly.
   Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr
   Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
   Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
-  Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
 \seealso{
 \code{\link{Parameter-class}}

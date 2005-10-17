@@ -50,7 +50,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 }
 
 \author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
-Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@uni-bayreuth.de}}
+Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 \note{It is the distribution of the ratio of the mean squares of n1 and n2 independent standard normals, and hence of the
 ratio of two independent chi-squared variates each divided by its degrees of freedom. Since the ratio of a normal and the
 root mean-square of m independent normals has a Student's \eqn{t_m} distribution, the square of a \eqn{t_m} variate has a F
