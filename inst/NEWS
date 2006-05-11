@@ -1,0 +1,114 @@
+######################################################################
+#  News: to package distr 
+######################################################################
+
+
+##############
+v 1.7
+##############
+
+
+* standardMethods() is again included (with documentation)
+* distroptions() / getdistrOption() now behave exactly like options()  / getOption() options --- also compare mail
+  "Re: [Rd] How to implement package-specific options?" by Brian Ripley on
+  r-devel, Fri 09 Dec 2005 - 11:52:46, see http://tolstoy.newcastle.edu.au/R/devel/05/12/3408.html
+* suggested by M. Maechler: on attaching the package there is a (sort of) 
+  warning as to the interpretation of 
+    +arithmetics for distributions
+  as well as to the
+    +accuracy of slots p,d,q filled by means of simulations; 
+  these warnings are issued at two places:
+      (1) on attaching the package 
+      (2) at every show/print of a distribution
+      o (2) can be cancelled by switching off a corresponding global option in distroptions() -- see ?distroptions . 
+* all specific distributions (those realized as [r|d|p|q]<name> like rnorm in package stats)
+  now have valid prototypes
+* fixed arguments xlim and ylim for plot(signature("AbscontDistribution" or "DiscreteDistribution"))
+  thus: plot(Cauchy(),xlim=c(-4,4)) gives reasonable result (and plot(Cauchy()) does not)
+* Internationalization: use of gettext, gettextf for output
+* explicitly implemented is() relations:  R "knows" that
+      o an Exponential(lambda) distribution also is a Weibull(shape = 1, scale = 1/lambda) distribution, as well as a Gamma(shape = 1, scale = 1/lambda) distribution
+      o a Uniform(0,1) distribution also is a Beta(1,1) distribution
+      o a Cauchy(0,1) distribution also is a T(df=1, ncp=0)  distribution
+      o a Chisq(df=n, ncp=0) distribution also is a Gamma(shape=n/2, scale=2) distribution
+* noncentrality parameter included for Beta, T, F distribution 
+* exact +,* for Cauchy and Dirac, for latter also -,/
+
+
+* "simplifyr": changed default values (using option RtoDPQ.e) 
+* masking of function sd from stats to have an additional ... argument 
+* masking of function df from stats to have an additional ... argument 
+
+* Internationalization: use of gettext, gettextf in output
+
+* updated citation file
+
+* noncentrality parameter included for Beta, Td, F (for new d,p,q,r, but compatible with 2.2.x)
+  also in the documentation
+
+* Geom is now subclass of Nbinom
+* virtual superclass ExpOrGammaOrChisq for Chisq,Exp,Gammad
+* NEWS file
+* commented ARITHMETICS file
+* revised help for operators
+* new package documentation distr-package.Rd
+
+##############
+v 1.6 
+##############
+
+Our package is reorganized:
+  * distr from now on only comprises distribution classes and methods
+  * simulation classes and methods have been moved to the new package distrSim
+  * evalation classes and methods have been moved to the new package distrTEst
+  * a new class distrEx has been added by Matthias Kohl, providing additional features 
+    like distances between distributions, expectation operators etc
+  * a new class RandVar has been added by Matthias Kohl, providing conceptual treatment 
+    of random variables as measurable mappings
+
+##############
+v 1.5 
+##############
+
+* package is now using lazy loading
+* minor changes in the help pages
+* minor enhancements in plot for distributions (Gamma, discrete distributions)
+* package now includes a demo - folder; try demo("distr")
+* class Gamma has been renamed Gammad to avoid name collisions
+* we have a CITATION file now; consider citation("distr")
+* enhanced demos:
+      + convolution of uniform variables now includes exact expressions
+      + min/ max of two variables now available for discrete distributions
+* rd-Files have now a keyword entry for distribution and thus may be found by the search engine
+* exact formula for "Unif" o "numeric" where o \in { +,-,*,/ }
+
+##############
+v 1.4 
+##############
+
+* to avoid name collisions with short forms for TRUE and FALSE: classes T and F (T- and F-distributions) renamed to Td and Fd
+* package is now loaded as a binary => considerable speed gain
+* using subsititute the bodies of the r,d,p,q-function-slots distributions show the parameter values with which they were generated
+* convolutions and applications of the math group may now be traced in r-slot of a distribution object, compare
+       r(sin(Norm()) + cos(Unif() * 3 + 2))
+* parameters of a distribution (mean, sd, etc) are now tested on length 1
+    + we see the objects as implementations of univaritate distributions, so vectors make no sense here; 
+      rather one could gather several objects with possibly different parameters to a vector of distributions. 
+      Of course, the original functions rnorm etc remain unchanged and still allow for vector-valued parameters.
+* Classes "Parameter", "Distribution" , "UnivariateDistribution" are no longer VIRTUAL
+* "AbscontParameter" and "DiscreteParameter" are replaced by "Parameter"
+* type of slots d, p, q and param changed to "OptionalFunction" and "OptionalParameter", respectively
+ 
+##############
+v 1.3 
+##############
+
+* changes in the Help-File to pass Rcmd check
+
+##############
+v 1.1 
+##############
+
+* implementation of further exact convolution formulae for distributions Nbinom, Gamma, Exp, Chisq
+* exact formulae for scale transformations for the distributions Gamma, Exp
+* slot "seed" in simulation classes is now controlled and set via the setRNG package by Paul Gilbert

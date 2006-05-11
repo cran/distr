@@ -42,13 +42,22 @@ setValidity("NbinomParameter", validNbinomParameter)
 ##
 ################################
 
-setClass("Nbinom", contains = "DiscreteDistribution")
+setClass("Nbinom",  prototype = prototype(r = function(n){ rnbinom(n, size = 1, prob = 0.5) },
+                                  d = function(x, ...){ dnbinom(x, size = 1, prob = 0.5, ...) },
+                                  p = function(x, ...){ pnbinom(x, size = 1, prob = 0.5, ...) },
+                                  q = function(x, ...){ qnbinom(x, size = 1, prob = 0.5, ...) },
+                                  img = new("Naturals"),
+                                  param = new("NbinomParameter", size = 1, prob = 0.5, 
+                                               name = gettext("Parameter of a  negative binomial distribution")),
+                                  .withArith = FALSE,
+                                  .withSim = FALSE),
+    contains = "DiscreteDistribution")
 
 setMethod("initialize", "Nbinom",
-          function(.Object, size = 1,prob = 0.5) {
+          function(.Object, size = 1,prob = 0.5, .withArith = FALSE) {
             .Object@img <- new("Naturals")
-            .Object@param <- new("NbinomParameter", size = size, prob = prob, name = "Parameter of a negative binomial distribution" )
-            .Object@support <- 0:qnbinom(1 - TruncQuantile, size = size, prob = prob)
+            .Object@param <- new("NbinomParameter", size = size, prob = prob, name = gettext("Parameter of a negative binomial distribution"))
+            .Object@support <- 0:qnbinom(1 - getdistrOption("TruncQuantile"), size = size, prob = prob)
             .Object@r <- function(n){ rnbinom(n, size = sizeSub, prob = probSub) }
             body(.Object@r) <- substitute({ rnbinom(n, size = sizeSub, prob = probSub) },
                                           list(sizeSub = size, probSub = prob))
@@ -61,6 +70,8 @@ setMethod("initialize", "Nbinom",
             .Object@q <- function(q, ...){ qnbinom(q, size = sizeSub, prob = probSub, ...) }
             body(.Object@q) <- substitute({ qnbinom(q, size = sizeSub, prob = probSub, ...) },
                                           list(sizeSub = size, probSub = prob))
+            .Object@.withSim   <- FALSE
+            .Object@.withArith <- .withArith
             .Object
           })
 
@@ -75,8 +86,7 @@ setMethod("+", c("Nbinom","Nbinom"),
           function(e1,e2){
             newsize <- size(e1) + size(e2)
             
-            if(is.logical(all.equal(prob(e1),prob(e2))))    
-              return(new("Nbinom", size = newsize, prob = prob(e1)))
-            
+            if(isTRUE(all.equal(prob(e1),prob(e2))))    
+              return(new("Nbinom", size = newsize, prob = prob(e1), .withArith = TRUE))           
             return(as(e1, "DiscreteDistribution") + e2)
           })

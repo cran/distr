@@ -39,13 +39,24 @@ setValidity("ChisqParameter", validChisqParameter)
 ##
 ################################
 
-setClass("Chisq", contains = "AbscontDistribution")
+##
+setClass("Chisq", prototype = prototype(r = function(n){ rchisq(n, df = 1, ncp = 0) },
+                                  d = function(x, ...){ dchisq(x, df = 1, ncp = 0, ...) },
+                                  p = function(x, ...){ pchisq(x, df = 1, ncp = 0, ...) },
+                                  q = function(x, ...){ qchisq(x, df = 1, ncp = 0, ...) },
+                                  img = new("Reals"),
+                                  param = new("ChisqParameter", df = 1, ncp = 0, 
+                                               name = gettext("Parameter of a chi squared distribution")),
+                                  .withArith = FALSE,
+                                  .withSim = FALSE),
+         contains = "ExpOrGammaOrChisq")
 
 ## Initialize method
 setMethod("initialize", "Chisq",
-          function(.Object, df = 1, ncp = 0) {
+          function(.Object, df = 1, ncp = 0, .withArith = FALSE) {
             .Object@img <- new("Reals")
-            .Object@param <- new("ChisqParameter", df = df, ncp = ncp, name = "Parameter of a chi squared distribution" )
+            .Object@param <- new("ChisqParameter", df = df, ncp = ncp, 
+               name = gettext("Parameter of a chi squared distribution") )
             .Object@r <- function(n){ rchisq(n, df = dfSub, ncp = ncpSub) }
             body(.Object@r) <- substitute({ rchisq(n, df = dfSub, ncp = ncpSub) },
                                           list(dfSub = df, ncpSub = ncp))
@@ -58,6 +69,8 @@ setMethod("initialize", "Chisq",
             .Object@q <- function(x, ...){ qchisq(x, df = dfSub, ncp = ncpSub, ...) }
             body(.Object@q) <- substitute({ qchisq(x, df = dfSub, ncp = ncpSub, ...) },
                                           list(dfSub = df, ncpSub = ncp))
+            .Object@.withSim   <- FALSE
+            .Object@.withArith <- .withArith
             .Object
           })
 
@@ -73,6 +86,18 @@ setMethod("+", c("Chisq","Chisq"),
           function(e1,e2){
             newdf <- df(e1) + df(e2)
             newncp <- ncp(e1) + ncp(e2)
-            return(new("Chisq", df = newdf, ncp = newncp))
+            return(new("Chisq", df = newdf, ncp = newncp, .withArith = TRUE))
           })
 
+setIs("Chisq", "Gammad", test = function(obj) {identical(all.equal(ncp(obj),0) , TRUE)},
+       coerce = function(obj) {new("Gammad", shape = df(obj)/2, scale = 2)},
+      replace = function(obj, value) {new("Gammad", shape = value@shape, scale = value@scale)}) 
+   ## if ncp == 0 a Gamma distribution with shape = df(obj)/2 and scale = 2
+#setAs(from = "Chisq", to = "Gammad", 
+#      def = function(from) { if(identical(all.equal(ncp(from),0) , TRUE))
+#                               new("Gammad", shape = df(from)/2, scale = 2)
+#                             else stop("a Chisq object x can be coerced to a Gammad object only if ncp(x)=0")  },
+#      replace = function(from, value) {if(identical(all.equal(ncp(from),0) , TRUE))
+#                                         new("Gammad", shape = value@shape, scale = value@scale)
+#                                       else stop("a Chisq object x can be coerced to a Gammad object only if ncp(x)=0")  }
+#      ) 

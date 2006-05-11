@@ -53,13 +53,17 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
   }
 }
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{
+ Thomas Stabla \email{statho3@web.de},\cr 
+ Florian Camphausen \email{fcampi@gmx.de},\cr
+ Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+ Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
-\note{ Working with a computer, we use a finite interval as support which carries at least mass \eqn{1-TruncQuantile}. }
+\note{Working with a computer, we use a finite interval as support which carries at least mass \code{1-getdistrOption("TruncQuantile")}. }
 
 \seealso{
 \code{\link{NbinomParameter-class}}
+\code{\link{Geom-class}}
 \code{\link{DiscreteDistribution-class}}
 \code{\link{Naturals-class}}
 \code{\link[stats:NegBinomial]{rnbinom}}

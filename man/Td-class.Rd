@@ -1,5 +1,5 @@
 \name{Td-class}
-\docTdype{class}
+\docType{class}
 \alias{Td-class}
 \alias{Td}
 \alias{initialize,Td-method}
@@ -42,11 +42,17 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
     \item{initialize}{\code{signature(.Object = "Td")}: initialize method }
     \item{df}{\code{signature(object = "Td")}: returns the slot df of the parameter of the distribution }
     \item{df<-}{\code{signature(object = "Td")}: modifies the slot df of the parameter of the distribution }
+    \item{ncp}{\code{signature(object = "Td")}: returns the slot ncp of the parameter of the distribution }
+    \item{ncp<-}{\code{signature(object = "Td")}: modifies the slot ncp of the parameter of the distribution }
   }
 }
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+
 \note{  The general \emph{non-central} \eqn{t}
   with parameters \eqn{(\nu,\delta)}{(df,Del)} \code{= (df, ncp)}
   is defined as a the distribution of
@@ -72,13 +78,16 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 
 }
 \seealso{
-\code{\link{TParameter-class}}
-\code{\link{AbscontDistribution-class}}
-\code{\link{Reals-class}}
+\code{\link{TParameter-class}}, 
+\code{\link{AbscontDistribution-class}}, 
+\code{\link{Reals-class}}, 
 \code{\link[stats:TDist]{rt}}
-
-
 }
+\section{Ad hoc methods}{
+      For R Version \code{<2.3.0} ad hoc methods are provided for slots \code{q}, \code{r} if \code{ncp!=0};
+      for R Version \code{>=2.3.0} the methods from package \pkg{stats} are used.
+      }
+
 \examples{
 T <- Td(df = 1) # T is a t distribution with df = 1.
 r(T)(1) # one random number generated from this distribution, e.g. -0.09697573
@@ -87,5 +96,8 @@ p(T)(1) # Probability that x < 1 is 0.75.
 q(T)(.1) # Probability that x < -3.077684 is 0.1.
 df(T) # df of this distribution is 1.
 df(T) <- 2 # df of this distribution is now 2.
+Tn <- Td(df = 1, ncp = 5) 
+  # T is a noncentral t distribution with df = 1 and ncp = 5.
+d(Tn)(1) ## from R 2.3.0 on ncp no longer ignored...
 }
 \keyword{distribution}

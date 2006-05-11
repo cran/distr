@@ -1,6 +1,7 @@
 \name{Geom-class}
 \docType{class}
 \alias{Geom-class}
+\alias{GeomOrNbinom-class}
 \alias{Geom}
 \alias{initialize,Geom-method}
 
@@ -40,9 +41,14 @@
   }
 }
 \section{Extends}{
-Class \code{"DiscreteDistribution"}, directly.
-Class \code{"UnivariateDistribution"}, by class \code{"DiscreteDistribution"}.
+Class \code{"DiscreteDistribution"}, directly.\cr 
+Class \code{"Nbinom"}, directly.\cr
+Class \code{"UnivariateDistribution"}, by class \code{"DiscreteDistribution"}.\cr
 Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
+}
+\section{Is-Relations}{
+By means of \code{setIs}, R ``knows'' that a distribution object \code{obj} of class \code{"Geom"} also is
+a negative Binomial distribution with parameters \code{size = 1, prob = prob(obj)}
 }
 \section{Methods}{
   \describe{
@@ -55,14 +61,15 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 }
 
 \author{
-  Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr
-  Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
+Thomas Stabla \email{statho3@web.de},\cr 
+Florian Camphausen \email{fcampi@gmx.de},\cr
   Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
-\note{ Working with a computer, we use a finite interval as support
-  which carries at least mass (1-TruncQuantile).}
+\note{Working with a computer, we use a finite interval as support which carries at least mass \code{1-getdistrOption("TruncQuantile")}. }
+
 \seealso{
+\code{\link{Nbinom-class}}
 \code{\link{GeomParameter-class}}
 \code{\link{DiscreteDistribution-class}}
 \code{\link{Naturals-class}}
@@ -76,5 +83,7 @@ p(G)(1) # Probability that x<1 is 0.75.
 q(G)(.1) # x = 0 is the smallest value x such that p(G)(x) >= 0.1.
 prob(G) # prob of this distribution is 0.5.
 prob(G) <- 0.6 # prob of this distribution is now 0.6.
+as(G,"Nbinom")
+G+G+G
 }
 \keyword{distribution}

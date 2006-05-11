@@ -36,6 +36,10 @@ Class \code{"AbscontDistribution"}, directly.\cr
 Class \code{"UnivariateDistribution"}, by class \code{"AbscontDistribution"}.\cr
 Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 }
+\section{Is-Relations}{
+By means of \code{setIs}, R ``knows'' that a distribution object \code{obj} of class \code{"Unif"} with Min 0 and Max 1 also is
+a Beta distribution with parameters \code{shape1 = 1, shape2 = 1, ncp = 0}. 
+}
 \section{Methods}{
   \describe{
     \item{initialize}{\code{signature(.Object = "Unif")}: initialize method }
@@ -46,8 +50,11 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
   }
 }
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 
 \seealso{
@@ -64,6 +71,10 @@ d(U)(1) # Density of this distribution is 0.5 for x=1.
 p(U)(1) # Probability that x<1 is 0.5.
 q(U)(.1) # Probability that x<0.2 is 0.1.
 Min(U) # Min of this distribution is 0.
-Min(U)=1 # Min of this distribution is now 1.
+Min(U) <- 1 # Min of this distribution is now 1.
+Min(U) # Min of this distribution is 1.
+Min(U) <- 0
+is(U/2,"Beta") # yes
+V<-U/2; as(V,"Beta")
 }
 \keyword{distribution}

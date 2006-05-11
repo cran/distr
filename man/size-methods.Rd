@@ -8,10 +8,12 @@
 \alias{size,Binom-method}
 \alias{size,NbinomParameter-method}
 \alias{size,Nbinom-method}
+\alias{size,Geom-method}
 \alias{size<-,BinomParameter-method}
 \alias{size<-,Binom-method}
 \alias{size<-,NbinomParameter-method}
 \alias{size<-,Nbinom-method}
+\alias{size<-,Geom-method}
 \title{ Methods for Function size in Package `distr' }
 \description{size-methods}
 
@@ -28,5 +30,8 @@
 
 \item{size}{\code{signature(object = "Nbinom")}: returns the slot \code{size} of the parameter of the distribution }
 \item{size<-}{\code{signature(object = "Nbinom")}: modifies the slot \code{size} of the parameter of the distribution }
+
+\item{size}{\code{signature(object = "Geom")}: returns the slot \code{size} of the parameter of the distribution }
+
 }}
 \keyword{}

@@ -25,6 +25,8 @@
   
   C.f. \code{\link[stats:Chisquare]{rchisq}}
 }
+ 
+
 \section{Objects from the Class}{
   Objects can be created by calls of the form \code{Chisq(df, ncp)}.
   This object is a chi-squared distribution.
@@ -46,10 +48,17 @@
   }
 }
 \section{Extends}{
-Class \code{"AbscontDistribution"}, directly.
-Class \code{"UnivariateDistribution"}, by class \code{"AbscontDistribution"}.
-Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
+Class \code{"ExpOrGammaOrChisq"}, directly.\cr
+Class \code{"AbscontDistribution"}, by class \code{"ExpOrGammaOrChisq"}.\cr
+Class \code{"UnivariateDistribution"}, by class \code{"AbscontDistribution"}.\cr
+Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
 }
+
+\section{Is-Relations}{
+By means of \code{setIs}, R ``knows'' that a distribution object \code{obj} of class \code{"Chisq"} with non-centrality 0 also is
+a Gamma distribution with parameters \code{shape = df(obj)/2, scale = 2}. 
+}
+
 \section{Methods}{
   \describe{
     \item{initialize}{\code{signature(.Object = "Chisq")}: initialize method }
@@ -65,8 +74,8 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 }
 
 \author{
-  Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr
-  Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
   Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 \note{
@@ -86,5 +95,9 @@ p(C)(1) # Probability that x < 1 is 0.4772499.
 q(C)(.1) # Probability that x < 0.04270125 is 0.1.
 df(C) # df of this distribution is 1.
 df(C) <- 2 # df of this distribution is now 2.
+is(C, "Gammad") # no
+C0 <- Chisq() # default: Chisq(df=1,ncp=0)
+is(C0, "Gammad") # yes
+as(C0,"Gammad")
 }
 \keyword{distribution}

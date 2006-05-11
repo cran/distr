@@ -1,257 +1,134 @@
 \name{operators-methods}
 \docType{methods}
 
-\alias{-,numeric,UnivariateDistribution-method}
-\alias{-,UnivariateDistribution,UnivariateDistribution-method}
-\alias{-,UnivariateDistribution,ANY-method}
-\alias{*,Exp,numeric-method}
-\alias{*,numeric,UnivariateDistribution-method}
-\alias{*,Gammad,numeric-method}
-\alias{+,AbscontDistribution,AbscontDistribution-method}
-\alias{+,DiscreteDistribution,AbscontDistribution-method}
-\alias{+,Chisq,Chisq-method}
-\alias{+,Exp,Exp-method}
-\alias{+,numeric,UnivariateDistribution-method}
-\alias{+,Gammad,Gammad-method}
-\alias{+,Nbinom,Nbinom-method}
-
-
-
 \alias{operators-methods}
-\alias{-,UnivariateDistribution}
-\alias{*,UnivariateDistribution,numeric-method}
-\alias{/,UnivariateDistribution,numeric-method}
+\alias{operators}
+\alias{-,UnivariateDistribution,missing-method}
+\alias{-,Norm,missing-method}
 \alias{+,UnivariateDistribution,numeric-method}
-\alias{-,UnivariateDistribution,numeric-method}
-\alias{*,numeric-method,UnivariateDistribution}
-\alias{+,numeric-method,UnivariateDistribution}
-\alias{-,numeric-method,UnivariateDistribution}
-\alias{+,UnivariateDistribution,DiscreteDistribution-method}
-\alias{-,UnivariateDistribution,DiscreteDistribution-method}
-\alias{-,AbscontDistribution}
-\alias{*,AbscontDistribution,numeric-method}
-\alias{/,AbscontDistribution,numeric-method}
 \alias{+,AbscontDistribution,numeric-method}
-\alias{-,AbscontDistribution,numeric-method}
-\alias{*,numeric-method,AbscontDistribution}
-\alias{+,numeric-method,AbscontDistribution}
-\alias{-,numeric-method,AbscontDistribution}
-\alias{+,AbscontDistribution,DiscreteDistribution-method}
-\alias{-,AbscontDistribution,DiscreteDistribution-method}
-\alias{-,DiscreteDistribution}
-\alias{*,DiscreteDistribution,numeric-method}
-\alias{/,DiscreteDistribution,numeric-method}
 \alias{+,DiscreteDistribution,numeric-method}
-\alias{-,DiscreteDistribution,numeric-method}
-\alias{*,numeric-method,DiscreteDistribution}
-\alias{+,numeric-method,DiscreteDistribution}
-\alias{-,numeric-method,DiscreteDistribution}
-\alias{+,DiscreteDistribution,DiscreteDistribution-method}
-\alias{-,DiscreteDistribution,DiscreteDistribution-method}
-\alias{-,Norm,Norm-method}
-\alias{+,Norm,Norm-method}
-\alias{+,numeric,Norm-method}
-\alias{*,numeric,Norm-method}
-\alias{-,numeric,Norm-method}
+\alias{+,Cauchy,numeric-method}
+\alias{+,Dirac,numeric-method}
 \alias{+,Norm,numeric-method}
-\alias{*,Norm,numeric-method}
-\alias{-,Norm,numeric-method}
-\alias{/,Norm,numeric-method}
 \alias{+,Unif,numeric-method}
+\alias{+,numeric,UnivariateDistribution-method}
+%%\alias{-,UnivariateDistribution,ANY-method}
+\alias{-,UnivariateDistribution,numeric-method}
+\alias{-,UnivariateDistribution,UnivariateDistribution-method}
+\alias{-,numeric,UnivariateDistribution-method}
+\alias{*,UnivariateDistribution,numeric-method}
+\alias{*,DiscreteDistribution,numeric-method}
+\alias{*,AbscontDistribution,numeric-method}
+\alias{*,Exp,numeric-method}
+\alias{*,ExpOrGammaOrChisq,numeric-method}
+\alias{*,Cauchy,numeric-method}
+\alias{*,Dirac,numeric-method}
+\alias{*,Norm,numeric-method}
 \alias{*,Unif,numeric-method}
+\alias{*,numeric,UnivariateDistribution-method}
+\alias{/,UnivariateDistribution,numeric-method}
+\alias{+,UnivariateDistribution,UnivariateDistribution-method}
+\alias{+,AbscontDistribution,AbscontDistribution-method}
+\alias{+,AbscontDistribution,DiscreteDistribution-method}
+\alias{+,DiscreteDistribution,AbscontDistribution-method}
+\alias{+,DiscreteDistribution,DiscreteDistribution-method}
 \alias{+,Binom,Binom-method}
+\alias{+,Chisq,Chisq-method}
+\alias{+,Dirac,Dirac-method}
+\alias{+,ExpOrGammaOrChisq,ExpOrGammaOrChisq-method}
 \alias{+,Pois,Pois-method}
-\title{ Methods for operators +,-,*,/ in Package `distr' }
-\description{operator-methods}
+\alias{+,Nbinom,Nbinom-method}
+\alias{+,Norm,Norm-method}
+\alias{+,Dirac,UnivariateDistribution-method}
+\alias{+,UnivariateDistribution,Dirac-method}
+\alias{-,Dirac,Dirac-method}
+\alias{*,Dirac,Dirac-method}
+\alias{*,Dirac,UnivariateDistribution-method}
+\alias{*,UnivariateDistribution,Dirac-method}
+\alias{/,Dirac,Dirac-method}
+
+\title{Methods for operators +,-,*,/ in Package distr}
+
+\description{Arithmetics and unary mathematical transformations for distributions}
+
+\details{Arithmetics as well as all functions from group \code{Math}, see \code{\link[base]{Math}}
+are provided for distributions; wherever possible exact expressions are used; else 
+random variables are generated according to this transformation and subsequently the remaining
+slots filled by \code{\link{RtoDPQ}}, \code{\link{RtoDPQ.d}}}
+
 \section{Methods}{\describe{
-
-    \item{-}{\code{signature(e1 = "UnivariateDistribution")}:
-
-      application of `-' to this univariate distribution}
-    \item{*}{\code{signature(e1 = "UnivariateDistribution", e2 =
-	"numeric")}:
-
-      multiplication of this univariate 
-    distribution by an object of class `numeric'}
-  \item{/}{\code{signature(e1 = "UnivariateDistribution", e2 =
-      "numeric")}:
-
-    division of this univariate distribution
-    by an object of class `numeric'}
-  \item{+}{\code{signature(e1 = "UnivariateDistribution", e2 =
-      "numeric")}:
-
-    addition of this univariate distribution
-    to an object of class `numeric'}
-  \item{-}{\code{signature(e1 = "UnivariateDistribution", e2 =
-      "numeric")}:
-
-    subtraction of an object of class `numeric'
-    from this univariate distribution }
-  \item{*}{\code{signature(e1 = "numeric", e2 =
-      "UnivariateDistribution")}:
-
-    multiplication of this univariate
-    distribution by an object of class `numeric'}
-  \item{+}{\code{signature(e1 = "numeric", e2 =
-      "UnivariateDistribution")}:
-
-    addition of this univariate distribution to
-    an object of class `numeric'}
-  \item{-}{\code{signature(e1 = "numeric", e2 =
-      "UnivariateDistribution")}:
-
-    subtraction of this univariate distribution
-    from an object of class `numeric'}
-  \item{+}{\code{signature(e1 = "UnivariateDistribution", e2 =
-      "UnivariateDistribution")}:
-
-    Convolution of two univariate
-    distributions. The slots p, d and q are approximated by grids.}
-  \item{-}{\code{signature(e1 = "UnivariateDistribution", e2 =
-      "UnivariateDistribution")}:
-
-    Convolution of two univariate
-    distributions. The slots p, d and q are approximated by grids.}
-  \item{-}{\code{signature(e1 = "AbscontDistribution")}:
-
-    application of `-' to this absolutely continuous distribution}
-  \item{*}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}:
-
-    multiplication of this absolutely continuous 
-    distribution by an object of class `numeric'}
-  \item{/}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}:
-
-    division of this absolutely continuous 
-    distribution by an object of class `numeric'}
-  \item{+}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}:
-
-    addition of this absolutely continuous 
-    distribution to an object of class `numeric'}
-  \item{-}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}:
-
-    subtraction of an object of class `numeric' from
-    this absolutely continuous distribution }
-  \item{*}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}:
-
-    multiplication of this absolutely continuous 
-    distribution by an object of class `numeric'}
-  \item{+}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}:
-
-    addition of this absolutely continuous 
-    distribution to an object of class `numeric'}
-  \item{-}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}:
-
-    subtraction of this absolutely continuous 
-    distribution from an object of class `numeric'}
-  \item{+}{\code{signature(e1 = "AbscontDistribution", e2 =
-      "AbscontDistribution")}:
-
-    Convolution of two absolutely
-    continuous distributions. The slots p, d and q are approximated by grids.}
-  \item{-}{\code{signature(e1 = "AbscontDistribution", e2 =
-      "AbscontDistribution")}:
-
-    Convolution of two absolutely
-    continuous distributions. The slots p, d and q are approximated by grids.}
-  \item{-}{\code{signature(e1 = "DiscreteDistribution")}:
-
-    application of `-' to this discrete distribution}
-  \item{*}{\code{signature(e1 = "DiscreteDistribution", e2 =
-      "numeric")}:
-
-    multiplication of this discrete distribution
-    by an object of class `numeric'}
-  \item{/}{\code{signature(e1 = "DiscreteDistribution", e2 =
-      "numeric")}:
-
-    division of this discrete distribution
-    by an object of class `numeric'}
-  \item{+}{\code{signature(e1 = "DiscreteDistribution", e2 =
-      "numeric")}:
-
-    addition of this discrete distribution
-    to an object of class `numeric'}
-  \item{-}{\code{signature(e1 = "DiscreteDistribution", e2 =
-      "numeric")}:
-
-    subtraction of an object of class `numeric'
-    from this discrete distribution }
-  \item{*}{\code{signature(e1 = "numeric", e2 =
-      "DiscreteDistribution")}:
-
-    multiplication of this discrete distribution
-    by an object of class `numeric'}
-  \item{+}{\code{signature(e1 = "numeric", e2 =
-      "DiscreteDistribution")}:
-
-    addition of this discrete distribution
-    to an object of class `numeric'}
-  \item{-}{\code{signature(e1 = "numeric", e2 =
-      "DiscreteDistribution")}:
-
-    subtraction of this discrete distribution
-    from an object of class `numeric'}
-  \item{+}{\code{signature(e1 = "DiscreteDistribution", e2 =
-      "DiscreteDistribution")}:
-
-    Convolution of two discrete
-    distributions. The slots p, d and q are approximated by grids.}
-  \item{-}{\code{signature(e1 = "DiscreteDistribution", e2 =
-      "DiscreteDistribution")}:
-
-    Convolution of two discrete
-    distributions. The slots p, d and q are approximated by grids.}
-  \item{*}{\code{signature(e1 = "numeric", e2 = "Norm")}:
-
-    multiplication of this normal distribution by an object of
-    class `numeric'}
-  \item{+}{\code{signature(e1 = "numeric", e2 = "Norm")}:
-
-    addition of this normal distribution to an object of class
-    `numeric'}
-  \item{-}{\code{signature(e1 = "numeric", e2 = "Norm")}:
-
-    subtraction of this normal distribution from an object of
-    class `numeric'}
-  \item{*}{\code{signature(e1 = "Norm", e2 = "numeric")}:
-
-    multiplication of this normal distribution by an object of
-    class `numeric'}
-  \item{+}{\code{signature(e1 = "Norm", e2 = "numeric")}:
-
-    addition of this normal distribution to an object of class
-    `numeric'}
-  \item{-}{\code{signature(e1 = "Norm", e2 = "numeric")}:
-
-    subtraction of an object of class `numeric' from this normal
-    distribution }
-  \item{/}{\code{signature(e1 = "Norm", e2 = "numeric")}:
-
-    division of this normal distribution by an object of class
-    `numeric'}
-    \item{-}{\code{signature(e1 = "Norm", e2 = "Norm")}}
-    \item{+}{\code{signature(e1 = "Norm", e2 = "Norm")}: 
-
-      For the normal distribution the exact convolution formulas are implemented thereby improving the general numerical
-    approximation.}
-  \item{*}{\code{signature(e1 = "Unif", e2 = "numeric")}:
-
-    multiplication of this uniform distribution by an object of
-    class `numeric'}
-  \item{+}{\code{signature(e1 = "Unif", e2 = "numeric")}:
-
-    addition of this uniform distribution to an object of class
-    `numeric'}
-  \item{+}{\code{signature(e1 = "Binom", e2 = "Binom")}:
-
-    For two binomial distributions with the same probabilities
-    the exact convolution formula is implemented thereby improving the general numerical approximation.}
-  \item{+}{\code{signature(e1 = "Pois", e2 = "Pois")}:
-
-    For the Poisson distribution the exact convolution formula is
-    implemented thereby improving the general numerical approximation.}
+\item{\code{-}}{\code{signature(e1 = "UnivariateDistribution", e2 = "missing")} unary operator; result again of class \code{"UnivariateDistribution"}; exact}
+\item{\code{-}}{\code{signature(e1 = "Norm", e2 = "missing")} unary operator; result again of \code{"Norm"}; exact}
+\item{\code{+}}{\code{signature(e1 = "UnivariateDistribution", e2 = "numeric")} result again of class \code{"UnivariateDistribution"}; exact}
+\item{\code{+}}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")} result again of 
+ class \code{"AbscontDistribution"}; exact}
+\item{\code{+}}{\code{signature(e1 = "DiscreteDistribution", e2 = "numeric")} result again of 
+ class \code{"DiscreteDistribution"}; exact}
+\item{\code{+}}{\code{signature(e1 = "Cauchy", e2 = "numeric")} result again of class \code{"Cauchy"}; exact}
+\item{\code{+}}{\code{signature(e1 = "Dirac", e2 = "numeric")} result again of class \code{"Dirac"}; exact}
+\item{\code{+}}{\code{signature(e1 = "Norm", e2 = "numeric")} result again of class \code{"Norm"}; exact}
+\item{\code{+}}{\code{signature(e1 = "Unif", e2 = "numeric")} result again of class \code{"Unif"}; exact}
+\item{\code{+}}{\code{signature(e1 = "numeric", e2 = "UnivariateDistribution")} is translated to  
+         \code{signature(e1 = "UnivariateDistribution", e2 = "numeric")}; exact}
+\item{\code{-}}{\code{signature(e1 = "UnivariateDistribution", e2= "ANY")};exact}
+\item{\code{-}}{\code{signature(e1 = "UnivariateDistribution", e2 = "numeric")} is translated to 
+ \code{e1 + (-e2)}; exact}
+\item{\code{-}}{\code{signature(e1 = "numeric", e2 = "UnivariateDistribution")} is translated to \code{(-e1) + e2}; exact}
+\item{\code{*}}{\code{signature(e1 = "UnivariateDistribution", e2 = "numeric")} result again of class \code{"UnivariateDistribution"}; exact}
+\item{\code{*}}{\code{signature(e1 = "DiscreteDistribution", e2 = "numeric")} result again of class \code{"DiscreteDistribution"}; exact}
+\item{\code{*}}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")} result again of class \code{"AbscontDistribution"}; exact}
+\item{\code{*}}{\code{signature(e1 = "Exp", e2 = "numeric")} if \code{e2>0} result again of class \code{"Exp"}; exact}
+\item{\code{*}}{\code{signature(e1 = "ExpOrGammaOrChisq", e2 = "numeric")} if \code{e1} is a Gamma distribution and \code{e2>0} 
+                                                                    result of class \code{"Gammad"}; exact}
+\item{\code{*}}{\code{signature(e1 = "Cauchy", e2 = "numeric")}  result again of class \code{"Cauchy"}; exact}
+\item{\code{*}}{\code{signature(e1 = "Dirac", e2 = "numeric")}  result again of class \code{"Dirac"}; exact}
+\item{\code{*}}{\code{signature(e1 = "Norm", e2 = "numeric")}  result again of class \code{"Norm"}; exact}
+\item{\code{*}}{\code{signature(e1 = "Unif", e2 = "numeric")}  result again of class \code{"Unif"}; exact}
+\item{\code{*}}{\code{signature(e1 = "numeric", e2 = "UnivariateDistribution")} is translated to 
+         \code{signature(e1 = "UnivariateDistribution", e2 = "numeric")}; exact}
+\item{\code{/}}{\code{signature(e1 = "UnivariateDistribution", e2 = "numeric")} is translated to \code{e1 * (1/e2)}; exact}
+\item{\code{+}}{\code{signature(e1 = "UnivariateDistribution", e2 = "UnivariateDistribution")}  result again of class 
+         \code{"UnivariateDistribution"}; is generated by simulations}
+\item{\code{-}}{\code{signature(e1 = "UnivariateDistribution", e2 = "UnivariateDistribution")} is translated to \code{(-e1) + (-e2)}; 
+          result again of class   \code{"UnivariateDistribution"}; is generated by simulations}
+\item{\code{+}}{\code{signature(e1 = "AbscontDistribution", e2 = "AbscontDistribution")} assumes \code{e1}, \code{e2} independent; result again of class 
+         \code{"AbscontDistribution"}; is generated by FFT}
+\item{\code{+}}{\code{signature(e1 = "AbscontDistribution", e2 = "DiscreteDistribution")} assumes \code{e1}, \code{e2} independent; result again of class 
+         \code{"AbscontDistribution"}; is generated by FFT}
+\item{\code{+}}{\code{signature(e1 = "DiscreteDistribution", e2 = "AbscontDistribution")} assumes \code{e1}, \code{e2} independent; result again of class 
+         \code{"AbscontDistribution"}; is generated by FFT}
+\item{\code{+}}{\code{signature(e1 = "DiscreteDistribution", e2 = "DiscreteDistribution")} assumes \code{e1}, \code{e2} independent; result again of class 
+         \code{"AbscontDistribution"}; is generated by explicite convolution}
+\item{\code{+}}{\code{signature(e1 = "Binom", e2 = "Binom")} assumes \code{e1}, \code{e2} independent; 
+if \code{prob(e1)==prob(e2)}, result again of class 
+         \code{"Binom"}; uses the convolution formula for binomial distributions; exact}
+\item{\code{+}}{\code{signature(e1 = "Chisq", e2 = "Chisq")}  assumes \code{e1}, \code{e2} independent; result again of class 
+         \code{"Chisq"}; uses the convolution formula for Chisq distributions; exact}
+\item{\code{+}}{\code{signature(e1 = "Dirac", e2 = "Dirac")} result again of class \code{"Dirac"}; exact}
+\item{\code{+}}{\code{signature(e1 = "ExpOrGammaOrChisq", e2 = "ExpOrGammaOrChisq")}  assumes \code{e1}, \code{e2} independent; if 
+         \code{e1}, \code{e2} are Gamma distributions, result is of class 
+         \code{"Gammad"}; uses the convolution formula for Gamma distributions; exact}
+\item{\code{+}}{\code{signature(e1 = "Pois", e2 = "Pois")}  assumes \code{e1}, \code{e2} independent; result again of class 
+         \code{"Pois"}; uses the convolution formula for Poisson distributions; exact}
+\item{\code{+}}{\code{signature(e1 = "Nbinom", e2 = "Nbinom")}  assumes \code{e1}, \code{e2} independent; if 
+\code{prob(e1)==prob(e2)}, result again of class 
+         \code{"Nbinom"}; uses the convolution formula for negative binomial distributions; exact}
+\item{\code{+}}{\code{signature(e1 = "Norm", e2 = "Norm")}  assumes \code{e1}, \code{e2} independent; result again of class 
+         \code{"Norm"}; uses the convolution formula for normal distributions; exact}
+\item{\code{+}}{\code{signature(e1 = "UnivariateDistribution", e2 = "Dirac")}  translated to \code{e1 + location(e2)}; 
+         result again of class \code{"Dirac"}; exact}
+\item{\code{+}}{\code{signature(e1 = "Dirac", e2 = "UnivariateDistribution")}  translated to \code{e2 + location(e1)}; 
+         result again of class \code{"Dirac"}; exact}
+\item{\code{-}}{\code{signature(e1 = "Dirac", e2 = "Dirac")}  result again of class \code{"Dirac"}; exact}
+\item{\code{*}}{\code{signature(e1 = "Dirac", e2 = "Dirac")}  result again of class \code{"Dirac"}; exact}
+\item{\code{*}}{\code{signature(e1 = "UnivariateDistribution", e2 = "Dirac")}  translated to \code{e1 * location(e2)}; 
+         result again of class \code{"Dirac"}; exact}
+\item{\code{*}}{\code{signature(e1 = "Dirac", e2 = "UnivariateDistribution")}  translated to \code{e2 * location(e1)}; 
+         result again of class \code{"Dirac"}; exact}
+\item{\code{/}}{\code{signature(e1 = "Dirac", e2 = "Dirac")}  result again of class \code{"Dirac"}; exact}
 }}
+
 
 \seealso{
 \code{\link{UnivariateDistribution-class}}
@@ -259,8 +136,30 @@
 \code{\link{DiscreteDistribution-class}}
 \code{\link{Norm-class}}
 \code{\link{Binom-class}}
-\code{\link{Pois-class}}
+\code{\link{Pois-class}}\cr
+\code{\link{Dirac-class}}
+\code{\link{Cauchy-class}}
+\code{\link{Gammad-class}}
+\code{\link{Exp-class}}
+\code{\link{Nbinom-class}}
 }
 
-
-\keyword{}
+\arguments{
+  \item{e1,e2}{ objects of class \code{"UnivariateDistribution"} (or subclasses) or \code{"numeric"}}
+}
+\examples{
+N <- Norm(0,3)
+P <- Pois(4)
+a <- 3
+N + a
+N + P
+N - a
+a * N
+a * P
+N / a + sin( a * P - N)
+}
+\keyword{math}
+\keyword{distribution}
+\keyword{arith}
+\concept{convolution}
+\concept{FFT}

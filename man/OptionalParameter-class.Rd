@@ -9,10 +9,10 @@
 No methods defined with class "OptionalParameter" in the signature.
 }
 \author{
-  Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr
-  Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
   Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
-\code{\link{Parameter-class}}
+\seealso{\code{\link{Parameter-class}}}
 \keyword{}

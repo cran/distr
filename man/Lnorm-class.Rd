@@ -44,8 +44,13 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
   }
 }
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}
+  }
+
 \note{  The mean is \eqn{E(X) = exp(\mu + 1/2 \sigma^2)}, and the variance
   \eqn{Var(X) = exp(2\mu + \sigma^2)(exp(\sigma^2) - 1)}{%
     Var(X) = exp(2*mu + sigma^2)*(exp(sigma^2) - 1)} and

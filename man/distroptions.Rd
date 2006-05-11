@@ -1,52 +1,77 @@
 \name{distroptions}
 \alias{distroptions}
+\alias{getdistrOption}
 \alias{DefaultNrGridPoints}
 \alias{DistrResolution}
 \alias{TruncQuantile}
+\alias{WarningSim}
+\alias{WarningArith}
 \alias{DefaultNrFFTGridPointsExponent}
 \alias{RtoDPQ.e}
+\alias{WarningArith}
+\alias{WarningSim}
 
-\title{function to change the global variables of the package `distr' }
-\description{With \code{distroptions} you may inspect and change the global variables used by the package \pkg{`distr'} }
+\title{
+  functions to change the global variables of the package `distr'
+}
+\description{
+  With \code{distroptions} and \code{getdistrOption} you may inspect and change the global
+  variables used by package \pkg{distr}.
+}
 \usage{
-distroptions(arg = "missing", value = -1)
+distroptions(...)
+getdistrOption(x)
 }
 \arguments{
-  \item{arg}{ the global variable to be shown or changed }
-  \item{value}{ the new value of the global variable }
+  \item{\dots}{ any options can be defined, using name = value or by passing a list of such tagged values. }
+  \item{x}{ a character string holding an option name.}
 }
+\details{Invoking \code{distroptions()} with no arguments returns a list with the current values of the options.  
+ To access the value of a single option, one should use \code{getdistrOption("WarningSim")}, e.g., rather than
+ \code{distroptions("WarningSim")} which is a \emph{list} of length one.}
 \value{
-\code{distroptions()} returns a list of the global variables.
-\code{distroptions(arg=x)} returns  the global variable \var{x}.
-\code{distroptions(arg=x,value=y)} sets the value of the global variable \var{x} to \var{y}.
-
+\code{distroptions()} returns a list of the global options of \pkg{distr}. \cr
+\code{distroptions("RtoDPQ.e")} returns  the global option \code{RtoDPQ.e} as a list of length 1. \cr
+\code{distroptions("RtoDPQ.e" = 3)} sets the value of the global option  \code{RtoDPQ.e} to 3. 
+\code{getdistrOption("RtoDPQ.e")} the current value set for option \code{RtoDPQ.e}. 
 }
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
+\section{Currently available options}{
+\describe{
+\item{\code{DefaultNrGridPoints}}{default number of grid points in integration, default value: \code{2^12}}
+\item{\code{DistrResolution}}{minimal spacing between two mass points in a discrete distribution, default value: \code{1e-6}}
+\item{\code{TruncQuantile}}{argument for \code{q}-slot at which to truncate; also, for discrete distributions, 
+ support is restricted to [\code{q(TruncQuantile)},\code{q(1-TruncQuantile)}], default value: \code{1e-5}}
+\item{\code{DefaultNrFFTGridPointsExponent}}{by default, for e = \code{DefaultNrFFTGridPointsExponent}, 
+ FFT uses \eqn{2^e} gridpoints; default value: \code{12}}
+\item{\code{RtoDPQ.e}}{by default, for reconstructing the \code{d}-,\code{p}-,\code{q}-slots out of simulations by slot \code{r},
+\code{RtoDPQ} resp. \code{RtoDPQ.d} use \eqn{10^e} simulations, where e = \code{RtoDPQ.e}, default value: \code{5}}
+\item{\code{WarningSim}}{if \code{WarningSim==TRUE}, \code{print}/\code{show} issue a warning as to the precision of 
+\code{d}-,\code{p}-,\code{q}-slots when these are obtained by \code{RtoDPQ} resp. \code{RtoDPQ.d}, default value: \code{TRUE}}
+\item{\code{WarningArith}}{if \code{WarningArith==TRUE}, \code{print}/\code{show} issue a warning as to the interpretation of
+arithmetics operating on distributions, when the corresponding distribution to be plotted/shown is obtained by such an operation;
+keep in mind that arithmetics in fact operate on random variables distributed according to the given distributions and \bold{not}
+on corresponding cdf's or densities; default value: \code{TRUE}}
+}
+} 
 \examples{
 distroptions("RtoDPQ.e") # returns the value of RtoDPQ.e, by default = 5
-distroptions("RtoDPQ.e",6) # now RtoDPQ.e = 6
-
-## The function is currently defined as
-function (arg = "missing", value = -1) 
-{
-    globals <- list(DefaultNrFFTGridPointsExponent = DefaultNrFFTGridPointsExponent, 
-        DefaultNrGridPoints = DefaultNrGridPoints, DistrResolution = DistrResolution, 
-        RtoDPQ.e = RtoDPQ.e, TruncQuantile = TruncQuantile)
-    if (arg == "missing") {
-        print(globals)
-        return(invisible())
-    }
-    if (!any(arg == names(globals))) 
-        stop(paste("No such variable:", arg))
-    if (value == -1) 
-        switch(arg, DefaultNrGridPoints = DefaultNrGridPoints, 
-            DistrResolution = DistrResolution, TruncQuantile = TruncQuantile, 
-            DefaultNrFFTGridPointsExponent = DefaultNrFFTGridPointsExponent, 
-            RtoDPQ.e = RtoDPQ.e)
-    else eval.parent(parse(text = paste("assignInNamespace(\"", 
-        arg, "\",", value, ", \"distr\")", sep = "")))
-  }
+currentDistrOptions <- distroptions()
+distroptions(RtoDPQ.e = 6)
+distroptions("RtoDPQ.e") 
+getdistrOption("RtoDPQ.e") 
+distroptions(c("WarningSim","WarningArith"))   
+getdistrOption("WarningSim")   
+distroptions("WarningSim" = FALSE)   
+         # switches off warnings as to (In)accuracy due to simulations
+distroptions("WarningArith" = FALSE) 
+         # switches off warnings as to arithmetics
+distroptions(currentDistrOptions)
 }
-\keyword{}
+\seealso{\code{\link[base]{options}}, \code{\link[base]{getOption}}}
+\keyword{distribution}

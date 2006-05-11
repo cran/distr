@@ -33,14 +33,23 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 }
 \section{Methods}{
   \describe{
+    \item{-}{\code{signature(e1 = "Dirac", e2 = "Dirac")}}
+    \item{+}{\code{signature(e1 = "Dirac", e2 = "Dirac")}} 
+    \item{*}{\code{signature(e1 = "Dirac", e2 = "Dirac")}}
+    \item{/}{\code{signature(e1 = "Dirac", e2 = "Dirac")}: 
+    For the Dirac distribution these operations are trivial.}
     \item{initialize}{\code{signature(.Object = "Dirac")}: initialize method }
     \item{location}{\code{signature(object = "Dirac")}: returns the slot \code{location} of the parameter of the distribution }
     \item{location<-}{\code{signature(object = "Dirac")}: modifies the slot \code{location} of the parameter of the distribution }
   }
+ further arithmetic methods see \link{operators-methods}
 }
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 \seealso{
 \code{\link{DiracParameter-class}}

@@ -49,8 +49,11 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
   }
 }
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
-Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{Thomas Stabla \email{statho3@web.de},\cr 
+        Florian Camphausen \email{fcampi@gmx.de},\cr
+        Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+        Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+
 \note{It is the distribution of the ratio of the mean squares of n1 and n2 independent standard normals, and hence of the
 ratio of two independent chi-squared variates each divided by its degrees of freedom. Since the ratio of a normal and the
 root mean-square of m independent normals has a Student's \eqn{t_m} distribution, the square of a \eqn{t_m} variate has a F
@@ -60,6 +63,12 @@ The non-central F distribution is again the ratio of mean squares of independent
 numerator are allowed to have non-zero means and ncp is the sum of squares of the means. 
 }
 
+\section{Ad hoc methods}{\itemize{
+\item An ad hoc method is provided for slot \code{d} if \code{ncp!=0}.
+\item For R Version \code{<2.3.0} ad hoc methods are provided for slots \code{q}, \code{r} if \code{ncp!=0};
+      for R Version \code{>=2.3.0} the methods from package \pkg{stats} are used.
+      }}
+
 \seealso{
 \code{\link{FParameter-class}}
 \code{\link{AbscontDistribution-class}}
@@ -67,12 +76,15 @@ numerator are allowed to have non-zero means and ncp is the sum of squares of th
 \code{\link[stats:Fdist]{rf}}
 }
 \examples{
-F=Fd(df1=1,df2=1) # F is a F distribution with df=1 and df2=1.
+F <- Fd(df1=1,df2=1) # F is a F distribution with df=1 and df2=1.
 r(F)(1) # one random number generated from this distribution, e.g. 29.37863
 d(F)(1) # Density of this distribution is 0.1591549 for x=1 .
 p(F)(1) # Probability that x<1 is 0.5.
 q(F)(.1) # Probability that x<0.02508563 is 0.1.
 df1(F) # df1 of this distribution is 1.
 df1(F)=2 # df1 of this distribution is now 2.
+Fn <- Fd(df1=1,df2=1,ncp=0.5) 
+  # Fn is a F distribution with df=1, df2=1 and ncp =0.5.
+d(Fn)(1) ## from R 2.3.0 on ncp no longer ignored...
 }
 \keyword{distribution}

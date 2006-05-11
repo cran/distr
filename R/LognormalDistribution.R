@@ -37,13 +37,23 @@ setValidity("LnormParameter", validLnormParameter)
 ##
 ################################
 
-setClass("Lnorm", contains = "AbscontDistribution")
+setClass("Lnorm",  prototype = prototype(r = function(n){ rlnorm(n, meanlog = 0, sdlog = 1) },
+                                  d = function(x, ...){ dlnorm(x, meanlog = 0, sdlog = 1, ...) },
+                                  p = function(x, ...){ plnorm(x, meanlog = 0, sdlog = 1, ...) },
+                                  q = function(x, ...){ qlnorm(x, meanlog = 0, sdlog = 1, ...) },
+                                  img = new("Reals"),
+                                  param = new("LnormParameter", meanlog = 0, sdlog = 1, 
+                                  name = gettext("Parameter of a lognormal distribution")),
+                                  .withArith = FALSE,
+                                  .withSim = FALSE),
+      contains = "AbscontDistribution")
 
 ## Initialize method
 setMethod("initialize", "Lnorm",
           function(.Object, meanlog = 0, sdlog = 1) {
             .Object@img <- new("Reals")
-            .Object@param <- new("LnormParameter", meanlog = meanlog, sdlog = sdlog, name = "Parameter of a lognormal distribution")
+            .Object@param <- new("LnormParameter", meanlog = meanlog, sdlog = sdlog, 
+                                  name = gettext("Parameter of a lognormal distribution"))
             .Object@r <- function(n){ rlnorm(n, meanlog = meanlogSub, sdlog = sdlogSub) }
             body(.Object@r) <- substitute({ rlnorm(n, meanlog = meanlogSub, sdlog = sdlogSub) },
                                           list(meanlogSub = meanlog, sdlogSub = sdlog))
@@ -56,6 +66,8 @@ setMethod("initialize", "Lnorm",
             .Object@q <- function(x, ...){ qlnorm(x, meanlog = meanlogSub, sdlog = sdlogSub, ...) }
             body(.Object@q) <- substitute({ qlnorm(x, meanlog = meanlogSub, sdlog = sdlogSub, ...) },
                                           list(meanlogSub = meanlog, sdlogSub = sdlog))
+            .Object@.withSim   <- FALSE
+            .Object@.withArith <- FALSE
             .Object
           })
 

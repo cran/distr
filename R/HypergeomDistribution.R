@@ -58,12 +58,20 @@ setValidity("HyperParameter", validHyperParameter)
 ##
 ################################
 
-setClass("Hyper", contains = "DiscreteDistribution")
+setClass("Hyper",  prototype = prototype(r = function(nn){ rhyper(nn, m = 1, n = 1, k = 1) },
+                                  d = function(x, ...){ dhyper(x, m = 1, n = 1, k = 1, ...) },
+                                  p = function(x, ...){ phyper(x, m = 1, n = 1, k = 1, ...) },
+                                  q = function(x, ...){ qhyper(x, m = 1, n = 1, k = 1, ...) },
+                                  img = new("Naturals"),
+                                  param = new("HyperParameter", m = 1, n = 1, k = 1, name = gettext("Parameter of a hypergeometric distribution")),
+                                  .withArith = FALSE,
+                                  .withSim = FALSE),
+    contains = "DiscreteDistribution")
 
 setMethod("initialize", "Hyper",
           function(.Object, m = 1, n = 1, k = 1) {
             .Object@img <- new("Naturals")
-            .Object@param <- new("HyperParameter", m = m, n = n, k = k, name = "Parameter of a hypergeometric distribution" )
+            .Object@param <- new("HyperParameter", m = m, n = n, k = k, name = gettext("Parameter of a hypergeometric distribution"))
             .Object@support <- 0:k
             .Object@r <- function(nn){ rhyper(nn, m = mSub, n = nSub, k = kSub) }
             body(.Object@r) <- substitute({ rhyper(nn, m = mSub, n = nSub, k = kSub) },
@@ -77,6 +85,8 @@ setMethod("initialize", "Hyper",
             .Object@q <- function(q, ...){ qhyper(q, m = mSub, n = nSub, k = kSub, ...) }
             body(.Object@q) <- substitute({ qhyper(q, m = mSub, n = nSub, k = kSub, ...) },
                                           list(mSub = m, nSub = n, kSub = k))
+            .Object@.withSim   <- FALSE
+            .Object@.withArith <- FALSE
             .Object
           })
 
@@ -89,6 +99,3 @@ setMethod("k", "Hyper", function(object) k(param(object)))
 setMethod("m<-", "Hyper", function(object, value) new("Hyper", m = value, n = n(object), k = k(object)))
 setMethod("n<-", "Hyper", function(object, value) new("Hyper", m = m(object), n = value, k = k(object)))
 setMethod("k<-", "Hyper", function(object, value) new("Hyper", m = m(object), n = n(object), k = value))
-
-
-

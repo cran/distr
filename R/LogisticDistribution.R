@@ -37,13 +37,21 @@ setValidity("LogisParameter", validLogisParameter)
 ##
 ################################
 
-setClass("Logis", contains = "AbscontDistribution")
+setClass("Logis",  prototype = prototype(r = function(n){ rlogis(n, location = 0, scale = 1) },
+                                  d = function(x, ...){ dlogis(x, location = 0, scale = 1, ...) },
+                                  p = function(x, ...){ plogis(x, location = 0, scale = 1, ...) },
+                                  q = function(x, ...){ qlogis(x, location = 0, scale = 1, ...) },
+                                  img = new("Reals"),
+                                  param = new("LogisParameter", location = 0, scale = 1, name = gettext("Parameter of a logistic distribution")),
+                                  .withArith = FALSE,
+                                  .withSim = FALSE),
+      contains = "AbscontDistribution")
 
 ## Initialize method
 setMethod("initialize", "Logis",
           function(.Object, location = 0, scale = 1) {
             .Object@img <- new("Reals")
-            .Object@param <- new("LogisParameter", location = location, scale = scale, name = "Parameter of a logistic distribution")
+            .Object@param <- new("LogisParameter", location = location, scale = scale, name = gettext("Parameter of a logistic distribution"))
             .Object@r <- function(n){ rlogis(n, location = locationSub, scale = scaleSub) }
             body(.Object@r) <- substitute({ rlogis(n, location = locationSub, scale = scaleSub) },
                                           list(locationSub = location, scaleSub = scale))
@@ -56,6 +64,8 @@ setMethod("initialize", "Logis",
             .Object@q <- function(x, ...){ qlogis(x, location = locationSub, scale = scaleSub, ...) }
             body(.Object@q) <- substitute({ qlogis(x, location = locationSub, scale = scaleSub, ...) },
                                           list(locationSub = location, scaleSub = scale))
+            .Object@.withSim   <- FALSE
+            .Object@.withArith <- FALSE
             .Object
           })
 

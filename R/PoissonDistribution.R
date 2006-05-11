@@ -30,13 +30,21 @@ setValidity("PoisParameter", validPoisParameter)
 ##
 ################################
 
-setClass("Pois", contains = "DiscreteDistribution")
+setClass("Pois",  prototype = prototype(r = function(n){ rpois(n, lambda = 1) },
+                                  d = function(x, ...){ dpois(x, lambda = 1, ...) },
+                                  p = function(x, ...){ ppois(x, lambda = 1, ...) },
+                                  q = function(x, ...){ qpois(x, lambda = 1, ...) },
+                                  img = new("Naturals"),
+                                  param = new("PoisParameter", lambda = 1, name = gettext("Parameter of a Poisson distribution")),
+                                  .withArith = FALSE,
+                                  .withSim = FALSE),
+      contains = "DiscreteDistribution")
 
 setMethod("initialize", "Pois",
-          function(.Object, lambda = 1) {
+          function(.Object, lambda = 1, .withArith = FALSE) {
             .Object@img <- new("Naturals")
-            .Object@param <- new("PoisParameter", lambda = lambda, name = "Parameter of a Poisson distribution" )
-            .Object@support <- 0:(qpois(1 - TruncQuantile, lambda = lambda) + 2)
+            .Object@param <- new("PoisParameter", lambda = lambda, name = gettext("Parameter of a Poisson distribution") )
+            .Object@support <- 0:(qpois(1 - getdistrOption("TruncQuantile"), lambda = lambda) + 2)
             .Object@r <- function(n){ rpois(n, lambda = lambdaSub) }
             body(.Object@r) <- substitute({ rpois(n, lambda = lambdaSub) },
                                           list(lambdaSub = lambda))
@@ -49,6 +57,8 @@ setMethod("initialize", "Pois",
             .Object@q <- function(q, ...){ qpois(q, lambda = lambdaSub, ...) }
             body(.Object@q) <- substitute({ qpois(q, lambda = lambdaSub, ...) },
                                           list(lambdaSub = lambda))
+            .Object@.withSim   <- FALSE
+            .Object@.withArith <- .withArith
             .Object
           })
 
@@ -60,6 +70,5 @@ setMethod("lambda<-", "Pois", function(object, value) new("Pois", lambda = value
 
 setMethod("+", c("Pois","Pois"),
           function(e1,e2){
-            new("Pois", lambda = lambda(e1) + lambda(e2))
+            new("Pois", lambda = lambda(e1) + lambda(e2), .withArith = TRUE)
           })
-

@@ -34,6 +34,10 @@ Class \code{"AbscontDistribution"}, directly.\cr
 Class \code{"UnivariateDistribution"}, by class \code{"AbscontDistribution"}.\cr
 Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 }
+\section{Is-Relations}{
+By means of \code{setIs}, R ``knows'' that a distribution object \code{obj} of class \code{"Cauchy"} with location 0 and scale 1 also is
+a T distribution with parameters \code{df = 1, ncp = 0}. 
+}
 \section{Methods}{
   \describe{
     \item{initialize}{\code{signature(.Object = "Cauchy")}: initialize method }
@@ -42,10 +46,14 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
     \item{scale}{\code{signature(object = "Cauchy")}: returns the slot \code{scale} of the parameter of the distribution }
     \item{scale<-}{\code{signature(object = "Cauchy")}: modifies the slot \code{scale} of the parameter of the distribution }
   }
+further arithmetic methods see \link{operators-methods}
 }
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 
 \seealso{
@@ -60,12 +68,16 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 
 }
 \examples{
-C=Cauchy(location=1,scale=1) # C is a Cauchy distribution with location=1 and scale=1.
+C <- Cauchy(location = 1, scale = 1) # C is a Cauchy distribution with location=1 and scale=1.
 r(C)(1) # one random number generated from this distribution, e.g. 4.104603
 d(C)(1) # Density of this distribution is 0.3183099 for x=1.
 p(C)(1) # Probability that x<1 is 0.5.
 q(C)(.1) # Probability that x<-2.077684 is 0.1.
 location(C) # location of this distribution is 1.
-location(C)=2 # location of this distribution is now 2.
+location(C) <- 2 # location of this distribution is now 2.
+is(C,"Td") # no
+C0 <- Cauchy() # standard, i.e. location = 0, scale = 1
+is(C0,"Td") # yes
+as(C0,"Td") 
 }
 \keyword{distribution}

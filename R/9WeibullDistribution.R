@@ -40,13 +40,23 @@ setValidity("WeibullParameter", validWeibullParameter)
 ##
 ################################
 
-setClass("Weibull", contains = "AbscontDistribution")
+setClass("Weibull",  prototype = prototype(r = function(n){ rweibull(n, shape = 1, scale = 1) },
+                                  d = function(x, ...){ dweibull(x, shape = 1, scale = 1, ...) },
+                                  p = function(x, ...){ pweibull(x, shape = 1, scale = 1, ...) },
+                                  q = function(x, ...){ qweibull(x, shape = 1, scale = 1, ...) },
+                                  img = new("Reals"),
+                                  param = new("WeibullParameter", shape = 1, scale = 1, 
+                                     name = gettext("Parameter of a Weibull distribution")),
+                                  .withArith = FALSE,
+                                  .withSim = FALSE),
+         contains = "AbscontDistribution")
 
 ## Initialize method
 setMethod("initialize", "Weibull",
           function(.Object, shape = 1, scale = 1) {
             .Object@img <- new("Reals")
-            .Object@param <- new("WeibullParameter", shape = shape, scale = scale, name = "Parameter of a Weibull distribution")
+            .Object@param <- new("WeibullParameter", shape = shape, scale = scale, 
+                name = gettext("Parameter of a Weibull distribution"))
             .Object@r <- function(n){ rweibull(n, shape = shapeSub, scale = scaleSub) }
             body(.Object@r) <- substitute({ rweibull(n, shape = shapeSub, scale = scaleSub) },
                                           list(shapeSub = shape, scaleSub = scale))
@@ -59,6 +69,8 @@ setMethod("initialize", "Weibull",
             .Object@q <- function(x, ...){ qweibull(x, shape = shapeSub, scale = scaleSub, ...) }
             body(.Object@q) <- substitute({ qweibull(x, shape = shapeSub, scale = scaleSub, ...) },
                                           list(shapeSub = shape, scaleSub = scale))
+            .Object@.withSim   <- FALSE
+            .Object@.withArith <- FALSE
             .Object
           })
 

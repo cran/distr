@@ -12,9 +12,19 @@
   for \eqn{a > 0}, \eqn{b > 0} and \eqn{0 \le x \le 1}{0 <= x <= 1}
   where the boundary values at \eqn{x=0} or \eqn{x=1} are defined as
   by continuity (as limits).
-
-  C.f. \code{\link[stats:Beta]{rbeta}} 
 }
+\note{ 
+  The non-central Beta distribution is defined (Johnson et al, 1995,
+  pp. 502) as the distribution of \eqn{X/(X+Y)} where
+  \eqn{X \sim \chi^2_{2a}(\lambda)}{X ~ chi^2_2a(lambda)} and
+  \eqn{Y \sim \chi^2_{2b}}{Y ~ chi^2_2b}.
+  C.f. \code{\link[stats:Beta]{rbeta}} }
+
+\section{Ad hoc methods}{
+ For R Version \code{<2.3.0} ad hoc methods are provided for slots \code{q}, \code{r} if \code{ncp!=0};
+      for R Version \code{>=2.3.0} the methods from package \pkg{stats} are used.
+      }
+
 \section{Objects from the Class}{
   Objects can be created by calls of the form \code{Beta(shape1, shape2)}.
   This object is a beta distribution.
@@ -56,8 +66,8 @@
 }
 
 \author{
-  Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr
-  Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
   Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
@@ -76,5 +86,11 @@ p(B)(1) # Probability that x < 1 is 1.
 q(B)(.1) # Probability that x < 0.1 is 0.1.
 shape1(B) # shape1 of this distribution is 1.
 shape1(B) <- 2 # shape1 of this distribution is now 2.
+Bn <- Beta(shape1 = 1, shape2 = 3, ncp = 5) 
+# Bn is a beta distribution with shape1 = 1 and shape2 = 3 and ncp = 5.
+B0 <- Bn; ncp(B0) <- 0; 
+# B0 is just the same beta distribution as Bn but with ncp = 0
+q(B0)(0.1) ## 
+q(Bn)(0.1) ## => from R 2.3.0 on ncp no longer ignored...
 }
 \keyword{distribution}

@@ -38,20 +38,6 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 }
 \section{Methods}{
   \describe{
-    \item{*}{\code{signature(e1 = "numeric", e2 = "Norm")}: multiplication of this normal distribution by an object of
-    class `numeric'}
-    \item{+}{\code{signature(e1 = "numeric", e2 = "Norm")}: addition of this normal distribution to an object of class
-    `numeric'}
-    \item{-}{\code{signature(e1 = "numeric", e2 = "Norm")}: subtraction of this normal distribution from an object of
-    class `numeric'}
-    \item{*}{\code{signature(e1 = "Norm", e2 = "numeric")}: multiplication of this normal distribution by an object of
-    class `numeric'}
-    \item{+}{\code{signature(e1 = "Norm", e2 = "numeric")}: addition of this normal distribution to an object of class
-    `numeric'}
-    \item{-}{\code{signature(e1 = "Norm", e2 = "numeric")}: subtraction of an object of class `numeric' from this normal
-    distribution }
-    \item{/}{\code{signature(e1 = "Norm", e2 = "numeric")}: division of this normal distribution by an object of class
-    `numeric'}
     \item{-}{\code{signature(e1 = "Norm", e2 = "Norm")}}
     \item{+}{\code{signature(e1 = "Norm", e2 = "Norm")}: 
     For the normal distribution the exact convolution formulas are implemented thereby improving the general numerical
@@ -62,11 +48,14 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
     \item{sd}{\code{signature(object = "Norm")}: returns the slot \code{sd} of the parameter of the distribution  }
     \item{sd<-}{\code{signature(object = "Norm")}: modifies the slot \code{sd} of the parameter of the distribution }
   }
-
+  further arithmetic methods see \link{operators-methods}
 }
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 \seealso{
 \code{\link{UniNormParameter-class}}

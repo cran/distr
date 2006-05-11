@@ -1,10 +1,10 @@
 \name{RtoDPQ.d}
 \alias{RtoDPQ.d}
-\title{RtoDPQ.d}
+\title{Default procedure to fill slots d,p,q given r for discrete distributions}
 \description{
 function to do get empirical density, cumulative distribution and quantile function from random numbers}
 \usage{
-RtoDPQ.d(r, e = RtoDPQ.e)
+RtoDPQ.d(r, e = getdistrOption("RtoDPQ.e"))
 }
 \arguments{
   \item{r}{ the random number generator }
@@ -22,8 +22,8 @@ RtoDPQ.d(r, e = RtoDPQ.e)
 }
 
 \author{
-  Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr
-  Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
   Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
@@ -32,9 +32,9 @@ RtoDPQ.d(r, e = RtoDPQ.e)
   distributions.
 }
 \seealso{ 
-\code{\link{UnivariateDistribution-class}}}
-\code{\link{density}}}
-\code{\link{approxfun}}}
+\code{\link{UnivariateDistribution-class}}, 
+\code{\link{density}}, 
+\code{\link{approxfun}}, 
 \code{\link{ecdf}}}
 \examples{
 rn2 <- function(n){rnorm(n)^2}

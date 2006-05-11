@@ -35,9 +35,15 @@ This object is a exponential distribution.
   }
 }
 \section{Extends}{
-  Class \code{"AbscontDistribution"}, directly.
+  Class \code{"ExpOrGammaOrChisq"}, directly.\cr
+  Class \code{"AbscontDistribution"}, by class \code{"ExpOrGammaOrChisq"}.\cr
   Class \code{"UnivariateDistribution"}, by class \code{"AbscontDistribution"}.
   Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
+}
+\section{Is-Relations}{
+By means of \code{setIs}, R ``knows'' that a distribution object \code{obj} of class \code{"Exp"} also is
+a Gamma distribution with parameters \code{shape = 1, scale = 1/rate(obj)} and a Weibull  distribution with 
+parameters \code{shape = 1, scale = 1/rate(obj)}
 }
 \section{Methods}{
   \describe{
@@ -51,8 +57,8 @@ This object is a exponential distribution.
 }
 
 \author{
-  Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr
-  Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
+Thomas Stabla \email{statho3@web.de},\cr 
+Florian Camphausen \email{fcampi@gmx.de},\cr
   Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
@@ -70,5 +76,10 @@ p(E)(1) # Probability that x < 1 is 0.6321206.
 q(E)(.1) # Probability that x < 0.1053605 is 0.1.
 rate(E) # rate of this distribution is 1.
 rate(E) <- 2 # rate of this distribution is now 2.
+is(E, "Gammad") # yes
+as(E,"Gammad")
+is(E, "Weibull") 
+E+E+E ###  a Gammad -distribution
+2*E+Gammad(scale=1)
 }
 \keyword{distribution}

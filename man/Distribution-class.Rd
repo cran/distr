@@ -16,6 +16,8 @@
     \item{\code{d}:}{Object of class \code{"OptionalFunction"}: density function}
     \item{\code{p}:}{Object of class \code{"OptionalFunction"}: cumulative distribution function}
     \item{\code{q}:}{Object of class \code{"OptionalFunction"}: quantile function}
+    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
+    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
   }
 }
 }
@@ -31,8 +33,11 @@
 }
 
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 
 \seealso{

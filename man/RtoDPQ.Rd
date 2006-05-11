@@ -1,10 +1,10 @@
 \name{RtoDPQ}
 \alias{RtoDPQ}
-\title{RtoDPQ}
+\title{Default procedure to fill slots d,p,q given r for a.c. distributions}
 \description{
-function to do get empirical density, cumulative distribution and quantile function from random numbers}
+  function to do get empirical density, cumulative distribution and quantile function from random numbers}
 \usage{
-RtoDPQ(r, e = RtoDPQ.e, n = DefaultNrGridPoints)
+RtoDPQ(r, e = getdistrOption("RtoDPQ.e"), n = getdistrOption("DefaultNrGridPoints"))
 }
 \arguments{
   \item{r}{ the random number generator }
@@ -22,14 +22,18 @@ The cumulative distribution function and the quantile function are also created 
   \item{qfun }{ quantile function }
 }
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{
+  Thomas Stabla \email{statho3@web.de},\cr 
+  Florian Camphausen \email{fcampi@gmx.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+
 \note{ Use \code{RtoDPQ} for absolutely continuous and \code{RtoDPQ.d} for discrete distributions. }
 
 \seealso{ 
-\code{\link{UnivariateDistribution-class}}}
-\code{\link{density}}}
-\code{\link{approxfun}}}
+\code{\link{UnivariateDistribution-class}}, 
+\code{\link{density}}, 
+\code{\link{approxfun}}, 
 \code{\link{ecdf}}}
 \examples{
 rn2 <- function(n){rnorm(n)^2}

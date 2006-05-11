@@ -9,7 +9,10 @@ setClass("Distribution", representation(img = "rSpace",
                                         r = "function",
                                         d = "OptionalFunction",
                                         p = "OptionalFunction",
-                                        q = "OptionalFunction"))
+                                        q = "OptionalFunction", # extended by P.R. 28-03-06
+                                        .withSim = "logical",   ## 'internal' slots => no accessors/replacement functions
+                                        .withArith = "logical"
+                                        ))
 
 ## Access Methoden
 if(!isGeneric("img")) setGeneric("img", function(object) standardGeneric("img"))
@@ -33,12 +36,47 @@ setMethod("q", "Distribution", function(save = "default", status = 0, runLast = 
 ################################
 
 setClass("UnivariateDistribution", representation(),
-         contains = "Distribution")
+          prototype= prototype(r = function(n){ rnorm(n, mean = 0, sd = 1) },
+                     d = function(x, ...){ dnorm(x, mean = 0, sd = 1, ...) },
+                     p = function(x, ...){ pnorm(x, mean = 0, sd = 1, ...) },
+                     q = function(x, ...){ qnorm(x, mean = 0, sd = 1, ...) },
+                     img = new("Reals"),
+                     param = NULL,
+                     .withArith = FALSE,
+                     .withSim = FALSE), contains = "Distribution")
+
+###produces difficulties in coercing...:
+#
+#setMethod("initialize", "UnivariateDistribution",
+#          function(.Object, r = NULL, d = NULL, p = NULL, q = NULL, 
+#                    param = NULL, img = new("Reals"),
+#                    .withSim = FALSE, .withArith = FALSE) {
+#            if(is.null(r)) {
+#              stop("You have at least to give the slot r.")
+#              return(invisible())}
+#            ### Attention: no checking!!!
+#            .Object@img <- img
+#            .Object@param <- param
+#            .Object@d <- d
+#            .Object@p <- p
+#            .Object@q <- q
+#           .Object@r <- r
+#            .Object@.withSim <- .withSim
+#            .Object@.withArith <- .withArith
+#            .Object })
+
 
 
 setMethod("print", "UnivariateDistribution",
           function(x, ...){
-            cat("Distribution Object of Class: ", class(x)[1], "\n")
+            cat(gettextf("Distribution Object of Class: %s\n", class(x)[1]))
+            if(x@.withArith && getdistrOption("WarningArith")) 
+            {msga <- gettext("arithmetics on distributions are understood as operations on r.v.'s\n")
+             msgb <- gettext("see 'distrARITH()'; for switching off this warning see '?distroption'")
+             warning(msga,msgb)}
+            if(x@.withSim && getdistrOption("WarningSim")) 
+            {msga <- gettext("slots d,p,q have been filled using simulations; for switching off this warning see '?distroption'")
+             warning(msga)}
             parameter = param(x)
             Names = slotNames(parameter)
             if(length(Names) > 1){

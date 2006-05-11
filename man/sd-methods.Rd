@@ -11,9 +11,11 @@
 \title{ Methods for Function sd in Package `distr' }
 \description{sd-methods}
 \section{Methods}{\describe{
-\item{sd}{\code{signature(object = "NormParameter")}: returns the slot sd of the parameter of the distribution }    
+\item{sd}{\code{signature(x = "Any")}: see \link[stats]{sd}}    
+\item{sd}{\code{signature(x = "NormParameter")}: returns the slot sd of the parameter of the distribution }    
 \item{sd<-}{\code{signature(object = "NormParameter")}: modifies the slot sd of the parameter of the distribution }
-\item{sd}{\code{signature(object = "Norm")}: returns the slot sd of the parameter of the distribution }
+\item{sd}{\code{signature(x = "Norm")}: returns the slot sd of the parameter of the distribution }
 \item{sd<-}{\code{signature(object = "Norm")}: modifies the slot sd of the parameter of the distribution }
 }}
+\seealso{\link[stats]{sd}}
 \keyword{}

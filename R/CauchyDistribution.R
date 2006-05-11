@@ -38,13 +38,22 @@ setValidity("CauchyParameter", validCauchyParameter)
 ##
 ################################
 
-setClass("Cauchy", contains = "AbscontDistribution")
+setClass("Cauchy", prototype = prototype(r = function(n){ rcauchy(n,  location = 0, scale = 1) },
+                                  d = function(x, ...){ dcauchy(x,  location = 0, scale = 1, ...) },
+                                  p = function(x, ...){ pcauchy(x,  location = 0, scale = 1, ...) },
+                                  q = function(x, ...){ qcauchy(x,  location = 0, scale = 1, ...) },
+                                  img = new("Reals"),
+                                  param = new("CauchyParameter", location = 0, scale = 1, 
+                                               name = gettext("Parameter of a Cauchy distribution")),
+                                  .withArith = FALSE,
+                                  .withSim = FALSE),
+          contains = "AbscontDistribution")
 
 ## initialize method
 setMethod("initialize", "Cauchy",
           function(.Object, location = 0, scale = 1) {
             .Object@img <- new("Reals")
-            .Object@param <- new("CauchyParameter", location = location, scale = scale, name = "Parameter of a Cauchy distribution")
+            .Object@param <- new("CauchyParameter", location = location, scale = scale, name = gettext("Parameter of a Cauchy distribution"))
             .Object@r <- function(n){ rcauchy(n, location = locationSub, scale = scaleSub) }
             body(.Object@r) <- substitute({ rcauchy(n, location = locationSub, scale = scaleSub) },
                                           list(locationSub = location, scaleSub = scale))
@@ -57,6 +66,8 @@ setMethod("initialize", "Cauchy",
             .Object@q <- function(x, ...){ qcauchy(x, location = locationSub, scale = scaleSub, ...) }
             body(.Object@q) <- substitute({ qcauchy(x, location = locationSub, scale = scaleSub, ...) },
                                           list(locationSub = location, scaleSub = scale))
+            .Object@.withSim   <- FALSE
+            .Object@.withArith <- FALSE
             .Object
           })
 
@@ -67,3 +78,32 @@ setMethod("scale", "Cauchy", function(x, center = TRUE, scale = TRUE) scale(para
 ## wrapped replace methods
 setMethod("location<-", "Cauchy", function(object, value) new("Cauchy", location = value, scale = scale(object)))
 setMethod("scale<-", "Cauchy", function(object, value) new("Cauchy", location = location(object), scale = value))
+
+## some exact arithmetic methods
+setMethod("+", c("Cauchy","numeric"),
+          function(e1, e2){
+            if (length(e2)>1) stop("length of operator must be 1")
+            Cauchy(location = location(e1) + e2, scale = scale(e1))  
+          })
+
+setMethod("*", c("Cauchy","numeric"),
+          function(e1, e2){
+            if (length(e2)>1) stop("length of operator must be 1")
+            ifelse(e2==0, Dirac(0), Cauchy(location = location(e1) * e2, scale = scale(e1) * abs(e2)))  
+          })
+
+setIs("Cauchy", "Td", test = function(obj) {identical(all.equal(location(obj),0),TRUE) && 
+                                            identical(all.equal(scale(obj),1), TRUE)}, 
+       coerce = function(obj) {new("Td")},
+       replace = function(obj, value){new("Td", df=value@df, ncp=value@ncp)}) 
+       ## if location==0 and scale==1 a T-distribution with df = 1
+#setAs(from="Cauchy", to="Td",
+#      def=function(from) {if(identical(all.equal(location(from),0),TRUE) && 
+#                             identical(all.equal(scale(from),1), TRUE))
+#                                new("Td")
+#                          else stop("only a Cauchy(0,1) object can be coerced to a Td object")}, 
+#      replace = function(from, value){if(identical(all.equal(location(from),0),TRUE) && 
+#                                                    identical(all.equal(scale(from),1), TRUE))
+#                                          new("Td", df=value@df, ncp=value@ncp)
+#                                      else stop("only a Cauchy(0,1) object can be coerced to a Td object")}
+#      ) 

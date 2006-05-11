@@ -33,7 +33,7 @@ setReplaceMethod("dimension", "EuclideanSpace", function(object, value){ object@
 setMethod("initialize", "EuclideanSpace",
           function(.Object, dimension = 1) {
             .Object@dimension <-  dimension
-            .Object@name <- "Euclidean Space"
+            .Object@name <- gettext("Euclidean Space")
             validObject(.Object)
             .Object
           })
@@ -69,7 +69,7 @@ setClass("Reals",  contains = "EuclideanSpace")
 setMethod("initialize", "Reals",
           function(.Object) {
             .Object@dimension <-  1
-            .Object@name <- "Real Space"
+            .Object@name <- gettext("Real Space")
             .Object
           })
 
@@ -84,7 +84,7 @@ setClass("Naturals",  contains = "Reals")
 setMethod("initialize", "Naturals",
           function(.Object) {
             .Object@dimension <-  1
-            .Object@name <- "Natural Space"
+            .Object@name <- gettext("Grid of Naturals")
             .Object
           })
 
@@ -99,4 +99,3 @@ setMethod("liesIn", signature(object = "Naturals", x = "numeric"),
               return(FALSE)
             else return(TRUE)
           })
-

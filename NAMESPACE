@@ -1,12 +1,14 @@
 import("methods")
 import("stats")
 importFrom("graphics", "plot")
+import("startupmsg")
 
-export("Beta", "Binom", "Cauchy", "Chisq", "DefaultNrFFTGridPointsExponent", 
-       "DefaultNrGridPoints", "Dirac", "DistrResolution", "Exp", "Fd", "Gammad", 
+export("Beta", "Binom", "Cauchy", "Chisq",  
+       "Dirac","Exp", "Fd", "Gammad", 
        "Geom", "Hyper", "Lnorm", "Logis", "Nbinom", "Norm", "Pois", "RtoDPQ", 
-       "RtoDPQ.d", "RtoDPQ.e", "Td", "TruncQuantile", "Unif", "Weibull", 
-       "distroptions", "simplifyr")
+       "RtoDPQ.d", "Td", "Unif", "Weibull", 
+       "distroptions", "getdistrOption", "simplifyr",
+       "standardMethods","distrARITH")
 exportClasses("rSpace", "EuclideanSpace", "Reals", "Naturals")
 exportClasses("Parameter")
 exportClasses("OptionalParameter")
@@ -18,7 +20,8 @@ exportClasses("BetaParameter", "BinomParameter", "CauchyParameter", "ChisqParame
 exportClasses("Distribution")
 exportClasses("UnivariateDistribution", "AbscontDistribution", "DiscreteDistribution", 
               "Beta", "Binom", "Cauchy", "Chisq", "Dirac", "Exp", "Fd", "Gammad", "Geom", 
-              "Hyper", "Logis", "Lnorm", "Nbinom", "Norm", "Pois", "Td", "Unif", "Weibull")
+              "Hyper", "Logis", "Lnorm", "Nbinom", "Norm", "Pois", "Td", "Unif", "Weibull",
+              "ExpOrGammaOrChisq")
 exportMethods("Max", "Max<-", "Min", "Min<-", "d", "df", "df<-", "df1", "df1<-", "df2", 
               "df2<-", "dimension", "dimension<-", "name", "name<-", "img", "k", "k<-", 
               "lambda", "lambda<-", "liesIn", "location", "location<-", "m", "m<-", "mean", 
@@ -27,3 +30,4 @@ exportMethods("Max", "Max<-", "Min", "Min<-", "d", "df", "df<-", "df1", "df1<-",
               "sdlog", "sdlog<-", "shape", "shape<-", "shape1", "shape1<-", "shape2", "shape2<-", 
               "size", "size<-", "support", "initialize", "print", "plot", "+", "-", "/", "*", 
               "Math", "log", "log10", "gamma", "lgamma")
+

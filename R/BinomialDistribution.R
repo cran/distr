@@ -42,12 +42,22 @@ setValidity("BinomParameter", validBinomParameter)
 ##
 ################################
 
-setClass("Binom", contains = "DiscreteDistribution")
+setClass("Binom", prototype = prototype(r = function(n){ rbinom(n, size = 1,prob = 0.5) },
+                                  d = function(x, ...){ dbinom(x, size = 1,prob = 0.5, ...) },
+                                  p = function(x, ...){ pbinom(x, size = 1,prob = 0.5, ...) },
+                                  q = function(x, ...){ qbinom(x, size = 1,prob = 0.5, ...) },
+                                  img = new("Naturals"),
+                                  param = new("BinomParameter", size = 1, prob = 0.5, 
+                                               name = gettext("Parameter of a binomial distribution")),
+                                  .withArith = FALSE,
+                                  .withSim = FALSE),
+          contains = "DiscreteDistribution")
 
 setMethod("initialize", "Binom",
-          function(.Object, size = 1,prob = 0.5) {
+          function(.Object, size = 1,prob = 0.5, .withArith = FALSE) {
             .Object@img <- new("Naturals")
-            .Object@param <- new("BinomParameter", size = size, prob = prob, name = "Parameter of a binomial distribution")
+            .Object@param <- new("BinomParameter", size = size, prob = prob, 
+                name = gettext("Parameter of a binomial distribution"))
             .Object@support <- 0:size
             .Object@r <- function(n){ rbinom(n, size = sizeSub, prob = probSub) }
             body(.Object@r) <- substitute({ rbinom(n, size = sizeSub, prob = probSub) },
@@ -61,6 +71,8 @@ setMethod("initialize", "Binom",
             .Object@q <- function(q, ...){ qbinom(q, size = sizeSub, prob = probSub, ...) }
             body(.Object@q) <- substitute({ qbinom(q, size = sizeSub, prob = probSub, ...) },
                                           list(sizeSub = size, probSub = prob))
+            .Object@.withSim   <- FALSE
+            .Object@.withArith <- .withArith
             .Object
           })
 
@@ -70,8 +82,8 @@ setMethod("size", "Binom", function(object) size(param(object)))
 ## wrapped replace methods
 setMethod("prob<-", "Binom", function(object, value) new("Binom", prob = value, size = size(object)))
 setMethod("size<-", "Binom", function(object, value) new("Binom", prob = prob(object), size = value))
-## Faltung für zwei Binomialverteilungen e1 <- Bin(n1,p1) und e2 <- Bin(n2,p2)
-## Fallunterscheidung 
+## Convolution for two binomial distributions e1 <- Bin(n1,p1) and e2 <- Bin(n2,p2)
+## Distinguish cases 
 ## p1 == p2 und p1 != p2
 
 
@@ -80,8 +92,7 @@ setMethod("+", c("Binom","Binom"),
             newsize <- size(e1) + size(e2)
             
             if(is.logical(all.equal(prob(e1),prob(e2))))    
-              return(new("Binom", prob = prob(e1), size = newsize))
+              return(new("Binom", prob = prob(e1), size = newsize, .withArith = TRUE))
             
             return(as(e1, "DiscreteDistribution") + e2)
           })
-

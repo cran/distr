@@ -33,9 +33,10 @@ This object is a gamma distribution.
   }
 }
 \section{Extends}{
-Class \code{"AbscontDistribution"}, directly.\cr
+Class \code{"ExpOrGammaOrChisq"}, directly.\cr
+Class \code{"AbscontDistribution"}, by class \code{"ExpOrGammaOrChisq"}.\cr
 Class \code{"UnivariateDistribution"}, by class \code{"AbscontDistribution"}.\cr
-Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
+Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
 }
 \section{Methods}{
   \describe{
@@ -47,8 +48,10 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
   }
 }
 
-\author{Thomas Stabla \email{Thomas.Stabla@uni-bayreuth.de},\cr Florian Camphausen \email{Florian.Camphausen@uni-bayreuth.de},\cr
- Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{Thomas Stabla \email{statho3@web.de},\cr 
+        Florian Camphausen \email{fcampi@gmx.de},\cr
+        Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+        Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 
 \seealso{

@@ -33,8 +33,8 @@ setMethod("-", c("UnivariateDistribution","UnivariateDistribution"),
           function(e1,e2){
             e1+(-e2)
           })
-setMethod("-", "UnivariateDistribution",
-          function(e1, e2){
+setMethod("-", c("UnivariateDistribution","missing"),
+          function(e1){
             e1*(-1)
           })
 
@@ -66,12 +66,12 @@ setMethod("+", c("DiscreteDistribution","AbscontDistribution"),
 
             lower1 <- min(grid)
             upper1 <- max(grid)
-            lower2 <- ifelse((q(e2)(0) > - Inf), q(e2)(0), q(e2)(TruncQuantile))
-            upper2 <- ifelse((q(e2)(1) < Inf), q(e2)(1), q(e2)(1 - TruncQuantile))
+            lower2 <- ifelse((q(e2)(0) > - Inf), q(e2)(0), q(e2)(.distroptions$TruncQuantile))
+            upper2 <- ifelse((q(e2)(1) < Inf), q(e2)(1), q(e2)(1 - .distroptions$TruncQuantile))
             
             lower = lower1 + lower2
             upper = upper1 + upper2
-            approxgrid = seq(from = lower, to = upper, length = DefaultNrGridPoints)
+            approxgrid = seq(from = lower, to = upper, length = .distroptions$DefaultNrGridPoints)
                         
             dnew <- function(x) sum(probab * d(e2)(x - grid))
             dnew2 <- function(x) sapply(x, dnew) / sum(probab)
@@ -102,7 +102,8 @@ setMethod("+", c("DiscreteDistribution","AbscontDistribution"),
 
             options(w0)
 
-            object <- new("AbscontDistribution", r = rnew, d = dnew4, p = pnew3, q = qfun2)
+            object <- new("AbscontDistribution", r = rnew, d = dnew4, p = pnew3, q = qfun2, 
+                           .withSim = FALSE, .withArith = TRUE)
             body(object@r) <- substitute({ f(n) + g(n) },
                                          list(f = e1@r, g = e2@r))
             object
