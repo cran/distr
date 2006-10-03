@@ -35,6 +35,9 @@ Class \code{"Distribution"}, directly.
     \item{initialize}{\code{signature(.Object = "UnivariateDistribution")}:
 
       initialize method }
+    \item{dim}{\code{signature(x = "UnivariateDistribution")}:
+
+      returns the dimension of the support of the distribution}
     \item{-}{\code{signature(e1 = "UnivariateDistribution")}:
 
       application of `-' to this univariate distribution}
@@ -79,6 +82,9 @@ Class \code{"Distribution"}, directly.
     \item{print}{\code{signature(object = "UnivariateDistribution")}:
 
       returns the class of the object and its parameters}
+    \item{show}{\code{signature(object = "UnivariateDistribution")}:
+
+      as print}
   }
 }
 

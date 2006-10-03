@@ -15,7 +15,7 @@
 }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{Exp(rate)}.
-This object is a exponential distribution. 
+This object is an exponential distribution. 
 }
 \section{Slots}{
   \describe{

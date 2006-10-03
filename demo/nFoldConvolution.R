@@ -28,12 +28,12 @@ setMethod("convpow",
             if((N < 1)||(!identical(floor(N), N)))
               stop("N has to be a natural greater than 0")
             
-            m <- DefaultNrFFTGridPointsExponent
+            m <- getdistrOption("DefaultNrFFTGridPointsExponent")
 
     ##STEP 1
 
-            lower <- ifelse((q(D1)(0) > - Inf), q(D1)(0), q(D1)(TruncQuantile)) 
-            upper <- ifelse((q(D1)(1) < Inf), q(D1)(1), q(D1)(1-TruncQuantile))
+            lower <- ifelse((q(D1)(0) > - Inf), q(D1)(0), q(D1)(getdistrOption("TruncQuantile"))) 
+            upper <- ifelse((q(D1)(1) < Inf), q(D1)(1), q(D1)(1-getdistrOption("TruncQuantile")))
 
     ##STEP 2
 
@@ -120,8 +120,8 @@ AN <- convpow(A, N)
 AN1 <- Norm(mean=0, sd=sqrt(N))
 
 ## plots of the results
-eps <- distroptions("TruncQuantile")
-opar <- par(mfrow=c(1,3))
+eps <- getdistrOption("TruncQuantile")
+par(mfrow=c(1,3))
 low <- q(AN1)(eps)
 upp <- q(AN1)(1-eps)
 x <- seq(from = low, to = upp, length = 10000)
@@ -132,12 +132,14 @@ lines(x , d(AN)(x), col = "orange", lwd = 1)
 title("Densities")
 legend(low, d(AN)(0), legend=c("exact", "FFT"), 
         fill=c("black", "orange"))
+
 ## cdfs
 plot(x, p(AN1)(x), type = "l", lwd = 5)
 lines(x , p(AN)(x), col = "orange", lwd = 1)
 title("Cumulative distribution functions")
 legend(low, 1.0, legend=c("exact", "FFT"), 
         fill=c("black", "orange"))
+
 ## quantile functions
 x <- seq(from = eps, to = 1-eps, length = 1000)
 plot(x, q(AN1)(x), type = "l", lwd = 5)
@@ -145,4 +147,3 @@ lines(x , q(AN)(x), col = "orange", lwd = 1)
 title("Quantile functions")
 legend(0, q(AN1)(1-eps), legend=c("exact", "FFT"), 
         fill=c("black", "orange"))
-par(opar)

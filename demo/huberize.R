@@ -32,21 +32,28 @@ setMethod("Huberize",
                             ifelse(x > 1, NA, upper),
                             q(object)(x)))
 
-            list(r = rnew, p = pnew, q = qnew)
+            new("UnivariateDistribution",r=rnew,p=pnew,q=qnew,d=NULL)
           })
 
 # Example
 # Normal(0,1)-Distribution huberized at -0.5 and 1
 N = Norm()
-rpq = Huberize(N, -0.5, 1)
+HN = Huberize(N, -0.5, 1)
 
 # some huberized randomnumbers
-rpq$r(10)
+r(HN)(10)
+
+## plot is not (yet) available for UnivariateDistributions
+## which are neither a.c. nor discrete (here HN is a mixture
+## of a.c. and discrete distributions)
 
 # cdf of huberized Normal-Distribution
 # and of Normal-Distribution
+oldpar = par()
+par(mfrow = c(1,2))
+
 x = seq(-1.5, 1.5, length = 1000)
-plot(x, rpq$p(x),
+plot(x, p(HN)(x),
      type = "l",
      lwd = 5,
      ylab = "CDF")
@@ -57,12 +64,9 @@ legend(-1.5,1,
        legend = c("N(0,1)", "N(0,1) huberized"),
        fill = c("red", "black"))
 
-cat("Hit <enter> to continue...")
-readline()
-
 # quantile functions
 x = seq(0, 1, length = 1000)
-plot(x, rpq$q(x),
+plot(x, q(HN)(x),
      type = "l",
      lwd = 5,
      ylab = "Quantiles",
@@ -73,3 +77,5 @@ lines(x, q(N)(x),
 legend(0,3,
        legend = c("N(0,1)", "N(0,1) huberized"),
        fill = c("red", "black"))
+
+par(oldpar)

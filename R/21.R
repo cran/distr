@@ -65,6 +65,12 @@ setClass("UnivariateDistribution", representation(),
 #            .Object@.withArith <- .withArith
 #            .Object })
 
+### new 03.10.06:
+## dim is already generic
+#if(!isGeneric("dim")){ 
+#    setGeneric("dim", function(x, ...) standardGeneric("dim"))
+#}
+setMethod("dim", "UnivariateDistribution", function(x)1)
 
 
 setMethod("print", "UnivariateDistribution",
@@ -72,10 +78,10 @@ setMethod("print", "UnivariateDistribution",
             cat(gettextf("Distribution Object of Class: %s\n", class(x)[1]))
             if(x@.withArith && getdistrOption("WarningArith")) 
             {msga <- gettext("arithmetics on distributions are understood as operations on r.v.'s\n")
-             msgb <- gettext("see 'distrARITH()'; for switching off this warning see '?distroption'")
+             msgb <- gettext("see 'distrARITH()'; for switching off this warning see '?distroptions'")
              warning(msga,msgb)}
             if(x@.withSim && getdistrOption("WarningSim")) 
-            {msga <- gettext("slots d,p,q have been filled using simulations; for switching off this warning see '?distroption'")
+            {msga <- gettext("slots d,p,q have been filled using simulations; for switching off this warning see '?distroptions'")
              warning(msga)}
             parameter = param(x)
             Names = slotNames(parameter)
@@ -84,3 +90,6 @@ setMethod("print", "UnivariateDistribution",
                 cat(i, ": ", slot(parameter, i), "\n")
             }
           })
+
+setMethod("show", "UnivariateDistribution",
+          function(object)print(object))

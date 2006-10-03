@@ -4,7 +4,7 @@ importFrom("graphics", "plot")
 import("startupmsg")
 
 export("Beta", "Binom", "Cauchy", "Chisq",  
-       "Dirac","Exp", "Fd", "Gammad", 
+       "Dirac","Exp", "DExp", "Fd", "Gammad", 
        "Geom", "Hyper", "Lnorm", "Logis", "Nbinom", "Norm", "Pois", "RtoDPQ", 
        "RtoDPQ.d", "Td", "Unif", "Weibull", 
        "distroptions", "getdistrOption", "simplifyr",
@@ -19,7 +19,7 @@ exportClasses("BetaParameter", "BinomParameter", "CauchyParameter", "ChisqParame
               "UnifParameter", "WeibullParameter", "UniNormParameter")
 exportClasses("Distribution")
 exportClasses("UnivariateDistribution", "AbscontDistribution", "DiscreteDistribution", 
-              "Beta", "Binom", "Cauchy", "Chisq", "Dirac", "Exp", "Fd", "Gammad", "Geom", 
+              "Beta", "Binom", "Cauchy", "Chisq", "Dirac", "DExp", "Exp", "Fd", "Gammad", "Geom", 
               "Hyper", "Logis", "Lnorm", "Nbinom", "Norm", "Pois", "Td", "Unif", "Weibull",
               "ExpOrGammaOrChisq")
 exportMethods("Max", "Max<-", "Min", "Min<-", "d", "df", "df<-", "df1", "df1<-", "df2", 
@@ -29,5 +29,5 @@ exportMethods("Max", "Max<-", "Min", "Min<-", "d", "df", "df<-", "df1", "df1<-",
               "prob", "prob<-", "q", "r", "rate", "rate<-", "scale", "scale<-", "sd", "sd<-", 
               "sdlog", "sdlog<-", "shape", "shape<-", "shape1", "shape1<-", "shape2", "shape2<-", 
               "size", "size<-", "support", "initialize", "print", "plot", "+", "-", "/", "*", 
-              "Math", "log", "log10", "gamma", "lgamma")
+              "Math", "log", "log10", "gamma", "lgamma", "dim", "show")
 

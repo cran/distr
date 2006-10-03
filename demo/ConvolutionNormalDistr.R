@@ -17,9 +17,9 @@ B1 <- as(B, "AbscontDistribution")
 
 ## for higher precision we change the global variable
 ## "TruncQuantile" from 1e-5 to 1e-8
-oldeps <- distroptions("TruncQuantile")
+oldeps <- getdistrOption("TruncQuantile")
 eps <- 1e-8
-distroptions("TruncQuantile", eps)
+distroptions("TruncQuantile" = eps)
 ## support of A1+B1 for FFT convolution is
 ## [q(A1)(TruncQuantile), q(B1)(1-TruncQuantile)]
 
@@ -29,7 +29,7 @@ AB1 <- A1+B1
 #############################
 ## plots of the results
 #############################
-opar <- par(mfrow=c(1,3))
+par(mfrow=c(1,3))
 low <- q(AB)(1e-15)
 upp <- q(AB)(1-1e-15)
 x <- seq(from = low, to = upp, length = 10000)
@@ -70,6 +70,9 @@ dv <- integrate(total.var, lower=-Inf, upper=Inf,
 cat("Total variation distance of densities:\t")
 print(dv) # 4.25e-07
 
+### meanwhile realized in package "distrEx" 
+### as TotalVarDist(N1,N2)
+
 ## Kolmogorov distance of cdfs 
 ## the distance is evaluated on a random grid
 z <- r(Unif(Min=low, Max=upp))(1e5)
@@ -77,7 +80,8 @@ dk <- max(abs(p(AB)(z)-p(AB1)(z)))
 cat("Kolmogorov distance of cdfs:\t", dk, "\n") 
 # 2.03e-07
 
+### meanwhile realized in package "distrEx" 
+### as KolmogorovDist(N1,N2)
+
 ## old distroptions
-distroptions("TruncQuantile", oldeps)
-## old par
-par(opar)
+distroptions("TruncQuantile" = oldeps)

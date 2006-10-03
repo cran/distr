@@ -4,7 +4,7 @@
 \alias{initialize,ExpParameter-method}
 
 \title{Class "ExpParameter"}
-\description{ The parameter of an exponential distribution, used by Exp-class}
+\description{ The parameter of an exponential distribution, used by Exp-class and DExp-class}
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("ExpParameter", rate)}.
 Usually an object of this class is not needed on its own, it is generated automatically when an object of the class Exp
@@ -37,6 +37,7 @@ Class \code{"Parameter"}, directly.
 
 \seealso{
 \code{\link{Exp-class}}
+\code{\link{DExp-class}}
 \code{\link{Parameter-class}}
 }
 

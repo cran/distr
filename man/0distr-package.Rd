@@ -22,16 +22,14 @@ For \code{Distribution} objects \code{X} and \code{Y} expressions like
 \details{
 \tabular{ll}{
 Package: \tab distr\cr
-Version: \tab 1.7\cr
-Date: \tab 2006-05-11\cr
+Version: \tab 1.8\cr
+Date: \tab 2006-10-03\cr
 Depends: \tab R(>= 2.2.0), methods, graphics\cr
 Imports: \tab stats\cr
 SaveImage: \tab no\cr
 LazyLoad: \tab yes\cr
 License: \tab GPL (version 2 or later)\cr
 URL: \tab http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/\cr
-Packaged: \tab Thu May 11 10:16:03 2006; Peter\cr
-Built: \tab R 2.4.0dev; i386-pc-mingw32; 2006-05-11 10:20:11; windows\cr
 }}
 
 
@@ -157,11 +155,20 @@ Matthias Kohl \email{Matthias.Kohl@stamats.de}\cr
 }
 
 \references{
-a more detailed manual for \pkg{distr}, \pkg{distrSim}, \pkg{distrTEst}, and \pkg{distrEx} may be downloaded from  
-\url{http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/distr.pdf}
+P. Ruckdeschel, M. Kohl, T. Stabla, F. Camphausen (2006):
+S4 Classes for Distributions, {\em R News}, {\em 6}(2), 2-6. 
+\url{http://CRAN.R-project.org/doc/Rnews/Rnews_2006-2.pdf}
+
+a vignette for packages \pkg{distr}, \pkg{distrSim}, \pkg{distrTEst}, and \pkg{distrEx} 
+is included into the mere documentation package \pkg{distrDoc} and may be called by 
+\code{require("distrDoc");vignette("distr")}
+
+%a more detailed manual for \pkg{distr}, \pkg{distrSim}, \pkg{distrTEst}, and \pkg{distrEx} may be downloaded from  
+%\url{http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/distr.pdf}
 
 a homepage to this package is available under\cr
 \url{http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/}
+
 }
 
 \section{Start-up-Banner}{

@@ -19,9 +19,9 @@ V <- as(Norm(), "AbscontDistribution")
 
 ## for higher precision we change the global variable
 ## "TruncQuantile" from 1e-5 to 1e-8
-oldeps <- distroptions("TruncQuantile")
+oldeps <- getdistrOption("TruncQuantile")
 eps <- 1e-8
-distroptions("TruncQuantile", eps)
+distroptions("TruncQuantile" = eps)
 
 ## Computation of the approximation 
 ##      H=\sum_{j=1}^n phi^j V_{t-j}
@@ -38,7 +38,7 @@ X <- Norm(sd=sqrt(1/(1-phi^2)))
 #############################
 ## plots of the results
 #############################
-opar <- par(mfrow=c(1,3))
+par(mfrow=c(1,3))
 low <- q(X)(1e-15)
 upp <- q(X)(1-1e-15)
 x <- seq(from = low, to = upp, length = 10000)
@@ -79,6 +79,10 @@ dv <- integrate(total.var, lower=-Inf, upper=Inf,
 cat("Total variation distance of densities:\t")
 print(dv) # 2.7e-05
 
+### meanwhile realized in package "distrEx" 
+### as TotalVarDist(N1,N2)
+
+
 ## Kolmogorov distance of cdfs 
 ## the distance is evaluated on a random grid
 z <- r(Unif(Min=low, Max=upp))(1e5)
@@ -86,7 +90,9 @@ dk <- max(abs(p(X)(z)-p(H)(z)))
 cat("Kolmogorov distance of cdfs:\t", dk, "\n") 
 # 1.3e-05
 
+### meanwhile realized in package "distrEx" 
+### as KolmogorovDist(N1,N2)
+
+
 ## old distroptions
-distroptions("TruncQuantile", oldeps)
-## old par
-par(opar)
+distroptions("TruncQuantile" = oldeps)

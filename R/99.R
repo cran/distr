@@ -28,7 +28,8 @@
     msgb <- gettext("operations on corresponding random variables (r.v.s); see distrARITH().\n")
     msgc <- gettext("Note that global options are controlled by distroptions()\n---c.f. ?\"distroptions\".\n")
 buildStartupMessage(pkg="distr", msga,msgb,msgc, library=library, 
-                    packageHelp=TRUE, MANUAL="http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/distr.pdf")
+                    packageHelp=TRUE, # MANUAL="http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/distr.pdf",
+                    VIGNETTE=gettext("Package \"distrDoc\" provides a vignette to this package as well as\nto several extension packages; try vignette(\"distr\")."))
 #    msgd <- gettext("For more information see ?\"distr\", NEWS(\"distr\"), and \n")
 #    msge <- gettext("    http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/distr.pdf .\n")
 #    if((getOption("StartupBanner")=="complete")||is.null(getOption("StartupBanner"))) 

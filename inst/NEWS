@@ -4,6 +4,17 @@
 
 
 ##############
+v 1.8
+##############
+
+
+* Class DExp() introduced (with documentation)
+* show() for UnivariateDistribution now is the same as print()
+* dim() method for UnivariateDistribution 
+* distr (together with distrEx, distrSim, distrTEst) now includes a vignette --- try 
+  vignette("distr")
+
+##############
 v 1.7
 ##############
 

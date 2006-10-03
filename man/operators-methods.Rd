@@ -20,6 +20,7 @@
 \alias{*,UnivariateDistribution,numeric-method}
 \alias{*,DiscreteDistribution,numeric-method}
 \alias{*,AbscontDistribution,numeric-method}
+\alias{*,DExp,numeric-method}
 \alias{*,Exp,numeric-method}
 \alias{*,ExpOrGammaOrChisq,numeric-method}
 \alias{*,Cauchy,numeric-method}
@@ -78,6 +79,7 @@ slots filled by \code{\link{RtoDPQ}}, \code{\link{RtoDPQ.d}}}
 \item{\code{*}}{\code{signature(e1 = "UnivariateDistribution", e2 = "numeric")} result again of class \code{"UnivariateDistribution"}; exact}
 \item{\code{*}}{\code{signature(e1 = "DiscreteDistribution", e2 = "numeric")} result again of class \code{"DiscreteDistribution"}; exact}
 \item{\code{*}}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")} result again of class \code{"AbscontDistribution"}; exact}
+\item{\code{*}}{\code{signature(e1 = "DExp", e2 = "numeric")} if \code{abs(e2)>0} result again of class \code{"DExp"}; exact}
 \item{\code{*}}{\code{signature(e1 = "Exp", e2 = "numeric")} if \code{e2>0} result again of class \code{"Exp"}; exact}
 \item{\code{*}}{\code{signature(e1 = "ExpOrGammaOrChisq", e2 = "numeric")} if \code{e1} is a Gamma distribution and \code{e2>0} 
                                                                     result of class \code{"Gammad"}; exact}

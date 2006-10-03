@@ -63,12 +63,13 @@ Z = Truncate(N, -0.5, 1)
 
 plot(Z)
 
-cat("Hit <enter> to continue...")
-readline()
-
 # some truncated randomnumbers
 
 r(Z)(10)
+
+oldpar = par()
+par(mfrow = c(1,2))
+
 
 # cdf of truncated Normal-Distribution
 # and of Normal-Distribution
@@ -86,9 +87,6 @@ legend(-1.5,1,
        legend = c("N(0,1)", "N(0,1) truncated"),
        fill = c("red", "black"))
 
-cat("Hit <enter> to continue...")
-readline()
-        
 # density of truncated Normal-Distribution
 # and of Normal-Distribution
 
@@ -103,3 +101,6 @@ lines(x, d(N)(x),
       col = "red")
 legend(-1.5,0.7, legend = c("N(0,1)", "N(0,1) truncated"),
        fill = c("red", "black"))
+
+
+par(oldpar)

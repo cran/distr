@@ -6,8 +6,10 @@
 \alias{rate<-}
 \alias{rate,ExpParameter-method}
 \alias{rate,Exp-method}
+\alias{rate,DExp-method}
 \alias{rate<-,ExpParameter-method}
 \alias{rate<-,Exp-method}
+\alias{rate<-,DExp-method}
 \title{ Methods for Function rate in Package `distr' }
 \description{rate-methods}
 
@@ -18,6 +20,9 @@
 
 \item{rate}{\code{signature(object = "Exp")}: returns the slot \code{rate} of the parameter of the distribution }
 \item{rate<-}{\code{signature(object = "Exp")}: modifies the slot \code{rate} of the parameter of the distribution }
+
+\item{rate}{\code{signature(object = "DExp")}: returns the slot \code{rate} of the parameter of the distribution }
+\item{rate<-}{\code{signature(object = "DExp")}: modifies the slot \code{rate} of the parameter of the distribution }
 
 }}
 \keyword{}
