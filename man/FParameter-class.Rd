@@ -54,4 +54,7 @@ W <- new("FParameter", df1 = 1, df2 = 1, ncp = 0)
 df2(W) # df2 of this distribution is 1.
 df2(W) <- 2 # df2 of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{F distribution}
+\concept{S4 parameter class}

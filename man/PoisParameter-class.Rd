@@ -47,4 +47,7 @@ W <- new("PoisParameter",lambda = 1)
 lambda(W) # lambda of this distribution is 1.
 lambda(W) <- 2 # lambda of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Poisson distribution}
+\concept{S4 parameter class}

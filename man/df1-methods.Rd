@@ -19,4 +19,10 @@
 \item{df1}{\code{signature(object  = "Fd")}: returns the slot \code{df1} of the slot \code{param} of the distribution}
 \item{df1<-}{\code{signature(object = "Fd")}: modifies the slot \code{df1} of the slot \code{param} of the distribution }
 }}
-\keyword{}
+\keyword{distribution}
+\keyword{methods}
+\concept{degree of freedom}
+\concept{parameter}
+\concept{F distribution}
+\concept{accessor function}
+\concept{replacement function}

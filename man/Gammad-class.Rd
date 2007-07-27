@@ -1,4 +1,4 @@
-\name{Gammad-class}
+\name{Gammad-class} 
 \docType{class}
 \alias{Gammad-class}
 \alias{Gammad}
@@ -45,6 +45,10 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
     \item{scale<-}{\code{signature(object = "Gammad")}: modifies the slot \code{scale} of the parameter of the distribution }
     \item{shape}{\code{signature(object = "Gammad")}: returns the slot \code{shape} of the parameter of the distribution }
     \item{shape<-}{\code{signature(object = "Gammad")}: modifies the slot \code{shape} of the parameter of the distribution }
+    \item{+}{\code{signature(e1 = "Gammad", e2 = "Gammad")}: 
+    For the Gamma distribution we use its closedness under convolutions.}
+    \item{*}{\code{signature(e1 = "Gammad", e2 = "numeric")}: 
+    For the Gamma distribution we use its closedness under positive scaling transformations.}
   }
 }
 
@@ -66,12 +70,16 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
 
 }
 \examples{
-G=Gammad(scale=1,shape=1) # G is a gamma distribution with scale=1 and shape=1.
+G <- Gammad(scale=1,shape=1) # G is a gamma distribution with scale=1 and shape=1.
 r(G)(1) # one random number generated from this distribution, e.g. 0.1304441
 d(G)(1) # Density of this distribution is 0.3678794 for x=1.
 p(G)(1) # Probability that x<1 is 0.6321206.
 q(G)(.1) # Probability that x<0.1053605 is 0.1.
 scale(G) # scale of this distribution is 1.
-scale(G)=2 # scale of this distribution is now 2.
+scale(G) <- 2 # scale of this distribution is now 2.
 }
 \keyword{distribution}
+\concept{Gamma distribution}
+\concept{absolutely continuous distribution}
+\concept{S4 distribution class}
+\concept{generating function}

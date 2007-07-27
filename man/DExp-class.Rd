@@ -49,6 +49,8 @@ This object is a double exponential (or Laplace) distribution.
       returns the slot rate of the parameter of the distribution}
     \item{rate<-}{\code{signature(object = "DExp")}:
       modifies the slot rate of the parameter of the distribution}
+    \item{*}{\code{signature(e1 = "DExp", e2 = "numeric")}: 
+    For the Laplace distribution we use its closedness under scaling transformations.}
   }
 }
 
@@ -73,3 +75,8 @@ rate(D) <- 2 # rate of this distribution is now 2.
 3*D ###  still a DExp -distribution
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{Double exponential distribution}
+\concept{Laplace distribution}
+\concept{S4 distribution class}
+\concept{generating function}

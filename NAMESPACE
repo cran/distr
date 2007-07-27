@@ -5,29 +5,59 @@ import("startupmsg")
 
 export("Beta", "Binom", "Cauchy", "Chisq",  
        "Dirac","Exp", "DExp", "Fd", "Gammad", 
-       "Geom", "Hyper", "Lnorm", "Logis", "Nbinom", "Norm", "Pois", "RtoDPQ", 
+       "Geom", "Hyper", "Lnorm", "Logis", 
+       "Nbinom", "Norm", "Pois", "RtoDPQ", 
        "RtoDPQ.d", "Td", "Unif", "Weibull", 
        "distroptions", "getdistrOption", "simplifyr",
-       "standardMethods","distrARITH")
-exportClasses("rSpace", "EuclideanSpace", "Reals", "Naturals")
+       "Lattice", "DiscreteDistribution",
+       "LatticeDistribution", "EuclideanSpace", "Reals", 
+       "Naturals", "standardMethods", 
+       "distrARITH", "distrMASK")
+export("DistrList", "UnivarDistrList") 
+exportClasses("rSpace", "EuclideanSpace", "Reals", 
+              "Naturals")
 exportClasses("Parameter")
-exportClasses("OptionalParameter")
-exportClasses("BetaParameter", "BinomParameter", "CauchyParameter", "ChisqParameter",
-              "DiracParameter", "ExpParameter", "FParameter", "GammaParameter", 
-              "GeomParameter", "HyperParameter", "LogisParameter", "LnormParameter",
-              "NbinomParameter", "NormParameter", "PoisParameter", "TParameter",
-              "UnifParameter", "WeibullParameter", "UniNormParameter")
+exportClasses("OptionalParameter", "OptionalMatrix")
+exportClasses("BetaParameter", "BinomParameter", 
+              "CauchyParameter", "ChisqParameter",
+              "DiracParameter", "ExpParameter", 
+              "FParameter", "GammaParameter", 
+              "HyperParameter", "GeomParameter",
+              "LogisParameter", "LnormParameter",
+              "NbinomParameter", "NormParameter", 
+              "PoisParameter", "TParameter",
+              "UnifParameter", "WeibullParameter", 
+              "UniNormParameter")
 exportClasses("Distribution")
-exportClasses("UnivariateDistribution", "AbscontDistribution", "DiscreteDistribution", 
-              "Beta", "Binom", "Cauchy", "Chisq", "Dirac", "DExp", "Exp", "Fd", "Gammad", "Geom", 
-              "Hyper", "Logis", "Lnorm", "Nbinom", "Norm", "Pois", "Td", "Unif", "Weibull",
+exportClasses("UnivariateDistribution", "AbscontDistribution", 
+              "DiscreteDistribution", "LatticeDistribution", 
+              "AffLinAbscontDistribution", "AffLinDiscreteDistribution", 
+              "AffLinLatticeDistribution", "AffLinDistribution", "Lattice",
+              "Beta", "Binom", "Cauchy", "Chisq", "Dirac", 
+              "DExp", "Exp", "Fd", "Gammad", "Geom", 
+              "Hyper", "Logis", "Lnorm", "Nbinom", "Norm", 
+              "Pois", "Td", "Unif", "Weibull",
               "ExpOrGammaOrChisq")
-exportMethods("Max", "Max<-", "Min", "Min<-", "d", "df", "df<-", "df1", "df1<-", "df2", 
-              "df2<-", "dimension", "dimension<-", "name", "name<-", "img", "k", "k<-", 
-              "lambda", "lambda<-", "liesIn", "location", "location<-", "m", "m<-", "mean", 
-              "mean<-", "meanlog", "meanlog<-", "n", "n<-", "ncp", "ncp<-", "p", "param", 
-              "prob", "prob<-", "q", "r", "rate", "rate<-", "scale", "scale<-", "sd", "sd<-", 
-              "sdlog", "sdlog<-", "shape", "shape<-", "shape1", "shape1<-", "shape2", "shape2<-", 
-              "size", "size<-", "support", "initialize", "print", "plot", "+", "-", "/", "*", 
-              "Math", "log", "log10", "gamma", "lgamma", "dim", "show")
+exportClasses("DistrList", 
+              "UnivarDistrList")
+exportMethods("Max", "Max<-", "Min", "Min<-", "d", "df", 
+              "df<-", "df1", "df1<-", "df2", 
+              "df2<-", "dimension", "dimension<-", "name", 
+              "name<-", "img", "k", "k<-", 
+              "lambda", "lambda<-", "liesIn", "location", 
+              "location<-", "m", "m<-", "mean", 
+              "mean<-", "meanlog", "meanlog<-", "n", 
+              "n<-", "ncp", "ncp<-", "p", "param", 
+              "prob", "prob<-", "q", "r", "rate", "p.l", "q.r",
+              "rate<-", "scale", "scale<-", "sd", "sd<-", 
+              "sdlog", "sdlog<-", "shape", "shape<-", 
+              "shape1", "shape1<-", "shape2", "shape2<-", 
+              "size", "size<-", "support", "initialize", 
+              "print", "plot", "+", "-", "/", "*", "coerce",
+              "Math", "log", "log10", "gamma", "lgamma", 
+              "dim", "show", "convpow", "pivot", 
+              "lattice", "width", "Length", "pivot<-", 
+              "width<-", "Length<-", "liesInSupport",
+              "isOldVersion", "conv2NewVersion", "gaps",
+              "gaps<-", "setgaps", "getLow", "getUp")
 

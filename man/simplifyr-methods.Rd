@@ -26,4 +26,9 @@ system.time(r(F)(10^6))
 simplifyr(F, size = 10^6)
 system.time(r(F)(10^6))}
 
-\keyword{}
+\keyword{math}
+\keyword{distribution}
+\keyword{arith}
+\concept{random sample}
+\concept{image distribution}
+\concept{utility}

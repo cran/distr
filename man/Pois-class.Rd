@@ -84,3 +84,8 @@ R <- Pois(lambda = 3) # R is a Poisson distribution with lambda = 2.
 S <- P + R # R is a Poisson distribution with lambda = 5(=2+3).
 }
 \keyword{distribution}
+\concept{discrete distribution}
+\concept{lattice distribution}
+\concept{Poisson distribution}
+\concept{S4 parameter class}
+\concept{generating function}

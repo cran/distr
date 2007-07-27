@@ -53,6 +53,8 @@ parameters \code{shape = 1, scale = 1/rate(obj)}
       returns the slot rate of the parameter of the distribution}
     \item{rate<-}{\code{signature(object = "Exp")}:
       modifies the slot rate of the parameter of the distribution}
+    \item{*}{\code{signature(e1 = "Exp", e2 = "numeric")}: 
+    For the exponential distribution we use its closedness under positive scaling transformations.}
   }
 }
 
@@ -83,3 +85,8 @@ E+E+E ###  a Gammad -distribution
 2*E+Gammad(scale=1)
 }
 \keyword{distribution}
+\concept{Exponential distribution}
+\concept{memoryless distribution}
+\concept{absolutely continuous distribution}
+\concept{S4 distribution class}
+\concept{generating function}

@@ -1,110 +1,133 @@
 ##setMethod("+", c("AbscontDistribution","DiscreteDistribution"),
-##          function(e1,e2){
-##            rnew = function(n) r(e1)(n) + r(e2)(n)
-##            new("AbscontDistribution", r = rnew)
+##          function(e1,e2){               
+##            rfun = function(n) r(e1)(n) + r(e2)(n)
+##            new("AbscontDistribution", r = rfun)
 ##          })
 
 
 ##setMethod("+", c("DiscreteDistribution","AbscontDistribution"),
 ##          function(e1,e2){
-##            rnew = function(n) r(e1)(n) + r(e2)(n)
-##            new("AbscontDistribution", r = rnew)
+##            rfun = function(n) r(e1)(n) + r(e2)(n)
+##            new("AbscontDistribution", r = rfun)
 ##          })
 
 
 
 
-setMethod("+", c("numeric","UnivariateDistribution"),
+setMethod("+", c("numeric", "UnivariateDistribution"),
           function(e1, e2){
             e2 + e1
           })
 
-setMethod("-", c("numeric","UnivariateDistribution"),
+setMethod("-", c("numeric", "UnivariateDistribution"),
           function(e1, e2){
             -1*e2 + e1
           })
 
-setMethod("*", c("numeric","UnivariateDistribution"),
+setMethod("*", c("numeric", "UnivariateDistribution"),
           function(e1, e2){
             e2 * e1
           })
 
-setMethod("-", c("UnivariateDistribution","UnivariateDistribution"),
+setMethod("-", c("UnivariateDistribution", "UnivariateDistribution"),
           function(e1,e2){
             e1+(-e2)
           })
-setMethod("-", c("UnivariateDistribution","missing"),
+setMethod("-", c("UnivariateDistribution", "missing"),
           function(e1){
             e1*(-1)
           })
 
 
-setMethod("-", c("UnivariateDistribution","numeric"),
+setMethod("-", c("UnivariateDistribution", "numeric"),
           function(e1, e2){
             return(e1 + (-e2))
           })
 
-setMethod("/", c("UnivariateDistribution","numeric"),
+setMethod("/", c("UnivariateDistribution", "numeric"),
           function(e1, e2){
             if(e2 == 0) stop("division by zero")
             return(e1 * (1/e2))
           })
 
 
-setMethod("+", c("AbscontDistribution","DiscreteDistribution"),
+setMethod("+", c("AbscontDistribution", "DiscreteDistribution"),
           function(e1,e2){
             return(e2 + e1)
           })
 
+setMethod("+", c("LatticeDistribution", "DiscreteDistribution"),
+          function(e1,e2){
+            return(e2 + as(e1,"DiscreteDistribution"))
+          })
+
 
 setMethod("+", c("DiscreteDistribution","AbscontDistribution"),
-          function(e1,e2){
-            rnew <- function(n) r(e1)(n) + r(e2)(n)
-            
-            grid <- support(e1)
-            probab <- d(e1)(grid)
+function(e1,e2){
+     rfun <- function(n){}
+     body(rfun) <- substitute({ f(n) + g(n) },
+                                list(f = e1@r, g = e2@r))
+     grid <- support(e1)
+     probab <- d(e1)(grid)
 
-            lower1 <- min(grid)
-            upper1 <- max(grid)
-            lower2 <- ifelse((q(e2)(0) > - Inf), q(e2)(0), q(e2)(.distroptions$TruncQuantile))
-            upper2 <- ifelse((q(e2)(1) < Inf), q(e2)(1), q(e2)(1 - .distroptions$TruncQuantile))
-            
-            lower = lower1 + lower2
-            upper = upper1 + upper2
-            approxgrid = seq(from = lower, to = upper, length = .distroptions$DefaultNrGridPoints)
-                        
-            dnew <- function(x) sum(probab * d(e2)(x - grid))
-            dnew2 <- function(x) sapply(x, dnew) / sum(probab)
-            newd <- dnew2(approxgrid)
-            dnew3 <- approxfun(approxgrid, newd, yleft = 0, yright = 0)
-            ## integrate the piecewise linear function dnew3 
-            standardizer <- sum(newd[1:(length(newd) - 1)] + newd[2:length(newd)]) / 2 * (approxgrid[2] - approxgrid[1])
-            dnew4 <- function(x) dnew3(x) / standardizer
+     lower1 <- getLow(e1)
+     upper1 <- getUp(e1)
+     lower2 <- getLow(e2)
+     upper2 <- getUp(e2)
 
-            pnew <- function(x) sum(probab * p(e2)(x - grid))
-            pnew2 <- function(x) sapply(x, pnew) / sum(probab)
+     lower <- lower1 + lower2
+     upper <- upper1 + upper2
+     x <- seq(from = lower, to = upper,
+              length = getdistrOption("DefaultNrGridPoints"))
+     h <- x[2]-x[1]
+     dpn <- outer(x, grid, function(x,y) d(e2)(x - y)) %*% probab
+     
+     ### treatment if density of e2 has singularities
+     if(any(idx <- (dpn*h >= 10*length(dpn)))){
+        Lx <- length(dpn)
+        idx <- seq(Lx)[idx]
+        Li <- length(idx)
+        xx <- x[idx]
+        xxp <- ifelse(upper2-xx < .Machine$double.eps, xx-h/4 , xx+h/2)
+        xxm <- ifelse(xx-lower2 < .Machine$double.eps, xx+h/4 , xx-h/2)
+        xx0 <- sort(c(xxm,xxp))
+        jdx <- 2*seq(Li)-1
+        pn <- outer(xx0, grid, function(x,y) p(e2)(x - y)) %*% probab/(xxp-xxm)
+        dpn[idx] <- diff(pn)[jdx]
+     }
 
-            pvalues <- pnew2(approxgrid)
-            pnew3 <- approxfun(approxgrid, pvalues/max(pvalues), yleft = 0, yright = 1)            
-            
-            w0 <- options("warn")
-            options(warn = -1)
+     dfun <- .makeDNew(x, dpn, h=1, standM="int" )
 
-            qfun1 <- approxfun(x = pnew2(approxgrid), y = approxgrid, yleft = lower, yright = upper)
-            qfun2 <- function(x){ 
-              ind1 <- (x == 0)*(1:length(x))
-              ind2 <- (x == 1)*(1:length(x))
-              y <- qfun1(x)
-              y <- replace(y, ind1[ind1 != 0], lower)
-              y <- replace(y, ind2[ind2 != 0], upper)
-              return(y)
-            }
+     if(is(e2,"Chisq")){
+        pfun <- .makePNew(x, dpn, h,
+                          .notwithLArg(e1)||.notwithLArg(e2))
+     }else{
+#
+     pl <- outer(x, grid, function(x,y) p(e2)(x - y)) %*% probab
+     pu <- if (.inArgs("lower.tail", p(e2)))
+               outer(x, grid,
+                     function(x,y) p(e2)(x - y, lower.tail = FALSE)) %*% probab
+           else
+               outer(x, grid, function(x,y) 1-p(e2)(x - y)) %*% probab
+     ## cdf (steps 5--7)
+     pfun <- .makePNew(x, NULL, h,
+                        .notwithLArg(e1)||.notwithLArg(e2), pxl = pl , pxu = pu)
+     }
+     ## quantile function
+     yL <-  if ((q(e1)(0) == -Inf)||(q(e2)(0) == -Inf))
+          -Inf else lower
+     yR <-  if ((q(e1)(1) ==  Inf)||(q(e2)(1) ==  Inf))
+           Inf else upper
+     ## contintuity correction
+     px.l <- pfun(x + 0.5*h)
+     px.u <- pfun(x + 0.5*h, lower.tail = FALSE)
 
-            options(w0)
+#     print(px.l)
+#     print(px.u)
+     qfun <- .makeQNew(x + 0.5*h, px.l, px.u,
+                       .notwithLArg(e1)||.notwithLArg(e1), yL, yR)
 
-            object <- new("AbscontDistribution", r = rnew, d = dnew4, p = pnew3, q = qfun2, 
-                           .withSim = FALSE, .withArith = TRUE)
-            body(object@r) <- substitute({ f(n) + g(n) },
-                                         list(f = e1@r, g = e2@r))
-            object
-          }) 
+     object <- new("AbscontDistribution", r = rfun, d = dfun, p = pfun,
+                    q = qfun, .withSim = FALSE, .withArith = TRUE)
+     object
+     }) 

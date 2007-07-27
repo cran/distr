@@ -42,4 +42,13 @@ distribution}
 \item{location}{\code{signature(object = "Dirac")}: returns the slot \code{location} of the parameter of the distribution }
 \item{location<-}{\code{signature(object = "Dirac")}: modifies the slot \code{location} of the parameter of the distribution }
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{Dirac distribution}
+\concept{Cauchy distribution}
+\concept{S4 parameter class}
+\concept{accessor function}
+\concept{replacement function}
+\concept{location scale family}
+\concept{location parameter}

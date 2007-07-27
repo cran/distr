@@ -1,4 +1,4 @@
-\name{prob-methods}
+\name{prob-methods} 
 \docType{methods}
 \alias{prob-methods}
 \alias{prob<--methods}
@@ -33,10 +33,17 @@
 \item{prob}{\code{signature(object = "Nbinom")}: returns the slot \code{prop} of the parameter of the distribution }
 \item{prob<-}{\code{signature(object = "Nbinom")}: modifies the slot \code{prob} of the parameter of the distribution }
 
-\item{prob}{\code{signature(object = "GeomParameter")}: returns the slot \code{prop} of the parameter of the distribution }
-\item{prob<-}{\code{signature(object = "GeomParameter")}: modifies the slot \code{prob} of the parameter of the distribution }
+\item{prob}{\code{signature(object = "GeomParameter")}: returns the slot \code{prop} of the parameter of the distribution (deprecated from 1.9 on)}
+\item{prob<-}{\code{signature(object = "GeomParameter")}: modifies the slot \code{prob} of the parameter of the distribution (deprecated from 1.9 on)}
 
 \item{prob}{\code{signature(object = "Geom")}: returns the slot \code{prop} of the parameter of the distribution }
 \item{prob<-}{\code{signature(object = "Geom")}: modifies the slot \code{prob} of the parameter of the distribution }
 }}
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Binomial distribution}
+\concept{Negative Binomial distribution}
+\concept{Geometric distribution}
+\concept{S4 parameter class}
+\concept{accessor function}
+\concept{replacement function}

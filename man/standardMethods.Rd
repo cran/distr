@@ -14,7 +14,7 @@ standardMethods(class, writetofile = FALSE, directory)
   \item{writetofile}{logical value, indicating wheter output is to be written to a file}
   \item{directory}{if writetofile = TRUE, the output is
     written to a file in the given directory, the name of the file
-    starting with "classname " and ending with "StandardMethods.txt"}
+    starting with "classname" and ending with "StandardMethods.txt"}
 }
 \value{no value is returned
 }

@@ -75,3 +75,5 @@ distroptions(currentDistrOptions)
 }
 \seealso{\code{\link[base]{options}}, \code{\link[base]{getOption}}}
 \keyword{distribution}
+\concept{global options}
+\concept{options}

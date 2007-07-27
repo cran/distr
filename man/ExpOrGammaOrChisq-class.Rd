@@ -33,3 +33,10 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
 ## class only used internally
 }
 \keyword{internal}
+\keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{Chi square distribution}
+\concept{Exp distribution}
+\concept{Gamma distribution}
+\concept{S4 class union}
+\concept{virtual class}

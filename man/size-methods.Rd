@@ -34,4 +34,11 @@
 \item{size}{\code{signature(object = "Geom")}: returns the slot \code{size} of the parameter of the distribution }
 
 }}
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Binomial distribution}
+\concept{Negative Binomial distribution}
+\concept{Geometric distribution}
+\concept{S4 parameter class}
+\concept{accessor function}
+\concept{replacement function}

@@ -1,15 +1,12 @@
 ## borrowed from Andy Liaw's rfNews()
 
 
-infoShow <- function(package, filename)
-   {file.show(file.path(system.file(package = package), filename))}
-
-NEWS<-function(package) 
+distrARITH <- function(library = NULL) 
 {
-    infoShow(package, filename="NEWS")
+    infoShow(pkg = "distr", filename = "ARITHMETICS", library = library)
 }
 
-distrARITH<-function() 
+distrMASK <- function(library = NULL) 
 {
-    infoShow(package = "distr", filename="ARITHMETICS")
+    infoShow(pkg = "distr", filename="MASKING", library = library)
 }

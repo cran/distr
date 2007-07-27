@@ -1,7 +1,6 @@
 \name{Geom-class}
 \docType{class}
 \alias{Geom-class}
-\alias{GeomOrNbinom-class}
 \alias{Geom}
 \alias{initialize,Geom-method}
 
@@ -22,9 +21,9 @@
     \item{\code{img}:}{Object of class \code{"Naturals"}:
       The space of the image of this distribution has got dimension 1
       and the name "Natural Space".}
-    \item{\code{param}:}{Object of class \code{"GeomParameter"}:
-      the parameter of this distribution (prob), declared at its
-      instantiation}
+    \item{\code{param}:}{Object of class \code{"NbinomParameter"}:
+      the parameter of this distribution (prob),  
+      declared at its instantiation (size=1)}
     \item{\code{r}:}{Object of class \code{"function"}:
       generates random numbers (calls function rgeom)}
     \item{\code{d}:}{Object of class \code{"function"}:
@@ -46,9 +45,10 @@ Class \code{"Nbinom"}, directly.\cr
 Class \code{"UnivariateDistribution"}, by class \code{"DiscreteDistribution"}.\cr
 Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 }
-\section{Is-Relations}{
-By means of \code{setIs}, R ``knows'' that a distribution object \code{obj} of class \code{"Geom"} also is
-a negative Binomial distribution with parameters \code{size = 1, prob = prob(obj)}
+\section{Contains-Relations}{
+By means of a \code{contains} argument in the class declaration, R ``knows'' 
+that a distribution object \code{obj} of class \code{"Geom"} also is a 
+negative Binomial distribution with parameters \code{size = 1, prob = prob(obj)}
 }
 \section{Methods}{
   \describe{
@@ -66,7 +66,8 @@ Florian Camphausen \email{fcampi@gmx.de},\cr
   Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
-\note{Working with a computer, we use a finite interval as support which carries at least mass \code{1-getdistrOption("TruncQuantile")}. }
+\note{Working with a computer, we use a finite interval as support which carries 
+      at least mass \code{1-getdistrOption("TruncQuantile")}. }
 
 \seealso{
 \code{\link{Nbinom-class}}
@@ -87,3 +88,9 @@ as(G,"Nbinom")
 G+G+G
 }
 \keyword{distribution}
+\concept{discrete distribution}
+\concept{lattice distribution}
+\concept{Geometric distribution}
+\concept{Negative Binomial distribution}
+\concept{S4 parameter class}
+\concept{generating function}

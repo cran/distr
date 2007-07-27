@@ -10,4 +10,8 @@
 
 \item{img}{\code{signature(object  = "Distribution")}: returns the image space / domain of the distribution }
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{space}
+\concept{range space of a distribution}
+\concept{accessor function}

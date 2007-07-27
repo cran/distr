@@ -29,4 +29,11 @@
 \item{df}{\code{signature(object = "Chisq")}: returns the slot \code{df} of the parameter of the distribution }
 \item{df<-}{\code{signature(object = "Chisq")}: modifies the slot \code{df} of the parameter of the distribution }
 }}
-\keyword{}
+\keyword{distribution}
+\keyword{methods}
+\concept{degree of freedom}
+\concept{parameter}
+\concept{T distribution}
+\concept{Chi square distribution}
+\concept{accessor function}
+\concept{replacement function}

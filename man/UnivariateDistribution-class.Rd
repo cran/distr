@@ -105,3 +105,6 @@ Class \code{"Distribution"}, directly.
 \code{\link{simplifyr-methods}}
 }
 \keyword{distribution}
+\concept{univariate distribution}
+\concept{S4 distribution class}
+

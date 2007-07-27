@@ -18,4 +18,13 @@
 \item{sd<-}{\code{signature(object = "Norm")}: modifies the slot sd of the parameter of the distribution }
 }}
 \seealso{\link[stats]{sd}}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{Normal distribution}
+\concept{Gaussian distribution}
+\concept{S4 parameter class}
+\concept{location scale family}
+\concept{scale parameter}
+\concept{accessor function}
+\concept{replacement function}

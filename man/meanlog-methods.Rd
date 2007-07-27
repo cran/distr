@@ -16,4 +16,10 @@
 \item{meanlog}{\code{signature(object = "Lnorm")}: returns the slot meanlog of the parameter of the distribution }
 \item{meanlog<-}{\code{signature(object = "Lnorm")}: modifies the slot meanlog of the parameter of the distribution }
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{Log-Normal distribution}
+\concept{S4 parameter class}
+\concept{accessor function}
+\concept{replacement function}

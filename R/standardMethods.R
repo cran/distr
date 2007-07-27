@@ -1,4 +1,4 @@
-##########################################################################################################
+################################################################################
 
 ## standardMethods
 
@@ -6,9 +6,9 @@
 
 ## args:
 ##
-## class         -       string containing the class names
-## writetofile   -       logical value: TRUE, if output is to be written on file
-## directory     -       target directory for the file to be created
+## class         -    string containing the class names
+## writetofile   -    logical value: TRUE, if output is to be written on file
+## directory     -    target directory for the file to be created
 
 ## value:
 ##
@@ -19,7 +19,7 @@
 ## If output, too, is to be written to a file, standardMethods generates a file
 ## <classname>_StandardMethods.txt in the given directory
 
-############################################################################################################
+################################################################################
 
 standardMethods <- function(class, writetofile = FALSE, directory){
   ClassRep <- getClassDef(class)
@@ -34,8 +34,12 @@ standardMethods <- function(class, writetofile = FALSE, directory){
   part3 <- "\"))"
   
   for(i in 1:nrSlots){
-    string <- paste(part0,SlotNames[i],part1,SlotNames[i],part2,SlotNames[i],part3, "\n", sep = "")
-    if(writetofile) cat(string, file = paste(directory, class, "_StandardMethods.txt", sep=""), append = FALSE)
+    string <- paste(part0, SlotNames[i], part1, SlotNames[i],
+                    part2, SlotNames[i], part3, "\n", sep = "")
+    if(writetofile) cat(string, 
+                        file = paste(directory, class, 
+                                     "_StandardMethods.txt", sep=""), 
+                        append = FALSE)
     cat(string, sep = "")
   }    
   
@@ -45,8 +49,12 @@ standardMethods <- function(class, writetofile = FALSE, directory){
   part4 <- ")"
   
   for(i in 1:nrSlots){
-    string <- paste(part1,SlotNames[i],part2,class, part3, SlotNames[i],part4, "\n", sep = "")
-    if(writetofile) cat(string, file = paste(directory, class, "_StandardMethods.txt", sep=""), append = TRUE)
+    string <- paste(part1, SlotNames[i], part2, class, 
+                    part3, SlotNames[i], part4, "\n", sep = "")
+    if(writetofile) cat(string, 
+                        file = paste(directory, class, 
+                                     "_StandardMethods.txt", sep=""), 
+                        append = TRUE)
     cat(string, sep = "")
   }    
   
@@ -56,8 +64,12 @@ standardMethods <- function(class, writetofile = FALSE, directory){
   part3 <- "<-\"))"
   
   for(i in 1:nrSlots){
-    string <- paste(part0,SlotNames[i],part1,SlotNames[i],part2,SlotNames[i],part3, "\n", sep = "")
-    if(writetofile) cat(string, file = paste(directory, class, "_StandardMethods.txt", sep=""), append = TRUE)
+    string <- paste(part0, SlotNames[i], part1, SlotNames[i], 
+                    part2, SlotNames[i], part3, "\n", sep = "")
+    if(writetofile) cat(string, 
+                        file = paste(directory, class, 
+                                     "_StandardMethods.txt", sep=""), 
+                        append = TRUE)
     cat(string, sep = "")
   }    
   
@@ -67,8 +79,12 @@ standardMethods <- function(class, writetofile = FALSE, directory){
   part4 <- " <- value; object})"
   
   for(i in 1:nrSlots){
-    string <- paste(part1,SlotNames[i],part2,class, part3, SlotNames[i],part4, "\n", sep = "")
-    if(writetofile) cat(string, file = paste(directory, class, "_StandardMethods.txt", sep=""), append = TRUE)
+    string <- paste(part1, SlotNames[i], part2, class, 
+                    part3, SlotNames[i], part4, "\n", sep = "")
+    if(writetofile) cat(string, 
+                        file = paste(directory, class, 
+                                     "_StandardMethods.txt", sep=""), 
+                        append = TRUE)
     cat(string, sep = "")
   }    
 }            

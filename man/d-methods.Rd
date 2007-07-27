@@ -7,7 +7,13 @@
 \description{d-methods}
 
 \section{Methods}{\describe{
-
 \item{d}{\code{signature(object = "Distribution")}: returns the density function }
 }}
-\keyword{}
+\seealso{
+\code{\link{Distribution-class}}
+}
+\keyword{distribution}
+\keyword{methods}
+\concept{density}
+\concept{probability function}
+\concept{accessor function}

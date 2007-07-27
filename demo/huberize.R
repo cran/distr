@@ -60,7 +60,7 @@ plot(x, p(HN)(x),
 lines(x, p(N)(x),
       lwd = 2,
       col = "red")
-legend(-1.5,1,
+legend("topleft",
        legend = c("N(0,1)", "N(0,1) huberized"),
        fill = c("red", "black"))
 
@@ -74,8 +74,10 @@ plot(x, q(HN)(x),
 lines(x, q(N)(x),
       lwd = 2,
       col = "red")
-legend(0,3,
+legend("topleft",
        legend = c("N(0,1)", "N(0,1) huberized"),
        fill = c("red", "black"))
+lines(c(0,p(HN)(-0.5)),-c(1,1)*0.5, lwd = 5)
+points(0,-0.5,pch=20,cex=2)
 
 par(oldpar)

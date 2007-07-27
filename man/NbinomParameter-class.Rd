@@ -1,4 +1,4 @@
-\name{NbinomParameter-class}
+\name{NbinomParameter-class} 
 \docType{class}
 \alias{NbinomParameter-class}
 \alias{initialize,NbinomParameter-method}
@@ -45,8 +45,11 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("NbinomParameter",prob=0.5,size=1)
+W <- new("NbinomParameter",prob=0.5,size=1)
 size(W) # size of this distribution is 1.
-size(W)=2 # size of this distribution is now 2.
+size(W) <- 2 # size of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Negative Binomial distribution}
+\concept{S4 parameter class}

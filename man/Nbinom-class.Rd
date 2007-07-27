@@ -1,4 +1,4 @@
-\name{Nbinom-class}
+\name{Nbinom-class} 
 \docType{class}
 \alias{Nbinom-class}
 \alias{Nbinom}
@@ -50,6 +50,8 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
     \item{prob<-}{\code{signature(object = "Nbinom")}: modifies the slot \code{prob} of the parameter of the distribution }
     \item{size}{\code{signature(object = "Nbinom")}: returns the slot \code{size} of the parameter of the distribution }
     \item{size<-}{\code{signature(object = "Nbinom")}: modifies the slot \code{size} of the parameter of the distribution }
+    \item{+}{\code{signature(e1 = "Nbinom", e2 = "Nbinom")}: 
+    For the negative binomial distribution we use its closedness under convolutions.}
   }
 }
 
@@ -69,12 +71,17 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 \code{\link[stats:NegBinomial]{rnbinom}}
 }
 \examples{
-N=Nbinom(prob=0.5,size=1) # N is a binomial distribution with prob=0.5 and size=1.
+N <- Nbinom(prob = 0.5, size = 1) # N is a binomial distribution with prob=0.5 and size=1.
 r(N)(1) # one random number generated from this distribution, e.g. 3
 d(N)(1) # Density of this distribution is  0.25 for x=1.
 p(N)(0.4) # Probability that x<0.4 is 0.5.
 q(N)(.1) # x=0 is the smallest value x such that p(B)(x)>=0.1.
 size(N) # size of this distribution is 1.
-size(N)=2 # size of this distribution is now 2.
+size(N) <- 2 # size of this distribution is now 2.
 }
 \keyword{distribution}
+\concept{discrete distribution}
+\concept{lattice distribution}
+\concept{Negative Binomial distribution}
+\concept{S4 parameter class}
+\concept{generating function}

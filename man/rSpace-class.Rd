@@ -26,7 +26,12 @@ take naturals as values. rSpace is the mother-class of the class EuclideanSpace.
 
 
 \seealso{
+\code{\link{Lattice-class}}
+\code{\link{Naturals-class}}
 \code{\link{EuclideanSpace-class}}
 \code{\link{Distribution-class}}
 }
-\keyword{}
+\concept{space}
+\concept{set}
+\concept{S4 space class}
+\keyword{distribution}

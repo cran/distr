@@ -1,4 +1,4 @@
-\name{LnormParameter-class}
+\name{LnormParameter-class} 
 \docType{class}
 \alias{LnormParameter-class}
 \alias{initialize,LnormParameter-method}
@@ -48,8 +48,11 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("LnormParameter",sdlog=1,meanlog=0)
+W <- new("LnormParameter",sdlog=1,meanlog=0)
 meanlog(W) # meanlog of this distribution is 0.
-meanlog(W)=2 # meanlog of this distribution is now 2.
+meanlog(W) <- 2 # meanlog of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Log-Normal distribution}
+\concept{S4 parameter class}

@@ -25,4 +25,12 @@
 \item{rate<-}{\code{signature(object = "DExp")}: modifies the slot \code{rate} of the parameter of the distribution }
 
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{Double Exponential distribution}
+\concept{Exponential distribution}
+\concept{Laplace distribution}
+\concept{S4 parameter class}
+\concept{accessor function}
+\concept{replacement function}

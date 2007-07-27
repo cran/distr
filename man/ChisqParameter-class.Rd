@@ -1,4 +1,4 @@
-\name{ChisqParameter-class}
+\name{ChisqParameter-class} 
 \docType{class}
 \alias{ChisqParameter-class}
 \alias{initialize,ChisqParameter-method}
@@ -44,8 +44,11 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("ChisqParameter",df=1,ncp=1)
+W <- new("ChisqParameter",df=1,ncp=1)
 ncp(W) # ncp of this distribution is 1.
-ncp(W)=2 # ncp of this distribution is now 2.
+ncp(W) <- 2 # ncp of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Chi square distribution}
+\concept{S4 parameter class}

@@ -1,5 +1,6 @@
 \name{Naturals-class}
 \docType{class}
+\alias{Naturals}
 \alias{Naturals-class}
 \alias{initialize,Naturals-method}
 
@@ -11,6 +12,8 @@ Objects could theoretically be created by calls of the form \code{new("Naturals"
 Usually an object of this class is not needed on its own. It is generated automatically when a univariate discrete
 distribution is instantiated. 
 }
+\usage{Naturals()}
+
 \section{Slots}{
   \describe{
     \item{\code{dimension}:}{Object of class \code{"character"}: the dimension of the space, by default = 1 }
@@ -43,11 +46,14 @@ Class \code{"rSpace"}, by class \code{"Reals"}.
 }
 
 \examples{
-N=new("Naturals")
+N <- Naturals()
 liesIn(N,1) # TRUE
 liesIn(N,c(0,1)) # FALSE
 liesIn(N,0.1) # FALSE
 }
 
-
+\concept{naturals}
+\concept{space}
+\concept{set}
+\concept{S4 space class}
 \keyword{distribution}

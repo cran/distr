@@ -8,6 +8,15 @@
 
 \section{Methods}{\describe{
 
-\item{p}{\code{signature(object = "Distribution")}: returns the cumulative distribution function }
+\item{p}{\code{signature(object = "Distribution")}: returns the cumulative distribution function,
+i.e.; \eqn{p.l(t) = P(object \le t)}{p.l(t) = P(object <= t)}  }
 }}
-\keyword{}
+\seealso{
+\code{\link{Distribution-class}}
+}
+\keyword{distribution}
+\keyword{methods}
+\concept{cumulative distribution function}
+\concept{accessor function}
+\concept{CDF}
+\concept{right-continuous}

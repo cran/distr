@@ -5,7 +5,7 @@
 \alias{initialize,Hyper-method}
 
 \title{Class "Hyper" }
-\description{  The hypergeometric distribution is used for sampling \emph{without}
+\description{  The hypergeometric distribution is used for sampling \emph{without} 
   replacement.  The density of this distribution with parameters
   \code{m}, \code{n} and \code{k} (named \eqn{Np}, \eqn{N-Np}, and
   \eqn{n}, respectively in the reference below) is given by
@@ -67,12 +67,17 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 \code{\link[stats:Hypergeometric]{rhyper}}
 }
 \examples{
-H=Hyper(m=3,n=3,k=3) # H is a hypergeometric distribution with m=3,n=3,k=3.
+H <- Hyper(m=3,n=3,k=3) # H is a hypergeometric distribution with m=3,n=3,k=3.
 r(H)(1) # one random number generated from this distribution, e.g. 2
 d(H)(1) # Density of this distribution is  0.45 for x=1.
 p(H)(1) # Probability that x<1 is 0.5.
 q(H)(.1) # x=1 is the smallest value x such that p(H)(x)>=0.1.
 m(H) # m of this distribution is 3.
-m(H)=2 # m of this distribution is now 2.
+m(H) <- 2 # m of this distribution is now 2.
 }
 \keyword{distribution}
+\concept{discrete distribution}
+\concept{lattice distribution}
+\concept{Hypergeometric distribution}
+\concept{S4 parameter class}
+\concept{generating function}

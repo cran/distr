@@ -1,4 +1,4 @@
-\name{HyperParameter-class}
+\name{HyperParameter-class} 
 \docType{class}
 \alias{HyperParameter-class}
 \alias{initialize,HyperParameter-method}
@@ -47,8 +47,11 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("HyperParameter",k=3, m=3, n=3)
+W <- new("HyperParameter",k=3, m=3, n=3)
 m(W) # m of this distribution is 3.
-m(W)=2 # m of this distribution is now 2.
+m(W) <- 2 # m of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Hypergeometric distribution}
+\concept{S4 parameter class}

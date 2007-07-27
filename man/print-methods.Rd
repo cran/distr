@@ -13,4 +13,6 @@
 \item{show}{\code{signature(x = "UnivariateDistribution")}: returns the class of the object and its parameters }
 
 }}
-\keyword{}
+\keyword{print}
+\keyword{methods}
+\keyword{distribution}

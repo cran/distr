@@ -1,4 +1,4 @@
-\name{TParameter-class}
+\name{TParameter-class} 
 \docType{class}
 \alias{TParameter-class}
 \alias{initialize,TParameter-method}
@@ -42,8 +42,11 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("TParameter",df=1, ncp = 0)
+W <- new("TParameter",df=1, ncp = 0)
 df(W) # df of this distribution is 1.
-df(W)=2 # df of this distribution is now 2.
+df(W) <- 2 # df of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{T distribution}
+\concept{S4 parameter class}

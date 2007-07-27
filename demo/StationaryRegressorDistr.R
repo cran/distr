@@ -1,5 +1,5 @@
 #####################################################
-## Demo: Stationary Regressor Distribution of an AR(1)
+## Demo: Stationary Regressor Distribution of an AR(1)    
 ##       Process
 #####################################################
 require(distr)
@@ -30,7 +30,7 @@ distroptions("TruncQuantile" = eps)
 H <- V
 n <- 15 
 ## may take some time
-for(i in 1:n){ Vi <- phi^i*V; H <- H + Vi } 
+for(i in 1:n){Vi <- phi^i*V; H <- H + Vi } 
 
 ## the stationary regressor distribution (exact)
 X <- Norm(sd=sqrt(1/(1-phi^2)))
@@ -40,21 +40,21 @@ X <- Norm(sd=sqrt(1/(1-phi^2)))
 #############################
 par(mfrow=c(1,3))
 low <- q(X)(1e-15)
-upp <- q(X)(1-1e-15)
+upp <- q(X)(1e-15, lower.tail = FALSE)
 x <- seq(from = low, to = upp, length = 10000)
 
 ## densities
 plot(x, d(X)(x),type = "l", lwd = 5)
 lines(x , d(H)(x), col = "orange", lwd = 1)
 title("Densities")
-legend(low, d(X)(0), legend=c("exact", "FFT"), 
+legend("topleft", legend=c("exact", "FFT"), 
         fill=c("black", "orange"))
 
 ## cdfs
 plot(x, p(X)(x),type = "l", lwd = 5)
 lines(x , p(H)(x), col = "orange", lwd = 1)
 title("Cumulative distribution functions")
-legend(low, 1.0, legend=c("exact", "FFT"), 
+legend("topleft", legend=c("exact", "FFT"), 
         fill=c("black", "orange"))
 
 ## quantile functions
@@ -62,7 +62,8 @@ x <- seq(from = eps, to = 1-eps, length = 1000)
 plot(x, q(X)(x),type = "l", lwd = 5)
 lines(x , q(H)(x), col = "orange", lwd = 1)
 title("Quantile functions")
-legend(0, q(X)(1-eps), legend=c("exact", "FFT"), 
+legend( "topleft", 
+        legend=c("exact", "FFT"), 
         fill=c("black", "orange"))
 
 ## Since the plots of the results show no 
@@ -74,10 +75,11 @@ legend(0, q(X)(1-eps), legend=c("exact", "FFT"),
 total.var <- function(z, N1, N2){
     0.5*abs(d(N1)(z) - d(N2)(z))
 }
-dv <- integrate(total.var, lower=-Inf, upper=Inf, 
-                rel.tol=1e-5, N1=X, N2=H)
+dv <- integrate(f = total.var, lower = -Inf, 
+                upper = Inf, rel.tol = 1e-5, 
+                N1=X, N2=H)
 cat("Total variation distance of densities:\t")
-print(dv) # 2.7e-05
+print(dv) # 8.0e-06
 
 ### meanwhile realized in package "distrEx" 
 ### as TotalVarDist(N1,N2)
@@ -88,7 +90,7 @@ print(dv) # 2.7e-05
 z <- r(Unif(Min=low, Max=upp))(1e5)
 dk <- max(abs(p(X)(z)-p(H)(z)))
 cat("Kolmogorov distance of cdfs:\t", dk, "\n") 
-# 1.3e-05
+# 3.7e-05
 
 ### meanwhile realized in package "distrEx" 
 ### as KolmogorovDist(N1,N2)

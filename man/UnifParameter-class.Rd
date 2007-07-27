@@ -1,4 +1,4 @@
-\name{UnifParameter-class}
+\name{UnifParameter-class} 
 \docType{class}
 \alias{UnifParameter-class}
 \alias{initialize,UnifParameter-method}
@@ -42,8 +42,11 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("UnifParameter",Min=0,Max=1)
+W <- new("UnifParameter",Min=0,Max=1)
 Max(W) # Max of this distribution is 1.
-Max(W)=2 # Max of this distribution is now 2.
+Max(W) <- 2 # Max of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Uniform distribution}
+\concept{S4 parameter class}

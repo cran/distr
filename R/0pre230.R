@@ -4,12 +4,14 @@ if(getRversion()<'2.3.0')
 
  ###beta Distribution
  
-   qbeta <- function(p, shape1, shape2, ncp = 0, lower.tail = TRUE, log.p = FALSE)
+   qbeta <- function(p, shape1, shape2, ncp = 0, lower.tail = TRUE, 
+                     log.p = FALSE)
            {if(isTRUE(all.equal(ncp,0)))
                stats::qbeta(p, shape1, shape2, lower.tail, log.p)
             else
               {x <- c(0.0,1.0)
-               pfun <- function(x){ pbeta(x, shape1=shape1, shape2=shape2, ncp=ncp)}
+               pfun <- function(x)
+                       { pbeta(x, shape1=shape1, shape2=shape2, ncp=ncp)}
                qfun <- P2Q(pfun,x)
                p <- ifelse(log.p,exp(p),p)
                p <- ifelse(lower.tail,p,1-p)

@@ -1,7 +1,7 @@
 \name{GammaParameter-class}
 \docType{class}
 \alias{GammaParameter-class}
-\alias{initialize,GammaParameter-method}
+\alias{initialize,GammaParameter-method} 
 
 \title{Class "GammaParameter"}
 \description{ The parameter of a gamma distribution, used by \code{Gammad}-class}
@@ -46,8 +46,11 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("GammaParameter",scale=1,shape=1)
+W <- new("GammaParameter",scale=1,shape=1)
 shape(W) # shape of this distribution is 1.
-shape(W)=2 # shape of this distribution is now 2.
+shape(W) <- 2 # shape of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Gamma distribution}
+\concept{S4 parameter class}

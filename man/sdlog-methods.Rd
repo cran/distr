@@ -18,4 +18,10 @@
 \item{sdlog}{\code{signature(object = "Lnorm")}: returns the slot \code{sdlog} of the parameter of the distribution }
 \item{sdlog<-}{\code{signature(object = "Lnorm")}: modifies the slot \code{sdlog} of the parameter of the distribution }
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{Log-Normal distribution}
+\concept{S4 parameter class}
+\concept{accessor function}
+\concept{replacement function}

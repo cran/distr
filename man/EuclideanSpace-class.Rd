@@ -1,5 +1,6 @@
 \name{EuclideanSpace-class}
 \docType{class}
+\alias{EuclideanSpace}
 \alias{EuclideanSpace-class}
 \alias{initialize,EuclideanSpace-method}
 
@@ -19,6 +20,14 @@ Usually an object of this class is not needed on its own. \code{EuclideanSpace} 
 }
 \section{Extends}{
 Class \code{"rSpace"}, directly.
+}
+
+\usage{
+EuclideanSpace(dimension = 1)
+}
+\arguments{
+  \item{dimension}{ positive integer: dimension of 
+  the Euclidean space (default \code{=1})}
 }
 
 \section{Methods}{
@@ -48,12 +57,15 @@ Class \code{"rSpace"}, directly.
 }
 
 \examples{
-E=new("EuclideanSpace",dimension=2)
+E <- EuclideanSpace(dimension = 2) 
 dimension(E) # The dimension of this space is 2.
-dimension(E)=3 # The dimension of this space is now 3.
+dimension(E) <- 3 # The dimension of this space is now 3.
 liesIn(E,c(0,0,0)) # TRUE
 liesIn(E,c(0,0)) # FALSE
 }
 
 
-\keyword{}
+\concept{space}
+\concept{set}
+\concept{S4 space class}
+\keyword{distribution}

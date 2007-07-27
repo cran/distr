@@ -1,4 +1,4 @@
-\name{Unif-class}
+\name{Unif-class} 
 \docType{class}
 \alias{Unif-class}
 \alias{Unif}
@@ -47,8 +47,9 @@ a Beta distribution with parameters \code{shape1 = 1, shape2 = 1, ncp = 0}.
     \item{Min<-}{\code{signature(object = "Unif")}: modifies the slot \code{Min} of the parameter of the distribution }
     \item{Max}{\code{signature(object = "Unif")}: returns the slot \code{Max} of the parameter of the distribution }
     \item{Max<-}{\code{signature(object = "Unif")}: modifies the slot \code{Max} of the parameter of the distribution }
-  }
-}
+    \item{*}{\code{signature(e1 = "Unif", e2 = "numeric")}:
+    For the uniform distribution we use its closedness under scaling transformations.}
+}}
 
 \author{
   Thomas Stabla \email{statho3@web.de},\cr 
@@ -65,7 +66,7 @@ a Beta distribution with parameters \code{shape1 = 1, shape2 = 1, ncp = 0}.
 
 }
 \examples{
-U=Unif(Min=0,Max=2) # U is a uniform distribution with Min=0 and Max=2.
+U <- Unif(Min=0,Max=2) # U is a uniform distribution with Min=0 and Max=2.
 r(U)(1) # one random number generated from this distribution, e.g. 1.984357
 d(U)(1) # Density of this distribution is 0.5 for x=1.
 p(U)(1) # Probability that x<1 is 0.5.
@@ -75,6 +76,10 @@ Min(U) <- 1 # Min of this distribution is now 1.
 Min(U) # Min of this distribution is 1.
 Min(U) <- 0
 is(U/2,"Beta") # yes
-V<-U/2; as(V,"Beta")
+V <- U/2; as(V,"Beta")
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{Uniform distribution}
+\concept{S4 distribution class}
+\concept{generating function}

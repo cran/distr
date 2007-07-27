@@ -50,4 +50,14 @@
 \item{ncp<-}{\code{signature(object = "Td")}: modifies the slot \code{ncp} of the parameter of the distribution }
 
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{Chi square distribution}
+\concept{beta distribution}
+\concept{T distribution}
+\concept{F distribution}
+\concept{non centrality parameter}
+\concept{S4 parameter class}
+\concept{accessor function}
+\concept{replacement function}

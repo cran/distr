@@ -45,6 +45,11 @@ a T distribution with parameters \code{df = 1, ncp = 0}.
     \item{location<-}{\code{signature(object = "Cauchy")}: modifies the slot \code{location} of the parameter of the distribution }
     \item{scale}{\code{signature(object = "Cauchy")}: returns the slot \code{scale} of the parameter of the distribution }
     \item{scale<-}{\code{signature(object = "Cauchy")}: modifies the slot \code{scale} of the parameter of the distribution }
+    \item{+}{\code{signature(e1 = "Cauchy", e2 = "Cauchy")}: For the Cauchy distribution the exact convolution formula is
+      implemented thereby improving the general numerical approximation.}
+    \item{*}{\code{signature(e1 = "Cauchy", e2 = "numeric")}}
+    \item{+}{\code{signature(e1 = "Cauchy", e2 = "numeric")}: 
+    For the Cauchy location scale family we use its closedness under affine linear transformations.}
   }
 further arithmetic methods see \link{operators-methods}
 }
@@ -81,3 +86,8 @@ is(C0,"Td") # yes
 as(C0,"Td") 
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{Cauchy distribution}
+\concept{T(1) distribution}
+\concept{S4 distribution class}
+\concept{generating function}

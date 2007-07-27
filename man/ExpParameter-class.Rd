@@ -42,8 +42,11 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("ExpParameter", rate=1)
+W <- new("ExpParameter", rate = 1)
 rate(W) # rate of this distribution is 1.
-rate(W)=2 # rate of this distribution is now 2.
+rate(W) <- 2 # rate of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Exp distribution}
+\concept{S4 parameter class}

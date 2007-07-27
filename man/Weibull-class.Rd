@@ -1,4 +1,4 @@
-\name{Weibull-class}
+\name{Weibull-class} 
 \docType{class}
 \alias{Weibull-class}
 \alias{Weibull}
@@ -41,6 +41,8 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
     \item{scale<-}{\code{signature(object = "Weibull")}: modifies the slot \code{scale} of the parameter of the distribution }
     \item{shape}{\code{signature(object = "Weibull")}: returns the slot \code{shape} of the parameter of the distribution }
     \item{shape<-}{\code{signature(object = "Weibull")}: modifies the slot \code{shape} of the parameter of the distribution }
+    \item{*}{\code{signature(e1 = "Weibull", e2 = "numeric")}:
+    For the Weibull distribution we use its closedness under positive scaling transformations.}
   }
 }
 
@@ -71,12 +73,16 @@ The cumulative is
 
 }
 \examples{
-W=Weibull(shape=1,scale=1) # W is a Weibull distribution with shape=1 and scale=1.
+W <- Weibull(shape=1,scale=1) # W is a Weibull distribution with shape=1 and scale=1.
 r(W)(1) # one random number generated from this distribution, e.g. 0.5204105
 d(W)(1) # Density of this distribution is 0.3678794 for x=1.
 p(W)(1) # Probability that x<1 is 0.6321206.
 q(W)(.1) # Probability that x<0.1053605 is 0.1.
 shape(W) # shape of this distribution is 1.
-shape(W)=2 # shape of this distribution is now 2.
+shape(W) <- 2 # shape of this distribution is now 2.
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{Weibull distribution}
+\concept{S4 distribution class}
+\concept{generating function}

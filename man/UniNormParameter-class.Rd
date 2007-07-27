@@ -55,4 +55,7 @@ W <- new("UniNormParameter", mean = 0, sd = 1)
 sd(W) # sd of this distribution is 1
 sd(W) <- 2 # sd of this distribution is now 2
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Univariate normal / Gaussian distribution}
+\concept{S4 parameter class}

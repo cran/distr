@@ -94,3 +94,7 @@ q(B0)(0.1) ##
 q(Bn)(0.1) ## => from R 2.3.0 on ncp no longer ignored...
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{Beta distribution}
+\concept{S4 distribution class}
+\concept{generating function}

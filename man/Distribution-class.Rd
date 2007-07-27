@@ -20,7 +20,7 @@
     \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
   }
 }
-}
+
 \section{Methods}{
   \describe{
     \item{img}{\code{signature(object = "Distribution")}: returns the space of the image}
@@ -46,3 +46,10 @@
 
 }
 \keyword{distribution}
+\concept{conditional distribution}
+\concept{multivariate distribution}
+\concept{univariate distribution}
+\concept{discrete distribution}
+\concept{lattice distribution}
+\concept{absolutely continuous distribution}
+\concept{S4 distribution class}

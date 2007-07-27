@@ -33,4 +33,7 @@
 \seealso{
 \code{\link{Distribution-class}}
 }
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{S4 parameter class}

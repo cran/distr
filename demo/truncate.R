@@ -44,7 +44,7 @@ setMethod("Truncate",
               if(x == 0) return(lower)
               if(x == 1) return(upper)
               fun <- function(t) pnew(t) - x
-              uniroot(fun, interval = c(lower, upper))$root
+              uniroot(f = fun, interval = c(lower, upper))$root
             }
             qfun2 <- function(x)
               sapply(x, qfun1)
@@ -83,7 +83,7 @@ plot(x, p(Z)(x),
 lines(x, p(N)(x),
       lwd = 2,
       col = "red")
-legend(-1.5,1,
+legend("topleft",
        legend = c("N(0,1)", "N(0,1) truncated"),
        fill = c("red", "black"))
 
@@ -96,7 +96,7 @@ plot(x, d(Z)(x),
      lwd = 5,
      xlab = "",
      ylab = "density")
-lines(x, d(N)(x),
+lines("topleft",
       lwd = 2,
       col = "red")
 legend(-1.5,0.7, legend = c("N(0,1)", "N(0,1) truncated"),

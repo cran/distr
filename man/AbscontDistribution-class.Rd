@@ -1,7 +1,10 @@
-\name{AbscontDistribution-class}
+\name{AbscontDistribution-class} 
 \docType{class}
 \alias{AbscontDistribution-class}
+\alias{AffLinDistribution-class}
+\alias{AffLinAbscontDistribution-class}
 \alias{initialize,AbscontDistribution-method}
+\alias{initialize,AffLinAbscontDistribution-method}
 
 \title{Class "AbscontDistribution"}
 \description{The \code{AbscontDistribution}-class is the mother-class of the classes \code{Beta}, \code{Cauchy}, 
@@ -25,7 +28,14 @@ The result of this call is an absolutely continuous distribution.
     \item{\code{d}:}{Object of class \code{"function"}: density function}
     \item{\code{p}:}{Object of class \code{"function"}: cumulative distribution function}
     \item{\code{q}:}{Object of class \code{"function"}: quantile function}
-  }
+    \item{\code{gaps}:}{[from version 1.9 on] Object of class \code{"OptionalMatrix"}, 
+          i.e.; an object which may either be \code{NULL} ora \code{matrix}. 
+          This slot, if non-\code{NULL}, contains left and right 
+          endpoints of intervals where the density of the object is 0. This slot 
+          may be inspected by the accessor \code{\link{gaps}()} and modified by a corresponding
+          replacement method. It may also be filled automatically by 
+         \code{\link{setgaps}()}. For saved objects from earlier versions, we provide functions
+         \code{\link{isOldVersion}} and \code{\link{conv2NewVersion}}.}}
 }
 \section{Extends}{
 Class \code{"UnivariateDistribution"}, directly. \cr
@@ -60,6 +70,37 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
   }
 }
 
+\section{Internal subclass "AffLinAbscontDistribution"}{
+To enhance accuracy of several functionals on distributions,
+  mainly from package \pkg{distrEx}, from version 1.9 of this package on, 
+  there is an internally used (but exported) subclass 
+  \code{"AffLinAbscontDistribution"} which has extra slots 
+  \code{a}, \code{b} (both of class \code{"numeric"}),  and \code{X0} 
+  (of class \code{"AbscontDistribution"}), to capture the fact 
+  that the object has the same distribution as \code{a * X0 + b}. This is 
+  the class of the return value of methods 
+  \itemize{
+    \item{-}{\code{signature(e1 = "AbscontDistribution")}}
+    \item{*}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}}
+    \item{/}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}}
+    \item{+}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}}
+    \item{-}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}}
+    \item{*}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}}
+    \item{+}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}}
+    \item{-}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}}
+    \item{-}{\code{signature(e1 = "AffLinAbscontDistribution")}}
+    \item{*}{\code{signature(e1 = "AffLinAbscontDistribution", e2 = "numeric")}}
+    \item{/}{\code{signature(e1 = "AffLinAbscontDistribution", e2 = "numeric")}}
+    \item{+}{\code{signature(e1 = "AffLinAbscontDistribution", e2 = "numeric")}}
+    \item{-}{\code{signature(e1 = "AffLinAbscontDistribution", e2 = "numeric")}}
+    \item{*}{\code{signature(e1 = "numeric", e2 = "AffLinAbscontDistribution")}}
+    \item{+}{\code{signature(e1 = "numeric", e2 = "AffLinAbscontDistribution")}}
+    \item{-}{\code{signature(e1 = "numeric", e2 = "AffLinAbscontDistribution")}}
+  }
+  There also is a class union of \code{"AffLinAbscontDistribution"} and
+  \code{"AffLinDiscreteDistribution"} called \code{"AffLinDistribution"}
+  which is used for functionals.
+}
 
 \author{
   Thomas Stabla \email{statho3@web.de},\cr 
@@ -90,14 +131,16 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
 
 }
 \examples{
-N = Norm() # N is a normal distribution with mean=0 and sd=1.
-E = Exp() # E is an exponential distribution with rate=1.
-A1 = E+1 # a new absolutely continuous distributions with exact slots d, p, q
-A2 = A1*3 # a new absolutely continuous distributions with exact slots d, p, q
-A3 = N*0.9 + E*0.1 # a new absolutely continuous distribution with approximated slots d, p, q
+N <-  Norm() # N is a normal distribution with mean=0 and sd=1.
+E <-  Exp() # E is an exponential distribution with rate=1.
+A1 <-  E+1 # a new absolutely continuous distributions with exact slots d, p, q
+A2 <-  A1*3 # a new absolutely continuous distributions with exact slots d, p, q
+A3 <- N*0.9 + E*0.1 # a new absolutely continuous distribution with approximated slots d, p, q
 r(A3)(1) # one random number generated from this distribution, e.g. -0.7150937
 d(A3)(0) # The (approximated) density for x=0 is 0.4379882.
 p(A3)(0) # The (approximated) probability that x <= 0 is 0.4562021.
 q(A3)(.1) # The (approximated) 10 percent quantile is 0.1.
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{S4 distribution class}

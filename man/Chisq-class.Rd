@@ -70,6 +70,8 @@ a Gamma distribution with parameters \code{shape = df(obj)/2, scale = 2}.
       returns the slot ncp of the parameter of the distribution }
     \item{ncp<-}{\code{signature(object = "Chisq")}:
       modifies the slot ncp of the parameter of the distribution }
+    \item{+}{\code{signature(e1 = "Chisq", e2 = "Chisq")}: 
+    For the chi-squared distribution we use its closedness under convolutions.}
   }
 }
 
@@ -101,3 +103,7 @@ is(C0, "Gammad") # yes
 as(C0,"Gammad")
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{Chi square distribution}
+\concept{S4 distribution class}
+\concept{generating function}

@@ -19,4 +19,11 @@
 \item{Min}{\code{signature(object = "Unif")}: returns the slot \code{Min} of the parameter of the distribution }
 \item{Min<-}{\code{signature(object = "Unif")}: modifies the slot \code{Min} of the parameter of the distribution }
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{Uniform distribution}
+\concept{S4 parameter class}
+\concept{accessor function}
+\concept{replacement function}
+

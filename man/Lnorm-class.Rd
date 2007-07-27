@@ -1,4 +1,4 @@
-\name{Lnorm-class}
+\name{Lnorm-class} 
 \docType{class}
 \alias{Lnorm-class}
 \alias{Lnorm}
@@ -41,6 +41,8 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
     \item{meanlog<-}{\code{signature(object = "Lnorm")}: modifies the slot \code{meanlog} of the parameter of the distribution }
     \item{sdlog}{\code{signature(object = "Lnorm")}: returns the slot \code{sdlog} of the parameter of the distribution }
     \item{sdlog<-}{\code{signature(object = "Lnorm")}: modifies the slot \code{sdlog} of the parameter of the distribution }
+    \item{*}{\code{signature(e1 = "Lnorm", e2 = "numeric")}:
+    For the Lognormal distribution we use its closedness under positive scaling transformations.}
   }
 }
 
@@ -72,12 +74,15 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 
 }
 \examples{
-L=Lnorm(meanlog=1,sdlog=1) # L is a lnorm distribution with mean=1 and sd=1.
+L <- Lnorm(meanlog=1,sdlog=1) # L is a lnorm distribution with mean=1 and sd=1.
 r(L)(1) # one random number generated from this distribution, e.g. 3.608011
 d(L)(1) # Density of this distribution is 0.2419707 for x=1.
 p(L)(1) # Probability that x<1 is 0.1586553.
 q(L)(.1) # Probability that x<0.754612 is 0.1.
 meanlog(L) # meanlog of this distribution is 1.
-meanlog(L)=2 # meanlog of this distribution is now 2.
+meanlog(L) <- 2 # meanlog of this distribution is now 2.
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{Log-Normal distribution}
+\concept{S4 distribution class}

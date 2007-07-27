@@ -9,4 +9,10 @@
 \section{Methods}{\describe{
     \item{dim}{\code{signature(object = "UnivariateDistribution")}: returns the dimension of the distribution }
 }}
-\keyword{}
+\seealso{
+\code{\link{UnivariateDistribution-class}}
+}
+\keyword{methods}
+\concept{dimension}
+\concept{space}
+\concept{accessor function}

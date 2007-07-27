@@ -46,6 +46,9 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
     \item{location<-}{\code{signature(object = "Logis")}: modifies the slot \code{location} of the parameter of the distribution }
     \item{scale}{\code{signature(object = "Logis")}: returns the slot \code{scale} of the parameter of the distribution }
     \item{scale<-}{\code{signature(object = "Logis")}: modifies the slot \code{scale} of the parameter of the distribution }
+    \item{*}{\code{signature(e1 = "Logis", e2 = "numeric")}}
+    \item{+}{\code{signature(e1 = "Logis", e2 = "numeric")}: 
+    For the logistic location scale family we use its closedness under affine linear transformations.}
   }
 }
 
@@ -80,3 +83,7 @@ location(L) # location of this distribution is 1.
 location(L) <- 2 # location of this distribution is now 2.
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{Logistic distribution}
+\concept{S4 distribution class}
+\concept{location scale family}

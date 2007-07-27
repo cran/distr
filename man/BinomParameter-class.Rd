@@ -1,4 +1,4 @@
-\name{BinomParameter-class}
+\name{BinomParameter-class} 
 \docType{class}
 \alias{BinomParameter-class}
 \alias{initialize,BinomParameter-method}
@@ -46,8 +46,11 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("BinomParameter",prob=0.5,size=1)
+W <- new("BinomParameter",prob=0.5,size=1)
 size(W) # size of this distribution is 1.
-size(W)=2 # size of this distribution is now 2.
+size(W) <- 2 # size of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Binomial distribution}
+\concept{S4 parameter class}

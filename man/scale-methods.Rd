@@ -6,6 +6,7 @@
 \alias{scale<-}
 \alias{scale,GammaParameter-method}
 \alias{scale,Gammad-method}
+\alias{scale,Chisq-method}
 \alias{scale,LogisParameter-method}
 \alias{scale,Logis-method}
 \alias{scale,WeibullParameter-method}
@@ -48,5 +49,21 @@
 
 \item{scale}{\code{signature(object = "Cauchy")}: returns the slot \code{scale} of the parameter of the distribution }
 \item{scale<-}{\code{signature(object = "Cauchy")}: modifies the slot \code{scale} of the parameter of the distribution }
+
+\item{scale}{\code{signature(object = "Chisq")}:  if \code{ncp(object)} is 0, a Chi-squared distribution is also a Gamma distribution;
+     in this case, \code{scale} returns 2 else an error;}
+
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{Gamma distribution}
+\concept{Logistic distribution}
+\concept{Weibull distribution}
+\concept{Cauchy distribution}
+\concept{Chi Square distribution}
+\concept{S4 parameter class}
+\concept{location scale family}
+\concept{scale parameter}
+\concept{accessor function}
+\concept{replacement function}

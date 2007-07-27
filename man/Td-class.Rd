@@ -101,3 +101,7 @@ Tn <- Td(df = 1, ncp = 5)
 d(Tn)(1) ## from R 2.3.0 on ncp no longer ignored...
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{T distribution}
+\concept{S4 distribution class}
+\concept{generating function}

@@ -48,4 +48,10 @@ x <- RtoDPQ.d(r = rp2, e = 5)
 # returns density, cumulative distribution and quantile function of
 # squared Poisson distribution with parameter lambda=1
 }
-\keyword{}
+\keyword{math}
+\keyword{distribution}
+\keyword{arith}
+\concept{random sample}
+\concept{image distribution}
+\concept{absolutely continuous distribution}
+\concept{utility}

@@ -20,4 +20,10 @@
 \item{lambda<-}{\code{signature(object = "Pois")}: modifies the slot \code{lambda} of the parameter of the distribution }
 
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{Poisson distribution}
+\concept{S4 parameter class}
+\concept{accessor function}
+\concept{replacement function}

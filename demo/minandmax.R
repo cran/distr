@@ -1,4 +1,4 @@
-require(distr)
+require(distr)                                 
 
 if(!isGeneric("Minimum")) 
     setGeneric("Minimum", 
@@ -40,8 +40,8 @@ setMethod("Minimum",
             lower <- min(lower1, lower2)
             upper <- min(upper1, upper2)
 
-            maxquantile = min(q(e1)(1 - 1e-6), 
-                              q(e2)(1 - 1e-6))
+            maxquantile = min(q(e1)(1e-6, lower.tail = FALSE), 
+                              q(e2)(1e-6, lower.tail = FALSE))
             minquantile = min(q(e1)(1e-6), 
                               q(e2)(1e-6)) 
             
@@ -49,7 +49,7 @@ setMethod("Minimum",
               if(x == 0) return(lower)
               if(x == 1) return(upper)
               fun <- function(t) pnew(t) - x
-              uniroot(fun, 
+              uniroot(f = fun, 
                   interval = c(maxquantile, 
                                minquantile))$root
             }
@@ -100,14 +100,15 @@ setMethod("Maximum",
             lower <- max(lower1, lower2)
             upper <- max(upper1, upper2)
 
-            maxquantile = max(q(e1)(1 - 1e-6), q(e2)(1 - 1e-6))
+            maxquantile = max(q(e1)(1e-6, lower.tail = FALSE), 
+                              q(e2)(1e-6, lower.tail = FALSE))
             minquantile = max(q(e1)(1e-6), q(e2)(1e-6)) 
             
             qfun1 <- function(x){
               if(x == 0) return(lower)
               if(x == 1) return(upper)
               fun <- function(t) pnew(t) - x
-              uniroot(fun, interval = c(maxquantile, 
+              uniroot(f = fun, interval = c(maxquantile, 
                                         minquantile))$root
             }
             qfun2 <- function(x)

@@ -15,5 +15,9 @@
 	"numeric")}}:
     
     Does a particular vector only contain naturals?}
-  }}
-\keyword{}
+  }
+\keyword{distribution}
+\keyword{methods}
+\concept{space}
+\concept{S4 space class}
+\concept{set}

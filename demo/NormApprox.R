@@ -19,7 +19,7 @@ plot(x, d(NormApprox)(x),
      main = "Exact and approximated density")
 lines(x, d(N)(x),
       col = "red")
-legend(-4, d(N)(0),
+legend("topleft",
        legend = c("NormApprox", "Norm(0,1)"),
        fill = c("black", "red"))
 
@@ -55,7 +55,7 @@ lines(z, f.n(z, n=4), lwd = 2, col = 4)
 lines(z, f.n(z, n=5), lwd = 2, col = 5)
 lines(z, f.n(z, n=6), lwd = 2, col = 6)
 lines(z, dnorm(z, mean = 3), col = "orange", lwd = 2)
-legend(6, 1, xjust = 1, legend = c(expression(paste(f[1])), expression(paste(f[2])),
+legend("topleft", xjust = 1, legend = c(expression(paste(f[1])), expression(paste(f[2])),
                         expression(paste(f[3])), expression(paste(f[4])),
                         expression(paste(f[5])), expression(paste(f[6])), "N(0,1)"),
        fill = c(1:6, "orange"), ncol = 2)

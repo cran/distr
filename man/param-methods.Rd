@@ -8,4 +8,8 @@
 \section{Methods}{\describe{
 \item{param}{\code{signature(object = "Distribution")}: returns the parameter }
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{S4 parameter class}
+\concept{accessor function}

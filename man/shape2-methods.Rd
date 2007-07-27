@@ -16,4 +16,10 @@
 \item{shape2}{\code{signature(object = "Beta")}: returns the slot shape2 of the parameter of the distribution }
 \item{shape2<-}{\code{signature(object = "Beta")}: modifies the slot shape2 of the parameter of the distribution }
 }}
-\keyword{}
+\keyword{distribution}
+\keyword{methods}
+\concept{shape}
+\concept{parameter}
+\concept{Beta distribution}
+\concept{accessor function}
+\concept{replacement function}

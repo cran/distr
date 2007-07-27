@@ -1,4 +1,4 @@
-\name{LogisParameter-class}
+\name{LogisParameter-class} 
 \docType{class}
 \alias{LogisParameter-class}
 \alias{initialize,LogisParameter-method}
@@ -47,8 +47,12 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("LogisParameter",location=0,scale=1)
+W <- new("LogisParameter",location=0,scale=1)
 scale(W) # scale of this distribution is 1.
-scale(W)=2 # scale of this distribution is now 2.
+scale(W) <- 2 # scale of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{Logistic distribution}
+\concept{S4 parameter class}
+\concept{location scale family}

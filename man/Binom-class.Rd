@@ -1,4 +1,4 @@
-\name{Binom-class}
+\name{Binom-class} 
 \docType{class}
 \alias{Binom-class}
 \alias{Binom}
@@ -65,16 +65,23 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 \code{\link[stats:Binomial]{rbinom}}
 }
 \examples{
-B=Binom(prob=0.5,size=1) # B is a binomial distribution with prob=0.5 and size=1.
+B <- Binom(prob=0.5,size=1) # B is a binomial distribution with prob=0.5 and size=1.
 r(B)(1) # # one random number generated from this distribution, e.g. 1
 d(B)(1) # Density of this distribution is  0.5 for x=1.
 p(B)(0.4) # Probability that x<0.4 is 0.5.
 q(B)(.1) # x=0 is the smallest value x such that p(B)(x)>=0.1.
 size(B) # size of this distribution is 1.
-size(B)=2 # size of this distribution is now 2.
-C=Binom(prob=0.5,size=1) # C is a binomial distribution with prob=0.5 and size=1.
-D=Binom(prob=0.6,size=1) # D is a binomial distribution with prob=0.6 and size=1.
-E=B+C # E is a binomial distribution with prob=0.5 and size=3.
-F=B+D # F is an object of class DiscreteDistribution.
+size(B) <- 2 # size of this distribution is now 2.
+C <- Binom(prob = 0.5, size = 1) # C is a binomial distribution with prob=0.5 and size=1.
+D <- Binom(prob = 0.6, size = 1) # D is a binomial distribution with prob=0.6 and size=1.
+E <- B + C # E is a binomial distribution with prob=0.5 and size=3.
+F <- B + D # F is an object of class LatticeDistribution.
+G <- B + as(D,"DiscreteDistribution") ## DiscreteDistribution
 }
 \keyword{distribution}
+\concept{discrete distribution}
+\concept{lattice distribution}
+\concept{Binomial family}
+\concept{Binomial distribution}
+\concept{S4 distribution class}
+\concept{generating function}

@@ -69,3 +69,8 @@ location(D) # location of this distribution is 0.
 location(D) <- 2 # location of this distribution is now 2.
 }
 \keyword{distribution}
+\concept{location family}
+\concept{lattice distribution}
+\concept{discrete distribution}
+\concept{Dirac distribution}
+\concept{S4 parameter class}

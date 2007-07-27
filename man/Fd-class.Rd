@@ -1,4 +1,4 @@
-\name{Fd-class}
+\name{Fd-class} 
 \docType{class}
 \alias{Fd-class}
 \alias{Fd}
@@ -76,15 +76,19 @@ numerator are allowed to have non-zero means and ncp is the sum of squares of th
 \code{\link[stats:Fdist]{rf}}
 }
 \examples{
-F <- Fd(df1=1,df2=1) # F is a F distribution with df=1 and df2=1.
+F <- Fd(df1 = 1, df2 = 1) # F is a F distribution with df=1 and df2=1.
 r(F)(1) # one random number generated from this distribution, e.g. 29.37863
 d(F)(1) # Density of this distribution is 0.1591549 for x=1 .
 p(F)(1) # Probability that x<1 is 0.5.
 q(F)(.1) # Probability that x<0.02508563 is 0.1.
 df1(F) # df1 of this distribution is 1.
-df1(F)=2 # df1 of this distribution is now 2.
-Fn <- Fd(df1=1,df2=1,ncp=0.5) 
+df1(F) <- 2 # df1 of this distribution is now 2.
+Fn <- Fd(df1 = 1, df2 = 1, ncp = 0.5) 
   # Fn is a F distribution with df=1, df2=1 and ncp =0.5.
 d(Fn)(1) ## from R 2.3.0 on ncp no longer ignored...
 }
 \keyword{distribution}
+\concept{F distribution}
+\concept{absolutely continuous distribution}
+\concept{S4 distribution class}
+\concept{generating function}

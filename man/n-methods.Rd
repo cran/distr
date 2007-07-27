@@ -19,4 +19,10 @@
 \item{n}{\code{signature(object = "Hyper")}: returns the slot \code{n} of the parameter of the distribution }
 \item{n<-}{\code{signature(object = "Hyper")}: modifies the slot \code{n} of the parameter of the distribution }
 }}
-\keyword{}
+\keyword{methods}
+\keyword{distribution}
+\concept{parameter}
+\concept{Hypergeometric distribution}
+\concept{S4 parameter class}
+\concept{accessor function}
+\concept{replacement function}

@@ -1,4 +1,4 @@
-\name{Norm-class}
+\name{Norm-class} 
 \docType{class}
 \alias{Norm-class}
 \alias{Norm}
@@ -42,6 +42,9 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
     \item{+}{\code{signature(e1 = "Norm", e2 = "Norm")}: 
     For the normal distribution the exact convolution formulas are implemented thereby improving the general numerical
     approximation.}
+    \item{*}{\code{signature(e1 = "Norm", e2 = "numeric")}}
+    \item{+}{\code{signature(e1 = "Norm", e2 = "numeric")}: 
+    For the normal distribution we use its closedness under affine linear transformations.}
     \item{initialize}{\code{signature(.Object = "Norm")}: initialize method }
     \item{mean}{\code{signature(object = "Norm")}: returns the slot \code{mean} of the parameter of the distribution }
     \item{mean<-}{\code{signature(object = "Norm")}: modifies the slot \code{mean} of the parameter of the distribution }
@@ -65,14 +68,19 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 
 }
 \examples{
-N=Norm(mean=1,sd=1) # N is a normal distribution with mean=1 and sd=1.
+N <- Norm(mean=1,sd=1) # N is a normal distribution with mean=1 and sd=1.
 r(N)(1) # one random number generated from this distribution, e.g. 2.257783
 d(N)(1) # Density of this distribution is  0.3989423 for x=1.
 p(N)(1) # Probability that x<1 is 0.5.
 q(N)(.1) # Probability that x<-0.2815516 is 0.1.
 mean(N) # mean of this distribution is 1.
-sd(N)=2 # sd of this distribution is now 2.
-M=Norm() # M is a normal distribution with mean=0 and sd=1.
-O=M+N # O is a normal distribution with mean=1 (=1+0) and sd=sqrt(5) (=sqrt(2^2+1^2)).
+sd(N) <- 2 # sd of this distribution is now 2.
+M <- Norm() # M is a normal distribution with mean=0 and sd=1.
+O <- M+N # O is a normal distribution with mean=1 (=1+0) and sd=sqrt(5) (=sqrt(2^2+1^2)).
 }
 \keyword{distribution}
+\concept{absolutely continuous distribution}
+\concept{Gaussian distribution}
+\concept{Normal distribution}
+\concept{S4 distribtution class}
+\concept{location scale family}

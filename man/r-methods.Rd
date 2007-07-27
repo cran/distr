@@ -6,6 +6,16 @@
 \title{ Methods for Function r in Package `distr' }
 \description{r-methods}
 \section{Methods}{\describe{
-    \item{p}{\code{signature(object = "Distribution")}: returns the cumulative distribution function }
+    \item{r}{\code{signature(object = "Distribution")}: generates random deviates
+    according to the distribution}
 }}
-\keyword{}
+\seealso{
+\code{\link{Distribution-class}}
+}
+\keyword{distribution}
+\keyword{methods}
+\concept{random number generator}
+\concept{RNG}
+\concept{accessor function}
+\concept{pseudo random number}
+\concept{anamorphosis}

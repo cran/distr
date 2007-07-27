@@ -13,4 +13,9 @@
     \item{dimension}{\code{signature(object = "EuclideanSpace")}: returns the dimension of the space }
     \item{dimension<-}{\code{signature(object = "EuclideanSpace")}: modifies the dimension of the space }
 }}
-\keyword{}
+\keyword{methods}
+\concept{dimension}
+\concept{space}
+\concept{S4 space class}
+\concept{accessor function}
+\concept{replacement function}

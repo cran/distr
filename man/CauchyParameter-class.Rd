@@ -1,4 +1,4 @@
-\name{CauchyParameter-class}
+\name{CauchyParameter-class}        
 \docType{class}
 \alias{CauchyParameter-class}
 \alias{initialize,CauchyParameter-method}
@@ -47,8 +47,12 @@ Class \code{"Parameter"}, directly.
 }
 
 \examples{
-W=new("CauchyParameter",location=1,scale=1)
+W <- new("CauchyParameter",location=1,scale=1)
 location(W) # location of this distribution is 1.
-location(W)=2 # location of this distribution is now 2.
+location(W) <- 2 # location of this distribution is now 2.
 }
-\keyword{}
+\keyword{distribution}
+\concept{parameter}
+\concept{location scale family}
+\concept{Cauchy distribution}
+\concept{S4 parameter class}
