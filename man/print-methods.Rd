@@ -4,6 +4,8 @@
 \alias{show-methods}
 \alias{print,UnivariateDistribution-method}
 \alias{show,UnivariateDistribution-method}
+\alias{show,UnivarMixingDistribution-method}
+\alias{show,UnivarLebDecDistribution-method}
 \title{ Methods for Functions print/show in Package `distr' }
 \description{print/show-methods}
 

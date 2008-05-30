@@ -10,8 +10,8 @@
 
 \section{Slots}{
   \describe{
-    \item{\code{img}:}{Object of class \code{"Parameter"}: the space of the image }
-    \item{\code{param}:}{Object of class \code{"function"}: the parameter }
+    \item{\code{img}:}{Object of class \code{"rSpace"}: the space of the image }
+    \item{\code{param}:}{Object of class \code{"OptionalParameter"}: the parameter }
     \item{\code{r}:}{Object of class \code{"function"}: generates random numbers}
     \item{\code{d}:}{Object of class \code{"OptionalFunction"}: density function}
     \item{\code{p}:}{Object of class \code{"OptionalFunction"}: cumulative distribution function}
@@ -36,7 +36,7 @@
 \author{
   Thomas Stabla \email{statho3@web.de},\cr 
   Florian Camphausen \email{fcampi@gmx.de},\cr
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr 
   Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 

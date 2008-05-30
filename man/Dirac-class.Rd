@@ -3,6 +3,8 @@
 \alias{Dirac-class}
 \alias{Dirac}
 \alias{initialize,Dirac-method}
+\alias{log,Dirac-method}
+\alias{Math,Dirac-method}
 
 \title{Class "Dirac"  }
 \description{ The Dirac distribution with location \eqn{l}, by default \eqn{=0}, has density
@@ -41,6 +43,10 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
     \item{initialize}{\code{signature(.Object = "Dirac")}: initialize method }
     \item{location}{\code{signature(object = "Dirac")}: returns the slot \code{location} of the parameter of the distribution }
     \item{location<-}{\code{signature(object = "Dirac")}: modifies the slot \code{location} of the parameter of the distribution }
+    \item{log}{\code{signature(object = "Dirac")}: returns an object of class \code{"Dirac"} distribution with log-transformed
+      \code{location} parameter. }
+    \item{Math}{\code{signature(object = "Dirac")}: given a \code{"Math"} group generic \code{fun} an object of class 
+      \code{"Dirac"} distribution with \code{fun}-transformed \code{location} parameter is returned. }
   }
  further arithmetic methods see \link{operators-methods}
 }
@@ -48,7 +54,7 @@ Class \code{"Distribution"}, by class \code{"DiscreteDistribution"}.
 \author{
   Thomas Stabla \email{statho3@web.de},\cr 
   Florian Camphausen \email{fcampi@gmx.de},\cr
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr 
   Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 \seealso{

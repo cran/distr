@@ -11,7 +11,7 @@
                  qe <- q(object)(eps)
                  if (qe > -Inf)
                     return(qe)
-                 else return(q(object)(p = fm(x=.5, f=q(object)))) }
+                 else return(q(object)(p = .fm(x=.5, f=q(object)))) }
                  })
  setMethod("getUp", "AbscontDistribution",
             function(object, eps = getdistrOption("TruncQuantile")) {

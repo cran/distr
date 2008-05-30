@@ -2,8 +2,10 @@
 \docType{methods}
 \alias{convpow}
 \alias{convpow-methods}
+\alias{convpow,AcDcLcDistribution-method}
 \alias{convpow,AbscontDistribution-method}
 \alias{convpow,LatticeDistribution-method}
+\alias{convpow,DiscreteDistribution-method}
 \alias{convpow,Norm-method}
 \alias{convpow,Binom-method}
 \alias{convpow,Nbinom-method}
@@ -20,23 +22,37 @@
 
 \usage{
   convpow(D1,...)
+  \S4method{convpow}{AcDcLcDistribution}(D1,N)
   \S4method{convpow}{AbscontDistribution}(D1,N)
   \S4method{convpow}{LatticeDistribution}(D1,N)
+  \S4method{convpow}{DiscreteDistribution}(D1,N)
 }
 
 \arguments{
   \item{D1}{an object of (a sub)class (of) \code{"AbscontDistribution"} or  
-            \code{"LatticeDistribution"}}
-  \item{...}{not yet used; meanwhile takes up N }
-  \item{N}{ an integer }
+            \code{"LatticeDistribution"} or of \code{"UnivarLebDecDistribution"}}
+  \item{\dots}{not yet used; meanwhile takes up N }
+  \item{N}{ an integer or 0 (for 0 returns Dirac(0), for 1 D1)}
   }
 \details{
   in the methods implemented a second argument \code{N} is obligatory;
   the general methods use a general purpose convolution algorithm for 
-  distributions by means of D/FFT.}
+  distributions by means of D/FFT. In case of an argument of class 
+  \code{"UnivarLebDecDistribution"}, the result will in generally be
+   again of class \code{"UnivarLebDecDistribution"}. However, if \code{acWeight(D1)}
+   is positive, \code{discreteWeight(convpow(D1,N))} will decay exponentially
+   in \code{N}, hence from some (small) \eqn{N_0} on, the result will be of
+   class \code{"AbscontDistribution"}. This is used algorithmically, too, as 
+   then only the a.c. part needs to be convolved.
+   In case of an argument \code{D1} of class \code{"DiscreteDistribution"},
+   for \code{N} equal to 0,1 we return the obvious solutions, and for \code{N==2} 
+   the return value is \code{D1+D1}. For \code{N>2}, we split up \code{N} into
+   \code{N=N1+N2}, \code{N1=floor(N/2)} and recursively return
+   \code{convpow(D1,N1)+convpow(D1,N2)}.
+   }
 
-\value{Object of class \code{"AbscontDistribution"} resp. 
-       \code{"LatticeDistribution"}}
+\value{Object of class \code{"AbscontDistribution"}, \code{"DiscreteDistribution"},
+       \code{"LatticeDistribution"} resp. \code{"AcDcLcDistribution"}}
 
 \section{further S4-Methods}{
   There are particular methods for the following classes, using explicit 
@@ -53,7 +69,7 @@
   }
 }
 
-\author{Peter Ruckdeschel \email{peter.ruckdeschel@uni-bayreuth.de}\cr
+\author{Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}\cr
 Matthias Kohl \email{matthias.kohl@stamats.de}
 Thomas Stabla \email{statho3@web.de}
 }

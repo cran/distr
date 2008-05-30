@@ -2,6 +2,55 @@
 #  News: to package distr 
 ######################################################################
  
+##############
+v 2.0
+##############
+
+ * made calls to 'uniroot()', 'integrate()', 'optim(ize)()' compliant to 
+   https://stat.ethz.ch/pipermail/r-devel/2007-May/045791.html
+
+ * new generating function 'AbscontDistribution'
+ 
+ * new class 'UnivarMixingDistribution' for mixing distributions with
+   methods / functions:
+    +'UnivarMixingDistribution' (generating function)
+    +flat.mix to make out of it a distribution of class
+     'UnivarLebDecDistribution'
+
+ * new class 'UnivarLebDecDistribution' for a distribution with a 
+   discrete and a.c. part; corresponding methods / functions:
+    +'UnivarLebDecDistribution' (generating function)
+    +'acPart', 'discretePart' return corresponding parts
+    +'acWeight', 'discreteWeight' return corresponding weights
+    +special 'plot' functions (only for cdf and quantile function)
+     [plotting jumps in both cdf and quantile function]
+    
+ * new class 'AffLinUnivarLebDecDistribution' for affine linear transformations
+   of 'UnivarLebDecDistribution' (in particular for use with E())
+
+ * new class union 'AcDcLcDistribution' as common mother class
+   for 'UnivarLebDecDistribution', 'AbscontDistribution',
+  'DiscreteDistribution';  corresponding methods / functions:
+
+ *  enhanced arithmetic: (for 'AcDcLcDistribution')
+
+    *  convolution for 'UnivarLebDecDistribution'
+    *  affine linear trafos for 'UnivarLebDecDistribution'
+    * 'numeric' / 'AcDcLcDistribution'
+    * 'AcDcLcDistribution'^'numeric'
+    * 'numeric'^'AcDcLcDistribution'
+    *  binary operations for independent distributions:
+          o 'AcDcLcDistribution' * 'AcDcLcDistribution'
+          o 'AcDcLcDistribution' / 'AcDcLcDistribution'
+          o 'AcDcLcDistribution' ^ 'AcDcLcDistribution'
+    * (better) exact transformations for exp() and log()
+    *  Minimum Maximum Truncation Huberization
+    *  convpow for 'UnivarLebDecDistribution'
+
+ * 'decomposePM' decomposes distributions in positive / negative part
+   (and in Dirac(0) if discrete) 
+
+ * 'simplifyD' tries to cast to simpler classes (e.g. if a weight is 0)
 
 ##############
 v 1.9
@@ -12,7 +61,8 @@ v 1.9
 
  * new methods 'shape()' and 'scale()' for class Chisq with ncp=0
 
- * methods getLow, getUp for upper and lower endpoint of support of DiscreteDistribution or AbscontDistribution
+ * methods getLow, getUp for upper and lower endpoint of support of 
+   DiscreteDistribution or AbscontDistribution
    (truncated to lower/upper TruncQuantile if infinite)
 
  * added S4-method 'convpow' for convolutional powers from the examples 

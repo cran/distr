@@ -62,13 +62,16 @@
       returns the slot shape2 of the parameter of the distribution}
     \item{shape2<-}{\code{signature(object = "Beta")}:
       modifies the slot shape2 of the parameter of the distribution}
+    \item{\code{-}}{\code{signature(e1 = "numeric", e2 = "Beta")} if \code{ncp(e2)==0} and \code{e1 == 1},
+     an exact (central) \code{Beta(shape1 = shape2(e2), shape2 = shape1(e2))} is returned, else
+     the default method is used; exact}
   }
 }
 
 \author{
   Thomas Stabla \email{statho3@web.de},\cr 
   Florian Camphausen \email{fcampi@gmx.de},\cr
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
 \seealso{

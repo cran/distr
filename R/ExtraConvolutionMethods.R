@@ -1,14 +1,14 @@
 ##setMethod("+", c("AbscontDistribution","DiscreteDistribution"),
 ##          function(e1,e2){               
 ##            rfun = function(n) r(e1)(n) + r(e2)(n)
-##            new("AbscontDistribution", r = rfun)
+##            AbscontDistribution( r = rfun)
 ##          })
 
 
 ##setMethod("+", c("DiscreteDistribution","AbscontDistribution"),
 ##          function(e1,e2){
 ##            rfun = function(n) r(e1)(n) + r(e2)(n)
-##            new("AbscontDistribution", r = rfun)
+##            AbscontDistribution(r = rfun)
 ##          })
 
 
@@ -80,7 +80,10 @@ function(e1,e2){
      x <- seq(from = lower, to = upper,
               length = getdistrOption("DefaultNrGridPoints"))
      h <- x[2]-x[1]
-     dpn <- outer(x, grid, function(x,y) d(e2)(x - y)) %*% probab
+           ### to avoid double accounting for density boundary 
+           ### points we jitter a little:
+     dpn <- outer(x+rnorm(x)*sd(x)*getdistrOption("DistrResolution"), 
+                  grid, function(x,y) d(e2)(x - y)) %*% probab
      
      ### treatment if density of e2 has singularities
      if(any(idx <- (dpn*h >= 10*length(dpn)))){
@@ -118,16 +121,19 @@ function(e1,e2){
           -Inf else lower
      yR <-  if ((q(e1)(1) ==  Inf)||(q(e2)(1) ==  Inf))
            Inf else upper
+     
      ## contintuity correction
      px.l <- pfun(x + 0.5*h)
      px.u <- pfun(x + 0.5*h, lower.tail = FALSE)
 
-#     print(px.l)
-#     print(px.u)
+#     print(summary(x))
+#     print(summary(px.l))
+#     print(summary(px.u))
      qfun <- .makeQNew(x + 0.5*h, px.l, px.u,
                        .notwithLArg(e1)||.notwithLArg(e1), yL, yR)
 
-     object <- new("AbscontDistribution", r = rfun, d = dfun, p = pfun,
+     object <- AbscontDistribution( r = rfun, d = dfun, p = pfun,
                     q = qfun, .withSim = FALSE, .withArith = TRUE)
      object
      }) 
+

@@ -51,7 +51,7 @@ Class \code{"Distribution"}, by class \code{"AbscontDistribution"}.
 
 \author{Thomas Stabla \email{statho3@web.de},\cr 
         Florian Camphausen \email{fcampi@gmx.de},\cr
-        Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+        Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr 
         Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 \note{It is the distribution of the ratio of the mean squares of n1 and n2 independent standard normals, and hence of the

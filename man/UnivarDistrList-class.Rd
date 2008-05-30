@@ -8,7 +8,7 @@
 \section{Objects from the Class}{
   Objects can be created by calls of the form \code{new("UnivarDistrList", ...)}.
   More frequently they are created via the generating function 
-  \code{DistrList}. 
+  \code{\link{DistrList}}. 
 }
 \section{Slots}{
   \describe{

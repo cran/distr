@@ -68,39 +68,55 @@ RtoDPQ.d <- function(r, e = getdistrOption("RtoDPQ.e")){
   list(dfun = dfun, pfun = pfun, qfun = qfun)
 }
 
+### new from 2.0:
+
+RtoDPQ.LC <- function(r, e = getdistrOption("RtoDPQ.e"),
+                      n = getdistrOption("DefaultNrGridPoints")){
+  zz <- r(10^e)
+  hasDis <- FALSE
+  zz.nr <- zz
+
+  zz.T <- table(zz)
+  zz.T1 <- zz.T[zz.T>1]
+  zz.replic <- as.numeric(names(zz.T1))
+  w.d <- sum(zz %in% zz.replic)/10^e
+  rm(zz.T)
+
+  f.d <- Dirac(0)
+  if(w.d)
+  {hasDis <- TRUE
+   zz.nr <- zz[! zz %in% zz.replic]
+   d.r <- zz.T1/sum(zz.T1)
+   f.d <- DiscreteDistribution(supp = zz.replic, prob = d.r)
+   rm(d.r,zz.replic,zz.T1)
+  }
+  rm(zz)
+  
+  if(1-w.d){
+  dxy <-  xy.coords(density(zz.nr, n = n))
+  dcfun <- .makeDNew(dxy$x, dxy$y, standM = "int")
+
+  pf0 <- function(x, y, yleft, yright) ecdf(x)
+  pcfun <- .makePNew(x=zz.nr, dx=0, notwithLLarg=TRUE, myPf = pf0)
+            ## quantile function
+
+  yL <-  min(zz.nr);   yR <-  max(zz.nr); rm(zz.nr)
+  px.l <- pcfun(dxy$x);   px.u <- pcfun(dxy$x, lower.tail = FALSE)
+  qcfun <- .makeQNew(dxy$x, px.l, px.u, TRUE, yL, yR)
+
+  rm(px.l, px.u, dxy, pf0)
+  f.c <- AbscontDistribution( r= function(n) qcfun(runif(n)),
+             d=dcfun, p = pcfun, q = qcfun, .withSim = TRUE,
+             .withArith = TRUE)
+  }
+  else f.c <-Norm()
+  UnivarLebDecDistribution(discretePart = f.d, acPart = f.c,
+                           discreteWeight = w.d)
+  }
+
+####################################################################################
+
+
 ###########################################################
 
 
-
-###Functions for AbscontDistribution 
-
-
-#determines slot d from p
-P2D <- function(p, x, ngrid = getdistrOption("DefaultNrGridPoints"))
-{xx <- seq(x[1], x[2], length = ngrid)
- px <- p(xx)
- dx <- c(px[1], diff(px))/(xx[2]-xx[1]) 
-# later with sfsmisc dx <- D1ss(xx,px)
- approxfun(xx, dx, yleft = 0, yright = 0)
-}
-
-
-#determines slot q from p
-
-P2Q <- function(p, x, ngrid = getdistrOption("DefaultNrGridPoints")){
-xx0 <- seq(x[1], x[2], length = ngrid)
-px0 <- p(xx0)
-px <- unique(px0)
-xx <- tapply(xx0, px0, min)
-approxfun(x = px, y = xx, rule = 2)
-}
-
-#determines slot p from d
-D2P <- function(d, x, ngrid = getdistrOption("DefaultNrGridPoints"))
-{xx <- seq(x[1], x[2], length = ngrid)
- px <- sapply(xx, function(y) {
-           tr <- try(integrate(d, lower = x[1], upper = y), silent = TRUE) 
-           if (!is(tr, "try-error")) return(tr$value)
-           else return((xx[2]-xx[1]) * sum(d(xx[xx<y])))})
- approxfun(xx, px, yleft = 0, yright = 1)
-}

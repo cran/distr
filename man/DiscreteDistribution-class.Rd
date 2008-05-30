@@ -1,6 +1,5 @@
 \name{DiscreteDistribution-class}
 \docType{class}
-\alias{DiscreteDistribution}
 \alias{DiscreteDistribution-class}
 \alias{AffLinDiscreteDistribution-class}
 \alias{initialize,DiscreteDistribution-method}
@@ -9,30 +8,10 @@
 \title{Class "DiscreteDistribution"}
 \description{The \code{DiscreteDistribution}-class is the mother-class of the class \code{LatticeDistribution}.}
 \section{Objects from the Class}{
-Objects can be created by calls of the generating function \code{"DiscreteDistribution"}.
+Objects can be created by calls to \code{new("DiscreteDistribution", ...)}, but more
+easily is the use of the generating function \code{"DiscreteDistribution"}.
 This generating function, from version 1.9 on, has been moved to this package from package \pkg{distrEx}.
 }
-
-\synopsis{DiscreteDistribution(supp, prob, .withArith = FALSE, .withSim = FALSE)}
-\usage{
-  DiscreteDistribution(supp, prob, .withArith=FALSE, .withSim=FALSE)
-  DiscreteDistribution(supp)
-}
-\arguments{
-  \item{supp}{numeric vector which forms the support 
-    of the discrete distribution. }
-  \item{prob}{vector of probability weights for the 
-    elements of \code{supp}.}
-  \item{.withArith}{normally not set by the user, but if determining the entries \code{supp}, \code{prob}
-                    distributional arithmetics was involved, you may set this to \code{TRUE}.}
-  \item{.withSim}{normally not set by the user, but if determining the entries \code{supp}, \code{prob}
-                  simulations were involved, you may set this to \code{TRUE}.}
-}
-\details{
-  If \code{prob} is missing, all elements in \code{supp}
-  are equally weighted. 
-}
-\value{Object of class \code{"DiscreteDistribution"}}
 
 \section{Slots}{
   \describe{
@@ -58,7 +37,15 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
   \describe{
     \item{initialize}{\code{signature(.Object = "DiscreteDistribution")}: initialize method }
     \item{Math}{\code{signature(x = "DiscreteDistribution")}: application of a mathematical function, e.g. \code{sin} or
-    \code{exp} (does not work with \code{log}!), to this discrete distribution}
+    \code{tan} to this discrete distribution}
+    \code{abs}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{abs(x)}.}
+    \code{exp}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{exp(x)}.}
+    \code{sign}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{sign(x)}.}
+    \code{log}{\code{signature(x = "DiscreteDistribution")}:  (with optional further argument \code{base}, 
+    defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.}
+    \code{log10}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{log10(x)}.}
+    \code{gamma}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{gamma(x)}.}
+    \code{lgamma}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{lgamma(x)}.}
     \item{-}{\code{signature(e1 = "DiscreteDistribution")}: application of `-' to this discrete distribution}
     \item{*}{\code{signature(e1 = "DiscreteDistribution", e2 = "numeric")}: multiplication of this discrete distribution
     by an object of class `numeric'}
@@ -117,15 +104,27 @@ To enhance accuracy of several functionals on distributions,
     \item{+}{\code{signature(e1 = "numeric", e2 = "AffLinDiscreteDistribution")}}
     \item{-}{\code{signature(e1 = "numeric", e2 = "AffLinDiscreteDistribution")}}
   }
-  There also is a class union of \code{"AffLinAbscontDistribution"} and
-  \code{"AffLinDiscreteDistribution"} called \code{"AffLinDistribution"}
+  There also is a class union of \code{"AffLinAbscontDistribution"},
+  \code{"AffLinDiscreteDistribution"}, \code{"AffLinUnivarLebDecDistribution"}
+  and called \code{"AffLinDistribution"}
   which is used for functionals.
+}
+\section{Internal virtual superclass "AcDcLcDistribution"}{
+As many operations should be valid no matter whether the operands
+are of class \code{"AbscontDistribution"},
+  \code{"DiscreteDistribution"}, or \code{"UnivarLebDecDistribution"},
+there is a class union of these classes called \code{"AcDcLcDistribution"};
+in partiucalar methods for \code{"*"}, \code{"/"}, 
+\code{"^"} (see \link{operators-methods}) and methods
+\code{\link{Minimum}}, \code{Maximum}, \code{\link{Truncate}}, and
+ \code{\link{Huberize}}, and \code{\link{convpow}} are defined for this 
+ class union.   
 }
 
 \author{
   Thomas Stabla \email{statho3@web.de},\cr 
   Florian Camphausen \email{fcampi@gmx.de},\cr
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr 
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
   }
 
@@ -165,4 +164,3 @@ q.r(D2)(pp+1e-5)
 \concept{lattice distribution}
 \concept{support of a distribution}
 \concept{S4 distribution class}
-\concept{generating function}

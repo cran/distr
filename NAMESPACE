@@ -1,18 +1,20 @@
 import("methods")
 import("stats")
 importFrom("graphics", "plot")
+importFrom("sfsmisc", "D1ss")
 import("startupmsg")
 
 export("Beta", "Binom", "Cauchy", "Chisq",  
        "Dirac","Exp", "DExp", "Fd", "Gammad", 
        "Geom", "Hyper", "Lnorm", "Logis", 
        "Nbinom", "Norm", "Pois", "RtoDPQ", 
-       "RtoDPQ.d", "Td", "Unif", "Weibull", 
+       "RtoDPQ.d", "Td", "Unif", "Weibull", "Arcsine", 
        "distroptions", "getdistrOption", "simplifyr",
        "Lattice", "DiscreteDistribution",
        "LatticeDistribution", "EuclideanSpace", "Reals", 
        "Naturals", "standardMethods", 
-       "distrARITH", "distrMASK")
+       "distrARITH", "distrMASK", "getLabel", "devNew")
+export("AbscontDistribution")
 export("DistrList", "UnivarDistrList") 
 exportClasses("rSpace", "EuclideanSpace", "Reals", 
               "Naturals")
@@ -36,7 +38,7 @@ exportClasses("UnivariateDistribution", "AbscontDistribution",
               "Beta", "Binom", "Cauchy", "Chisq", "Dirac", 
               "DExp", "Exp", "Fd", "Gammad", "Geom", 
               "Hyper", "Logis", "Lnorm", "Nbinom", "Norm", 
-              "Pois", "Td", "Unif", "Weibull",
+              "Pois", "Td", "Unif", "Weibull", "Arcsine",
               "ExpOrGammaOrChisq")
 exportClasses("DistrList", 
               "UnivarDistrList")
@@ -55,9 +57,22 @@ exportMethods("Max", "Max<-", "Min", "Min<-", "d", "df",
               "size", "size<-", "support", "initialize", 
               "print", "plot", "+", "-", "/", "*", "coerce",
               "Math", "log", "log10", "gamma", "lgamma", 
-              "dim", "show", "convpow", "pivot", 
+              "dim", "show", "convpow", "pivot", "sign",
               "lattice", "width", "Length", "pivot<-", 
               "width<-", "Length<-", "liesInSupport",
               "isOldVersion", "conv2NewVersion", "gaps",
               "gaps<-", "setgaps", "getLow", "getUp")
-
+exportClasses("UnivarMixingDistribution",
+              "UnivarLebDecDistribution",
+              "AffLinUnivarLebDecDistribution",
+              "AcDcLcDistribution")
+exportMethods("mixCoeff", "mixCoeff<-", "mixDistr", "mixDistr<-",
+              "discretePart", "discretePart<-", "acPart", "acPart<-",
+              "discreteWeight", "discreteWeight<-", "acWeight", "acWeight<-",
+              "p.discrete", "d.discrete", "q.discrete", "r.discrete",
+              "p.ac", "d.ac", "q.ac", "r.ac")
+exportMethods("decomposePM", "simplifyD", "showobj")
+exportMethods("Truncate","Minimum","Maximum","Huberize")
+export("UnivarMixingDistribution", "UnivarLebDecDistribution")
+export("RtoDPQ.LC", "flat.LCD", "flat.mix")
+exportMethods("abs","exp","^")

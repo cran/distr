@@ -61,7 +61,7 @@ parameters \code{shape = 1, scale = 1/rate(obj)}
 \author{
 Thomas Stabla \email{statho3@web.de},\cr 
 Florian Camphausen \email{fcampi@gmx.de},\cr
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
 \seealso{

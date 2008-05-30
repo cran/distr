@@ -1,15 +1,15 @@
 # -------- AbscontDistribution ---------- #
 
 setMethod("plot", "AbscontDistribution",
-   function(x, y = NULL, width = 16, height = 9, withSweave = FALSE, 
-            xlim = NULL, ylim = NULL, ngrid = 1000, verticals = TRUE, 
+   function(x, y = NULL, width = 10, height = 5.5, withSweave = getdistrOption("withSweave"),
+            xlim = NULL, ylim = NULL, ngrid = 1000, verticals = TRUE,
             do.points = TRUE, main = FALSE, inner = TRUE, sub = FALSE, 
             bmar = par("mar")[1], tmar = par("mar")[3], ..., 
             cex.main = par("cex.main"), cex.inner = 1.2, 
             cex.sub = par("cex.sub"), col.points = par("col"), 
             col.vert = par("col"), col.main = par("col.main"), 
             col.inner = par("col.main"), col.sub = par("col.sub"), 
-            cex.points = 2.0, pch.u = 21, pch.a = 16){
+            cex.points = 2.0, pch.u = 21, pch.a = 16, mfColRow = TRUE){
 
      xc <- match.call(call = sys.call(sys.parent(1)))$x
      ### manipulating the ... - argument
@@ -48,7 +48,7 @@ setMethod("plot", "AbscontDistribution",
         col.sub <- dots$col
 
      if (!withSweave)
-          get(getOption("device"))(width = width, height = height)
+          devNew(width = width, height = height)
      omar <- par("mar")
      
      mainL <- FALSE
@@ -107,7 +107,10 @@ setMethod("plot", "AbscontDistribution",
              if (missing(bmar)) bmar <- 6 
      }
      
-     opar <- par(mfrow = c(1,3), mar = c(bmar,omar[2],tmar,omar[4]))
+     if(mfColRow)
+         opar <- par(mfrow = c(1,3), mar = c(bmar,omar[2],tmar,omar[4]))
+     else
+         opar <- par(mar = c(bmar,omar[2],tmar,omar[4]))
      
      if(is.logical(inner)){     
         inner.d <- if (inner) 
@@ -170,6 +173,10 @@ setMethod("plot", "AbscontDistribution",
 
 
      owarn <- getOption("warn"); options(warn = -1)
+
+     if(is.finite(q(x)(0))) {grid <- c(q(x)(0),grid); pxg <- c(0,pxg)}
+     if(is.finite(q(x)(1))) {grid <- c(grid,q(x)(1)); pxg <- c(pxg,1)}
+
      do.call(plot, c(list(x = grid, pxg, type = "l", 
           ylim = ylim2, ylab = "p(q)", xlab = "q", log = logpd), 
           dots.without.pch))
@@ -221,16 +228,21 @@ setMethod("plot", "AbscontDistribution",
      owarn <- getOption("warn"); options(warn = -1)
          lines(po,xo, ...)
      if (verticals && !is.null(gaps(x))){
-         do.call(lines, c(list(rep(pu1,2), c(gaps(x)[,1],gaps(x)[,2]), 
-                 col = col.vert), dots.without.pch))    
+         pu <- rep(pu1,3)
+         xu <- c(gaps(x)[,1],gaps(x)[,2],rep(NA,ndots))
+         o <- order(pu)
+         dots.without.pch0 <- dots.without.pch
+         dots.without.pch0 $col <- NULL
+         do.call(lines, c(list(pu[o], xu[o], 
+                 col = col.vert), dots.without.pch0))    
      }
      options(warn = owarn)
 
      
      if(!is.null(gaps(x)) && do.points){
-        do.call(points, c(list(x = pu1, y = gaps(x)[,1], pch = pch.u, 
+        do.call(points, c(list(x = pu1, y = gaps(x)[,1], pch = pch.a, 
                 cex = cex.points, col = col.points), dots.for.points) )
-        do.call(points, c(list(x = pu1, y = gaps(x)[,2], pch = pch.a,
+        do.call(points, c(list(x = pu1, y = gaps(x)[,2], pch = pch.u,
                 cex = cex.points, col = col.points), dots.for.points) )
      }   
      if (mainL)
@@ -243,11 +255,10 @@ setMethod("plot", "AbscontDistribution",
      par(opar)
    }
    )
-
 # -------- DiscreteDistribution -------- #
 
 setMethod("plot", "DiscreteDistribution",
-    function(x, y = NULL, width = 16, height = 9, withSweave = FALSE, 
+    function(x, y = NULL, width = 10, height = 5.5, withSweave = getdistrOption("withSweave"), 
              xlim = NULL, ylim = NULL, verticals = TRUE, do.points = TRUE, 
              main = FALSE, inner = TRUE, sub = FALSE,
              bmar = par("mar")[1], tmar = par("mar")[3], ..., 
@@ -256,7 +267,7 @@ setMethod("plot", "DiscreteDistribution",
              col.hor = par("col"), col.vert = par("col"), 
              col.main = par("col.main"), col.inner = par("col.main"), 
              col.sub = par("col.sub"),  cex.points = 2.0, 
-             pch.u = 21, pch.a = 16){
+             pch.u = 21, pch.a = 16, mfColRow = TRUE){
 
       xc <- match.call(call = sys.call(sys.parent(1)))$x
       ### manipulating the ... - argument
@@ -298,7 +309,7 @@ setMethod("plot", "DiscreteDistribution",
         col.sub <- dots$col
 
      if (!withSweave)
-         get(getOption("device"))(width = width, height = height)
+         devNew(width = width, height = height)
      omar <- par("mar")
      
      mainL <- FALSE
@@ -358,7 +369,10 @@ setMethod("plot", "DiscreteDistribution",
              if (missing(bmar)) bmar <- 6 
      }
      
-     opar <- par(mfrow = c(1,3), mar = c(bmar,omar[2],tmar,omar[4]))
+     if(mfColRow)
+        opar <- par(mfrow = c(1,3), mar = c(bmar,omar[2],tmar,omar[4]))
+     else 
+        opar <- par(mar = c(bmar,omar[2],tmar,omar[4]))
      
      if(is.logical(inner)){     
         inner.d <- if (inner) 
@@ -427,14 +441,31 @@ setMethod("plot", "DiscreteDistribution",
                   cex = cex.points, col = col.points), dots.for.points))
        
        owarn <- getOption("warn"); options(warn = -1)
-       do.call(plot, c(list(x = stepfun(x = supp, y = c(0,p(x)(supp))), 
+
+       ngrid <- length(supp)
+
+       supp1 <- if(ngrid>1) supp else c(-max(1,abs(supp))*.08,0)+supp
+       psupp1 <- c(0,p(x)(supp1))
+
+       do.call(plot, c(list(x = stepfun(x = supp1, y = psupp1), 
                      main = "", verticals = verticals, 
-                     do.points = do.points, 
+                     do.points = FALSE, 
                      ylim = ylim2, ylab = "p(q)", xlab = "q", 
-                     cex.points = cex.points, pch = pch.a, 
-                     col.points = col.points,
                      col.hor = col.hor, col.vert = col.vert, 
                      log = logpd), dots.without.pch))
+       if(do.points)
+          {if(ngrid>1){
+              do.call(points, c(list(x = supp, y = psupp1[1:ngrid], pch = pch.u, 
+                  cex = cex.points, col = col.points), dots.for.points))
+              do.call(points, c(list(x = supp, y = psupp1[2:(ngrid+1)], pch = pch.a, 
+                  cex = cex.points, col = col.points), dots.for.points))
+              }else{
+              do.call(points, c(list(x = supp, y = 0, pch = pch.u, 
+                  cex = cex.points, col = col.points), dots.for.points))           
+              do.call(points, c(list(x = supp, y = 1, pch = pch.a, 
+                  cex = cex.points, col = col.points), dots.for.points))           
+              }
+           }       
        options(warn = owarn)
 
        
@@ -446,13 +477,12 @@ setMethod("plot", "DiscreteDistribution",
                   y = c(0,p(x)(supp[-length(supp)])), pch = pch.u, 
                   cex = cex.points, col = col.points), dots.for.points))
        
-       ngrid <- length(supp)
-       supp0 <- supp[1:(ngrid-1)]
-
+       
        owarn <- getOption("warn"); options(warn = -1)
-       do.call(plot, c(list(x = stepfun(p(x)(supp0), 
-                            supp, right = TRUE), 
-            main = "", xlim = ylim2, ylab = "q(p)", xlab = "p", 
+       do.call(plot, c(list(x = stepfun(c(0,p(x)(supp)), 
+                            c(NA,supp,NA), right = TRUE), 
+            main = "", xlim = ylim2, ylim = c(min(supp),max(supp)),
+            ylab = "q(p)", xlab = "p", 
             verticals = verticals, do.points = do.points, 
             cex.points = cex.points, pch = pch.a, 
             col.points = col.points,
@@ -464,10 +494,28 @@ setMethod("plot", "DiscreteDistribution",
        title(main = inner.q, line = lineT, cex.main = cex.inner,
              col.main = col.inner)
 
+       dots.without.pch0 <- dots.without.pch
+       dots.without.pch0 $col <- NULL
+
+       do.call(lines, c(list(x = c(0,p(x)(supp[1])), y = rep(supp[1],2),  
+                  col = col.vert), dots.without.pch0))           
+
        if(do.points)
-          do.call(points, c(list(x = p(x)(supp[-length(supp)]),
+          {do.call(points, c(list(x = p(x)(supp[-length(supp)]),
                   y = supp[-1], pch = pch.u, cex = cex.points, 
                   col = col.points), dots.for.points))
+           do.call(points, c(list(x = 0, y = supp[1], pch = pch.u, 
+                  cex = cex.points, col = col.points), dots.for.points))}           
+        
+       if(verticals && ngrid>1)
+          {dots.without.pch0 <- dots.without.pch
+           dots.without.pch0 $col <- NULL
+
+           do.call(lines, c(list(x = rep(p(x)(supp[1]),2), y = c(supp[1],supp[2]),  
+                  col = col.vert), dots.without.pch0))
+          }
+                             
+       
        if (mainL)
            mtext(text = main, side = 3, cex = cex.main, adj = .5, 
                  outer = TRUE, padj = 1.4, col = col.main)                            
@@ -482,9 +530,9 @@ setMethod("plot", "DiscreteDistribution",
 # -------- DistributionList   ---------- #
 
 setMethod("plot", "DistrList", 
-    function(x,y=NULL,...){ 
+    function(x, y = NULL, ...){ 
         for(i in 1:length(x)){
-            get(getOption("device"))()
+            devNew()
             plot(x[[i]],...)
         }
     })

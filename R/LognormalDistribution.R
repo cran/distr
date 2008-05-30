@@ -50,7 +50,7 @@ setMethod("*", c("Lnorm","numeric"),
          if(isTRUE(all.equal(e2,0)))  
             return(new("Dirac", location = 0, .withArith = TRUE))
          nL <- new("Lnorm", meanlog = meanlog(e1) + log(abs(e2)), 
-                        sdlog = sdlog(object), .withArith = TRUE)
+                        sdlog = sdlog(e1), .withArith = TRUE)
          if(e2 > 0) 
             return(nL)
          else 

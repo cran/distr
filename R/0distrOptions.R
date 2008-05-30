@@ -1,7 +1,18 @@
-.onLoad <- function(lib, pkg) { # extended 03-28-06: P.R. 
-    require("methods", character = TRUE, quietly = TRUE)
-}
-
+.distroptions <- list(
+                      DefaultNrGridPoints = 2^12,
+                      DistrResolution = 1e-6,
+                      TruncQuantile = 1e-5,
+                      DefaultNrFFTGridPointsExponent = 12,
+                      RtoDPQ.e = 5, 
+                      # new Warning-items P.R. 28.03.06
+                      WarningArith = TRUE,
+                      WarningSim = TRUE,
+                      ## new Items from 2.0:
+                      withgaps = TRUE,
+                      simplifyD = TRUE,
+                      DistrCollapse = TRUE,
+                      withSweave = FALSE
+                      )
 distroptions <- function(...) {
   if (nargs() == 0) return(.distroptions)
   current <- .distroptions
@@ -24,6 +35,4 @@ distroptions <- function(...) {
 }
 
 getdistrOption<-function(x)distroptions(x)[[1]]
-
-###must happen between load and attach
 

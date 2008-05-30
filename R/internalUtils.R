@@ -1,4 +1,13 @@
 #------------------------------------------------------------------------------
+### internal help function to check whether numeric vectors are integers
+#------------------------------------------------------------------------------
+
+.isInteger  <- function(x, tol = .Machine$double.eps) abs(as.integer(x)-x)< tol
+.isNatural  <- function(x, tol = .Machine$double.eps) .isInteger(x, tol) & (x>0)
+.isNatural0 <- function(x, tol = .Machine$double.eps) .isInteger(x, tol) & (x>=0)
+setAs("numeric","Integer",function(from) new("Integer",as.integer(from)))
+
+#------------------------------------------------------------------------------
 ### internal help function to check if a vector can be made a lattice
 #------------------------------------------------------------------------------
 
@@ -6,7 +15,8 @@
   {    ### is x equally spaced?
     all( sapply(diff(x), function(y)
          isTRUE(all.equal(y, diff(x)[1],
-                tolerance = getdistrOption("DistrResolution")))))
+                tolerance = getdistrOption("DistrResolution"),
+                check.attributes = FALSE))))
   }
 
 ### internal help function to check consistency of lattice with support:
@@ -18,14 +28,15 @@
    if (! .is.vector.lattice(support)  && eq.space)
       return(FALSE)
    ### are width of lattice and support consistent
-   if (! isTRUE(all.equal(min(ds),abs(w))))
+   if (! isTRUE(all.equal(min(ds), abs(w), check.attributes = FALSE)))
       return(FALSE)
    ### pivot is left or right endpoint of support
-   if ( isTRUE(all.equal(ms,p)) || isTRUE(all.equal(Ms,p)) )
+   if ( isTRUE(all.equal(ms, p, check.attributes = FALSE)) || isTRUE(all.equal(Ms, p, check.attributes = FALSE)) )
       return(TRUE)
 
    if (isTRUE(all.equal(min((support[1]-p)%%w,w-(support[1]-p)%%w),0,
-                         tolerance = getdistrOption("TruncQuantile"))))
+                        tolerance = getdistrOption("TruncQuantile"),
+                        check.attributes = FALSE)))
       return(TRUE)
   return(FALSE)
   }
@@ -186,7 +197,7 @@ return(outC)
 # .makeD, .makeP, .makeQ
 #------------------------------------------------------------------------------
 
-.makeD <- function(object, argList, stand = NULL)
+.makeD <- function(object, argList, stand = NULL, fac = NULL)
          { d <- function(x, log = FALSE, ...){}
            if(inA <- .inArgs("log", object@d))
                      argList <- substitute(c(AL, log = log, ...),
@@ -199,18 +210,25 @@ return(outC)
            myBod0 <- myCall
            if (!inA) myBod0 <- substitute({myCall
                                            if (log) d0 <- log(d0)})
-           myBod <- myBod0
+           myBod1 <- myBod0
            if (!is.null(stand))
-                myBod <- substitute(
+                myBod1 <- substitute(
                      {myBod0
                       d0 <- if (log) d0 - log(stand) else d0 / stand },
                       list(stand = stand, myBod0 = myBod0))
+           myBod <- myBod1
+           if (!is.null(fac))
+                myBod <- substitute(
+                     {myBod1
+                      d0 <- if (log) d0 + log(fac) else d0 * fac },
+                      list(fac = fac, myBod1 = myBod1))
            body(d) <- substitute({myBod
                                   return(d0)})
            return(d)
          }
 
-.makeP <- function(object, argList, sign = TRUE, correct = NULL)
+.makeP <- function(object, argList, sign = TRUE, correct = NULL, 
+          fac = NULL, fac2 = NULL)
          {
            p <- function(q, lower.tail = TRUE, log.p = FALSE, ...){}
            siY <- substitute(lower.tail)
@@ -227,9 +245,12 @@ return(outC)
                      argList <- substitute(c(argList, log.p = log.p, ...))
            else      argList <- substitute(c(argList, ...))
 
-           myCall <- substitute(p0 <- do.call("@"(objC,p),AL),
+           myCall <- substitute(p0 <- facC * do.call("@"(objC,p),AL) + facD,
                                 list(objC = quote(object),
-                                     AL = argList))
+                                     AL = argList,
+                                     facC = if(is.null(fac)) 1 else fac,
+                                     facD = if(is.null(fac2)) 0 else fac2)
+                                     )
            if (!inA1)
                myBod0 <- substitute({myC
                                      if (lowT) p0 <- 1 - p0},
@@ -339,7 +360,7 @@ return(outC)
 
 .plusm <- function(e1, e2, Dclass = "DiscreteDistribution"){
             if (length(e2)>1) stop("length of operator must be 1")
-            if (isTRUE(all.equal(e2,0))) return(e1)
+            if (isTRUE(all.equal(e2, 0, check.attributes = FALSE))) return(e1)
 
             if ((Dclass == "DiscreteDistribution")||
                 (Dclass == "AffLinDiscreteDistribution"))
@@ -391,8 +412,8 @@ return(outC)
 .multm <- function(e1, e2, Dclass = "DiscreteDistribution"){
             if (length(e2)>1) stop("length of operator must be 1")
 
-            if (isTRUE(all.equal(e2,1))) return(e1)
-            if (isTRUE(all.equal(e2,0)))
+            if (isTRUE(all.equal(e2, 1, check.attributes = FALSE))) return(e1)
+            if (isTRUE(all.equal(e2, 0, check.attributes = FALSE)))
                return(new("Dirac", location = 0))
 
             rnew <- function(n, ...){}
@@ -457,7 +478,8 @@ return(outC)
                  if(is.null(e1@gaps)) 
                     gapsnew <- NULL
                  else {gapsnew <- e1@gaps * e2
-                       if (e2 < 0) gapsnew <- gapsnew[,c(2,1)] }
+                       if (e2 < 0) gapsnew <- 
+                             gapsnew[rev(seq(nrow(gapsnew))),c(2,1),drop = FALSE] }
                  
                  dnew <- .makeD(substitute(e1, list(e1 = e1)),
                                 substitute(alist(x = x / e2), list(e2 = e2)),
@@ -476,7 +498,8 @@ return(outC)
                  if(is.null(e1@gaps)) 
                     gapsnew <- NULL
                  else {gapsnew <- e1@gaps * e2
-                       if (e2 < 0) gapsnew <- gapsnew[,c(2,1)] }
+                       if (e2 < 0) gapsnew <- 
+                            gapsnew[rev(seq(nrow(gapsnew))),c(2,1), drop = FALSE] }
 
                  dnew <- .makeD(substitute(e1, list(e1 = e1)),
                                 substitute(alist(x = x / e2), list(e2 = e2)),
@@ -596,30 +619,90 @@ return(f)
             return(dfun)
 }
 
+.primefun <- function(f,x, nm = NULL){
+ 
+ h <- diff(x)
+ l <- length(x)
 
+ xm <- (x[-l]+x[-1])/2
+
+ fxm <- f(xm)
+ fx <- f(x)
+ 
+ 
+ fxs  <- 2 * cumsum(fx) - fx - fx[1]
+ fxsm <- 4 * cumsum(fxm)
+
+ fxx <- c(0, (fxs[-1]+fxsm)* h / 6 )
+
+ if (is.null(nm)) nm <- fxx[l]
+
+ fx1 <- approxfun(x, fxx, yright = nm, yleft = 0)
+
+ ffx <- function(u){
+      ffy <- fx1(u) 
+      ffy[u > max(x)] <- nm 
+      ffy[u < min(x)] <- 0
+      return(ffy)
+     }
+
+ return(ffx)
+}
+
+.csimpsum <- function(fx){
+ l <- length(fx)
+ l2 <- l%/%2
+ if (l%%2 == 0) {
+     fx <- c(fx[1:l2],(fx[l2]+fx[l2+1])/2,fx[(l2+1):l])
+     l <- l+1}
+ f.even <- fx[seq(l) %% 2 == 0]
+ f.odd  <- fx[seq(l) %% 2 == 1]
+ fs    <- 2 * cumsum(f.odd) - f.odd - f.odd[1]
+ fsm   <- 4 * cumsum(f.even)
+ ff <- c(0,(fs[2:(l2+1)]+fsm)/3 )
+ ff
+}
 
 .makePNew <- function(x, dx, h = NULL, notwithLLarg = FALSE,
                       Cont = TRUE, myPf = NULL, pxl = NULL, pxu = NULL){
 
-  p.l <- if(!is.null(pxl)) pxl else cumsum(dx)
   if (is.null (h)) h <- 0
 
+  x.u <- x.l <- x
   if (Cont){
          mfun <- if (is.null (myPf)) approxfun else myPf
-  }else  mfun <- .makePd
+         l <- length(x)
+         if ((l%%2==0)&& is.null(myPf)){
+               l2 <- l/2
+               if (is.null(pxl))
+                   x.l <- c(x[1:l2],(x[l2]+x[l2+1])/2,x[(l2+1):l])
+               if (is.null(pxu))
+                   x.u <- c(x[1:l2],(x[l2]+x[l2+1])/2,x[(l2+1):l])
+               l <- l+1
+               }
+         cfun <- .csimpsum
+         if (is.null(pxl)&& is.null(myPf))
+             x.l <- x.l[seq(l)%%2==1]
+         if (is.null(pxu)&& is.null(myPf))
+             x.u <- x.u[seq(l)%%2==1]
+  }else    {
+         mfun <- .makePd
+         cfun <- cumsum
+  }       
 
-  ## continuity correction by h/2
+  p.l <- if(!is.null(pxl)) pxl else cfun(dx)
+  
   nm <- max(p.l)
-  p1.l <- mfun(x = x + 0.5*h, y = p.l, yleft = 0, yright = nm)
+  p1.l <- mfun(x = x.l, y = p.l, yleft = 0, yright = nm)
   nm <- p1.l(max(x))
 
   if(notwithLLarg){
       ifElsePS <- substitute(if (lower.tail) p1.l(q) else 1 - p1.l(q))
   }else{
-      p.u <- if(!is.null(pxu)) pxu else rev(cumsum(rev(dx)))
-      ## continuity correction by h/2
+      p.u <- if(!is.null(pxu)) pxu else rev(cfun(rev(dx)))
+    ## continuity correction by h/2
       if (!Cont) p.u <- c(p.u[-1],0)
-      p1.u <- mfun(x = x + 0.5*h, y = p.u, yright = 0, yleft = nm)
+      p1.u <- mfun(x = x.u, y = p.u, yright = 0, yleft = nm)
       rm(p.u)
       ifElsePS <- substitute(if (lower.tail) p1.l(q) else p1.u(q))
   }
@@ -640,7 +723,10 @@ return(f)
   mfun <- if (Cont) .makeQc else
           .makeQd
   ix <- .isEqual01(px.l)
-  xx <- px.l[!ix]; yy <- x[!ix]
+  if(!is.finite(yR)||Cont)
+     {xx <- px.l[!ix]; yy <- x[!ix]}
+  else  
+     {xx <- px.l; yy <- x}
   q.l <- mfun(x = xx, y = yy, yleft = yL, yright = yR)
   rm(xx,yy)
   if(notwithLLarg){
@@ -676,3 +762,168 @@ return(f)
 
 
 #setMethod("+", c("LatticeDistribution","AbscontDistribution"),plusDAC)
+
+#------------------------------------------------------------------------------
+# .expm.[dc], .logm.[dc] (exact calculation of exp /log) 
+#    [ similarly possible : other monotone, smooth trafos, e.g. tan / atan ]
+#------------------------------------------------------------------------------
+.expm.d <- function(e1){
+            supportnew <- exp(e1@support)
+
+            rnew <- function(n, ...){}
+            body(rnew) <- substitute({ exp(f(n, ...)) },
+                                         list(f = e1@r))
+            dnew <- .makeD(substitute(e1, list(e1 = e1)),
+                           substitute(alist(x = log(x*(x>0)+(x<=0)))),
+                           fac = substitute((x>0)))
+            pnew <- .makeP(substitute(e1, list(e1 = e1)),
+                           substitute(alist(q = log(q*(q>0)+(q<=0)))),
+                           fac = substitute((q>0)),
+                           fac2 = substitute((q<=0)& !lower.tail))
+            qnew <- .makeQ(substitute(e1, list(e1 = e1)),
+                           substitute(exp(q0)),
+                           Cont = FALSE)
+
+            object <- new("DiscreteDistribution",
+                           r = rnew, d = dnew, p = pnew,
+                           q = qnew, support = supportnew,
+                          .withSim = FALSE, .withArith = TRUE)
+            rm(supportnew)
+            rm(pnew, qnew, dnew, rnew)
+            object
+          }
+.expm.c <- function(e1){
+            gapsnew <- if(is.null(e1@gaps)) NULL else exp(e1@gaps)
+
+            rnew <- function(n, ...){}
+            body(rnew) <- substitute({ exp(f(n, ...)) },
+                                         list(f = e1@r))
+            dnew <- .makeD(substitute(e1, list(e1 = e1)),
+                           substitute(alist(x = log(x*(x>0)+(x<=0)))),
+                           stand = substitute(x+(x==0)),
+                           fac = substitute((x>0)))
+            pnew <- .makeP(substitute(e1, list(e1 = e1)),
+                           substitute(alist(q = log(q*(q>0)+(q<=0)))),
+                           fac = substitute((q>0)),
+                           fac2 = substitute((q<=0)& !lower.tail))
+            qnew <- .makeQ(substitute(e1, list(e1 = e1)),
+                           substitute(exp(q0)))
+
+            object <- AbscontDistribution(
+                           r = rnew, d = dnew, p = pnew,
+                           q = qnew, gaps = gapsnew,
+                          .withSim = FALSE, .withArith = TRUE)
+            rm(gapsnew)
+            rm(pnew, qnew, dnew, rnew)
+            object
+          }
+.logm.d <- function(e1){
+            supportnew <- log(e1@support)
+
+            rnew <- function(n, ...){}
+            body(rnew) <- substitute({ log(f(n, ...)) },
+                                         list(f = e1@r))
+            dnew <- .makeD(substitute(e1, list(e1 = e1)),
+                           substitute(alist(x = exp(x))))
+            pnew <- .makeP(substitute(e1, list(e1 = e1)),
+                           substitute(alist(q = exp(q))))
+            qnew <- .makeQ(substitute(e1, list(e1 = e1)),
+                           substitute(log(q0)),
+                           Cont = FALSE)
+
+            object <- new("DiscreteDistribution",
+                           r = rnew, d = dnew, p = pnew,
+                           q = qnew, support = supportnew,
+                          .withSim = FALSE, .withArith = TRUE)
+            rm(supportnew)
+            rm(pnew, qnew, dnew, rnew)
+            object
+          }
+.logm.c <- function(e1){
+            gapsnew <- if(is.null(e1@gaps)) NULL else log(e1@gaps)
+
+            rnew <- function(n, ...){}
+            body(rnew) <- substitute({ log(f(n, ...)) },
+                                         list(f = e1@r))
+            dnew <- .makeD(substitute(e1, list(e1 = e1)),
+                           substitute(alist(x = exp(x))),
+                           fac = substitute(exp(x)))
+            pnew <- .makeP(substitute(e1, list(e1 = e1)),
+                           substitute(alist(q = exp(q))))
+            qnew <- .makeQ(substitute(e1, list(e1 = e1)),
+                           substitute(log(q0)))
+
+            object <- AbscontDistribution(
+                           r = rnew, d = dnew, p = pnew,
+                           q = qnew, gaps = gapsnew,
+                          .withSim = FALSE, .withArith = TRUE)
+            rm(gapsnew)
+            rm(pnew, qnew, dnew, rnew)
+            object
+          }
+
+
+#------------------------------------------------------------------------------
+# .P2D, .D2P, .P2Q, .Q2P casting functions
+#------------------------------------------------------------------------------
+
+###Functions for AbscontDistribution 
+
+#determines slot d from p
+.P2D <- function(p, xx, ql, qu, ngrid = getdistrOption("DefaultNrGridPoints"))
+{if(missing(xx))
+    xx <- seq(ql, qu, length = ngrid)
+ px <- p(xx)
+ dx <- D1ss(xx,px)
+ return(.makeDNew(xx, dx, h = NULL, Cont = TRUE, standM = "integrate"))
+}
+
+
+#determines slot q from p
+
+.P2Q <- function(p, xx, ql,qu, ngrid = getdistrOption("DefaultNrGridPoints"), 
+                qL = -Inf, qU = Inf){
+if(missing(xx))
+   {xx <- seq(ql, qu, length = ngrid)
+     h <- (qu-ql)/ngrid}
+else h <- c(diff(xx),(rev(xx)[1]-rev(xx)[2]))
+px.l <- p(xx + 0.5*h)
+px.u <- p(xx + 0.5*h, lower.tail = FALSE)
+return(.makeQNew(xx + 0.5*h, px.l, px.u, FALSE, qL, qU))
+}
+
+#determines slot p from d
+.D2P <- function(d, xx, ql, qu,  ngrid = getdistrOption("DefaultNrGridPoints"))
+{if(missing(xx))
+   { if(ngrid%%2==0) ngrid  <- ngrid+1
+     xx <- seq(ql, qu, length = ngrid)
+     h <- (qu-ql)/ngrid}
+ else h <- c(diff(xx),(rev(xx)[1]-rev(xx)[2]))
+
+ dx <- d(xx)
+ return(.makePNew(xx, dx, h = h))
+}
+
+#determines slot p from q
+
+.Q2P <- function(q, ngrid = getdistrOption("DefaultNrGridPoints")){
+ep <- getdistrOption("TruncQuantile")^2
+xx0 <- seq(ep, 1-ep, length = ngrid)
+qx0 <- q(xx0)
+qx1 <- unique(qx0)
+x1 <- tapply(xx0, qx0, max)
+p0 <- approxfun(x = qx1, y = x1, yleft = 0, yright = 1, rule = 2)
+p01 <- function(x) {
+       p11 <- p0(x) 
+       p11[x>max(qx1)] <- 1
+       p11[x<min(qx1)] <- 0
+       return(p11)}
+return(function(q, lower.tail = TRUE, log.p = FALSE){
+  p1 <- p01(q)
+  p1[q==Inf] <- 1
+  p1[q==-Inf] <- 0
+  if(!lower.tail) p1 <- 1-p1
+  if(log.p) p1 <- log(p1)
+  return(p1)
+})
+}

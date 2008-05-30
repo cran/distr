@@ -2,6 +2,16 @@
 \alias{internals_for_distr}
 \alias{.is.vector.lattice}
 \alias{.is.consistent}
+\alias{.isInteger}
+\alias{.isNatural}
+\alias{.isNatural0}
+\alias{.mergegaps}
+\alias{.mergegaps2}
+\alias{.pmixfun}
+\alias{.dmixfun}
+\alias{.qmixfun}
+\alias{.rmixfun}
+\alias{.loupmixfun}
 \alias{.make.lattice.es.vector}
 \alias{.presubs}
 \alias{.inArgs}
@@ -27,6 +37,17 @@
 \alias{.plusm}
 \alias{.getObjName}
 \alias{.discretizeP}
+\alias{.expm.d}
+\alias{.expm.c}
+\alias{.logm.d}
+\alias{.logm.c}
+\alias{.P2D}
+\alias{.P2Q}
+\alias{.D2P}
+\alias{.Q2P}
+\alias{.csimpsum}
+\alias{.primefun}
+\alias{devNew}
 
 \title{Internal functions of package distr}
 
@@ -44,16 +65,20 @@ These functions are used internally by package distr.}
 .isIn(p0, pmat, tol = min( getdistrOption("TruncQuantile")/2,
                                           .Machine$double.eps^.7
                                           ))
+.isInteger(x, tol = .Machine$double.eps)
+.isNatural(x, tol = .Machine$double.eps)
+.isNatural0(x, tol = .Machine$double.eps)
 .setEqual(x, y, tol = 1e-7)
 .presubs(inp, frompat, topat)
-.makeD(object, argList,  stand = NULL)
-.makeP(object, argList,  sign = TRUE, correct = NULL)
+.makeD(object, argList,  stand = NULL, fac = NULL)
+.makeP(object, argList,  sign = TRUE, correct = NULL, fac =
+                 NULL, fac2 = NULL)
 .makeQ(object, lastCall, sign = TRUE, Cont = TRUE)
 .plusm(e1, e2, Dclass = "DiscreteDistribution")
 .multm(e1, e2, Dclass = "DiscreteDistribution")
 .notwithLArg(D)
 .getObjName(i = 1)
-.discretizeP(D, lower, upper, h)   
+.discretizeP(D, lower, upper, h)
 .fm(x,f)
 .fM(x,f)
 .fM2(x,f)
@@ -65,7 +90,28 @@ These functions are used internally by package distr.}
 .makePNew(x, dx, h = NULL, notwithLLarg = FALSE,
                       Cont = TRUE, myPf = NULL, pxl = NULL, pxu = NULL)
 .makeQNew(x, px.l, px.u, notwithLLarg = FALSE, yL , yR, Cont = TRUE)
+.mergegaps(gaps, support)
+.mergegaps2(gaps1, gaps2)
+.pmixfun(mixDistr, mixCoeff)
+.dmixfun(mixDistr, mixCoeff, withStand = FALSE, supp = NULL)
+.rmixfun(mixDistr, mixCoeff)
+.qmixfun(mixDistr, mixCoeff, Cont = TRUE, pnew)
+.loupmixfun(mixDistr)
+.expm.d(e1)
+.expm.c(e1)
+.logm.d(e1)
+.logm.c(e1)
+.P2D (p, xx, ql, qu, ngrid = getdistrOption("DefaultNrGridPoints"))
+.P2Q (p, xx, ql,qu, ngrid = getdistrOption("DefaultNrGridPoints"), 
+                qL = -Inf, qU = Inf)
+.D2P (d, xx, ql, qu,  ngrid = getdistrOption("DefaultNrGridPoints"))
+.Q2P (q, ngrid = getdistrOption("DefaultNrGridPoints"))
+.csimpsum(fx)
+.primefun(f,x, nm = NULL)
+devNew(...)
 }
+
+
 \arguments{
   \item{x}{a (numeric) vector}
   \item{y}{a (numeric) vector}
@@ -89,6 +135,8 @@ These functions are used internally by package distr.}
                the moment}
   \item{correct}{unevaluated R-code to correct for right-continuity 
                   (for multiplication with negative numerics at the moment)}
+  \item{fac}{factor to be multiplied with the return value}
+  \item{fac2}{factor to be added to the return value}
   \item{lastCall}{unevaluated R-Code ---gives how the result of a call to 
                    \code{q(e1)} is further transformed}
   \item{Cont}{logical: \code{TRUE} if \code{object} is continuous}
@@ -124,6 +172,31 @@ These functions are used internally by package distr.}
           also contain \code{"\\U"} or \code{"\\L"} to convert the rest of the
           replacement to upper or lower case; (as argument \code{replacement} 
           in \code{\link{gsub}}--- but possibly of length >1).}
+ \item{gaps,gaps1,gaps2}{matrices \code{m} with two columns, 
+             such that \code{t(m)}, interpreted as vector, is ordered}         
+ \item{support}{support vector of a univariate discrete distribution}         
+ \item{mixDistr}{an object of class \code{UnivarDistrList}}
+ \item{mixCoeff}{an object of class \code{numeric}; a probability vector}
+ \item{pnew}{a function \code{function(q, lower.tail = TRUE, log.p = FALSE}
+ realizing slot \code{p} in a distribution object.}
+ \item{withStand}{logical; if \code{TRUE} a standardization is made such
+ that the sum of the values of the result evaluated at argument \code{supp} is 1}
+ \item{supp}{NULL or \code{numeric}; if \code{withStand} is \code{TRUE} used
+ to standardize such that the result is a probability density.}
+ \item{p}{slot \code{p} of an object of class \code{"AbscontDistribution"}} 
+ \item{d}{slot \code{d} of an object of class \code{"AbscontDistribution"}} 
+ \item{q}{slot \code{q} of an object of class \code{"AbscontDistribution"}} 
+ \item{xx}{a given grid of x-values for functions \code{p}, \code{d} to be
+ evaluated at}  
+ \item{ql,qu}{lower and upper \code{getdistrOption("TruncQuantile")}-quantile of
+ the distribution; also, if argument \code{xx} is missing, left and right endpoint
+ of a regular grid of \code{ngrid} gridpoints to be used in place of \code{xx}.}  
+ \item{qL,qU}{argmin / argmax of p()-method}  
+ \item{ngrid}{number of gridpoints}
+ \item{fx}{a vector of function evaluations multiplied by the gridwidth}
+ \item{f}{a vector of function evaluations}
+ \item{nm}{an optional right asymptotic value}
+ \item{...}{arguments passed through to other functions}
 }
 
 \details{
@@ -193,6 +266,51 @@ In case of a discrete distribution it produces a step function
 (using \code{.makeQd}). Special care is taken for left continuity...
 In case of a continuous distribution it produces a quantile function with 
 \code{approxfun}. 
+
+\code{.isInteger}, \code{.isNatural}, and \code{.isNatural0} test for each 
+coordinate of argument \code{x} whether it
+is integer [natural / natural or 0] or not.
+
+\code{.mergegaps} modifies the gaps matrix of an a.c. distribution according to
+the support slot of a discrete distribution; if necessary, a gap interval
+[a,b] is split into [a,c],[c,b] if \code{a<c<b}.
+\code{.mergegaps2} merges two gap matrices of two a.c. distributions \code{X1} 
+and \code{X2} such that in the intervals of the resulting gap matrix, 
+neither \code{X1} nor \code{X2} carries mass.
+
+\code{.pmixfun}, \code{.dmixfun}, \code{.rmixfun}, and \code{.qmixfun}
+fill the slots \code{p}, \code{d}, \code{r}, and \code{q}
+of a corresponding mixing distribution according to the arguments
+in \code{mixDistr}, \code{mixCoeff}.
+
+\code{.loupmixfun} finds commun lower and upper bounds for the support of
+the mixing distribution.
+\code{.expm.d,.expm.c} for discrete, resp. a.c. argument \code{e1} fill the 
+slots \code{p}, \code{d}, \code{r}, and \code{q}
+of the transformation \code{exp(e1)} exactly.
+\code{.logm.d,.logm.c} for discrete, resp. a.c. argument \code{e1} fill the 
+slots \code{p}, \code{d}, \code{r}, and \code{q}
+of the transformation \code{log(e1)} exactly.
+
+For objects of class \code{\link{AbscontDistribution}},
+\code{.P2D} and \code{.P2Q} reconstruct function slots \code{d} resp. 
+\code{q} from function slot \code{p}
+by means of function \code{D1ss} from package \pkg{sfsmisc};
+and of function \code{.makeQNew},  respectively. The other way round, 
+\code{.D2P} and \code{.Q2P} reconstruct function slot \code{p} from 
+from function slots  \code{d} resp. \code{q} 
+by means of function \code{.makePNew} and explicite numeric inversion,  
+respectively.
+
+\code{.csimpsum} is used internally in \code{.makePNew} to produce
+a primitive function out of function evaluations by means of vectorized
+Simpson quadrature method, returning already the function values
+of the prime function on a grid; it is to mimick the behaviour
+of \code{cumsum}. \code{.primefun} is similar but more flexible and
+produces the prime function as a function.
+
+\code{devNew} opens a new device. This function is for back compatibility
+with R versions < 2.8.0.
 }
 
 
@@ -215,21 +333,53 @@ In case of a continuous distribution it produces a quantile function with
        log.p = FALSE}}
 \item{.makeQ,.makeQNew}{a function with args \code{p, lower.tail = TRUE, 
        log.p = FALSE}}
+\item{.isInteger,.isNatural,.isNatural0}{\code{logical} (same length as argument \code{x})}
+\item{.mergegaps,.mergegaps2}{a \code{gaps}-matrix, i.e.; a matrix \code{m} with two columns, 
+              such that \code{t(m)}, interpreted as vector, is ordered}
+\item{.pmixfun}{slot \code{p} for a mixing distribution, i.e. a function 
+                \code{function(q, lower.tail = TRUE, log.p = FALSE)}, which
+                is  the cdf of the distribution}
+\item{.dmixfun}{slot \code{d} for a mixing distribution, i.e. a function 
+                \code{function(x, log = FALSE)}, which
+                is  the density of the distribution}
+\item{.qmixfun}{slot \code{q} for a mixing distribution, i.e. a function 
+                \code{function(p, lower.tail = TRUE, log.p = FALSE)}, which
+                is  the quantile function of the distribution}
+\item{.rmixfun}{slot \code{r} for a mixing distribution, i.e. a function 
+                \code{function(n)} generating r.v.'s according to the distribution}
+\item{.loupmixfun}{a list of four components: \code{qL}, the minimal value of 
+\code{q(x)(0)}, \code{ql}, the minimal value of 
+\code{q(x)(getdistrOption("TruncQuantile"))}, \code{qU}, the maximal value of 
+\code{q(x)(1)}, \code{qu}, the maximal value of 
+\code{q(x)(getdistrOption("TruncQuantile"), lower.tail = FALSE)},
+\code{x} running through the members of \code{mixDistr} in each case.}
+\item{.expm.d,.logm.d}{an object of class \code{"DiscreteDistribution"}.} 
+\item{.expm.c,.logm.c}{an object of class \code{"AbscontDistribution"}.} 
+\code{.P2D}{a density \code{d} as function \code{function(x,  log = FALSE)}}
+\code{.P2Q}{a quantile function \code{q} as function \code{function(p, 
+            lower.tail = TRUE, log.p = FALSE)}} 
+\code{.D2P, .Q2P}{a cdf \code{p} as function \code{function(q, 
+            lower.tail = TRUE, log.p = FALSE)}}
+\code{.csimpsum}{a vector of evaluations of the prime function at the grid points}
+\code{.primefun}{the prime function as a function}
+\code{devNew}{returns the return value of the device opened, usually invisible 'NULL'}
 }
 
-
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de}
-  }
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}
+  Matthias Kohl \email{Matthias.Kohl@stamats.de}
+}
 
 \seealso{
+\code{\link{AbscontDistribution}},
+\code{\link{DiscreteDistribution}},
 \code{\link{LatticeDistribution}},
 \code{\link{RtoDPQ}},
 \code{\link{RtoDPQ.d}},
 \code{\link{convpow}},
 \code{\link{operators}},
 \code{\link{plot-methods}}
+\code{\link[grDevices]{dev.new}}
 }
-
 \keyword{internal}
 \concept{utilities}

@@ -5,6 +5,7 @@
 \alias{log10-methods}
 \alias{lgamma-methods}
 \alias{gamma-methods}
+\alias{sign-methods}
 \alias{Math,AbscontDistribution-method}
 \alias{Math,DiscreteDistribution-method}
 \alias{abs,AbscontDistribution-method}
@@ -13,6 +14,8 @@
 \alias{exp,DiscreteDistribution-method}
 \alias{log,AbscontDistribution-method}
 \alias{log,DiscreteDistribution-method}
+\alias{sign,AbscontDistribution-method}
+\alias{sign,DiscreteDistribution-method}
 \alias{log10,AbscontDistribution-method}
 \alias{log10,DiscreteDistribution-method}
 \alias{lgamma,AbscontDistribution-method}
@@ -38,6 +41,12 @@ for random variables transformed by functions from group
       (exactly)}
     \item{abs}{\code{signature(x = "DiscreteDistribution")}: application of 
       function \code{abs} to this discrete distribution; 
+      (exactly)}
+    \item{sign}{\code{signature(x = "AbscontDistribution")}: application of 
+      function \code{abs} to this absolutely continouos distribution; 
+      (exactly)}
+    \item{sign}{\code{signature(x = "DiscreteDistribution")}: application of 
+      function \code{abs} to this discrete continouos distribution; 
       (exactly)}
     \item{exp}{\code{signature(x = "AbscontDistribution")}: application of
       function \code{exp} to this absolutely continouos distribution;

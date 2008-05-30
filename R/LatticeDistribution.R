@@ -120,7 +120,8 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                         }                  
              }
        }else if (!is.null(supp))
-            {D <- DiscreteDistribution(supp, prob, .withArith = .withArith, 
+            {if (is.null(prob)) prob <- supp*0+1/length(supp)
+             D <- DiscreteDistribution(supp, prob, .withArith = .withArith, 
                                        .withSim = .withSim )
              if (!.is.vector.lattice (supp)){
                  if (check)

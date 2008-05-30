@@ -1,3 +1,39 @@
+############# preparations ################
+# (.onload, .onattach ...)
+.onLoad <- function(lib, pkg) { # extended 03-28-06: P.R. 
+    require("methods", character = TRUE, quietly = TRUE)
+}
+
+
+
+.onAttach <- function(library, pkg)
+{
+  unlockBinding(".distroptions", asNamespace("distr"))
+## global variable needed for flat.R
+##  unlockBinding(".OkTyp", asNamespace("distr"))
+    msga <- gettext(
+    "Attention: Arithmetics on distribution objects are understood as\n"
+                   )
+    msgb <- gettext(
+    "operations on corresponding random variables (r.v.s); see distrARITH().\n"
+                   )
+    msgc <- gettext(
+    "Some functions from package 'stats' are intentionally masked\n---see distrMASK().\n"
+                   )
+    msgd <- gettext(
+    "Note that global options are controlled by distroptions()\n---c.f. ?\"distroptions\"."
+                   )
+buildStartupMessage(pkg = "distr", msga, msgb, msgc, msgd, library = library, 
+                    packageHelp = TRUE, 
+# MANUAL = "http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/distr.pdf",
+                    VIGNETTE = gettext(
+"Package \"distrDoc\" provides a vignette to this package as well as\nto several extension packages; try vignette(\"distr\")."
+                                      )
+                   )
+  invisible()
+} 
+
+
 ################################
 ##
 ## Optional..-classes
@@ -6,6 +42,15 @@
 setClassUnion("OptionalMatrix", 
                c("matrix","NULL")
                )
+
+################################
+##
+## utility classes 
+##
+################################
+
+setClass("Integer", contains ="numeric",
+          validity = function(object) all(.isInteger(object)))
 
 ################################
 ##
@@ -589,6 +634,38 @@ setClass("Weibull",
           contains = "AbscontDistribution"
           )
 
+## Class: Arcsine distribution
+setClass("Arcsine",  
+          prototype = prototype(
+                      r = function(n){ sin((runif(n)-.5)*pi) },
+                      d = function(x, log = FALSE){ 
+                              x0 <- (abs(x)<1-.Machine$double.eps)
+                              x1 <- x^2*x0
+                              d <-  x0/sqrt(1-x1)/pi
+                              d[.isEqual(abs(x),1)] <- Inf
+                              if(log) d<- log(d)
+                              return(d)},
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
+                              if(!lower.tail) q<- -q
+                              q <- pmin(pmax(q,-1),1)
+                              p <- asin(q)/pi+1/2
+                              if(log.p) p <- log(p)
+                              return(p)},
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
+                              if(log.p) p <- exp(p)
+                              p1 <- p
+                              p1[p<0|p>1] <- 0.5
+                              if(!lower.tail) p1 <- 1-p1
+                              q <- sin( (p1-1/2)*pi)
+                              q[p<0|p>1] <- NA
+                              q[.isEqual(p,0)] <- -1
+                              q[.isEqual(p,1)] <-  1
+                              return(q)}                      
+                      ),
+          contains = "AbscontDistribution"
+          )
+
+
 ## inbetween-Class: AffLinAbscontDistribution
 
 setClass("AffLinAbscontDistribution", 
@@ -835,10 +912,14 @@ setClass("AffLinLatticeDistribution",
           )
 
 
-setClassUnion("AffLinDistribution", c("AffLinAbscontDistribution", 
-               "AffLinDiscreteDistribution"))
 
-# list of univariate distributions
+
+################################
+##
+## Distribution List classes 
+##
+################################
+
 setClass("UnivarDistrList", 
             prototype = prototype(list(new("Norm"))), 
             contains = "DistrList", 
@@ -849,3 +930,64 @@ setClass("UnivarDistrList",
                         stop("element ", i, " is no 'UniveriateDistribution'")
                 return(TRUE) 
             })
+
+
+#### new from version 2.0: Mixing Distributions
+
+################################
+##
+## Mixing Distribution classes 
+##
+################################
+
+setClass("UnivarMixingDistribution",
+            representation = representation(mixCoeff = "numeric",
+                             mixDistr = "UnivarDistrList"),
+            prototype = prototype(mixCoeff = 1, mixDistr = new("UnivarDistrList")),
+            contains = "UnivariateDistribution",
+            validity = function(object){
+                if(any(object@mixCoeff<0) || sum(object@mixCoeff)>1)
+                   stop("mixing coefficients are no probabilities")
+                return(TRUE)
+            })
+
+setClass("UnivarLebDecDistribution",
+            representation = representation(mixCoeff = "numeric",
+                             mixDistr = "UnivarDistrList"),
+            prototype = prototype(mixCoeff = c("acWeight" = 1, 
+                                               "discreteWeight" = 0),
+                                  mixDistr = new("UnivarDistrList",
+                                              list("acPart" = new("Norm"),
+                                                   "discretePart" = new("Dirac")
+                                                   )
+                                  )),
+            contains = "UnivarMixingDistribution",
+            validity = function(object){
+                if (length(object@mixCoeff)!=2)
+                    stop("number of mixing components is not 2")
+                if (!is(object@mixDistr[[1]], "AbscontDistribution"))
+                    stop("first component must be absolutely continuous")
+                if (!is(object@mixDistr[[2]], "DiscreteDistribution"))
+                    stop("second component must be discrete")
+                return(TRUE)
+            })
+
+setClass("AffLinUnivarLebDecDistribution",
+          representation = representation(a = "numeric", b = "numeric",
+          X0 = "UnivarLebDecDistribution"),
+          prototype = prototype(a = 1, b = 0, 
+                                X0 = new("UnivarLebDecDistribution")),
+          contains = "UnivarLebDecDistribution"
+          )
+
+################################
+##
+## virtual Distribution class Unions 
+##
+################################
+
+setClassUnion("AcDcLcDistribution", c("AbscontDistribution",
+               "DiscreteDistribution", "UnivarLebDecDistribution"))
+
+setClassUnion("AffLinDistribution", c("AffLinAbscontDistribution",
+               "AffLinDiscreteDistribution", "AffLinUnivarLebDecDistribution"))

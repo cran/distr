@@ -62,3 +62,9 @@ setMethod("shape2<-", "Beta",
 setMethod("ncp<-", "Beta", 
            function(object, value) new("Beta", shape1 = shape1(object), 
                                         shape2 = shape2(object), ncp = value))
+
+setMethod("-", c("numeric","Beta"),
+           function(e1, e2) {if(isTRUE(all.equal(e1,1))&&
+                                isTRUE(all.equal(ncp(e2),0)))
+                             return(Beta(shape1=shape2(e2),shape2=shape1(e2)))
+                             else e1-as(e2,"AbscontDistribution")})

@@ -9,7 +9,7 @@
 \alias{sdlog<-,LnormParameter-method}
 \alias{sdlog<-,Lnorm-method}
 \title{ Methods for Function sdlog in Package `distr' }
-\description{}
+\description{sdlog-methods}
 \section{Methods}{\describe{
 
 \item{sdlog}{\code{signature(object = "LnormParameter")}: returns the slot \code{sdlog} of the parameter of the distribution }

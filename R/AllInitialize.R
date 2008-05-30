@@ -65,7 +65,8 @@ setMethod("initialize", "GeomParameter",
 setMethod("initialize", "AbscontDistribution",
           function(.Object, r = NULL, d = NULL, p = NULL, q = NULL, 
                    gaps = NULL, param = NULL, img = new("Reals"),
-                   .withSim = FALSE, .withArith = FALSE) {
+                   .withSim = FALSE, .withArith = FALSE,
+                   low1 = NULL, up1 = NULL, low = -Inf, up =Inf) {
 
             ## don't use this if the call is new("AbscontDistribution")
             LL <- length(sys.calls())
@@ -96,9 +97,21 @@ setMethod("initialize", "AbscontDistribution",
               pfun <- dpq$pfun}
             
             if(is.null(q)) {
-              .withSim <- TRUE
-              if(dpq.approx == 0) {dpq <- RtoDPQ(r)}
-              qfun <- dpq$qfun}
+               ## quantile function
+               rN <- NULL
+               if(is.null(up1)) up1 <- max(rN <- r(10^getdistrOption("RtoDPQ.e")))
+               if(is.null(low1)) {
+                 low1 <- if(is.null(rN)) min(r(10^getdistrOption("RtoDPQ.e")))
+                         else min(rN)}
+                         
+               h <- (up1-low1)/getdistrOption("DefaultNrFFTGridPointsExponent")
+               x <-   seq(from = low1, to = up1, by = h)
+
+               px.l <- pfun(x + 0.5*h)
+               px.u <- pfun(x + 0.5*h, lower.tail = FALSE)
+            
+               qfun <- .makeQNew(x + 0.5*h, px.l, px.u, FALSE, low, up)
+             }
             
             .Object@img <- img
             .Object@param <- param
@@ -330,7 +343,7 @@ setMethod("initialize", "Dirac",
             body(.Object@q) <- substitute( 
                 { if (log.p) p <- exp(p)
                   if(any((p < 0)|(p > 1))) 
-                     warning("q Method of class Dirac produced NaN's.")
+                     warning("q Method of class Dirac produced NaNs.")
                   q0 <- ifelse((p < 0)|(p > 1), NaN, locationSub) 
                   return(q0)
                 },
@@ -592,7 +605,7 @@ setMethod("initialize", "Norm",
 
 ## Class: lognormal distribution
 setMethod("initialize", "Lnorm",
-          function(.Object, meanlog = 0, sdlog = 1) {
+          function(.Object, meanlog = 0, sdlog = 1, .withArith = FALSE) {
             .Object@img <- new("Reals")
             .Object@param <- new("LnormParameter", meanlog = meanlog, 
                                   sdlog = sdlog)
@@ -620,7 +633,7 @@ setMethod("initialize", "Lnorm",
                                     lower.tail = lower.tail, log.p = log.p) },
                              list(meanlogSub = meanlog, sdlogSub = sdlog)
                                           )
-            .Object@.withArith <- FALSE
+            .Object@.withArith <- .withArith
             .Object
           })
 
@@ -683,10 +696,8 @@ setMethod("initialize", "Fd",
                   TQ <- getdistrOption("TruncQuantile")/2
                   xz <- qf(TQ, df1 = df1, df2 = df2, ncp = ncp, 
                            lower.tail = FALSE)
-                  xl <- c(0,xz)
                   pfun <- function(x){pf(x, df1 = df1, df2 = df2, ncp = ncp)}
-                  dfun <- P2D(pfun, xl, 
-                              ngrid = getdistrOption("DefaultNrGridPoints"))
+                  dfun <- .P2D(p=pfun, ql = 0, qu = xz)
                 # by means of simulations
                 # rfun <- function(n){rf(n, df1=df1, df2=df2, ncp=ncp)}
                 # dfun <-R2D(rfun, nsim = 10^getdistrOption("RtoDPQ.e"), 
@@ -1010,3 +1021,35 @@ setMethod("initialize", "Weibull",
             .Object
           })
 
+## Class: Arcsine distribution
+setMethod("initialize", "Arcsine",
+          function(.Object, .withArith = FALSE) {
+            .Object@img <- new("Reals")
+            .Object@r <- function(n){sin((runif(n)-.5)*pi)}
+            .Object@d <- function(x, log = FALSE){ 
+                              x0 <- (abs(x)<1-.Machine$double.eps)
+                              x1 <- x^2*x0
+                              d <-  x0/sqrt(1-x1)/pi
+                              d[.isEqual(abs(x),1)] <- Inf
+                              if(log) d<- log(d)
+                              return(d)}
+            .Object@p <- function(q, lower.tail = TRUE, log.p = FALSE){ 
+                              if(!lower.tail) q<- -q
+                              q <- pmin(pmax(q,-1),1)
+                              p <- asin(q)/pi+1/2
+                              if(log.p) p <- log(p)
+                              return(p)} 
+            .Object@q <- function(p, lower.tail = TRUE, log.p = FALSE){ 
+                              if(log.p) p <- exp(p)
+                              p1 <- p
+                              p1[p<0|p>1] <- 0.5
+                              if(!lower.tail) p1 <- 1-p1
+                              q <- sin( (p1-1/2)*pi)
+                              q[p<0|p>1] <- NA
+                              q[.isEqual(p,0)] <- -1
+                              q[.isEqual(p,1)] <-  1
+                              return(q)}                      
+            .Object@.withSim   <- FALSE
+            .Object@.withArith <- .withArith
+            .Object
+          })

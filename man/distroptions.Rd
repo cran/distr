@@ -3,6 +3,7 @@
 \alias{getdistrOption}
 \alias{DefaultNrGridPoints}
 \alias{DistrResolution}
+\alias{DistrCollapse}
 \alias{TruncQuantile}
 \alias{WarningSim}
 \alias{WarningArith}
@@ -10,6 +11,9 @@
 \alias{RtoDPQ.e}
 \alias{WarningArith}
 \alias{WarningSim}
+\alias{withSweave}
+%\alias{simplifyD}
+\alias{withgaps}
 
 \title{
   functions to change the global variables of the package `distr'
@@ -38,13 +42,15 @@ getdistrOption(x)
 \author{
   Thomas Stabla \email{statho3@web.de},\cr 
   Florian Camphausen \email{fcampi@gmx.de},\cr
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de},\cr 
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr 
   Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 \section{Currently available options}{
 \describe{
 \item{\code{DefaultNrGridPoints}}{default number of grid points in integration, default value: \code{2^12}}
 \item{\code{DistrResolution}}{minimal spacing between two mass points in a discrete distribution, default value: \code{1e-6}}
+\item{\code{DistrCollapse}}{logical; in convolving discrete distributions, shall support points
+with distance smaller than \code{DistrResolution} be collapsed; default value:  \code{TRUE}}
 \item{\code{TruncQuantile}}{argument for \code{q}-slot at which to truncate; also, for discrete distributions, 
  support is restricted to [\code{q(TruncQuantile)},\code{q(1-TruncQuantile)}], default value: \code{1e-5}}
 \item{\code{DefaultNrFFTGridPointsExponent}}{by default, for e = \code{DefaultNrFFTGridPointsExponent}, 
@@ -57,6 +63,14 @@ getdistrOption(x)
 arithmetics operating on distributions, when the corresponding distribution to be plotted/shown is obtained by such an operation;
 keep in mind that arithmetics in fact operate on random variables distributed according to the given distributions and \bold{not}
 on corresponding cdf's or densities; default value: \code{TRUE}}
+\item{\code{withSweave}}{is code run in Sweave (then no new graphic devices are opened), 
+                         default value: \code{FALSE}}
+  \item{\code{withgaps}}{controls whether in the return value of arithmetic
+  operations the slot \code{gaps} of an the \code{AbscontDistribution} part
+  is filled automatically based on empirical evaluations via  \code{setgaps}
+   ---default \code{TRUE}}
+  \item{\code{simplifyD}}{ controls whether in the return value of arithmetic
+  operations there is a call to \code{simplifyD} or not ---default \code{TRUE}}
 }
 } 
 \examples{

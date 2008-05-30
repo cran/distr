@@ -22,7 +22,7 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
 
 
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@uni-bayreuth.de}
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}
 }
 \seealso{
 \code{\link{Chisq-class}}

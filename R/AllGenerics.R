@@ -37,10 +37,8 @@ df <- function(x, ...)
              { TQ <- getdistrOption("TruncQuantile")
                xz <- qchisq(1-TQ,df=df1,ncp=ncp)
                xn <- qchisq(TQ,df=df2,ncp=0)
-               xl <- c(0,df2*xz/xn/df1)
                pfun <- function(x){pf(x, df1=df1, df2=df2, ncp=ncp)}
-               dfun <- P2D(pfun, xl, 
-                       ngrid = getdistrOption("DefaultNrGridPoints"))
+               dfun <- .P2D(p=pfun, ql=0, qu=df2*xz/xn/df1)
                #
                ## simulational alternative:
                #rfun <- function(x){rf(x, df1=df1, df2=df2, ncp=ncp)}
@@ -317,5 +315,87 @@ if(!isGeneric("lgamma"))
    setGeneric("lgamma")
 if(!isGeneric("gamma"))
    setGeneric("gamma")
+if(!isGeneric("sign"))
+   setGeneric("sign") #, function(x, base) standardGeneric("log"))
 
 
+### new Generics from 2.0 on (in particular for Mixing Distributions)
+
+# Accessor / Replacement Functions for UnivarMixingDistribution
+if(!isGeneric("mixCoeff"))
+   setGeneric("mixCoeff", function(object) standardGeneric("mixCoeff"))
+if(!isGeneric("mixCoeff<-"))
+   setGeneric("mixCoeff<-", function(object, value) standardGeneric("mixCoeff<-"))
+
+if(!isGeneric("mixDistr"))
+   setGeneric("mixDistr", function(object) standardGeneric("mixDistr"))
+if(!isGeneric("mixDistr<-"))
+   setGeneric("mixDistr<-", function(object, value) standardGeneric("mixDistr<-"))
+
+# Accessor / Replacement Functions for [AffLin]UnivarLebDecDistribution
+
+if(!isGeneric("discretePart"))
+    setGeneric("discretePart", function(object) standardGeneric("discretePart"))
+if(!isGeneric("discretePart<-"))
+   setGeneric("discretePart<-", function(object, value) standardGeneric("discretePart<-"))
+
+if(!isGeneric("acPart"))
+   setGeneric("acPart", function(object) standardGeneric("acPart"))
+if(!isGeneric("acPart<-"))
+   setGeneric("acPart<-", function(object, value) standardGeneric("acPart<-"))
+
+if(!isGeneric("discreteWeight"))
+   setGeneric("discreteWeight", function(object) standardGeneric("discreteWeight"))
+if(!isGeneric("discreteWeight<-"))
+   setGeneric("discreteWeight<-", function(object, value) standardGeneric("discreteWeight<-"))
+
+if(!isGeneric("acWeight"))
+   setGeneric("acWeight", function(object) standardGeneric("acWeight"))
+if(!isGeneric("acWeight<-"))
+   setGeneric("acWeight<-", function(object, value) standardGeneric("acWeight<-"))
+
+if(!isGeneric("p.discrete"))
+    setGeneric("p.discrete", function(object) standardGeneric("p.discrete"))
+if(!isGeneric("d.discrete"))
+    setGeneric("d.discrete", function(object) standardGeneric("d.discrete"))
+if(!isGeneric("q.discrete"))
+    setGeneric("q.discrete", function(object) standardGeneric("q.discrete"))
+if(!isGeneric("r.discrete"))
+    setGeneric("r.discrete", function(object) standardGeneric("r.discrete"))
+
+if(!isGeneric("p.ac"))
+    setGeneric("p.ac", function(object) standardGeneric("p.ac"))
+if(!isGeneric("d.ac"))
+    setGeneric("d.ac", function(object) standardGeneric("d.ac"))
+if(!isGeneric("q.ac"))
+    setGeneric("q.ac", function(object) standardGeneric("q.ac"))
+if(!isGeneric("r.ac"))
+    setGeneric("r.ac", function(object) standardGeneric("r.ac"))
+
+### Help functions
+
+if(!isGeneric("decomposePM"))
+   setGeneric("decomposePM", function(object) standardGeneric("decomposePM"))
+
+if(!isGeneric("simplifyD"))
+   setGeneric("simplifyD", function(object) standardGeneric("simplifyD"))
+
+if(!isGeneric("Truncate"))
+   setGeneric("Truncate", function(object, ...) standardGeneric("Truncate"))
+
+### Arithmetic functions / Min[Max]imum, Huberization, Truncation
+
+if(!isGeneric("Minimum"))
+    setGeneric("Minimum",
+    function(e1, e2, ...) standardGeneric("Minimum"))
+if(!isGeneric("Maximum"))
+    setGeneric("Maximum",
+    function(e1, e2, ...) standardGeneric("Maximum"))
+
+if(!isGeneric("Huberize"))
+   setGeneric("Huberize", function(object, ...) standardGeneric("Huberize"))
+
+### help function for show
+
+if(!isGeneric("showobj"))
+   setGeneric("showobj", function(object, ...) standardGeneric("showobj"))
