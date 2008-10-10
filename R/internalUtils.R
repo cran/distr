@@ -927,3 +927,23 @@ return(function(q, lower.tail = TRUE, log.p = FALSE){
   return(p1)
 })
 }
+
+#------------------------------------------------------------------------------
+# issue warnings in show / print as to Arith or print
+#------------------------------------------------------------------------------
+.IssueWarn <- function(Arith,Sim){
+    msgA1 <- msgA2 <- msgS1 <- msgS2 <- NULL
+    if(Arith && getdistrOption("WarningArith")){ 
+      msgA1 <- gettext(
+       "arithmetics on distributions are understood as operations on r.v.'s\n")
+      msgA2 <- gettext(
+       "see 'distrARITH()'; for switching off this warning see '?distroptions'")
+       }
+    if(Sim && getdistrOption("WarningSim")){ 
+      msgS1 <- gettext(
+       "slots d,p,q have been filled using simulations; ")
+      msgS2 <- gettext(
+       "for switching off this warning see '?distroptions'")
+       }
+    return(list(msgA=c(msgA1,msgA2), msgS = c(msgS1,msgS2)))  
+    }

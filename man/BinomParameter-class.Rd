@@ -6,15 +6,20 @@
 \title{Class "BinomParameter"}
 \description{ The parameter of a binomial distribution, used by Binom-class}
 \section{Objects from the Class}{
-Objects can be created by calls of the form \code{new("BinomParameter", prob, size)}.
-Usually an object of this class is not needed on its own, it is generated automatically when an object of the class Binom
+Objects can be created by calls of the form 
+      \code{new("BinomParameter", prob, size)}.
+Usually an object of this class is not needed on its own, it is generated 
+automatically when an object of the class Binom
 is instantiated. 
 }
 \section{Slots}{
   \describe{
-    \item{\code{prob}:}{Object of class \code{"numeric"}: the probability of a binomial distribution }
-    \item{\code{size}:}{Object of class \code{"numeric"}: the size of a binomial distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{prob}:}{Object of class \code{"numeric"}: 
+          the probability of a binomial distribution }
+    \item{\code{size}:}{Object of class \code{"numeric"}: 
+          the size of a binomial distribution }
+    \item{\code{name}:}{Object of class \code{"character"}: 
+          a name / comment for the parameters }
   }
 }
 \section{Extends}{
@@ -22,13 +27,16 @@ Class \code{"Parameter"}, directly.
 }
 \section{Methods}{
   \describe{
-    \item{initialize}{\code{signature(.Object = "BinomParameter")}: initialize method }
-    \item{prob}{\code{signature(object = "BinomParameter")}: returns the slot \code{prob} of the parameter of the
-    distribution }
-    \item{prob<-}{\code{signature(object = "BinomParameter")}: modifies the slot \code{prob} of the parameter of the
-    distribution }
-    \item{size}{\code{signature(object = "BinomParameter")}: returns the slot \code{size} of the parameter of the distribution }
-    \item{size<-}{\code{signature(object = "BinomParameter")}: modifies the slot \code{size} of the parameter of the distribution}
+    \item{initialize}{\code{signature(.Object = "BinomParameter")}: 
+          initialize method }
+    \item{prob}{\code{signature(object = "BinomParameter")}: returns the slot 
+          \code{prob} of the parameter of the distribution }
+    \item{prob<-}{\code{signature(object = "BinomParameter")}: modifies the slot 
+          \code{prob} of the parameter of the distribution }
+    \item{size}{\code{signature(object = "BinomParameter")}: returns the slot 
+          \code{size} of the parameter of the distribution }
+    \item{size<-}{\code{signature(object = "BinomParameter")}: modifies the slot 
+          \code{size} of the parameter of the distribution}
   }
 }
 

@@ -11,14 +11,16 @@
 
 \usage{
 showobj(object, ...)
-\S4method{showobj}{UnivariateDistribution}(object)
-\S4method{showobj}{DistrList}(object)
-\S4method{showobj}{UnivarMixingDistribution}(object)
-\S4method{showobj}{UnivarLebDecDistribution}(object,objs)
+\S4method{showobj}{UnivariateDistribution}(object, className = class(object)[1])
+\S4method{showobj}{DistrList}(object, className = class(object)[1])
+\S4method{showobj}{UnivarMixingDistribution}(object, className = class(object)[1])
+\S4method{showobj}{UnivarLebDecDistribution}(object, className = class(object)[1],
+objs)
 }
 \arguments{
   \item{\dots}{further parameters for \code{showobj}; not yet used.}
   \item{object}{distribution [list] object}
+  \item{className}{name of the class of the object}
   \item{objs}{a character capturing the input from \code{show}, \code{print}}
 }
 \value{a character vector, which is then shown by method \code{show},

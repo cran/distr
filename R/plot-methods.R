@@ -1,7 +1,7 @@
 # -------- AbscontDistribution ---------- #
 
-setMethod("plot", "AbscontDistribution",
-   function(x, y = NULL, width = 10, height = 5.5, withSweave = getdistrOption("withSweave"),
+setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
+   function(x, width = 10, height = 5.5, withSweave = getdistrOption("withSweave"),
             xlim = NULL, ylim = NULL, ngrid = 1000, verticals = TRUE,
             do.points = TRUE, main = FALSE, inner = TRUE, sub = FALSE, 
             bmar = par("mar")[1], tmar = par("mar")[3], ..., 
@@ -257,8 +257,8 @@ setMethod("plot", "AbscontDistribution",
    )
 # -------- DiscreteDistribution -------- #
 
-setMethod("plot", "DiscreteDistribution",
-    function(x, y = NULL, width = 10, height = 5.5, withSweave = getdistrOption("withSweave"), 
+setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
+    function(x,  width = 10, height = 5.5, withSweave = getdistrOption("withSweave"), 
              xlim = NULL, ylim = NULL, verticals = TRUE, do.points = TRUE, 
              main = FALSE, inner = TRUE, sub = FALSE,
              bmar = par("mar")[1], tmar = par("mar")[3], ..., 
@@ -529,8 +529,8 @@ setMethod("plot", "DiscreteDistribution",
 
 # -------- DistributionList   ---------- #
 
-setMethod("plot", "DistrList", 
-    function(x, y = NULL, ...){ 
+setMethod("plot", signature(x =  "DistrList", y = "missing"),
+    function(x,  ...){ 
         for(i in 1:length(x)){
             devNew()
             plot(x[[i]],...)

@@ -1,26 +1,31 @@
 #------  UnivariateDistribution ---------- #
 
+
 setMethod("show", "UnivariateDistribution",
-          function(object){cat(showobj(object))
-          if(object@.withArith && getdistrOption("WarningArith")) 
-            {msga <- gettext(
-     "arithmetics on distributions are understood as operations on r.v.'s\n")
-             msgb <- gettext(
-     "see 'distrARITH()'; for switching off this warning see '?distroptions'")
-             warning(msga,msgb)}
-           if(object@.withSim && getdistrOption("WarningSim")) 
-            {msga <- gettext(
-     "slots d,p,q have been filled using simulations; ")
-             msgb <- gettext(
-     "for switching off this warning see '?distroptions'")
-             warning(msga,msgb)}}
+          function(object){
+            cls <- class(object)[1]
+            cat(showobj(object, className = cls))
+            ws <- .IssueWarn(object@.withArith, object@.withSim)
+            if(!is.null(ws$msgA)) warning(ws$msgA)
+            if(!is.null(ws$msgS)) warning(ws$msgS)
+            }
           )
 
-setMethod("showobj", "UnivariateDistribution",
+setMethod("show", "LatticeDistribution",
           function(object){
-            x <- object
-            txt <- gettextf("Distribution Object of Class: %s\n", class(x)[1])
-            parameter = param(x)
+            cls <- class(object)[1]
+            cat(showobj(object, className = cls))
+            ws <- .IssueWarn(object@.withArith, object@.withSim)
+            if(!is.null(ws$msgA)) warning(ws$msgA)
+            if(!is.null(ws$msgS)) warning(ws$msgS)
+          })
+
+
+setMethod("showobj", "UnivariateDistribution",
+          function(object, className = class(object)[1]){
+#            x <- object
+            txt <- gettextf("Distribution Object of Class: %s\n", className)
+            parameter = param(object)
             Names = slotNames(parameter)
             if(length(Names) > 1){
               for(i in Names[Names != "name"])
@@ -37,29 +42,20 @@ setMethod("print", "UnivariateDistribution",
 #------ DistributionList  ---------- #
 
 setMethod("show", "DistrList", 
-    function(object){cat(showobj(object))
+    function(object){
+       cls <- class(object)[1]
+       cat(showobj(object, className = cls))
+       ws <- .IssueWarn(any(unlist(lapply(object,function(x)x@.withArith))), 
+                        any(unlist(lapply(object,function(x)x@.withSim))))
+       if(!is.null(ws$msgA)) warning(ws$msgA)
+       if(!is.null(ws$msgS)) warning(ws$msgS)
     
-    if(any(unlist(lapply(object,function(x)x@.withArith))) && 
-            getdistrOption("WarningArith")) 
-            {msga <- gettext(
-     "arithmetics on distributions are understood as operations on r.v.'s\n")
-             msgb <- gettext(
-     "see 'distrARITH()'; for switching off this warning see '?distroptions'")
-             warning(msga,msgb)}
-     if(any(unlist(lapply(object,function(x)x@.withSim))) && 
-             getdistrOption("WarningSim")) 
-            {msga <- gettext(
-     "slots d,p,q have been filled using simulations; ")
-             msgb <- gettext(
-     "for switching off this warning see '?distroptions'")
-             warning(msga,msgb)}
-    
-    }
+      }
     )
 
 setMethod("showobj", "DistrList", 
-    function(object){
-        txt <- gettextf("An object of class \"%s\"\n", class(object))
+    function(object,className = class(object)[1]){
+        txt <- gettextf("An object of class \"%s\"\n", className)
         for(i in 1:length(object)){
             s <- showobj(object[[i]])
             les <- length(s)
@@ -77,26 +73,18 @@ setMethod("showobj", "DistrList",
 
 setMethod("show", "UnivarMixingDistribution",
           function(object){
-          cat(showobj(object))
-           if(object@.withArith && getdistrOption("WarningArith")) 
-            {msga <- gettext(
-     "arithmetics on distributions are understood as operations on r.v.'s\n")
-             msgb <- gettext(
-     "see 'distrARITH()'; for switching off this warning see '?distroptions'")
-             warning(msga,msgb)}
-           if(object@.withSim && getdistrOption("WarningSim")) 
-            {msga <- gettext(
-     "slots d,p,q have been filled using simulations; ")
-             msgb <- gettext(
-     "for switching off this warning see '?distroptions'")
-             warning(msga,msgb)}
+            cls <- class(object)[1]
+            cat(showobj(object, className = cls))
+            ws <- .IssueWarn(object@.withArith, object@.withSim)
+            if(!is.null(ws$msgA)) warning(ws$msgA)
+            if(!is.null(ws$msgS)) warning(ws$msgS)
           }
          )
 
 
 setMethod("showobj", "UnivarMixingDistribution",
-          function(object){
-              txt <- gettextf("An object of class \"%s\"\n", class(object))
+          function(object, className = class(object)[1]){
+              txt <- gettextf("An object of class \"%s\"\n", className)
               l <- length(mixCoeff(object))
               txt <- c(txt,
                      "---------------------------------------------\n")
@@ -131,26 +119,18 @@ setMethod("show", "UnivarLebDecDistribution",
            objs <- as.character(deparse(           
            match.call(
                    call = sys.call(sys.parent(1)))$object))
-           cat(showobj(object = object, objs = objs))
-          if(object@.withArith && getdistrOption("WarningArith")) 
-            {msga <- gettext(
-     "arithmetics on distributions are understood as operations on r.v.'s\n")
-             msgb <- gettext(
-     "see 'distrARITH()'; for switching off this warning see '?distroptions'")
-             warning(msga,msgb)}
-           if(object@.withSim && getdistrOption("WarningSim")) 
-            {msga <- gettext(
-     "slots d,p,q have been filled using simulations; ")
-             msgb <- gettext(
-     "for switching off this warning see '?distroptions'")
-             warning(msga,msgb)}          
+            cls <- class(object)[1]
+            cat(showobj(object, className = cls, objs = objs))
+           ws <- .IssueWarn(object@.withArith, object@.withSim)          
+           if(!is.null(ws$msgA)) warning(ws$msgA)
+           if(!is.null(ws$msgS)) warning(ws$msgS)
           })
 
 setMethod("showobj", "UnivarLebDecDistribution",
-          function(object, objs){
+          function(object, className = class(object)[1], objs){
               if(missing(objs)) objs <- "" 
               else if(length(grep("<S4 object ", objs))) objs <- ""
-              txt <- gettextf("An object of class \"%s\"\n", class(object))
+              txt <- gettextf("An object of class \"%s\"\n", className)
               txt <- c(txt,
                        gettextf("--- a Lebesgue decomposed distribution:\n\n"))
               l <- length(mixCoeff(object))

@@ -47,6 +47,7 @@
 \alias{.Q2P}
 \alias{.csimpsum}
 \alias{.primefun}
+\alias{.IssueWarn}
 \alias{devNew}
 
 \title{Internal functions of package distr}
@@ -108,6 +109,7 @@ These functions are used internally by package distr.}
 .Q2P (q, ngrid = getdistrOption("DefaultNrGridPoints"))
 .csimpsum(fx)
 .primefun(f,x, nm = NULL)
+.IssueWarn(Arith,Sim)
 devNew(...)
 }
 
@@ -196,6 +198,10 @@ devNew(...)
  \item{fx}{a vector of function evaluations multiplied by the gridwidth}
  \item{f}{a vector of function evaluations}
  \item{nm}{an optional right asymptotic value}
+ \item{Arith}{logical; slot \code{.withArith} of a distribution object,
+              or logically-``any'' of these slots in a collection of such objects} 
+ \item{Sim}{logical; slot \code{.withSim} of a distribution object,
+              or logically-``any'' of these slots in a collection of such objects} 
  \item{...}{arguments passed through to other functions}
 }
 
@@ -362,6 +368,7 @@ with R versions < 2.8.0.
             lower.tail = TRUE, log.p = FALSE)}}
 \code{.csimpsum}{a vector of evaluations of the prime function at the grid points}
 \code{.primefun}{the prime function as a function}
+\code{.IssueWarn}{a list with two warnings to be issued each of which may be empty}
 \code{devNew}{returns the return value of the device opened, usually invisible 'NULL'}
 }
 

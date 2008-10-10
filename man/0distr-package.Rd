@@ -43,8 +43,8 @@ corresponding image distributions.
 \details{
 \tabular{ll}{
 Package: \tab distr\cr
-Version: \tab 2.0 \cr
-Date: \tab 2008-05-08 \cr
+Version: \tab 2.0.1 \cr
+Date: \tab 2008-10-10 \cr
 Depends: \tab R(>= 2.2.0), methods, graphics, startupmsg\cr
 Imports: \tab stats\cr
 LazyLoad: \tab yes\cr
@@ -263,6 +263,11 @@ a vignette for packages \pkg{distr}, \pkg{distrSim}, \pkg{distrTEst}, and
 \pkg{distrEx} is included into the mere documentation package \pkg{distrDoc} 
 and may be called by 
 \code{require("distrDoc");vignette("distr")}
+
+a small vignette on how to generate new distributions with packages \pkg{distr}
+and  \pkg{distrEx} is included and may be called by 
+\code{vignette("newDistributions")}
+
 
 %a more detailed manual for \pkg{distr}, \pkg{distrSim}, \pkg{distrTEst}, and \pkg{distrEx} may be downloaded from  
 %\url{http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/distr.pdf}

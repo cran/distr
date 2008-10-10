@@ -16,6 +16,8 @@
 
 setMethod("+", c("numeric", "UnivariateDistribution"),
           function(e1, e2){
+            print(class(e1))
+            print(class(e2))            
             e2 + e1
           })
 
@@ -137,3 +139,50 @@ function(e1,e2){
      object
      }) 
 
+
+setMethod("+", c("numeric", "LatticeDistribution"),
+          function(e1, e2){
+            print(class(e1))
+            print(class(e2))            
+            e2 + e1
+          })
+
+setMethod("-", c("numeric", "LatticeDistribution"),
+          function(e1, e2){
+            -1*e2 + e1
+          })
+
+setMethod("*", c("numeric", "LatticeDistribution"),
+          function(e1, e2){
+            e2 * e1
+          })
+
+setMethod("-", c("LatticeDistribution", "LatticeDistribution"),
+          function(e1,e2){
+            e1+(-e2)
+          })
+
+setMethod("-", c("LatticeDistribution", "missing"),
+          function(e1){
+            e1*(-1)
+          })
+
+
+setMethod("-", c("LatticeDistribution", "numeric"),
+          function(e1, e2){
+            return(e1 + (-e2))
+          })
+
+setMethod("/", c("LatticeDistribution", "numeric"),
+          function(e1, e2){
+            if(e2 == 0) stop("division by zero")
+            return(e1 * (1/e2))
+          })
+setMethod("-", c("UnivariateDistribution", "LatticeDistribution"),
+          function(e1,e2){
+            e1+(-e2)
+          })
+setMethod("-", c("LatticeDistribution", "UnivariateDistribution"),
+          function(e1,e2){
+            e1+(-e2)
+          })

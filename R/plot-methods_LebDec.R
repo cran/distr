@@ -1,7 +1,7 @@
 ############################ plot #######################
 
-setMethod("plot", "AffLinUnivarLebDecDistribution",
-    function(x, y = NULL, width = 10, height = 5.5, withSweave = getdistrOption("withSweave"),
+setMethod("plot", signature(x = "AffLinUnivarLebDecDistribution", y = "missing"),
+    function(x, width = 10, height = 5.5, withSweave = getdistrOption("withSweave"),
              xlim = NULL, ylim = NULL, ngrid = 1000,
              verticals = TRUE, do.points = TRUE,
              main = FALSE, inner = TRUE, sub = FALSE,
@@ -17,12 +17,13 @@ setMethod("plot", "AffLinUnivarLebDecDistribution",
       mc$x <- NULL
       x <- as(x,"UnivarLebDecDistribution")
       mc <- c(list(x=x), mc)
-      do.call(getMethod("plot","UnivarLebDecDistribution"), mc)
+      do.call(getMethod("plot",
+              signature(x="UnivarLebDecDistribution",y="missing")), mc)
       return(invisible())
 })
 
-setMethod("plot", "UnivarLebDecDistribution",
-    function(x, y = NULL, width = 10, height = 14.5, withSweave = getdistrOption("withSweave"),
+setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
+    function(x, width = 10, height = 14.5, withSweave = getdistrOption("withSweave"),
              xlim = NULL, ylim = NULL, ngrid = 1000,
              verticals = TRUE, do.points = TRUE,
              main = FALSE, inner = TRUE, sub = FALSE,
@@ -45,7 +46,8 @@ setMethod("plot", "UnivarLebDecDistribution",
          mc$x <- NULL
          x <- x@mixDistr[[2]]
          mc <- c(list(x=x), mc)
-         do.call(getMethod("plot","DiscreteDistribution"), mc)
+         do.call(getMethod("plot",signature(x = "DiscreteDistribution",
+                                            y = "missing")), mc)
          return(invisible())
         }
 
@@ -53,7 +55,8 @@ setMethod("plot", "UnivarLebDecDistribution",
          mc$x <- NULL
          x <- x@mixDistr[[1]]
          mc <- c(list(x=x), mc)
-         do.call(getMethod("plot","AbscontDistribution"), mc)
+         do.call(getMethod("plot",signature(x = "AbscontDistribution",
+                                            y = "missing")), mc)
          return(invisible())
         }
 

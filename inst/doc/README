@@ -1,0 +1,11 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% to produce
+%
+% vignette  "How to generate new distributions in packages distr, distrEx"
+%
+% from scratch, take care that the /unpacked source/ packages
+% distr and distrEx are in one layer of a tree, e.g. $Rhome/Rsrclib/distr,
+% $Rhome/Rsrclib/distrEx.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -4,6 +4,7 @@
 \alias{operators-methods}
 \alias{operators}
 \alias{-,UnivariateDistribution,missing-method}
+\alias{-,LatticeDistribution,missing-method}
 \alias{-,Norm,missing-method}
 \alias{+,UnivariateDistribution,numeric-method}
 \alias{+,AbscontDistribution,numeric-method}
@@ -19,10 +20,16 @@
 \alias{+,Norm,numeric-method}
 \alias{+,Unif,numeric-method}
 \alias{+,numeric,UnivariateDistribution-method}
+\alias{+,numeric,LatticeDistribution-method}
 %%\alias{-,UnivariateDistribution,ANY-method}
 \alias{-,UnivariateDistribution,numeric-method}
 \alias{-,UnivariateDistribution,UnivariateDistribution-method}
+\alias{-,LatticeDistribution,numeric-method}
+\alias{-,LatticeDistribution,LatticeDistribution-method}
+\alias{-,LatticeDistribution,UnivariateDistribution-method}
+\alias{-,UnivariateDistribution,LatticeDistribution-method}
 \alias{-,numeric,UnivariateDistribution-method}
+\alias{-,numeric,LatticeDistribution-method}
 \alias{*,UnivariateDistribution,numeric-method}
 \alias{*,AbscontDistribution,numeric-method}
 \alias{*,DiscreteDistribution,numeric-method}
@@ -43,7 +50,9 @@
 \alias{*,Lnorm,numeric-method}
 \alias{*,Unif,numeric-method}
 \alias{*,numeric,UnivariateDistribution-method}
+\alias{*,numeric,LatticeDistribution-method}
 \alias{/,UnivariateDistribution,numeric-method}
+\alias{/,LatticeDistribution,numeric-method}
 \alias{+,UnivariateDistribution,UnivariateDistribution-method}
 \alias{+,AbscontDistribution,AbscontDistribution-method}
 \alias{+,AbscontDistribution,DiscreteDistribution-method}
@@ -80,7 +89,7 @@
 
 
 
-\title{Methods for operators +,-,*,/ in Package distr}
+\title{Methods for operators +,-,*,/,... in Package distr}
 
 \description{Arithmetics and unary mathematical transformations for distributions}
 
