@@ -908,7 +908,7 @@ setClass("AffLinDiscreteDistribution",
           )
 
 setClass("AffLinLatticeDistribution", 
-          contains = c("AffLinDiscreteDistribution", "LatticeDistribution")
+          contains = c("LatticeDistribution", "AffLinDiscreteDistribution")
           )
 
 

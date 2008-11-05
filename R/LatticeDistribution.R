@@ -142,26 +142,28 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
 
 setMethod("lattice", "LatticeDistribution", function(object) object@lattice)
 
-setAs("LatticeDistribution", "DiscreteDistribution", 
-       def = function(from, to){
-    cF <- class(from)
-    value <- if (cF!="LatticeDistribution") 
-                 new(cF) else new("DiscreteDistribution")
-    for (what in slotNames("DiscreteDistribution")) 
-         slot(value, what) <- slot(from, what)
-    supp.old <- from@support
-    o.warn <- getOption("warn"); options(warn = -2)
-    d.old <- from@d(from@support)
-    options(warn = o.warn)
-    supp.new <- supp.old[d.old > 0]
-    value@support <- supp.new
-    value
-       }
-)
+
+## canceling out of lattice points with mass 0
+#setAs("LatticeDistribution", "DiscreteDistribution", 
+#       def = function(from){
+#    cF <- class(from)[1]
+#    value <- if (cF!="LatticeDistribution") 
+#                 new(cF) else new("DiscreteDistribution")
+#    for (what in slotNames("DiscreteDistribution")) 
+#         slot(value, what) <- slot(from, what)
+#    supp.old <- from@support
+#    o.warn <- getOption("warn"); options(warn = -2)
+#    d.old <- from@d(from@support)
+#    options(warn = o.warn)
+#    supp.new <- supp.old[d.old > 0]
+#    value@support <- supp.new
+#    value
+#       }
+#)
 
 
 setAs("AffLinLatticeDistribution","AffLinDiscreteDistribution", 
-       def = function(from, to){
+       def = function(from){
     value <- new("AffLinDiscreteDistribution")
     for (what in slotNames("AffLinDiscreteDistribution")) 
          slot(value, what) <- slot(from, what)
@@ -179,9 +181,9 @@ setMethod("+", c("LatticeDistribution", "LatticeDistribution"),
 function(e1,e2){
             ### Step 1
 
-            e1 <- as(e1, "LatticeDistribution")
-            e2 <- as(e2, "LatticeDistribution")
-                  ### casting necessary due to setIs
+#            e1 <- as(e1, "LatticeDistribution")
+#            e2 <- as(e2, "LatticeDistribution")
+#                  ### casting necessary due to setIs
 
             ### Lattice Calculations:
             w1 <- width(lattice(e1))

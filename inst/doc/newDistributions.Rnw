@@ -2,9 +2,6 @@
 %
 % Vignette  "How to generate new distributions in packages distr, distrEx"
 %
-% to produce from scratch, assumes that the /unpacked source/ packages
-% distr and distrEx are in one layer of a tree, e.g. $Rhome/Rsrclib/distr,
-% $Rhome/Rsrclib/distrEx
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -14,9 +11,13 @@
 %\VignettePackage{distr}
 %
 \documentclass[11pt]{article}
-\usepackage{geometry}\usepackage{color}
-\usepackage{ifpdf}
+\usepackage{geometry}
+%
+\usepackage{color}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.75}
+%
+\usepackage{ifpdf}
+%
 \usepackage{amssymb}
 \usepackage[%
 baseurl={r-forge.r-project.org},%
@@ -27,43 +28,29 @@ pdfkeywords={probability distribution,simulation,estimation},%
 pagebackref,bookmarks,colorlinks,linkcolor=darkblue,citecolor=darkblue,%
 pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
 %
-\usepackage{Sweave}
-\RequirePackage{color}
-\RequirePackage{listings}  
-%
-\lstset{fancyvrb=true,language=R,basicstyle=\color{Rcolor}\small,
-        commentstyle=\color{Rcomment}\ttfamily\itshape,
-        literate={<-}{{$\leftarrow$}}2,
-        morekeywords=[2]{Norm,Pois,lambda,p,d,r,distroptions}}
-%\newcommand{\ttR}[1]{{\color{Rcolor}\tt #1\color{normal}}}
-\definecolor{Rcolor}{rgb}{0,0.5,0.5}
-\definecolor{Rout}{rgb}{0.461,0.039,0.102}
-\definecolor{Rcomment}{rgb}{0.101,0.043,0.432}
-%
-\DefineVerbatimEnvironment{Sinput}{Verbatim}{formatcom=\color{Rcolor}\lstset{fancyvrb=true}}
-\DefineVerbatimEnvironment{Soutput}{Verbatim}{formatcom=\color{Rout}\lstset{fancyvrb=false}}
-\DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl,formatcom=\color{Rcolor}\lstset{fancyvrb=true}}
 \markboth{\sl How to generate new distributions in packages ``{\tt distr}'', ``{\tt distrEx}''}%
 {\sl How to generate new distributions in packages ``{\tt distr}'', ``{\tt distrEx}''}
-\ifthenelse{\boolean{Sweave@gin}}{\setkeys{Gin}{width=0.6\textwidth}}{}%
 %
 % -------------------------------------------------------------------------------
-\newcommand{\code}[1]{{\tt\color{Rcolor} #1}}
-\newcommand{\file}[1]{{\tt #1}}
-%%\newcommand{\code}[1]{\lstinline[escapechar=`]{#1}}
-\newcommand{\pkg}[1]{{\tt "#1"}}
-\newcommand{\pkgversion}{{\tt 2.0}}
-\newcommand{\pkgExversion}{{\tt 2.0}}
 \newcommand{\Reals}{\mathbb{R}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
+%
+% -------------------------------------------------------------------------------
+\usepackage{Sweave}
+% -------------------------------------------------------------------------------
 \SweaveOpts{keep.source=TRUE}
+% -------------------------------------------------------------------------------
+<<SweaveListingsPreparations, results=tex, echo=FALSE>>=
+require(SweaveListingUtils)
+SweaveListingPreparations()
+@
 % -------------------------------------------------------------------------------
 %
 % -------------------------------------------------------------------------------
 \begin{document}
 % -------------------------------------------------------------------------------
-\title{Howto generate new Distributions in packages \pkg{distr}, \pkg{distrEx}}
+\title{How to generate new distributions in packages \pkg{distr}, \pkg{distrEx}}
 %,version \pkgExversion}
 \author{\small Peter Ruckdeschel\thanks{Fraunhofer ITWM, Kaiserslautern}
 \\[-.5ex]
@@ -81,26 +68,28 @@ pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
 % -------------------------------------------------------------------------------
 In this vignette, we give short examples how to produce new
 distributions in packages \pkg{distr} and \pkg{distrEx}.
+This vignette refers to package version~\pkgversion.
 % -------------------------------------------------------------------------------
 \end{abstract}
 % -------------------------------------------------------------------------------
 Basically there are three ways to produce new
 distributions in packages \pkg{distr} and \pkg{distrEx}:
 \begin{enumerate}
-\item automatic generation by arithmetics and the like
-\item using generating functions
-\item doing it from scratch
+\item automatic generation of single distribution objects by arithmetics and the like
+\item using generating functions to produce single distribution objects
+\item defining new distribution classes / doing it from scratch
 \end{enumerate}
 We will give short examples of all three of them.
 % -------------------------------------------------------------------------------
 \section{Automatic generation by arithmetics and the like}
 % -------------------------------------------------------------------------------
 We have made available quite general arithmetical operations to our distribution 
-objects, generating new image distributions automatically. As an example, try
+objects, generating new image distribution objects automatically. As an example, try
 <<echo=false,results=hide>>=
 ## preparation: set option withSweave to true
 require(distr)
 distroptions(withSweave = TRUE)
+options(width=70)
 @
 <<exam1, eval = TRUE, fig = TRUE>>=
 require(distr)
@@ -108,7 +97,7 @@ N <- Norm(mean = 2, sd = 1.3)
 P <- Pois(lambda = 1.2)
 Z <- 2*N + 3 + P
 Z
-plot(Z)
+plot(Z, panel.first = grid(), lwd=2)
 p(Z)(0.4)
 q(Z)(0.3)
 Zs <- r(Z)(50)
@@ -132,7 +121,7 @@ There a caveats to take care about; for details refer to the (larger) vignette
 % -------------------------------------------------------------------------------
 \section{Using generating functions}
 % -------------------------------------------------------------------------------
-If you want to generate a single distribution (without any particular parameter)
+If you want to generate a single distribution object (without any particular parameter)
 generating functions are the method of choice:\\
 
 
@@ -149,16 +138,18 @@ we may write
 <<DiscrDist, eval = TRUE, fig = TRUE>>=
 D <- DiscreteDistribution(supp = c(1,5,7,21), prob = c(0.1,0.1,0.6,0.2))
 D
-plot(D)
+plot(D, panel.first = grid(), lwd = 2)
 @
+%
 \newline
 and to generate an absolutely continuos distribution with density proportional
 to $e^{-|x|^3}$, we write
 <<AbscDist, eval = TRUE, fig = TRUE>>=
 AC <- AbscontDistribution(d = function(x) exp(-abs(x)^3), withStand = TRUE)
 AC
-plot(AC)
+plot(AC, panel.first = grid(), lwd = 2)
 @
+%
 % -------------------------------------------------------------------------------
 \section{Doing it from scratch}
 % -------------------------------------------------------------------------------
@@ -166,8 +157,9 @@ If you would like to create new parametric distributions, using already
 implemented {\tt r}, {\tt d}, {\tt p}, and {\tt q} functions
 (e.g.\ implementing additional distributions realized in another 
 \href{http://cran.r-project.org}{\tt CRAN} package), 
-you should probably better look at the implementation of some discrete and 
-continuous parametric distributions in package \pkg{distr}.
+you should probably envisage introducing new distribution {\tt S4} (sub-)classes
+and hence better look at the implementation of some discrete and 
+continuous parametric distribution classes in package \pkg{distr}.
 
 \noindent{\small Hint: download the {\tt .tar.gz} file; extract it to some {\tt temp} 
 folder; look at subdirectories {\tt R} and {\tt man}}\smallskip\\
@@ -209,42 +201,119 @@ Let's go through the steps in the example case of the Binomial implementation
 in packages \pkg{distr} and \pkg{distrEx}:
 
 \begin{enumerate}
-\item in \pkg{distr}, see source in \file{R/AllClasses.R},  lines 181--190
-\lstinputlisting[firstline=181,lastline=190]{../../../distr/R/AllClasses.R}
-\item in \pkg{distr}, see source in \file{R/AllClasses.R},  lines 830--857
-\lstinputlisting[firstline=830,lastline=857]{../../../distr/R/AllClasses.R}
-\item in \pkg{distr}, see source in \file{R/BinomialDistribution.R},  lines 8--16 and 43--53
-\lstinputlisting[firstline=8,lastline=16]{../../../distr/R/BinomialDistribution.R}
-\lstinputlisting[firstline=43,lastline=53]{../../../distr/R/BinomialDistribution.R}
-     and \file{R/AllGenerics}, lines 142--146
-\lstinputlisting[firstline=142,lastline=146]{../../../distr/R/AllGenerics.R}
-\item in \pkg{distr}, see source in \file{R/BinomialDistribution.R},  lines 18--33
-\lstinputlisting[firstline=18,lastline=33]{../../../distr/R/BinomialDistribution.R}
-\item in \pkg{distr}, see source in \file{R/BinomialDistribution.R},  line 41
-\lstinputlisting[firstline=41,lastline=41]{../../../distr/R/BinomialDistribution.R}
-\item in \pkg{distr}, see source in \file{R/BinomialDistribution.R},  lines 54--69
-\lstinputlisting[firstline=54,lastline=69]{../../../distr/R/BinomialDistribution.R}
+%
+\item in \pkg{distr}, see source in \file{R/AllClasses.R},  
+%
+<<AllClass1, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distr","R","AllClasses.R","distr",
+                     "## Class: BinomParameter", "#-")
+@
+%
+\item in \pkg{distr}, see source in \file{R/AllClasses.R},  
+%
+<<AllClass2, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distr","R","AllClasses.R","distr",
+                     from = "## Class: binomial distribution",
+                     to = "contains = \"LatticeDistribution\"", 
+                     offset.after = 1)
+@
+%
+\item in \pkg{distr}, see source in \file{R/BinomialDistribution.R},  
+%
+<<BinomDist1, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distr","R","BinomialDistribution.R","distr",
+                     from = c("## Access Methods", "## wrapped access methods"),
+                     to = c("setReplaceMethod\\(\"prob\", \"BinomParameter\"",
+                            "size = value\\)\\)") ,
+                     offset.after = c(1,1))
+@
+%
+and \file{R/AllGenerics}, 
+<<AllGenerics, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distr","R","AllGenerics.R","distr",
+                     from = "if\\(!isGeneric\\(\"size\"",
+                     to = "setGeneric\\(\"prob\"") 
+@
+%
+\item in \pkg{distr}, see source in \file{R/BinomialDistribution.R},  
+%
+<<BinomDist2, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distr","R","BinomialDistribution.R","distr",
+                     from = "setValidity\\(\"Binom",
+                     to = "else return\\(TRUE\\)",
+                     offset.after = 1)
+@
+%
+\item in \pkg{distr}, see source in \file{R/BinomialDistribution.R},  
+%
+<<BinomDist3, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distr","R","BinomialDistribution.R","distr",
+                     from = "Binom <- function",
+                     to = "Binom <- function")
+@
+%
+\item in \pkg{distr}, see source in \file{R/BinomialDistribution.R},  
+%
+<<BinomDist4, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distr","R","BinomialDistribution.R","distr",
+                     from = "## Convolution for",
+                     to = "\\}\\)")
+@
+%
 \item in \pkg{distr}, see sources in
+%
 \begin{itemize}
-     \item\file{man/BinomParameter-class.Rd}
-\lstinputlisting[language=TeX,basicstyle=\color{black}\tiny]{../../../distr/man/BinomParameter-class.Rd}
-   \item\file{man/Binom-class.Rd} 
-  \lstinputlisting[language=TeX,basicstyle=\color{black}\tiny]{../../../distr/man/Binom-class.Rd}
-     \item {\footnotesize you could have: \file{man/Binom.Rd}
+%
+\item\file{man/BinomParameter-class.Rd}
+%
+<<BinomParam, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distr","man","BinomParameter-class.Rd","distr")
+@
+%
+\item\file{man/Binom-class.Rd}
+<<Binomclass, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distr","man","Binom-class.Rd","distr")
+@
+%
+\item {\footnotesize you could have: \file{man/Binom.Rd}
       for the generating function; in the Binomial case, documentation is in
       \file{Binom-class.Rd}; but in case of the Gumbel distribution,
       in package \pkg{distrEx}, there is such an extra {\tt .Rd} file}
+%
 \end{itemize}
+%
 \item in \pkg{distrEx}, see sources in
+%
 \begin{itemize}
-      \item\file{Expectation.R}, lines 293--299
-\lstinputlisting[firstline=293,lastline=299]{../../../distrEx/R/Expectation.R}
-      \item\file{Functionals.R}, lines 158--165
-\lstinputlisting[firstline=158,lastline=165]{../../../distrEx/R/Functionals.R}
-      \item\file{skewness.R}, lines 60--67
-\lstinputlisting[firstline=60,lastline=67]{../../../distrEx/R/Skewness.R}
-      \item\file{kurtosis.R}, lines 69--77
-\lstinputlisting[firstline=69,lastline=77]{../../../distrEx/R/Kurtosis.R}
+%
+\item\file{Expectation.R}, 
+<<Expect, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distrEx","R","Expectation.R","distr",
+                     from = "\"E\", signature\\(object = \"Binom\"",
+                     to = "\\}\\)")
+@
+%
+\item\file{Functionals.R}, 
+<<var, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distrEx","R","Functionals.R","distr",
+                     from = "\"var\", signature\\(x = \"Binom\"",
+                     to = "\\}\\)")
+@
+%
+\item\file{skewness.R}, 
+<<skew, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distrEx","R","Skewness.R","distr",
+                     from = "\"skewness\", signature\\(x = \"Binom\"",
+                     to = "\\}\\)")
+@
+%
+\item\file{kurtosis.R}, 
+<<kurt, results=tex, echo=FALSE>>=
+lstinputSourceFromRForge("distrEx","R","Kurtosis.R","distr",
+                     from = "\"kurtosis\", signature\\(x = \"Binom\"",
+                     to = "\\}\\)")
+@
+%
 \end{itemize}
 \end{enumerate}
 The procedure will be similar for \textit{any} new class of distributions.\medskip

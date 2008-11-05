@@ -16,8 +16,6 @@
 
 setMethod("+", c("numeric", "UnivariateDistribution"),
           function(e1, e2){
-            print(class(e1))
-            print(class(e2))            
             e2 + e1
           })
 

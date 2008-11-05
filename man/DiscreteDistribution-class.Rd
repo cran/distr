@@ -4,6 +4,7 @@
 \alias{AffLinDiscreteDistribution-class}
 \alias{initialize,DiscreteDistribution-method}
 \alias{initialize,AffLinDiscreteDistribution-method}
+\alias{coerce,DiscreteDistribution,LatticeDistribution-method}
 
 \title{Class "DiscreteDistribution"}
 \description{The \code{DiscreteDistribution}-class is the mother-class of the class \code{LatticeDistribution}.}
@@ -36,6 +37,9 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
 \section{Methods}{
   \describe{
     \item{initialize}{\code{signature(.Object = "DiscreteDistribution")}: initialize method }
+    \item{\code{coerce}}{\code{signature(from = "DiscreteDistribution",
+    to = "LatticeDistribution")}: coerces an object from \code{"DiscreteDistribution"}
+    to \code{"LatticeDistribution"} if support of \code{from} is a lattice.}
     \item{Math}{\code{signature(x = "DiscreteDistribution")}: application of a mathematical function, e.g. \code{sin} or
     \code{tan} to this discrete distribution}
     \code{abs}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{abs(x)}.}

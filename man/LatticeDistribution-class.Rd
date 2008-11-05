@@ -7,7 +7,7 @@
 \alias{lattice,LatticeDistribution-method}
 \alias{initialize,LatticeDistribution-method}
 \alias{initialize,AffLinLatticeDistribution-method}
-\alias{coerce,LatticeDistribution,DiscreteDistribution-method}
+%\alias{coerce,LatticeDistribution,DiscreteDistribution-method}
 \alias{coerce,AffLinLatticeDistribution,AffLinDiscreteDistribution-method}
 
 
@@ -88,10 +88,10 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
     e2 = "LatticeDistribution")}: Convolution of two lattice
     distributions. The slots p, d and q are approximated by grids.}
     \item{\code{lattice}}{accessor method to the corresponding slot.}
-    \item{\code{coerce}}{\code{signature(from = "LatticeDistribution",
-    to = "DiscreteDistribution")}: coerces an object from 
-    \code{"LatticeDistribution"} to \code{"DiscreteDistribution"}
-    thereby cancelling out support points with probability 0.}
+%    \item{\code{coerce}}{\code{signature(from = "LatticeDistribution",
+%    to = "DiscreteDistribution")}: coerces an object from 
+%    \code{"LatticeDistribution"} to \code{"DiscreteDistribution"}
+%    thereby cancelling out support points with probability 0.}
   }
 }
 

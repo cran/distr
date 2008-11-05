@@ -42,17 +42,28 @@ setIs("Unif", "Beta", test = function(obj)
        ) 
 
 ## if support is affine linear, a DiscreteDistribution is a LatticeDistribution
-setIs("DiscreteDistribution", "LatticeDistribution",
-      test = function(object) .is.vector.lattice(support(object)),
-      coerce = function(from) 
-               LatticeDistribution(DiscreteDistribution = from),
-      replace = function(from,value)
-                LatticeDistribution( 
-                r = value@r, d = value@d, q = value@q, p = value@p,
-                support = value@support, img =value@img, 
-                .withSim = value@.withSim, .withArith = value@.withArith,
-                lattice = value@lattice)
-      )
+setAs("DiscreteDistribution", "LatticeDistribution",
+      function(from){
+        if(!.is.vector.lattice(from@support))
+            return(from)
+        else
+            return(new("LatticeDistribution", r = from@r, d = from@d, 
+                       q = from@q, p = from@p, support = from@support, 
+                       lattice = .make.lattice.es.vector(from@support), 
+                      .withArith = FALSE, .withSim = FALSE, img = from@img,
+                      param = from@param))
+      })
+#setIs("DiscreteDistribution", "LatticeDistribution",
+#      test = function(object) .is.vector.lattice(support(object)),
+#      coerce = function(from) 
+#               LatticeDistribution(DiscreteDistribution = from),
+#      replace = function(from,value)
+#                LatticeDistribution( 
+#                r = value@r, d = value@d, q = value@q, p = value@p,
+#                support = value@support, img =value@img, 
+#                .withSim = value@.withSim, .withArith = value@.withArith,
+#                lattice = value@lattice)
+#      )
 
 
 #setAs("LatticeDistribution", "DiscreteDistribution", 
