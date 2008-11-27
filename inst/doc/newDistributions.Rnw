@@ -10,11 +10,12 @@
 %\VignetteKeywords{probability distribution,estimation}
 %\VignettePackage{distr}
 %
-\documentclass[11pt]{article}
+\documentclass[10pt]{article}
 \usepackage{geometry}
 %
 \usepackage{color}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.75}
+\definecolor{distrCol}{rgb}{0.0,0.4,0.4}
 %
 \usepackage{ifpdf}
 %
@@ -37,6 +38,7 @@ pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
 \newcommand{\N}{\mathbb{N}}
 %
 % -------------------------------------------------------------------------------
+\RequirePackage{listings}
 \usepackage{Sweave}
 % -------------------------------------------------------------------------------
 \SweaveOpts{keep.source=TRUE}
@@ -44,6 +46,8 @@ pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
 <<SweaveListingsPreparations, results=tex, echo=FALSE>>=
 require(SweaveListingUtils)
 SweaveListingPreparations()
+setToBeDefinedPkgs(pkgs = c("distr","distrEx"),
+                   keywordstyles = "\\bf\\color{distrCol}")
 @
 % -------------------------------------------------------------------------------
 %
@@ -85,12 +89,13 @@ We will give short examples of all three of them.
 % -------------------------------------------------------------------------------
 We have made available quite general arithmetical operations to our distribution 
 objects, generating new image distribution objects automatically. As an example, try
-<<echo=false,results=hide>>=
+<<Prepa, echo=false, results=tex>>=
 ## preparation: set option withSweave to true
 require(distr)
 distroptions(withSweave = TRUE)
 options(width=70)
 @
+%
 <<exam1, eval = TRUE, fig = TRUE>>=
 require(distr)
 N <- Norm(mean = 2, sd = 1.3)
@@ -170,7 +175,7 @@ The general procedure is as follows
 \item introduce a  new subclass of  class \code{Parameter}
 \item introduce a new subclass of  \code{LatticeDistribution}/%
 \code{DiscreteDistribution} (if discrete)
- or of class \code{AbsContDistribution} (if continuous).
+ or of class \code{AbscontDistribution} (if continuous).
 \item define accessor and replacement functions for the ``slots'' of the
 parameter (e.g.\ \code{"size"} and \code{"prob"} in the binomial case), 
 possibly with new generics
@@ -283,6 +288,11 @@ lstinputSourceFromRForge("distr","man","Binom-class.Rd","distr")
 \end{itemize}
 %
 \item in \pkg{distrEx}, see sources in
+%
+<<Prepa2, echo=false, results=tex>>=
+## preparation: set option withSweave to true
+require(distrEx)
+@
 %
 \begin{itemize}
 %

@@ -83,10 +83,10 @@ Class \code{"Distribution"}, directly.
 
       returns the class of the object and its parameters}
     \item{show}{\code{signature(object = "UnivariateDistribution")}:
-
       as print}
+      }
   }
-}
+
 
 
 \author{

@@ -63,6 +63,8 @@
 \alias{exp,UnivarLebDecDistribution-method}
 \alias{sign,UnivarLebDecDistribution-method}
 \alias{sign,AcDcLcDistribution-method}
+\alias{sqrt,UnivarLebDecDistribution-method}
+\alias{sqrt,AcDcLcDistribution-method}
 
 \title{Class "UnivarLebDecDistribution"}
 \description{\code{UnivarLebDecDistribution}-class is a class to formalize
@@ -135,6 +137,7 @@ class \code{"Distribution"} by class \code{"UnivariateDistribution"}.
     \code{exp}{\code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{exp(x)}.}
     \code{sign}{\code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{sign(x)}.}
     \code{sign}{\code{signature(x = "AcDcLcDistribution")}:  exact image distribution of \code{sign(x)}.}
+    \code{sqrt}{\code{signature(x = "AcDcLcDistribution")}:  exact image distribution of \code{sqrt(x)}.}
     \code{log}{\code{signature(x = "UnivarLebDecDistribution")}:  (with optional further argument \code{base}, 
     defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.}
     \code{log10}{\code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{log10(x)}.}

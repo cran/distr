@@ -422,9 +422,10 @@ setMethod("abs", "AbscontDistribution",
             x.g <- seq(from = lower, to = upper, by = h)
 
             dnew <- function(x, log = FALSE){
-                    o.warn <- getOption("warn"); options(warn = -1)
-                    dx <- (x>=0) * (d(xx)(x) + d(xx)(-x)) 
-                    options(warn = o.warn)
+                    o.warn <- getOption("warn"); 
+                    on.exit(options(warn=o.warn))
+                    options(warn = -1)
+                    dx <- (x>=0) * (d(xx)(x) + d(xx)(-x))                     
                     if (log) dx <- log(dx)
                     return(dx)
             }
@@ -497,4 +498,7 @@ setMethod("gamma", "AbscontDistribution",
                            .withSim = TRUE, .withArith = TRUE)
             object
           })
+setMethod("sqrt", "AbscontDistribution",
+            function(x) x^0.5)
+
 }

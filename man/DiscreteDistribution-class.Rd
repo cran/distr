@@ -2,7 +2,8 @@
 \docType{class}
 \alias{DiscreteDistribution-class}
 \alias{AffLinDiscreteDistribution-class}
-\alias{initialize,DiscreteDistribution-method}
+\alias{sqrt,DiscreteDistribution-method}
+\alias{initialize,DiscreteDistribution-method}                                                       
 \alias{initialize,AffLinDiscreteDistribution-method}
 \alias{coerce,DiscreteDistribution,LatticeDistribution-method}
 
@@ -45,6 +46,7 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
     \code{abs}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{abs(x)}.}
     \code{exp}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{exp(x)}.}
     \code{sign}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{sign(x)}.}
+    \code{sqrt}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{sqrt(x)}.}
     \code{log}{\code{signature(x = "DiscreteDistribution")}:  (with optional further argument \code{base}, 
     defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.}
     \code{log10}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{log10(x)}.}

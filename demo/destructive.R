@@ -2,6 +2,7 @@
 ## Demo: Instructive destructive example
 ##########################################################
 require(distr)
+options("newDevice"=TRUE)
 
 ## package "distr" encourages 
 ## consistency but does not 

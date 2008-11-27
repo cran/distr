@@ -11,6 +11,7 @@
 \alias{.dmixfun}
 \alias{.qmixfun}
 \alias{.rmixfun}
+\alias{.del0dmixfun}
 \alias{.loupmixfun}
 \alias{.make.lattice.es.vector}
 \alias{.presubs}
@@ -97,6 +98,7 @@ These functions are used internally by package distr.}
 .dmixfun(mixDistr, mixCoeff, withStand = FALSE, supp = NULL)
 .rmixfun(mixDistr, mixCoeff)
 .qmixfun(mixDistr, mixCoeff, Cont = TRUE, pnew)
+.del0dmixfun(mixDistr)
 .loupmixfun(mixDistr)
 .expm.d(e1)
 .expm.c(e1)
@@ -291,6 +293,11 @@ in \code{mixDistr}, \code{mixCoeff}.
 
 \code{.loupmixfun} finds commun lower and upper bounds for the support of
 the mixing distribution.
+
+\code{.del0dmixfun} sets (if slot \code{d.ac} is not \code{NULL}) the return
+value of slot function \code{d.ac} of \code{mixDistr} 
+for argument \code{0} to \code{0}.
+
 \code{.expm.d,.expm.c} for discrete, resp. a.c. argument \code{e1} fill the 
 slots \code{p}, \code{d}, \code{r}, and \code{q}
 of the transformation \code{exp(e1)} exactly.
@@ -353,6 +360,7 @@ with R versions < 2.8.0.
                 is  the quantile function of the distribution}
 \item{.rmixfun}{slot \code{r} for a mixing distribution, i.e. a function 
                 \code{function(n)} generating r.v.'s according to the distribution}
+\item{.deldmixfun}{a possibly modified argument \code{mixDistr}}
 \item{.loupmixfun}{a list of four components: \code{qL}, the minimal value of 
 \code{q(x)(0)}, \code{ql}, the minimal value of 
 \code{q(x)(getdistrOption("TruncQuantile"))}, \code{qU}, the maximal value of 

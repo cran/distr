@@ -3,6 +3,34 @@
 ######################################################################
  
 ##############
+v 2.0.3
+##############
+  
+  * under the hood: 
+     + enhanced plotting (correct dispatch; opening of new device is controlled
+       by option("newDevice") )
+     + after JMC's changes: gone through setIs relations to ensure 
+       "correct" inheritance
+  * new plot function for 'UnivarLebDecDistribution' : now plots 3 lines
+    +first line common cdf and quantile function 
+    +second line abscont part
+    +third line discrete part
+  * new vignette "How to generate new distributions in packages distr, distrEx"
+  * moved license to LGPL-3
+  * enhancements for arithmetics:
+     + fixed bug with AffLinAbscontDistribution for a*X+b, distribution X >=0
+     + slot r is now /much/ faster and slimmer for results of *,/,^ 
+       (hint: no split in pos/neg part necessary for this!)
+     + slot d for results of *,/, exp() now is correct at 0 by extrapolation 
+       (and deletion with .del0dmixfun of half of the part to avoid double 
+        counting in *,/)
+     + affine linear trafos return slot X0 of AffLin-Construction 
+       if resulting a=1 and b=0
+     + method sqrt() for distributions
+  * correction of small buglet in validity to Norm-class
+    
+
+##############
 v 2.0
 ##############
 

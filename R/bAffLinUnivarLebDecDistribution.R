@@ -17,9 +17,15 @@ setMethod("*", c("AffLinUnivarLebDecDistribution","numeric"),
                      discreteWeight = discreteWeight(e1),
                      acWeight = acWeight(e1))
 
+          if(.isEqual(e1@a*e2,1)&&.isEqual(e1@b,0)){
+             obj <- e1@X0
+             if(getdistrOption("simplifyD"))
+                obj <- simplifyD(obj)
+             return(obj)
+          }   
           object <- new("AffLinUnivarLebDecDistribution",
                     r = Distr@r, d = Distr@d, p = Distr@p,
-                    q = Distr@q, X0 = e1, mixDistr = Distr@mixDistr,
+                    q = Distr@q, X0 = e1@X0, mixDistr = Distr@mixDistr,
                     mixCoeff = Distr@mixCoeff,
                     a = e1@a*e2, b = e1@b, .withSim  = e1@.withSim,
                     .withArith = TRUE)
@@ -36,9 +42,16 @@ setMethod("+", c("AffLinUnivarLebDecDistribution","numeric"),
                      discreteWeight = discreteWeight(e1),
                      acWeight = acWeight(e1))
 
+          if(.isEqual(e1@a,1)&&.isEqual(e1@b+e2,0)){
+             obj <- e1@X0
+             if(getdistrOption("simplifyD"))
+                obj <- simplifyD(obj)
+             return(obj)
+          }   
+          
           object <- new("AffLinUnivarLebDecDistribution",
                     r = Distr@r, d = Distr@d, p = Distr@p,
-                    q = Distr@q, X0 = e1, mixDistr = Distr@mixDistr,
+                    q = Distr@q, X0 = e1@X0, mixDistr = Distr@mixDistr,
                     mixCoeff = Distr@mixCoeff,
                     a = e1@a, b = e1@b+e2, .withSim  = e1@.withSim,
                     .withArith = TRUE)

@@ -47,9 +47,11 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      if (hasArg(col) && missing(col.sub))
         col.sub <- dots$col
 
-     if (!withSweave)
-          devNew(width = width, height = height)
+     if (!withSweave){
+           devNew(width = width, height = height)
+           }
      omar <- par("mar")
+     on.exit(par(omar))
      
      mainL <- FALSE
      subL <- FALSE
@@ -162,17 +164,18 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
              }
           }
 
-     owarn <- getOption("warn"); options(warn = -1)
+     o.warn <- getOption("warn"); options(warn = -1)
+     on.exit(options(warn=o.warn))
      do.call(plot, c(list(x = grid, dxg, type = "l", 
          ylim = ylim1,  ylab = "d(x)", xlab = "x", log = logpd), 
          dots.without.pch))
-     options(warn = owarn)
+     options(warn = o.warn)
 
      title(main = inner.d, line = lineT, cex.main = cex.inner,
            col.main = col.inner)
 
 
-     owarn <- getOption("warn"); options(warn = -1)
+     options(warn = -1)
 
      if(is.finite(q(x)(0))) {grid <- c(q(x)(0),grid); pxg <- c(0,pxg)}
      if(is.finite(q(x)(1))) {grid <- c(grid,q(x)(1)); pxg <- c(pxg,1)}
@@ -180,7 +183,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      do.call(plot, c(list(x = grid, pxg, type = "l", 
           ylim = ylim2, ylab = "p(q)", xlab = "q", log = logpd), 
           dots.without.pch))
-     options(warn = owarn)
+     options(warn = o.warn)
 
      title(main = inner.p, line = lineT, cex.main = cex.inner,
            col.main = col.inner)
@@ -215,17 +218,17 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
         xo <- grid
      }
      
-     owarn <- getOption("warn"); options(warn = -1)
+     options(warn = -1)
      do.call(plot, c(list(x = po, xo, type = "n", 
           xlim = ylim, ylim = xlim, ylab = "q(p)", xlab = "p", 
           log = logq), dots.without.pch))
-     options(warn = owarn)
+     options(warn = o.warn)
 
      
      title(main = inner.q, line = lineT, cex.main = cex.inner,
            col.main = col.inner)
      
-     owarn <- getOption("warn"); options(warn = -1)
+     options(warn = -1)
          lines(po,xo, ...)
      if (verticals && !is.null(gaps(x))){
          pu <- rep(pu1,3)
@@ -236,7 +239,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
          do.call(lines, c(list(pu[o], xu[o], 
                  col = col.vert), dots.without.pch0))    
      }
-     options(warn = owarn)
+     options(warn = o.warn)
 
      
      if(!is.null(gaps(x)) && do.points){
@@ -252,7 +255,6 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      if (subL)
          mtext(text = sub, side = 1, cex = cex.sub, adj = .5,
                outer = TRUE, line = -1.6, col = col.sub)                            
-     par(opar)
    }
    )
 # -------- DiscreteDistribution -------- #
@@ -308,9 +310,11 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
      if (hasArg(col) && missing(col.sub))
         col.sub <- dots$col
 
-     if (!withSweave)
-         devNew(width = width, height = height)
+     if (!withSweave){
+           devNew(width = width, height = height)
+           }
      omar <- par("mar")
+     on.exit(par(omar))
      
      mainL <- FALSE
      subL <- FALSE
@@ -426,11 +430,13 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
               }
            }
 
-       owarn <- getOption("warn"); options(warn = -1)
+       o.warn <- getOption("warn")
+       options(warn = -1)
+       on.exit(options(warn=o.warn))
        do.call(plot, c(list(x = supp, dx, type = "h", pch = pch.a,
             ylim = ylim1, xlim=xlim, ylab = "d(x)", xlab = "x", 
             log = logpd), dots.without.pch))
-       options(warn = owarn)
+       options(warn = o.warn)
 
 
        title(main = inner.d, line = lineT, cex.main = cex.inner,
@@ -440,7 +446,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
           do.call(points, c(list(x = supp, y = dx, pch = pch.a, 
                   cex = cex.points, col = col.points), dots.for.points))
        
-       owarn <- getOption("warn"); options(warn = -1)
+       options(warn = -1)
 
        ngrid <- length(supp)
 
@@ -466,7 +472,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
                   cex = cex.points, col = col.points), dots.for.points))           
               }
            }       
-       options(warn = owarn)
+       options(warn = o.warn)
 
        
        title(main = inner.p, line = lineT, cex.main = cex.inner, 
@@ -478,7 +484,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
                   cex = cex.points, col = col.points), dots.for.points))
        
        
-       owarn <- getOption("warn"); options(warn = -1)
+       options(warn = -1)
        do.call(plot, c(list(x = stepfun(c(0,p(x)(supp)), 
                             c(NA,supp,NA), right = TRUE), 
             main = "", xlim = ylim2, ylim = c(min(supp),max(supp)),
@@ -488,7 +494,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
             col.points = col.points,
             col.hor = col.hor, col.vert = col.vert, 
             log = logq), dots.without.pch))
-       options(warn = owarn)
+       options(warn = o.warn)
 
       
        title(main = inner.q, line = lineT, cex.main = cex.inner,
@@ -523,7 +529,6 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
        if (subL)
            mtext(text = sub, side = 1, cex = cex.sub, adj = .5,
                  outer = TRUE, line = -1.6, col = col.sub)                            
-       par(opar)
    }
 )
 
@@ -532,7 +537,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
 setMethod("plot", signature(x =  "DistrList", y = "missing"),
     function(x,  ...){ 
         for(i in 1:length(x)){
-            devNew()
+            #devNew()
             plot(x[[i]],...)
         }
     })

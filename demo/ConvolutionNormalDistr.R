@@ -2,6 +2,7 @@
 ## Demo: Convolution of normal distributions   
 ###########################################################
 require(distr)
+options("newDevice"=TRUE)
 
 ## initialize two normal distributions
 A <- Norm(mean=1, sd=2)

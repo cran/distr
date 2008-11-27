@@ -7,7 +7,9 @@ if(getRversion()<'2.8.0'){
 }else{
     devNew <- function(...){
         if(length(dev.list())>0)
-           dev.new(...)
+           if(!is.null(getOption("newDevice"))) 
+               if(getOption("newDevice")) dev.new(...)
     }
 }
+options("newDevice"=FALSE)
 

@@ -169,6 +169,7 @@ setAs("AffLinLatticeDistribution","AffLinDiscreteDistribution",
          slot(value, what) <- slot(from, what)
     supp.old <- from@support
     o.warn <- getOption("warn"); options(warn = -2)
+    on.exit(options(warn=o.warn))
     d.old <- from@d(from@support)
     supp.new <- supp.old[d.old > 0]
     options(warn = o.warn)
@@ -286,7 +287,7 @@ setMethod("+", c("LatticeDistribution", "numeric"),
 
 setMethod("*", c("LatticeDistribution", "numeric"),
           function(e1, e2) 
-             {if (isTRUE(all.equal(e2,0)))
+             {if (.isEqual(e2,0))
                   return(Dirac( location = 0 ))
               else     
                 { L <- lattice(e1)

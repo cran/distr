@@ -157,3 +157,16 @@
     qU  <- max(qU0); qu <- max(qU1)
     return(list(qL = qL, ql = ql, qU = qU, qu = qu))
     }
+
+.del0dmixfun <- function(mixDistr){
+  dac <- mixDistr@mixDistr[[1]]@d
+  if(!is.null(dac)){
+      dnew <- function(x, log = FALSE, ...){
+               d0 <- dac(x, log = log, ...)
+               d0[.isEqual(x,0)] <-  0
+               return(d0)
+            }
+      mixDistr@mixDistr[[1]]@d <- dnew
+  }
+  return(mixDistr)
+}

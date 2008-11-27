@@ -1,4 +1,5 @@
 require(distr)
+options("newDevice"=TRUE)
 
 if(!isGeneric("E")) 
    setGeneric("E", 

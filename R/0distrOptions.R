@@ -34,5 +34,6 @@ distroptions <- function(...) {
   invisible(current)
 }
 
-getdistrOption<-function(x)distroptions(x)[[1]]
+getdistrOption <- function(x)distroptions(x)[[1]]
 
+options("newDevice" = FALSE)

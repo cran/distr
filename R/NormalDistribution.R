@@ -22,8 +22,10 @@ validNormParameter <- function(object){
     if(!is.matrix(sd(object)) && is.numeric(mean(object))) return(TRUE)
     if(nrow(sd(object)) != ncol((sd(object))))
         stop("Covariance matrix not sqared")
-   if(nrow(sd(object)) != length(mean(object)))
-     stop("Covariance matrix and mean vector do not have the same dimension")}
+    if(nrow(sd(object)) != length(mean(object)))
+        stop("Covariance matrix and mean vector do not have the same dimension")
+    return(TRUE)
+}
 
 setValidity("NormParameter", validNormParameter)
 

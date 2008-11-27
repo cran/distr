@@ -54,5 +54,6 @@ setMethod("*", c("Lnorm","numeric"),
          if(e2 > 0) 
             return(nL)
          else 
-            return(-1 * as(nL, "AbscontDistribution"))
+            return(getMethod("*", c("AbscontDistribution","numeric"))(e1,e2))
+            #return(-1 * as(nL, "AbscontDistribution"))
        })

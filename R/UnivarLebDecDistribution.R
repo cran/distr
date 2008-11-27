@@ -373,5 +373,7 @@ setMethod("sign", "UnivarLebDecDistribution",
                      p(x)(getdistrOption("TruncQuantile"), lower=FALSE)))                     
           })
 
+setMethod("sqrt", "UnivarLebDecDistribution",
+            function(x) x^0.5)
 #######################
 

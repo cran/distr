@@ -3,6 +3,7 @@
 \alias{AbscontDistribution-class}
 \alias{AffLinDistribution-class}
 \alias{AffLinAbscontDistribution-class}
+\alias{sqrt,AbscontDistribution-method}
 \alias{initialize,AbscontDistribution-method}
 \alias{initialize,AffLinAbscontDistribution-method}
 
@@ -49,6 +50,7 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
     \code{abs}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{abs(x)}.}
     \code{exp}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{exp(x)}.}
     \code{sign}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{sign(x)}.}
+    \code{sqrt}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{sqrt(x)}.}
     \code{log}{\code{signature(x = "AbscontDistribution")}:  (with optional further argument \code{base}, 
     defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.}
     \code{log10}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{log10(x)}.}

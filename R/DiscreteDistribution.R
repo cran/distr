@@ -66,9 +66,11 @@ setMethod("p.l", "DiscreteDistribution", function(object){
        if (.inArgs("lower.tail", p(object))){
            function(q, lower.tail = TRUE, log.p = FALSE){
                 px <- p(object)(q, lower.tail = lower.tail)
-                owarn <- getOption("warn"); options(warn = -2)
+                o.warn <- getOption("warn"); 
+                on.exit(options(warn=o.warn))
+                options(warn = -2)
                 dx <- d(object)(.setEqual(q, support(object)))
-                options(warn = owarn)
+                options(warn = o.warn)
                 px0 <- pmax(px + if(lower.tail) -dx else  dx,0)
                 if (log.p) px0 <- log(px0)
                 return(px0)
@@ -76,9 +78,11 @@ setMethod("p.l", "DiscreteDistribution", function(object){
        }else{
            function(q, lower.tail = TRUE, log.p = FALSE){
                 px <- p(object)(q)
-                owarn <- getOption("warn"); options(warn = -2)
+                o.warn <- getOption("warn")
+                on.exit(options(warn=o.warn))
+                options(warn = -2)
                 dx <- d(object)(.setEqual(q, support(object)))
-                options(warn = owarn)
+                options(warn = o.warn)
                 px0 <- pmax(if(lower.tail) px - dx else 1 - px + dx, 0)
                 if (log.p) px0 <- log(px0)
                 return(px0)
@@ -97,10 +101,11 @@ setMethod("q.r", "DiscreteDistribution", function(object){
                                  log.p = log.p)
                 ps0 <- .setEqual(p, psx)
 
-                owarn <- getOption("warn"); options(warn = -2)
+                o.warn <- getOption("warn"); options(warn = -2)
+                on.exit(options(warn=o.warn))
                 qx0 <- q(object)(ps0, lower.tail = lower.tail,
                                  log.p = log.p)
-                options(warn = owarn)
+                options(warn = o.warn)
 
                 m <- match(ps0, psx)
                 n.ina.m <- !is.na(m)
@@ -120,10 +125,11 @@ setMethod("q.r", "DiscreteDistribution", function(object){
                 if (lower.tail) p <- 1 - p
                 ps0 <- .setEqual(p, psx)
 
-                owarn <- getOption("warn"); options(warn = -2)
+                o.warn <- getOption("warn"); options(warn = -2)
+                on.exit(options(warn=o.warn))
                 qx0 <- q(object)(ps0, lower.tail = lower.tail,
                                  log.p = log.p)
-                options(warn = owarn)
+                options(warn = o.warn)
 
                 m <- match(ps0, psx)
                 n.ina.m <- !is.na(m)
@@ -145,10 +151,11 @@ setMethod("q.r", "DiscreteDistribution", function(object){
                 psx <- p(object)(s, lower.tail = lower.tail)
                 ps0 <- .setEqual(p, psx)
 
-                owarn <- getOption("warn"); options(warn = -2)
+                o.warn <- getOption("warn"); options(warn = -2)
+                on.exit(options(warn=o.warn))
                 qx0 <- q(object)(ps0, lower.tail = lower.tail,
                                  log.p = log.p)
-                options(warn = owarn)
+                options(warn = o.warn)
 
                 m <- match(ps0, psx)
                 n.ina.m <- !is.na(m)
@@ -169,10 +176,11 @@ setMethod("q.r", "DiscreteDistribution", function(object){
                 if (lower.tail) p <- 1 - p
                 ps0 <- .setEqual(p, psx)
 
-                owarn <- getOption("warn"); options(warn = -2)
+                o.warn <- getOption("warn"); options(warn = -2)
+                on.exit(options(warn=o.warn))
                 qx0 <- q(object)(ps0, lower.tail = lower.tail,
                                  log.p = log.p)
-                options(warn = owarn)
+                options(warn = o.warn)
 
                 m <- match(ps0, psx)
                 n.ina.m <- !is.na(m)
@@ -316,6 +324,7 @@ setMethod("abs", "DiscreteDistribution",
             xx <- x
             dnew <- function(x, log = FALSE){
                     o.warn <- getOption("warn"); options(warn = -1)
+                    on.exit(options(warn=o.warn))
                     dx <- (x>=0) * d(xx)(x) + (x>0) * d(xx)(-x) 
                     options(warn = o.warn)
                     if (log) dx <- log(dx)
@@ -400,5 +409,8 @@ setMethod("gamma", "DiscreteDistribution",
                            .withSim = TRUE, .withArith = TRUE)
             object
           })
+setMethod("sqrt", "DiscreteDistribution",
+            function(x) x^0.5)
+
 }          
 

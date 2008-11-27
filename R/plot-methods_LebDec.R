@@ -94,10 +94,12 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
      if (hasArg(col) && missing(col.sub))
         col.sub <- dots$col
 
-     if (!withSweave)
-          devNew(width = width, height = height)
+     if (!withSweave){
+           devNew(width = width, height = height)
+           }
      omar <- par("mar")
-
+     on.exit(par(omar))
+     
      mainL <- FALSE
      subL <- FALSE
      lineT <- NA
@@ -225,11 +227,12 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
          pxv <- p(x)(xv)
      }
 
-     owarn <- getOption("warn"); options(warn = -1)
+     o.warn <- getOption("warn"); options(warn = -1)
+     on.exit(options(warn=o.warn))
      do.call(plot, c(list(x = grid, pxg, type = "l",
           ylim = ylim, ylab = "p(q)", xlab = "q", log = logpd),
           dots.without.pch))
-     options(warn = owarn)
+     options(warn = o.warn)
 
      pxg.d <- p(x)(supp)
      pxg.d0 <- p(x)(supp-del)
@@ -282,23 +285,23 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
         xo <- grid
      }
 
-     owarn <- getOption("warn"); options(warn = -1)
+     options(warn = -1)
      do.call(plot, c(list(x = po, xo, type = "n",
           xlim = ylim, ylim = xlim, ylab = "q(p)", xlab = "p",
           log = logq), dots.without.pch))
-     options(warn = owarn)
+     options(warn = o.warn)
 
 
      title(main = inner.q, line = lineT, cex.main = cex.inner,
            col.main = col.inner)
 
-     owarn <- getOption("warn"); options(warn = -1)
+     options(warn = -1)
      lines(po,xo, ...)
 #    if (verticals && !is.null(gaps(x))){
 #         do.call(lines, c(list(rep(pu1,2), c(gaps(x)[,1],gaps(x)[,2]),
 #                 col = col.vert), dots.without.pch))
 #     }
-     options(warn = owarn)
+     options(warn = o.warn)
 
 
      if (verticals && !is.null(gaps(x))){
@@ -352,6 +355,5 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
      if(is.null(mc.di$cex.inner))  mc.di$cex.inner <- 0.9
      do.call(plot, c(list(discretePart(x)),mc.di))
      
-     par(opar)
    }
    )

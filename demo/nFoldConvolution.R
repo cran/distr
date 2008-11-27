@@ -3,6 +3,7 @@
 ##       probability distributions
 ##########################################################
 require(distr)
+options("newDevice"=TRUE)
 
 ### from version 1.9 of distr on available in the package
 ### already

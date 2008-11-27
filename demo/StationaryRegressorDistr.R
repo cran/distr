@@ -3,6 +3,7 @@
 ##       Process
 #####################################################
 require(distr)
+options("newDevice"=TRUE)
 
 ## Approximation of the stationary regressor 
 ## distribution of an AR(1) process 

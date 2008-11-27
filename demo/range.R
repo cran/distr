@@ -1,4 +1,5 @@
 require(distr)
+options("newDevice"=TRUE)
 
 ## argument names conformal to use in distrEx
 

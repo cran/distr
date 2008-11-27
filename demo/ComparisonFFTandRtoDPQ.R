@@ -1,4 +1,5 @@
 require(distr)
+options("newDevice"=TRUE)
 Pause <- function() { cat("Hit <enter> to continue..."); readline()}
 
 #################################################

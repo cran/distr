@@ -1,4 +1,5 @@
 require(distr)
+options("newDevice"=TRUE)
 
 N <- Norm(0,1)
 U <- Unif(0,1)

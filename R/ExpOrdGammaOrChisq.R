@@ -2,16 +2,19 @@
 
 setMethod("*", c("ExpOrGammaOrChisq","numeric"),
           function(e1, e2){
-            if(is(e1,"Gammad"))
-               {if(isTRUE(all.equal(e2,0)))
-                   return(new("Dirac", location = 0, .withArith = TRUE))
-                if(e2 > 0)
-                   return(new("Gammad", shape = shape(e1),
-                               scale = scale(e1) * e2, .withArith = TRUE))
-                return(-1 * as(Gammad(shape = shape(e1),
-                                      scale = scale(e1) * (-e2)),
-                               "AbscontDistribution"))}
-            else return(as(e1,"AbscontDistribution") * e2)
+            if(is(e1,"Gammad")){
+               if(isTRUE(all.equal(e2,0)))
+                  return(new("Dirac", location = 0, .withArith = TRUE))
+               if(e2 > 0)
+                  return(new("Gammad", shape = shape(e1),
+                              scale = scale(e1) * e2, .withArith = TRUE))
+               return(getMethod("*",c("AbscontDistribution","numeric"))(
+                                      e1 = Gammad(shape = shape(e1),
+                                                  scale = scale(e1) * (-e2)), 
+                                      e2 = -1)) 
+             }                         
+             else return(getMethod("*",
+                            c("AbscontDistribution","numeric"))(e1, e2) )
           })
 
 setMethod("+", c("ExpOrGammaOrChisq","ExpOrGammaOrChisq"),
