@@ -170,7 +170,7 @@ devNew(...)
   \item{topat}{ a (vector of) replacement(s) for matched pattern in 
           \code{.presubs}. 
           Coerced to character if possible.  For \code{fixed = FALSE} this
-          can include backreferences \code{"\\1"'} to \code{"\\9"} to 
+          can include backreferences \code{"\\1"} to \code{"\\9"} to 
           parenthesized subexpressions of \code{pattern}.  For 
           \code{perl = TRUE} only, it can
           also contain \code{"\\U"} or \code{"\\L"} to convert the rest of the
@@ -328,39 +328,39 @@ with R versions < 2.8.0.
 
 
 \value{
-\item{.is.vector.lattice}{\code{logical} (length 1)}
-\item{.is.consistent}{\code{logical} (length 1)}
-\item{.notwithLArg}{\code{logical} (length 1)}
-\item{.make.lattice.es.vector}{an object of class \code{Lattice}}
-\item{.inArgs}{\code{logical} (length 1)}
-\item{.isIn, .isEqual,.isEqual01}{vector of \code{logical}}
-\item{.fm,.fM, .fM2}{a \code{numeric} of length 1}
+\item{.is.vector.lattice}{\code{logical} (length 1).}
+\item{.is.consistent}{\code{logical} (length 1).}
+\item{.notwithLArg}{\code{logical} (length 1).}
+\item{.make.lattice.es.vector}{an object of class \code{Lattice}.}
+\item{.inArgs}{\code{logical} (length 1).}
+\item{.isIn, .isEqual,.isEqual01}{vector of \code{logical}.}
+\item{.fm,.fM, .fM2}{a \code{numeric} of length 1.}
 \item{.plusm,.multm}{an object of class \code{DiscreteDistribution} or 
-       \code{AbscontDistribution} according to argument \code{DClass}}
-\item{.getObjName}{\code{character}}
-\item{.discretizeP}{\code{numeric} --- the probabilities for the grid-values}
+       \code{AbscontDistribution} according to argument \code{DClass}.}
+\item{.getObjName}{\code{character}.}
+\item{.discretizeP}{\code{numeric} --- the probabilities for the grid-values.}
 \item{.makeDd,.makePd, .makeQd}{a function with args 
-       \code{x, y, yleft, yright}}
-\item{.makeD,.makeDNew}{a function with args \code{x, log = FALSE}}
+       \code{x, y, yleft, yright}.}
+\item{.makeD,.makeDNew}{a function with args \code{x, log = FALSE}.}
 \item{.makeP,.makePNew}{a function with args \code{q, lower.tail = TRUE, 
-       log.p = FALSE}}
+       log.p = FALSE}.}
 \item{.makeQ,.makeQNew}{a function with args \code{p, lower.tail = TRUE, 
-       log.p = FALSE}}
-\item{.isInteger,.isNatural,.isNatural0}{\code{logical} (same length as argument \code{x})}
+       log.p = FALSE}.}
+\item{.isInteger,.isNatural,.isNatural0}{\code{logical} (same length as argument \code{x}).}
 \item{.mergegaps,.mergegaps2}{a \code{gaps}-matrix, i.e.; a matrix \code{m} with two columns, 
-              such that \code{t(m)}, interpreted as vector, is ordered}
+              such that \code{t(m)}, interpreted as vector, is ordered.}
 \item{.pmixfun}{slot \code{p} for a mixing distribution, i.e. a function 
                 \code{function(q, lower.tail = TRUE, log.p = FALSE)}, which
-                is  the cdf of the distribution}
+                is  the cdf of the distribution.}
 \item{.dmixfun}{slot \code{d} for a mixing distribution, i.e. a function 
                 \code{function(x, log = FALSE)}, which
-                is  the density of the distribution}
+                is  the density of the distribution.}
 \item{.qmixfun}{slot \code{q} for a mixing distribution, i.e. a function 
                 \code{function(p, lower.tail = TRUE, log.p = FALSE)}, which
-                is  the quantile function of the distribution}
+                is  the quantile function of the distribution.}
 \item{.rmixfun}{slot \code{r} for a mixing distribution, i.e. a function 
-                \code{function(n)} generating r.v.'s according to the distribution}
-\item{.deldmixfun}{a possibly modified argument \code{mixDistr}}
+                \code{function(n)} generating r.v.'s according to the distribution.}
+\item{.deldmixfun}{a possibly modified argument \code{mixDistr}.}
 \item{.loupmixfun}{a list of four components: \code{qL}, the minimal value of 
 \code{q(x)(0)}, \code{ql}, the minimal value of 
 \code{q(x)(getdistrOption("TruncQuantile"))}, \code{qU}, the maximal value of 
@@ -369,15 +369,15 @@ with R versions < 2.8.0.
 \code{x} running through the members of \code{mixDistr} in each case.}
 \item{.expm.d,.logm.d}{an object of class \code{"DiscreteDistribution"}.} 
 \item{.expm.c,.logm.c}{an object of class \code{"AbscontDistribution"}.} 
-\code{.P2D}{a density \code{d} as function \code{function(x,  log = FALSE)}}
-\code{.P2Q}{a quantile function \code{q} as function \code{function(p, 
+\item{.P2D}{a density \code{d} as function \code{function(x,  log = FALSE)}.}
+\item{.P2Q}{a quantile function \code{q} as function \code{function(p, 
             lower.tail = TRUE, log.p = FALSE)}} 
-\code{.D2P, .Q2P}{a cdf \code{p} as function \code{function(q, 
-            lower.tail = TRUE, log.p = FALSE)}}
-\code{.csimpsum}{a vector of evaluations of the prime function at the grid points}
-\code{.primefun}{the prime function as a function}
-\code{.IssueWarn}{a list with two warnings to be issued each of which may be empty}
-\code{devNew}{returns the return value of the device opened, usually invisible 'NULL'}
+\item{.D2P, .Q2P}{a cdf \code{p} as function \code{function(q, 
+            lower.tail = TRUE, log.p = FALSE)}.}
+\item{.csimpsum}{a vector of evaluations of the prime function at the grid points.}
+\item{.primefun}{the prime function as a function.}
+\item{.IssueWarn}{a list with two warnings to be issued each of which may be empty.}
+\item{devNew}{returns the return value of the device opened, usually invisible 'NULL'.}
 }
 
 \author{
