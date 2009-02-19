@@ -92,6 +92,7 @@ if(!isGeneric("scale"))
 # Arithmetics
 ############################################################################
 
+if(getRversion()<'2.9.0'){
 if(!isGeneric("log")) 
     setGeneric("log", function(x, base) standardGeneric("log"), group = "Math")
 if(!isGeneric("log10")) 
@@ -100,7 +101,7 @@ if(!isGeneric("gamma"))
     setGeneric("gamma", function(x) standardGeneric("gamma"), group = "Math")
 if(!isGeneric("lgamma")) 
     setGeneric("lgamma", function(x) standardGeneric("lgamma"), group = "Math")
-
+}
 
 
 
@@ -307,6 +308,7 @@ if(!isGeneric("setgaps"))
 #### generics for log, log10, lgamma, gamma
 
 
+if(getRversion()<'2.9.0'){
 if(!isGeneric("log"))
    setGeneric("log") #, function(x, base) standardGeneric("log"))
 if(!isGeneric("log10"))
@@ -317,7 +319,7 @@ if(!isGeneric("gamma"))
    setGeneric("gamma")
 if(!isGeneric("sign"))
    setGeneric("sign") #, function(x, base) standardGeneric("log"))
-
+}
 
 ### new Generics from 2.0 on (in particular for Mixing Distributions)
 

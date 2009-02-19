@@ -1,8 +1,14 @@
-UnivarMixingDistribution <- function(..., mixCoeff,
+UnivarMixingDistribution <- function(..., Dlist, mixCoeff,
                                      withSimplify = getdistrOption("simplifyD"))
    {
     ldots <- list(...)
+    if(!missing(Dlist)){
+        Dlist.L <- as(Dlist, "list")
+        if(!is(try(do.call(UnivarDistrList,args=Dlist.L),silent=TRUE),"try-error"))
+            ldots <- c(ldots, Dlist.L)
+       }
     l <- length(ldots)
+    mixDistr <- do.call(UnivarDistrList,args=ldots)
     if(missing(mixCoeff))
        mixCoeff <- rep(1,l)/l
     else{ if (l!=length(mixCoeff))
@@ -19,6 +25,7 @@ UnivarMixingDistribution <- function(..., mixCoeff,
     .withArith <- any(as.logical(lapply(mixDistr, function(x) x@".withArith")))
     .withSim   <- any(as.logical(lapply(mixDistr, function(x) x@".withSim")))
 
+    dnew <- NULL
     if (all( as.logical(lapply(mixDistr, function(x) is(x,"AbscontDistribution")))) ||
         all( as.logical(lapply(mixDistr, function(x) is(x,"DiscreteDistribution")))))
         dnew <- .dmixfun(mixDistr = mixDistr, mixCoeff = mixCoeff)
@@ -27,7 +34,7 @@ UnivarMixingDistribution <- function(..., mixCoeff,
     qnew <- .qmixfun(mixDistr = mixDistr, mixCoeff = mixCoeff,
                      Cont = TRUE, pnew = pnew)
 
-    obj <- new("UnivarMixingDistribution", p = pnew, r = rnew, d = NULL, q = qnew,
+    obj <- new("UnivarMixingDistribution", p = pnew, r = rnew, d = dnew, q = qnew,
          mixCoeff = mixCoeff, mixDistr = mixDistr, .withSim = .withSim,
          .withArith = .withArith)
 

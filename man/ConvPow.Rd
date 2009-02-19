@@ -6,6 +6,7 @@
 \alias{convpow,AbscontDistribution-method}
 \alias{convpow,LatticeDistribution-method}
 \alias{convpow,DiscreteDistribution-method}
+\alias{convpow,AcDcLcDistribution-method}
 \alias{convpow,Norm-method}
 \alias{convpow,Binom-method}
 \alias{convpow,Nbinom-method}
@@ -26,6 +27,7 @@
   \S4method{convpow}{AbscontDistribution}(D1,N)
   \S4method{convpow}{LatticeDistribution}(D1,N)
   \S4method{convpow}{DiscreteDistribution}(D1,N)
+  \S4method{convpow}{AcDcLcDistribution}(D1,N)
 }
 
 \arguments{

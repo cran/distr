@@ -130,14 +130,25 @@
   n <- getdistrOption("DefaultNrGridPoints")
   up <- min(loup$qu,1000)#getdistrOption("LARGE")
   lo <- max(loup$ql,-1000)#getdistrOption("LARGE")
-  h <- (up-lo)/n
 
-  xseq <- seq(from = lo, to = up, by = h)
+  h <- (up-lo)/n
+  suppsA <- NULL
+  for (i in 1:l){
+    if(!is(try(su0 <- support(mixDistr[[i]]), silent=TRUE),"try-error"))
+       suppsA <- c(suppsA,su0)
+    }
+
+  xseq <- c(lo-1,
+            seq(from = lo, to = up, by = h),
+            suppsA,
+            suppsA-getdistrOption("DistrResolution"),
+            up+1)
+  xseq <- sort(unique(xseq))          
 
   px.l <- pnew(xseq, lower.tail = TRUE)
   px.u <- pnew(xseq, lower.tail = FALSE)
 
-  return(.makeQNew(xseq, px.l, px.u, TRUE, loup$qL, loup$qU, Cont = Cont))
+  return(.makeQNew(xseq, px.l, px.u, TRUE, lo, up, Cont = Cont))
 }
 
 

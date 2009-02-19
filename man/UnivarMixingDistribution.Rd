@@ -3,10 +3,15 @@
 
 \title{Generating function for Class "UnivarMixingDistribution"}
 \description{Generates an object of class \code{"UnivarMixingDistribution"}.}
-\usage{UnivarMixingDistribution(..., mixCoeff, 
+\usage{UnivarMixingDistribution(..., Dlist, mixCoeff, 
                                 withSimplify = getdistrOption("simplifyD"))}
 \arguments{
   \item{\dots}{Objects of class \code{"UnivariateDistribution"} (or subclasses)}
+  \item{Dlist}{an optional list or object of class \code{"UnivarDistrList"};
+  if not missing it is appended to argument \code{\dots}; this way 
+  \code{UnivarMixingDistribution} may also be called with a list (or 
+  \code{"UnivarDistrList"}-object) as argument as suggested in an e-mail
+  by Krunoslav Sever (thank you!)}
   \item{mixCoeff}{Objects of class \code{"numeric"} : a vector of 
             probabilities for the mixing components (must be of same length as
             arguments in \dots).}

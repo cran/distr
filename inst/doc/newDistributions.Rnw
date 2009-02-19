@@ -12,6 +12,7 @@
 %
 \documentclass[10pt]{article}
 \usepackage{geometry}
+\RequirePackage{ifthen}
 %
 \usepackage{color}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.75}
@@ -40,6 +41,11 @@ pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
 % -------------------------------------------------------------------------------
 \RequirePackage{listings}
 \usepackage{Sweave}
+%
+%\newboolean{Sweave@gin}
+\setboolean{Sweave@gin}{true}
+%\newboolean{Sweave@ae}
+\setboolean{Sweave@ae}{true}
 % -------------------------------------------------------------------------------
 \SweaveOpts{keep.source=TRUE}
 % -------------------------------------------------------------------------------
@@ -96,6 +102,7 @@ distroptions(withSweave = TRUE)
 options(width=70)
 @
 %
+
 <<exam1, eval = TRUE, fig = TRUE>>=
 require(distr)
 N <- Norm(mean = 2, sd = 1.3)

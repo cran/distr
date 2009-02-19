@@ -568,8 +568,6 @@ return(f)
 }
 
 .makeQc <- function(x,y, yleft, yright){
-yl <- if(is.finite(yleft)) yleft  else y[1]
-yr <- if(is.finite(yright)) yright else y[length(y)]
 #f0 <- function(u) {
 #               q0 <- sapply(u, 
 #                       function(z) y[min(sum(x < z-.Machine$double.eps) + 1,
@@ -582,7 +580,17 @@ yr <- if(is.finite(yright)) yright else y[length(y)]
 #x0 <- x00[idx]               ### maximal x's
 #y0 <- y00[idx]
 #f1 <- approxfun(x = x0, y = y0, yleft = y0[1], yright = y0[length(y0)])
-f1 <- approxfun(x = x, y = y, yleft = yl, yright = yr)
+l0 <- length(unique(x[!.isEqual01(x)]))
+if(l0 > 1){
+   yl <- if(is.finite(yleft)) yleft  else y[1]
+   yr <- if(is.finite(yright)) yright else y[length(y)]
+
+   f1 <- approxfun(x = x, y = y, yleft = yl, yright = yr)
+}else{ 
+   i0 <- (1:length(x))[x==unique(x[!.isEqual01(x)])]
+   y0 <- if(l0 ==1) y[min(i0)] else yleft
+   f1 <- function(x) return(y0)
+}
 f <- function(x) 
    {y1 <- f1(x)
     y1[.isEqual(x,0)] <- yleft
@@ -730,9 +738,8 @@ return(f)
                       Cont = TRUE){
   o.warn <- getOption("warn"); options(warn = -1)
   on.exit(options(warn=o.warn))
-  mfun <- if (Cont) .makeQc else
-          .makeQd
   ix <- .isEqual01(px.l)
+  mfun <- if (Cont) .makeQc else  .makeQd
   if(!is.finite(yR)||Cont)
      {xx <- px.l[!ix]; yy <- x[!ix]}
   else  

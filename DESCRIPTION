@@ -1,6 +1,6 @@
 Package: distr
-Version: 2.0.4
-Date: 2009-01-12
+Version: 2.0.6
+Date: 2009-02-19
 Title: Object orientated implementation of distributions
 Description: Object orientated implementation of distributions
 Author: Florian Camphausen, Matthias Kohl, Peter Ruckdeschel, Thomas
@@ -12,5 +12,4 @@ Imports: stats
 LazyLoad: yes
 License: LGPL-3
 URL: http://distr.r-forge.r-project.org/
-Revision: 375
-Packaged: Tue Jan 13 05:19:26 2009; rforge
+Packaged: Fri Feb 20 15:03:23 2009; ruckdesc
