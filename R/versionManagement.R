@@ -32,10 +32,15 @@ function(object) {
                          slot(object,x) else slot(tryobject,x)
            lst <- sapply(slotNames, function(x) getIfExists(x))
            names(lst) <- slotNames
+           #
            lst <- c(list(Class = class(object)), lst)
-           myobj <- do.call("new", args = lst)
+           if(is(try (myobj <- do.call("new", args = lst), silent = TRUE), "try-error")){
+              myobj <- tryobject
+              for(i in 2:length(lst)) 
+                  slot(myobj, name=names(lst)[i]) <- lst[[i]]
+           }           
            myobj
-            })
+           })
 
 setMethod("conv2NewVersion", "LatticeDistribution",
 function(object) {
@@ -47,3 +52,4 @@ function(object) {
            myobj <- do.call("new", args = lst)
            myobj
             })
+

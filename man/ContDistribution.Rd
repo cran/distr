@@ -7,12 +7,13 @@
 \synopsis{AbscontDistribution(r = NULL, d = NULL, p = NULL, q = NULL,
                    gaps = NULL, param = NULL, img = new("Reals"),
                    .withSim = FALSE, .withArith = FALSE,
+                    .lowerExact = FALSE, .logExact = FALSE,
+                   withgaps = getdistrOption("withgaps"),
                    low1 = NULL, up1 = NULL, low = -Inf, up =Inf,
                    withStand = FALSE,
                    ngrid = getdistrOption("DefaultNrGridPoints"),
                    ep = getdistrOption("TruncQuantile"),
-                   e = getdistrOption("RtoDPQ.e"),
-                   withgaps = getdistrOption("withgaps"))
+                   e = getdistrOption("RtoDPQ.e"))
 }
 \usage{
   AbscontDistribution(r)
@@ -23,12 +24,13 @@
   AbscontDistribution(r = NULL, d = NULL, p = NULL, q = NULL,
                    gaps = NULL, param = NULL, img = new("Reals"),
                    .withSim = FALSE, .withArith = FALSE,
+                    .lowerExact = FALSE, .logExact = FALSE,
+                   withgaps = getdistrOption("withgaps"),
                    low1 = NULL, up1 = NULL, low = -Inf, up =Inf,
                    withStand = FALSE,
                    ngrid = getdistrOption("DefaultNrGridPoints"),
                    ep = getdistrOption("TruncQuantile"),
-                   e = getdistrOption("RtoDPQ.e"),
-                   withgaps = getdistrOption("withgaps"))
+                   e = getdistrOption("RtoDPQ.e"))
 }
 \arguments{
   \item{r}{slot \code{r} to be filled} 
@@ -53,6 +55,10 @@
                     distributional arithmetics was involved, you may set this to \code{TRUE}.}
   \item{.withSim}{normally not set by the user, but if determining the entries \code{supp}, \code{prob}
                   simulations were involved, you may set this to \code{TRUE}.}
+  \item{.lowerExact}{normally not set by the user: whether the \code{lower.tail=FALSE}
+                     part is calculated exactly, avoing a ``\code{1-.}''.}
+  \item{.logExact}{normally not set by the user: whether in determining slots \code{d,p,q},
+         we make particular use of a logarithmic representation to enhance accuracy.}
 }
 \details{
 Minimally, only one of the slots \code{r}, \code{d}, \code{p} or \code{q} needs to be given as argument.

@@ -9,14 +9,14 @@ UnivarMixingDistribution <- function(..., Dlist, mixCoeff,
        }
     l <- length(ldots)
     mixDistr <- do.call(UnivarDistrList,args=ldots)
+    ep <- .Machine$double.eps
     if(missing(mixCoeff))
        mixCoeff <- rep(1,l)/l
     else{ if (l!=length(mixCoeff))
           stop("argument 'mixCoeff' and the mixing distributions must have the same length")
-          if(any(mixCoeff < 0) || sum(mixCoeff)>1)
+          if(any(mixCoeff < -ep) || sum(mixCoeff)>1+ep)
              stop("mixing coefficients are no probabilities")
         }
-    mixDistr <- new("UnivarDistrList", ldots)
     rnew <- .rmixfun(mixDistr = mixDistr, mixCoeff = mixCoeff)
 
     pnew <- .pmixfun(mixDistr = mixDistr, mixCoeff = mixCoeff)
@@ -24,19 +24,36 @@ UnivarMixingDistribution <- function(..., Dlist, mixCoeff,
 
     .withArith <- any(as.logical(lapply(mixDistr, function(x) x@".withArith")))
     .withSim   <- any(as.logical(lapply(mixDistr, function(x) x@".withSim")))
+    .lowerExact<- all(as.logical(lapply(mixDistr, function(x) x@".lowerExact")))
 
-    dnew <- NULL
     if (all( as.logical(lapply(mixDistr, function(x) is(x,"AbscontDistribution")))) ||
         all( as.logical(lapply(mixDistr, function(x) is(x,"DiscreteDistribution")))))
         dnew <- .dmixfun(mixDistr = mixDistr, mixCoeff = mixCoeff)
 
-
+    gaps <- NULL
+    for(i in 1:l){
+        if(is.null(gaps)){
+           try(gaps <- gaps(mixDistr[[i]]), silent=TRUE)
+        }else{
+           if(!is(try(gaps0 <- gaps(mixDistr[[i]]), silent=TRUE),"try-error"))
+               gaps <- .mergegaps2(gaps,gaps0)
+        }
+    }    
+    support <- numeric(0)
+    for(i in 1:l){
+        if(!is(try(support0 <- support(mixDistr[[i]]), silent=TRUE),"try-error"))
+               support <- unique(sort(c(support,support0)))
+    }    
+    
+    gaps <- .mergegaps(gaps,support)
+    
     qnew <- .qmixfun(mixDistr = mixDistr, mixCoeff = mixCoeff,
-                     Cont = TRUE, pnew = pnew)
+                     Cont = TRUE, pnew = pnew, gaps = gaps)
 
-    obj <- new("UnivarMixingDistribution", p = pnew, r = rnew, d = dnew, q = qnew,
+    obj <- new("UnivarMixingDistribution", p = pnew, r = rnew, d = NULL, q = qnew,
          mixCoeff = mixCoeff, mixDistr = mixDistr, .withSim = .withSim,
-         .withArith = .withArith)
+         .withArith = .withArith,.lowerExact =.lowerExact, gaps = gaps, 
+         support = support)
 
     if (withSimplify)
         obj <- simplifyD(obj)
@@ -54,3 +71,24 @@ setMethod("mixDistr", "UnivarMixingDistribution", function(object)object@mixDist
 setReplaceMethod("mixDistr", "UnivarMixingDistribution", function(object,value){
    object@mixDistr<- value; object})
 
+setMethod("support", "UnivarMixingDistribution", function(object)object@support)
+setMethod("gaps", "UnivarMixingDistribution", function(object)object@gaps)
+
+
+#------------------------------------------------------------------------
+# new p.l, q.r methods
+#------------------------------------------------------------------------
+
+setMethod("p.l", signature(object = "UnivarMixingDistribution"),  
+           function(object) .pmixfun(mixDistr = mixDistr(object), 
+                                     mixCoeff = mixCoeff(object), 
+                                     leftright = "left"))
+
+setMethod("q.r", signature(object = "UnivarMixingDistribution"),  
+           function(object){
+                if(!is.null(gaps(object))) 
+                   .modifyqgaps(pfun = p(object), qfun = q(object), 
+                                gaps = gaps(object), leftright = "right")
+                else
+                    q(object)
+            })

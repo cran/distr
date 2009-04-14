@@ -1,17 +1,55 @@
+
+
 setMethod("Truncate", "AbscontDistribution",
           function(object, lower = -Inf, upper = Inf){
+            ep <- .Machine$double.eps^2
+            if(lower >= upper+ep) 
+               stop("Argument 'lower' must be smaller than argument 'upper'")
             newgaps <- gaps(object)
             if(!is.null(newgaps)){
                newgaps[,1] <- pmax(newgaps[,1],lower)
                newgaps[,2] <- pmin(newgaps[,1],upper)
                newgaps <- newgaps[newgaps[,1]<newgaps[,2],]
-               if(nrow(newgaps)==0) newgaps <- NULL}
+               newgaps <- if(nrow(newgaps)==0) NULL else 
+                            .consolidategaps(newgaps)
+               }
+            
+            if(lower == -Inf && upper == Inf) return(object)
+
+            if(.logExact(object)){
+               if(p(object)(lower)>=0.5 && upper < Inf) 
+                  return(Truncate(Truncate(object,lower=lower),
+                                  upper=upper))
+               if(p(object)(upper)<=0.5 && lower > -Inf) 
+                  return(Truncate(Truncate(object,upper=upper),
+                                  lower=lower))
+               if(lower == -Inf)     erg <- .trunc.up(object, upper)
+               else if(upper == Inf) erg <- .trunc.low(object, lower)
+            
+               if(lower == -Inf || upper == Inf){
+                 rnew <- erg$r
+                 pnew <- erg$p
+                 dnew <- erg$d
+                 qnew <- erg$q
+            
+                 X <- AbscontDistribution( r = rnew, gaps = newgaps,
+                      d = dnew, p = pnew, q = qnew, .withArith = TRUE,
+                      .withSim = object@.withSim)
+                 X@.logExact <- TRUE; X@.lowerExact <- .lowerExact(object)
+                 return(X)
+               }
+            }
+
+            if((lower <= getLow(object)+ep)&&(upper >= getUp(object)-ep))
+               return(object)
+
+            
             ## new random number function
             rnew <- function(n){
                  rn <- r(object)(n)
                  while(TRUE){
-                   rn[rn < lower] = NA
-                   rn[rn > upper] = NA
+                   rn[rn < lower+ep] = NA
+                   rn[rn > upper-ep] = NA
                    index = is.na(rn)
                    if(!(any(index))) break
                    rn[index] = r(object)(sum(index))
@@ -56,23 +94,96 @@ setMethod("Truncate", "AbscontDistribution",
 
             return(AbscontDistribution( r = rnew, gaps = newgaps,
                    d = dnew, p = pnew, q = qnew, .withArith = TRUE,
-                   .withSim = object@.withSim))
+                   .withSim = object@.withSim, 
+                   .lowerExact = .lowerExact(object)))
+          })
+
+setMethod("Truncate", "LatticeDistribution",
+          function(object, lower = -Inf, upper = Inf){
+            ep <- .Machine$double.eps^2
+            if(lower == -Inf && upper == Inf) return(object)
+            if(lower >= upper+ep) 
+               stop("Argument 'lower' must be smaller than argument 'upper'")
+            if(is.finite(Length(lattice(object)))||
+               !.logExact(object)||
+               (width(lattice(object)) < 0 && 
+                      lower > q(object)(getdistrOption("TruncQuantile")))||
+               (width(lattice(object)) > 0 && 
+                      upper < q(object)(getdistrOption("TruncQuantile"), 
+                                        lower.tail = FALSE))               
+               ){
+               erg <- getMethod("Truncate","DiscreteDistribution")(object, 
+                                 lower, upper)
+               LatticeDistribution(DiscreteDistribution = erg, check = FALSE)
+            }else{
+               if(p(object)(lower)>=0.5 && upper < Inf) 
+                  return(Truncate(Truncate(object,lower=lower),
+                                  upper=upper))
+               if(p(object)(upper)<=0.5 && lower > -Inf) 
+                  return(Truncate(Truncate(object,upper=upper),
+                                  lower=lower))
+               if(lower == -Inf)     erg <- .trunc.up(object, upper)
+               else if(upper == Inf) erg <- .trunc.low(object, lower)
+            
+               if(lower == -Inf || upper == Inf){
+                 rnew <- erg$r
+                 pnew <- erg$p
+                 dnew <- erg$d
+                 qnew <- erg$q
+            
+                 
+                 m <- max(getLow(object),lower)
+                 M <- min(getUp(object),upper)
+                 if(M<m)
+                    stop("too little mass between args 'lower' and 'upper'")
+                 lattice <- lattice(object)
+                 p <- pivot(lattice)
+                 w <- width(lattice)
+                 M1 <- ceiling(abs(M-p)/abs(w))
+                 m1 <- floor(abs(p-m)/abs(w))
+                 s1 <- if(m1>1 && m<p) 
+                          rev(seq(from = p, by = -abs(w), length.out = m1+1)) else NULL
+                 S1 <- if(M1>1 && M>p) 
+                          seq(from = p, by = abs(w), length.out = M1)[-1] else NULL
+                 support <- sort(unique(c(s1,p,S1)))
+                 support <- support[support<=M & support>=m]
+                 
+                 X <- LatticeDistribution(check = FALSE, 
+                       DiscreteDistribution = new("DiscreteDistribution", 
+                          r = rnew, d = dnew, p = pnew, q = qnew, 
+                          .withArith = TRUE, .withSim = object@.withSim,
+                          .logExact = TRUE, .lowerExact = .lowerExact(object),
+                          support = support))
+                return(X)
+               }
+            }
           })
 
 setMethod("Truncate", "DiscreteDistribution",
           function(object, lower = -Inf, upper = Inf){
+            ep <- .Machine$double.eps^2
+            if(lower >= upper+ep) 
+               stop("Argument 'lower' must be smaller than argument 'upper'")
+            if((lower <= getLow(object))&&(upper >= getUp(object)))
+               return(object)
             supp <- support(object)
-            newsupport <- supp[supp<=upper & supp>lower]
+            newsupport <- supp[supp<=upper & supp>=lower]
             if(! length(newsupport))
                stop("too little mass between args 'lower' and 'upper'")
             pnewsupport <- d(object)(newsupport)/sum(d(object)(newsupport))
             DiscreteDistribution(supp = newsupport, prob = pnewsupport,
-                     .withArith = TRUE)
+                     .withArith = TRUE, .withSim = object@.withSim,
+                     .lowerExact = .lowerExact(object), 
+                     .logExact = .logExact(object))
           })
 
 setMethod("Truncate", "UnivarLebDecDistribution",
           function(object, lower = -Inf, upper = Inf, 
                    withSimplify = getdistrOption("simplifyD")){
+            if(lower >= upper+ep) 
+               stop("Argument 'lower' must be smaller than argument 'upper'")
+            if((lower <= getLow(object))&&(upper >= getUp(object)))
+               return(object)
             aD <- acPart(object)
             aw <- acWeight(object)
             dD <- discretePart(object)
@@ -85,4 +196,6 @@ setMethod("Truncate", "UnivarLebDecDistribution",
             Dnew <- UnivarLebDecDistribution(acPart = aDnew,
                         discretePart = dDnew, acWeight = awnew)
             if(withSimplify) Dnew <- simplifyD(Dnew)
+            Dnew@.lowerExact  <- .lowerExact(aD) && .lowerExact(dD)
+            Dnew@.logExact <- .logExact(aD) && .logExact(dD)
             Dnew})

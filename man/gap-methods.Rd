@@ -7,9 +7,9 @@
 \alias{setgaps}
 \alias{gaps<-}
 \alias{gaps,AbscontDistribution-method}
-\alias{gaps,UnivarLebDecDistribution-method}
 \alias{gaps<-,AbscontDistribution-method}
 \alias{setgaps,AbscontDistribution-method}
+\alias{setgaps,UnivarMixingDistribution-method}
 \title{ Methods for Functions gaps and setgaps in Package `distr' }
 \description{[set]gaps-methods}
 \usage{gaps(object)
@@ -39,6 +39,11 @@ setgaps(object, ...)
 \item{setgaps}{\code{signature(object = "AbscontDistribution")}: tries to find 
 out the gaps (where \code{d(object)} is approximately
  0) and fills slot \code{gaps} of \code{object} correspondingly}
+\item{setgaps}{\code{signature(object = "UnivarMixingDistribution")}: 
+for each mixing component, if it has a slot \code{gaps}, tries to find out the gaps 
+ and fills slot \code{gaps} of the component correspondingly, and,
+ subsequently merges all found gap-slots of the components to a gap-slot
+ for the object, using internal function \code{\link{.mergegaps2}}.}
 \item{gaps<-}{\code{signature(object = "AbscontDistribution")}: modifies  slot 
 \code{gaps} of an absolutely continuous distribution}
 }}

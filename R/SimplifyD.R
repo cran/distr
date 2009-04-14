@@ -1,5 +1,7 @@
 setMethod("simplifyD", "UnivarMixingDistribution",
            function(object){
+                if(length(object@mixDistr)==1)
+                   return(object@mixDistr[[1]])
                 ep <- getdistrOption("TruncQuantile")
                 mixC.old <- mixCoeff(object)
                 if(any(mixC.old > (1 - ep)))

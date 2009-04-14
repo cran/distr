@@ -20,11 +20,9 @@ Class \code{"\linkS4class{numeric}"}, from data part.
 Class \code{"\linkS4class{vector}"}, by class "numeric", distance 2.
 }
 \section{Methods}{
-\describe{
-   \item{coerce}{\code{signature(from = "numeric", to = "Integer")}:
+\describe{   \item{coerce}{\code{signature(from = "numeric", to = "Integer")}:
       create a \code{"Integer"} object from a \code{"numeric"} vector.}
-  }
-}
+}}
 %\references{ ~put references to the literature/web site here ~ }
 \author{
   Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}

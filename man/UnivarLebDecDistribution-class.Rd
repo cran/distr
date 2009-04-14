@@ -51,7 +51,6 @@
 \alias{d.ac}
 \alias{q.ac}
 \alias{r.ac}
-\alias{support,UnivarLebDecDistribution-method}
 \alias{coerce,AbscontDistribution,UnivarLebDecDistribution-method}
 \alias{coerce,DiscreteDistribution,UnivarLebDecDistribution-method}
 \alias{coerce,AffLinUnivarLebDecDistribution,UnivarLebDecDistribution-method}
@@ -96,6 +95,13 @@ Objects can be created by calls of the form
     \item{\code{q}:}{Object of class \code{"function"}: quantile function}
     \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
     \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
+    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              log version of density, cdf, and quantile function}
+    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              lower tail version of cdf and quantile function}
+    \item{\code{support}:}{numeric vector --- the support slot of the discrete part}
+    \item{\code{gaps}:}{(numeric) matrix or \code{NULL}; --- the gaps slot of 
+                         the absolutely continuous part}
   }
 }
 \section{Extends}{
@@ -115,16 +121,37 @@ class \code{"Distribution"} by class \code{"UnivariateDistribution"}.
     \item{acWeight<-}{\code{signature(object = "UnivarLebDecDistribution")}}
     \item{discreteWeight}{\code{signature(object = "UnivarLebDecDistribution")}}
     \item{discreteWeight<-}{\code{signature(object = "UnivarLebDecDistribution")}}
-    \item{p.ac}{\code{signature(object = "UnivarLebDecDistribution")}}
-    \item{q.ac}{\code{signature(object = "UnivarLebDecDistribution")}}
-    \item{d.ac}{\code{signature(object = "UnivarLebDecDistribution")}}
-    \item{r.ac}{\code{signature(object = "UnivarLebDecDistribution")}}
-    \item{p.discrete}{\code{signature(object = "UnivarLebDecDistribution")}}
-    \item{q.discrete}{\code{signature(object = "UnivarLebDecDistribution")}}
-    \item{d.discrete}{\code{signature(object = "UnivarLebDecDistribution")}}
-    \item{r.discrete}{\code{signature(object = "UnivarLebDecDistribution")}}
-    \item{support}{\code{signature(object = "UnivarLebDecDistribution")}}
-    \item{gaps}{\code{signature(object = "UnivarLebDecDistribution")}}
+    \item{p.ac}{\code{signature(object = "UnivarLebDecDistribution")} accessor to 
+                slot \code{p} of \code{acPart(object)}, possibly weighted 
+                by \code{acWeight(object)}; 
+                it has an extra argument \code{CondOrAbs} with default value 
+                \code{"cond"} which if it does not partially match 
+               (by \code{\link{pmatch}}) \code{"abs"}, returns exactly
+               slot \code{p} of \code{acPart(object)} else weighted by 
+               \code{acWeight(object)}.}
+    \item{d.ac}{\code{signature(object = "UnivarLebDecDistribution")}accessor to 
+                slot \code{d} of the absolutely continuous part of
+                the distribution, possibly weighted by \code{acWeight(object)}; 
+                it has an extra argument \code{CondOrAbs} which acts as the one
+                in \code{p.ac}.}
+    \item{q.ac}{\code{signature(object = "UnivarLebDecDistribution")} accessor to 
+                slot \code{q} of \code{acPart(object)}.}
+    \item{r.ac}{\code{signature(object = "UnivarLebDecDistribution")} accessor to 
+                slot \code{q} of \code{acPart(object)}.}
+    \item{p.discrete}{\code{signature(object = "UnivarLebDecDistribution")} 
+                      accessor to slot \code{p} of \code{discretePart(object)}, 
+                      possibly weighted by \code{discreteWeight(object)}; 
+                      it has an extra argument \code{CondOrAbs} which acts 
+                      as the one in \code{p.ac}.}
+    \item{d.discrete}{\code{signature(object = "UnivarLebDecDistribution")} 
+                      accessor to slot \code{d} of \code{discretePart(object)}, 
+                      possibly weighted by \code{discreteWeight(object)}; 
+                      it has an extra argument \code{CondOrAbs} which acts as 
+                      the one in \code{p.ac}.}
+    \item{q.discrete}{\code{signature(object = "UnivarLebDecDistribution")} 
+                      accessor to slot \code{q} of \code{discretePart(object)}.}
+    \item{r.discrete}{\code{signature(object = "UnivarLebDecDistribution")} 
+                      accessor to slot \code{r} of \code{discretePart(object)}.}
     \item{coerce}{\code{signature(from = "AffLinUnivarLebDecDistribution", to = "UnivarLebDecDistribution")}:
       create a \code{"UnivarLebDecDistribution"} object from a \code{"AffLinUnivarLebDecDistribution"} object}
     \item{coerce}{\code{signature(from = "AbscontDistribution", to = "UnivarLebDecDistribution")}:
@@ -141,6 +168,9 @@ class \code{"Distribution"} by class \code{"UnivariateDistribution"}.
     \code{log}{\code{signature(x = "UnivarLebDecDistribution")}:  (with optional further argument \code{base}, 
     defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.}
     \code{log10}{\code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{log10(x)}.}
+    \code{sqrt}{\code{signature(x = "UnivarLebDecDistribution")}:  exact 
+         image distribution of \code{sqrt(x)}.}
+    \code{sqrt}{\code{signature(x = "AcDcLcDistribution")}:  exact image distribution of \code{sqrt(x)}.}
     \item{-}{\code{signature(e1 = "UnivarLebDecDistribution")}: application of `-' to this distribution}
     \item{*}{\code{signature(e1 = "UnivarLebDecDistribution", e2 = "numeric")}: multiplication of this distribution
     by an object of class `numeric'}

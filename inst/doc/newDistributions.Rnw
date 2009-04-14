@@ -8,11 +8,37 @@
 %\VignetteIndexEntry{newDistributions}
 %\VignetteDepends{startupmsg}
 %\VignetteKeywords{probability distribution,estimation}
-%\VignettePackage{distr}
+%\VignettePackage{distr}                     
+%
+%
 %
 \documentclass[10pt]{article}
+%
+%use svn-multi to fill in revision information
+%
+\usepackage{svn-multi}
+% Version control information:
+\svnidlong
+{$HeadURL: svn+ssh://ruckdeschel@svn.r-forge.r-project.org/svnroot/distr/pkg/distr/inst/doc/newDistributions.Rnw $}
+{$LastChangedDate: 2009-03-24 11:49:33 +0100 (Di, 24 Mrz 2009) $}
+{$LastChangedRevision: 439 $}
+{$LastChangedBy: ruckdeschel $}
+%\svnid{$Id: example_main.tex 146 2008-12-03 13:29:19Z martin $}
+% Don't forget to set the svn property 'svn:keywords' to
+% 'HeadURL LastChangedDate LastChangedRevision LastChangedBy' or
+% 'Id' or both depending if you use \svnidlong and/or \svnid
+%
+\newcommand{\svnfooter}{Last Changed Rev: \svnkw{LastChangedRevision}}
+\svnRegisterAuthor{ruckdeschel}{Peter Ruckdeschel}
+\svnRegisterAuthor{stamats}{Matthias Kohl}
+\svnRegisterAuthor{florian}{Florian Camphausen}
+\svnRegisterAuthor{stabla}{Thomas Stabla}
+\svnRegisterAuthor{anhuel}{Anja H{\"u}ller}
+\svnRegisterAuthor{ifrin}{Eleonara Feist}
+\svnRegisterAuthor{jdospina}{Juan David Ospina}
+\svnRegisterAuthor{kowzar}{Kouros Owzar}
+%
 \usepackage{geometry}
-\RequirePackage{ifthen}
 %
 \usepackage{color}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.75}
@@ -41,11 +67,6 @@ pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
 % -------------------------------------------------------------------------------
 \RequirePackage{listings}
 \usepackage{Sweave}
-%
-%\newboolean{Sweave@gin}
-\setboolean{Sweave@gin}{true}
-%\newboolean{Sweave@ae}
-\setboolean{Sweave@ae}{true}
 % -------------------------------------------------------------------------------
 \SweaveOpts{keep.source=TRUE}
 % -------------------------------------------------------------------------------
@@ -70,8 +91,21 @@ setToBeDefinedPkgs(pkgs = c("distr","distrEx"),
 \small Fraunhofer Platz 1\\[-.5ex]
 \small 67663 Kaiserslautern\\[-.5ex]
 \small Germany\\
-\small e-Mail: {\small \tt Peter.Ruckdeschel@itwm.fraunhofer.de}\\
-}
+\small e-Mail: {\small \tt Peter.Ruckdeschel@itwm.fraunhofer.de}\medskip\\
+\parbox[t]{5cm}{
+\footnotesize\sffamily
+ Version control information:
+\begin{tabbing}
+\footnotesize\sffamily
+ Last changes revision: \= \kill
+ Head URL: \> \parbox[t]{6cm}{\url{\svnkw{HeadURL}}}\\[1.2ex]
+ Last changed date: \> \svndate\\
+ Last changes revision: \> \svnrev\\
+ Version: \> \svnFullRevision*{\svnrev}\\
+ Last changed by: \> \svnFullAuthor*{\svnauthor}\\
+\end{tabbing}
+}}
+
 \maketitle
 % -------------------------------------------------------------------------------
 \begin{abstract}
@@ -102,7 +136,6 @@ distroptions(withSweave = TRUE)
 options(width=70)
 @
 %
-
 <<exam1, eval = TRUE, fig = TRUE>>=
 require(distr)
 N <- Norm(mean = 2, sd = 1.3)

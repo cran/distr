@@ -11,14 +11,11 @@ setMethod("plot", signature(x = "AffLinUnivarLebDecDistribution", y = "missing")
              col.hor = par("col"), col.vert = par("col"),
              col.main = par("col.main"), col.inner = par("col.main"),
              col.sub = par("col.sub"),  cex.points = 2.0,
-             pch.u = 21, pch.a = 16, mfColRow = TRUE){
+             pch.u = 21, pch.a = 16, mfColRow = TRUE, to.draw.arg = NULL){
 
-      mc <- match.call(call = sys.call(sys.parent(1)), expand.dots = FALSE)[-1]
-      mc$x <- NULL
-      x <- as(x,"UnivarLebDecDistribution")
-      mc <- c(list(x=x), mc)
+      mc <- as.list(match.call(call = sys.call(sys.parent(1)), expand.dots = TRUE)[-1])
       do.call(getMethod("plot",
-              signature(x="UnivarLebDecDistribution",y="missing")), mc)
+              signature(x="UnivarLebDecDistribution",y="missing")), args = mc)
       return(invisible())
 })
 
@@ -33,46 +30,106 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
              col.hor = par("col"), col.vert = par("col"),
              col.main = par("col.main"), col.inner = par("col.main"),
              col.sub = par("col.sub"),  cex.points = 2.0,
-             pch.u = 21, pch.a = 16, mfColRow = TRUE){
+             pch.u = 21, pch.a = 16, mfColRow = TRUE, to.draw.arg = NULL){
 
-
-      mc <- match.call(call = sys.call(sys.parent(1)), expand.dots = FALSE)[-1]
+      mc <- match.call(call = sys.call(sys.parent(1)), expand.dots = TRUE)[-1]
       xc <- mc$x
       ### manipulating the ... - argument
       dots <- match.call(call = sys.call(sys.parent(1)),
                        expand.dots = FALSE)$"..."
 
-      if(x@mixCoeff[1]==0){
-         mc$x <- NULL
+      plotD <- getMethod("plot", signature(x = "DiscreteDistribution", 
+                                           y = "missing"))
+      plotC <- getMethod("plot", signature(x = "AbscontDistribution", 
+                                           y = "missing"))
+
+      to.draw <- 1:8
+      names(to.draw) <- c("p","q","d.c","p.c","q.c","d.d","p.d","q.d")
+      if(! is.null(to.draw.arg)){
+         if(is.character(to.draw.arg)) 
+            to.draw <- pmatch(to.draw.arg, names(to.draw))
+         else if(is.numeric(to.draw.arg)) 
+              to.draw <- to.draw.arg
+      }
+      l.draw <- length(to.draw)
+      
+      if(!is(x, "UnivarLebDecDistribution")) 
+          x <- .ULC.cast(x)
+
+      if(is(x,"DiscreteDistribution")){
+         mcl <- as.list(mc)
+         mcl$to.draw.arg <- (1:3)[( (6:8) %in%to.draw )] 
+         mcl$ngrid <- NULL
+            if(!is.logical(inner)){
+                if(length(inner)!=3)
+                   {inner <- .fillList(inner, 8)
+                     mcl$inner <- inner[6:8]}
+                }                          
+         do.call(plotD, mcl)
+         return(invisible())
+      }
+      
+      if(is(x,"AbscontDistribution")){
+         mcl <- as.list(mc)
+         mcl$col.hor <- NULL
+         mcl$to.draw.arg <- (1:3)[( (3:5) %in%to.draw )] 
+            if(!is.logical(inner)){
+                if(length(inner)!=3)
+                   {inner <- .fillList(inner, 8)
+                     mcl$inner <- inner[6:8]}
+                }                          
+         do.call(plotC, as.list(mcl))
+         return(invisible())
+      }
+      
+      
+      if(.isEqual(x@mixCoeff[1],0)){
          x <- x@mixDistr[[2]]
-         mc <- c(list(x=x), mc)
-         do.call(getMethod("plot",signature(x = "DiscreteDistribution",
-                                            y = "missing")), mc)
+         mcl <- as.list(mc)
+         mcl$x <- x
+         mcl$to.draw.arg <- (1:3)[( (6:8) %in%to.draw )] 
+         mcl$ngrid <- NULL
+            if(!is.logical(inner)){
+                if(length(inner)!=3)
+                   {inner <- .fillList(inner, 8)
+                     mcl$inner <- inner[6:8]}
+                }                          
+         do.call(plotD, as.list(mcl))
          return(invisible())
         }
 
-      if(x@mixCoeff[1]==1){
-         mc$x <- NULL
+      if(.isEqual(x@mixCoeff[1],1)){
          x <- x@mixDistr[[1]]
-         mc <- c(list(x=x), mc)
-         do.call(getMethod("plot",signature(x = "AbscontDistribution",
-                                            y = "missing")), mc)
+         mcl <- as.list(mc)
+         mcl$x <- x
+         mcl$to.draw.arg <- (1:3)[( (3:5) %in%to.draw )] 
+         mcl$col.hor <- NULL
+            if(!is.logical(inner)){
+                if(length(inner)!=3)
+                   {inner <- .fillList(inner, 8)
+                     mcl$inner <- inner[6:8]}
+                }                          
+         do.call(plotC, as.list(mcl))
          return(invisible())
         }
 
 
-
-      dots.for.points <- dots[names(dots) %in% c("bg", "lwd", "lty")]
+      dots.for.points <- dots[names(dots) %in% c("bg", "lwd", "lty","ngrid")]
       if (length(dots.for.points) == 0 ) dots.for.points <- NULL
 
       dots.without.pch <- dots[! (names(dots) %in% c("pch",
                                   "main", "sub", "log"))]
-
+      dots.for.lines <- dots.without.pch[! (names(dots.without.pch) %in% c("panel.first",
+                                  "panel.last", "ngrid", "frame.plot"))]
+      dots.v <- dots.for.lines
+      dots.v$col <- NULL
      ###
      if(!is.logical(inner))
-         if(!is.list(inner)||length(inner) != 2)
-            stop("Argument 'inner' must either be 'logical' or a 'list' vector of length 2")
-
+         {if(!is.list(inner))
+              inner <- as.list(inner)
+            #stop("Argument 'inner' must either be 'logical' or a 'list'")
+          inner <- .fillList(inner,l.draw)          
+         }
      cex <- if (hasArg(cex)) dots$cex else 1
 
      if (hasArg(cex) && missing(cex.points))
@@ -158,8 +215,35 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
 
      if(mfColRow){
         opar <- par("mfrow", mar = c(bmar,omar[2],tmar,omar[4]))
-        layout(matrix(c(1,1,1,2,2,2,3,3,4,4,5,5,6,6,7,7,8,8), byrow=TRUE, 
-               nrow=3))
+        ## common:
+        com.drw <- (1:2)[( (1:2) %in%to.draw )]
+        disc.drw <-(1:3)[( (3:5) %in%to.draw )]
+        cont.drw <-(1:3)[( (6:8) %in%to.draw )]
+        lcom.drw <- length(com.drw)
+        ldisc.drw <- length(disc.drw)
+        lcont.drw <- length(cont.drw) 
+        
+        nrw.drw <- (lcom.drw>0)+(ldisc.drw>0)+(lcont.drw>0)
+        le.drw <- c(lcom.drw,ldisc.drw,lcont.drw)
+        
+        tw.drw <- any(le.drw==2); th.drw <- any(le.drw==3);
+        cmm.drw <- (1+tw.drw)*(1+th.drw*2)
+        ma.drw <- NULL; man.drw <- 0
+        if(lcom.drw>0){
+           ma.drw <- rep( 1:lcom.drw, 
+                          each = cmm.drw/length(com.drw))
+           man.drw <- length(com.drw)
+           }
+        if(ldisc.drw>0){
+           ma.drw <- c(ma.drw, rep(1:ldisc.drw + man.drw, 
+                       each = cmm.drw/length(disc.drw)))
+           man.drw <- man.drw + length(disc.drw)
+           }
+        if(lcont.drw>0){
+           ma.drw <- c(ma.drw, rep(1:lcont.drw + man.drw, 
+                       each = cmm.drw/length(cont.drw)))
+           }
+        if(nrw.drw >0 ) layout(matrix(ma.drw, byrow=TRUE,  nrow=nrw.drw))
      }else 
         opar <- par(mar = c(bmar,omar[2],tmar,omar[4]))
 
@@ -170,17 +254,25 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
                    .mpresubs(gettextf("Quantile function of %%C%%Q")) else ""
                           ### double  %% as % is special for gettextf
      }else{
-        inner.p <- .mpresubs(inner[[1]])
-        inner.q <- .mpresubs(inner[[2]])
+        iL <- 1:length(to.draw[to.draw<=2])
+
+        inner.p <- if(1%in%to.draw) .mpresubs(inner[[min(iL[to.draw==1])]]) else NULL
+        inner.q <- if(2%in%to.draw) .mpresubs(inner[[min(iL[to.draw==2])]]) else NULL
      }
 
 
-     lower <- min(getLow(x@mixDistr[[1]],
+     lower0 <- min(getLow(x@mixDistr[[1]],
                       eps = getdistrOption("TruncQuantile")*2),
                   getLow(x@mixDistr[[2]]))
-     upper <- max(getUp(x@mixDistr[[1]],
+     upper0 <- max(getUp(x@mixDistr[[1]],
                       eps = getdistrOption("TruncQuantile")*2),
                   getUp(x@mixDistr[[2]]))
+     me <- q(x)(1/2); s <- q(x)(3/4)-q(x)(1/4)
+     lower1 <- me - 6 * s
+     upper1 <- me + 6 * s
+     lower <- max(lower0, lower1)
+     upper <- min(upper0, upper1)
+
 
      ## ngrid  nr of gridpoints
      ## exactq two p-values are considered equal if difference is
@@ -203,18 +295,26 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
      pxg <- p(x)(grid)
 
 
+     
      if(hasArg(ylim))
-         {if(length(ylim)!=2)
-             stop("Wrong length of Argument ylim")}
-
-     else {ylim <- c(-0.05,1.05)}
+         { if (any(c(2,5,8) %in% to.draw) && any( c(1,3,4,6,7) %in% to.draw)){
+                 if(! length(ylim) %in% c(2,4)) 
+                     stop("Wrong length of Argument ylim")
+           }else{
+                 if(! length(ylim) == 2) 
+                     stop("Wrong length of Argument ylim")
+           }                  
+           ylim <- matrix(ylim, 2,2)
+           ylim2 <- ylim[,2]
+           }
+     else ylim2 <- c(-0.05,1.05)
 
      if(hasArg(log))
          {logpd <- dots$log
           logq <- gsub("u","y",gsub("y","x",gsub("x", "u", logpd)))
           if(length(grep("y",logpd))){
-             ylim <- c(max(min(pxg[pxg>0]), ylim[1]),
-                               ylim[2])
+             ylim2 <- c(max(min(pxg[pxg>0]), ylim2[1]),
+                               ylim2[2])
              }
           }
 
@@ -228,28 +328,29 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
      }
 
      o.warn <- getOption("warn"); options(warn = -1)
-     on.exit(options(warn=o.warn))
-     do.call(plot, c(list(x = grid, pxg, type = "l",
-          ylim = ylim, ylab = "p(q)", xlab = "q", log = logpd),
-          dots.without.pch))
-     options(warn = o.warn)
-
-     pxg.d <- p(x)(supp)
-     pxg.d0 <- p(x)(supp-del)
-     if(do.points){
-        do.call(points, c(list(x = supp, y = pxg.d, pch = pch.a,
-                  cex = cex.points, col = col.points), dots.for.points))
-        do.call(points, c(list(x = supp-del, y = pxg.d0, pch = pch.u,
-                  cex = cex.points, col = col.points), dots.for.points))
+     if(1 %in% to.draw){
+        on.exit(options(warn=o.warn))
+        do.call(plot, c(list(x = grid, pxg, type = "l",
+             ylim = ylim2, ylab = "p(q)", xlab = "q", log = logpd),
+             dots.without.pch))
+        options(warn = o.warn)
+   
+        pxg.d <- p(x)(supp)
+        pxg.d0 <- p(x)(supp-del)
+        if(do.points){
+           do.call(points, c(list(x = supp, y = pxg.d, pch = pch.a,
+                     cex = cex.points, col = col.points), dots.for.points))
+           do.call(points, c(list(x = supp-del, y = pxg.d0, pch = pch.u,
+                     cex = cex.points, col = col.points), dots.for.points))
+        }
+        if(verticals){
+            do.call(lines, c(list(x = xv, y = pxv, col = col.vert),
+                    dots.v))
+        }
+   
+        title(main = inner.p, line = lineT, cex.main = cex.inner,
+              col.main = col.inner)
      }
-     if(verticals){
-         do.call(lines, c(list(x = xv, y = pxv, col = col.vert),
-                 dots.without.pch))
-     }
-
-     title(main = inner.p, line = lineT, cex.main = cex.inner,
-           col.main = col.inner)
-
      ### quantiles
 
      ### fix finite support bounds
@@ -285,75 +386,99 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
         xo <- grid
      }
 
-     options(warn = -1)
-     do.call(plot, c(list(x = po, xo, type = "n",
-          xlim = ylim, ylim = xlim, ylab = "q(p)", xlab = "p",
-          log = logq), dots.without.pch))
-     options(warn = o.warn)
+     if(2 %in% to.draw){
+        options(warn = -1)
+        do.call(plot, c(list(x = po, xo, type = "n",
+             xlim = ylim2, ylim = xlim, ylab = "q(p)", xlab = "p",
+             log = logq), dots.without.pch), envir = parent.frame(2))
+        options(warn = o.warn)
+   
+   
+        title(main = inner.q, line = lineT, cex.main = cex.inner,
+              col.main = col.inner)
+   
+        options(warn = -1)
+        do.call(lines, c(list(x=po, y=xo), dots.for.lines))
+   #    if (verticals && !is.null(gaps(x))){
+   #         do.call(lines, c(list(rep(pu1,2), c(gaps(x)[,1],gaps(x)[,2]),
+   #                 col = col.vert), dots.without.pch))
+   #     }
+        options(warn = o.warn)
+   
+   
+        if (verticals && !is.null(gaps(x))){
+                pu <- rep(pu1,3)
+                xu <- c(gaps(x)[,1],gaps(x)[,2],rep(NA,ndots))
+                o <- order(pu)
+                do.call(lines, c(list(pu[o], xu[o],
+                        col = col.vert), dots.v))
+         }
+        if(!is.null(gaps(x)) && do.points){
+            do.call(points, c(list(x = pu1, y = gaps(x)[,1], pch = pch.a,
+                    cex = cex.points, col = col.points), dots.for.points) )
+            do.call(points, c(list(x = pu1, y = gaps(x)[,2], pch = pch.u,
+                    cex = cex.points, col = col.points), dots.for.points) )
+       
+        }
 
-
-     title(main = inner.q, line = lineT, cex.main = cex.inner,
-           col.main = col.inner)
-
-     options(warn = -1)
-     lines(po,xo, ...)
-#    if (verticals && !is.null(gaps(x))){
-#         do.call(lines, c(list(rep(pu1,2), c(gaps(x)[,1],gaps(x)[,2]),
-#                 col = col.vert), dots.without.pch))
-#     }
-     options(warn = o.warn)
-
-
-     if (verticals && !is.null(gaps(x))){
-             pu <- rep(pu1,3)
-             xu <- c(gaps(x)[,1],gaps(x)[,2],rep(NA,ndots))
-             o <- order(pu)
-             do.call(lines, c(list(pu[o], xu[o],
-                     col = col.vert), dots.without.pch))
-     }
-     if(!is.null(gaps(x)) && do.points){
-        do.call(points, c(list(x = pu1, y = gaps(x)[,1], pch = pch.a,
-                cex = cex.points, col = col.points), dots.for.points) )
-        do.call(points, c(list(x = pu1, y = gaps(x)[,2], pch = pch.u,
-                cex = cex.points, col = col.points), dots.for.points) )
-
-     }
-
-     if(do.points){
-        if(is.finite(q(x)(0))) 
-           do.call(points, c(list(x = 0, y = q(x)(0), pch = pch.u,
-                cex = cex.points, col = col.points), dots.for.points) )
-        if(is.finite(q(x)(1))) 
-           do.call(points, c(list(x = 1, y = q(x)(1), pch = pch.a,
-                cex = cex.points, col = col.points), dots.for.points) )
-     }
-     if (mainL)
-         mtext(text = main, side = 3, cex = cex.main, adj = .5,
-               outer = TRUE, padj = 1.4, col = col.main)
-
-     if (subL)
-         mtext(text = sub, side = 1, cex = cex.sub, adj = .5,
-               outer = TRUE, line = -1.6, col = col.sub)
-               
-     mc.ac <- mc
-     if(!is.logical(inner)) mc.ac$inner <- inner[3:5] 
+        if(do.points){
+           if(is.finite(q(x)(0))) 
+              do.call(points, c(list(x = 0, y = q(x)(0), pch = pch.u,
+                   cex = cex.points, col = col.points), dots.for.points) )
+           if(is.finite(q(x)(1))) 
+              do.call(points, c(list(x = 1, y = q(x)(1), pch = pch.a,
+                   cex = cex.points, col = col.points), dots.for.points) )
+        }
+        if (mainL)
+            mtext(text = main, side = 3, cex = cex.main, adj = .5,
+                  outer = TRUE, padj = 1.4, col = col.main)
+   
+        if (subL)
+            mtext(text = sub, side = 1, cex = cex.sub, adj = .5,
+                  outer = TRUE, line = -1.6, col = col.sub)
+                  
+        }
+    mc.ac <- mc
+    if(!is.logical(inner)) 
+       mc.ac$inner <- lapply(inner[3:5], function(x) 
+                             if(is.character(x))
+                                as.character(eval(.mpresubs(x)))
+                             else .mpresubs(x)) 
      mc.ac$mfColRow <- FALSE
      mc.ac$main <- FALSE
      mc.ac$sub <- FALSE
      mc.ac$x <- NULL 
      mc.ac$withSweave <- TRUE 
+     mc.ac$to.draw.arg <- (1:3)[( (3:5) %in%to.draw )] 
      if(is.null(mc.ac$cex.inner))  mc.ac$cex.inner <- 0.9
-     do.call(plot, c(list(acPart(x)),mc.ac))
+     do.call(plotC, c(list(acPart(x)),mc.ac), envir = parent.frame(2))
 
      mc.di <- mc
-     if(!is.logical(inner)) mc.di$inner <- inner[6:8] 
+     if(!is.logical(inner)) 
+         mc.di$inner <- lapply(inner[6:8], function(x) 
+                               if(is.character(x))
+                                  as.character(eval(.mpresubs(x)))
+                               else .mpresubs(x)) 
      mc.di$mfColRow <- FALSE
      mc.di$main <- FALSE
      mc.di$sub <- FALSE
      mc.di$x <- NULL
+     mc.di$ngrid <- NULL
      mc.di$withSweave <- TRUE 
+     mc.di$to.draw.arg <- (1:3)[( (6:8) %in%to.draw )]
      if(is.null(mc.di$cex.inner))  mc.di$cex.inner <- 0.9
-     do.call(plot, c(list(discretePart(x)),mc.di))
+     do.call(plotD, c(list(discretePart(x)),mc.di), envir = parent.frame(2))
+     return(invisible())
      
    }
    )
+
+setMethod("plot", signature(x = "CompoundDistribution", y = "missing"),
+           function(x, ...) {
+           mc <- as.list(match.call(call = sys.call(sys.parent(1)), 
+                            expand.dots = TRUE)[-1])
+           do.call(getMethod("plot",signature(x = "UnivarLebDecDistribution", 
+                                      y = "missing")),args=mc)
+           return(invisible())
+           })
+

@@ -6,12 +6,14 @@
 \alias{showobj,DistrList-method}
 \alias{showobj,UnivarMixingDistribution-method}
 \alias{showobj,UnivarLebDecDistribution-method}
+\alias{showobj,CompoundDistribution-method}
 \title{Helping Methods for Functions print/show in Package `distr' }
 \description{showobj-methods}
 
 \usage{
 showobj(object, ...)
 \S4method{showobj}{UnivariateDistribution}(object, className = class(object)[1])
+\S4method{showobj}{CompoundDistribution}(object, className = class(object)[1])
 \S4method{showobj}{DistrList}(object, className = class(object)[1])
 \S4method{showobj}{UnivarMixingDistribution}(object, className = class(object)[1])
 \S4method{showobj}{UnivarLebDecDistribution}(object, className = class(object)[1],

@@ -6,6 +6,7 @@
 \alias{lgamma-methods}
 \alias{gamma-methods}
 \alias{sign-methods}
+\alias{Math,AcDcLcDistribution-method}
 \alias{Math,AbscontDistribution-method}
 \alias{Math,DiscreteDistribution-method}
 \alias{abs,AbscontDistribution-method}
@@ -36,6 +37,16 @@ for random variables transformed by functions from group
       mathematical function, e.g. sin or exp  (including
       \code{log, log10, gamma, lgamma}), to this
       discrete distribution}
+    \item{Math}{\code{signature(x = "UnivarLebDecDistribution")}: application of a
+      mathematical function from group \code{\link[methods]{Math}}, e.g.
+      \code{sin} or \code{exp}  (including
+      \code{log, log10, gamma, lgamma}), to this
+      Lebesgue decomposed distribution}
+    \item{Math}{\code{signature(x = "UnivarLebDecDistribution")}: application of a
+      mathematical function from group \code{\link[methods]{Math}}, e.g.
+      \code{sin} or \code{exp}  (including
+      \code{log, log10, gamma, lgamma}), to this
+       distribution of class \code{"AcDcLcDistribution"}}
     \item{abs}{\code{signature(x = "AbscontDistribution")}: application of 
       function \code{abs} to this absolutely continouos distribution; 
       (exactly)}

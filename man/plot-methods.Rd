@@ -6,6 +6,7 @@
 \alias{plot,UnivarLebDecDistribution,missing-method}
 \alias{plot,AbscontDistribution,missing-method}
 \alias{plot,DiscreteDistribution,missing-method}
+\alias{plot,CompoundDistribution,missing-method}
 \alias{plot,DistrList,missing-method}
 \title{ Methods for Function plot in Package `distr' }
 \description{plot-methods}
@@ -17,7 +18,8 @@
      cex.main = par("cex.main"), cex.inner = 1.2, cex.sub = par("cex.sub"), 
      col.points = par("col"), col.vert = par("col"), col.main = par("col.main"),  
      col.inner = par("col.main"), col.sub = par("col.sub"), cex.points = 2.0, 
-     pch.u = 21, pch.a = 16, mfColRow = TRUE)
+     pch.u = 21, pch.a = 16, mfColRow = TRUE,
+     to.draw.arg = NULL)
 \S4method{plot}{DiscreteDistribution,missing}(x, width = 10, height = 5.5,
      withSweave = getdistrOption("withSweave"), xlim = NULL, ylim = NULL, verticals = TRUE,
      do.points = TRUE, main = FALSE, inner = TRUE, sub = FALSE, 
@@ -25,7 +27,8 @@
      cex.main = par("cex.main"), cex.inner = 1.2, cex.sub = par("cex.sub"), 
      col.points = par("col"), col.hor = par("col"), col.vert = par("col"), 
      col.main = par("col.main"), col.inner = par("col.main"), 
-     col.sub = par("col.sub"),  cex.points = 2.0, pch.u = 21, pch.a = 16, mfColRow = TRUE)
+     col.sub = par("col.sub"),  cex.points = 2.0, pch.u = 21, pch.a = 16, mfColRow = TRUE,
+     to.draw.arg = NULL)
 \S4method{plot}{AffLinUnivarLebDecDistribution,missing}(x, width = 10, 
      height = 5.5, withSweave = getdistrOption("withSweave"), xlim = NULL, ylim = NULL, ngrid = 1000,
      verticals = TRUE, do.points = TRUE, main = FALSE, inner = TRUE, sub = FALSE,
@@ -33,7 +36,8 @@
      cex.inner = 1.2, cex.sub = par("cex.sub"), col.points = par("col"),
      col.hor = par("col"), col.vert = par("col"), col.main = par("col.main"), 
      col.inner = par("col.main"), col.sub = par("col.sub"),  cex.points = 2.0,
-     pch.u = 21, pch.a = 16, mfColRow = TRUE)
+     pch.u = 21, pch.a = 16, mfColRow = TRUE,
+     to.draw.arg = NULL)
 \S4method{plot}{UnivarLebDecDistribution,missing}(x, width = 10, 
      height = 14.5, withSweave = getdistrOption("withSweave"), xlim = NULL, ylim = NULL, ngrid = 1000,
      verticals = TRUE, do.points = TRUE, main = FALSE, inner = TRUE, sub = FALSE,
@@ -41,8 +45,10 @@
      cex.inner = 0.9, cex.sub = par("cex.sub"), col.points = par("col"),
      col.hor = par("col"), col.vert = par("col"), col.main = par("col.main"), 
      col.inner = par("col.main"), col.sub = par("col.sub"),  cex.points = 2.0,
-     pch.u = 21, pch.a = 16, mfColRow = TRUE)
+     pch.u = 21, pch.a = 16, mfColRow = TRUE,
+     to.draw.arg = NULL)
 \S4method{plot}{DistrList,missing}(x, y, ...)
+\S4method{plot}{CompoundDistribution,missing}(x, y, ...)
 }
 \arguments{
   \item{x}{object of class 
@@ -54,7 +60,11 @@
   \item{y}{ missing }
   \item{xlim}{the x limits (x1, x2) of the plot.  Note that \code{x1 > x2} is
               allowed and leads to a "reversed axis". As in \code{plot.default}.}
-  \item{ylim}{the y limits of the plot. As in \code{plot.default}.}
+  \item{ylim}{the y limits of the plot. Either as in \code{plot.default}
+  (i.e. a vector of length 2) or a vector of length 4, where the first two
+   elements are the values for \code{ylim} in panel "d", and the last
+   two elements are the values for \code{ylim} resp. \code{xlim} in panels "p",
+   and "q".}
   \item{width}{width (in inches) of the graphics device opened}
   \item{height}{height (in inches) of the graphics device opened}
   \item{withSweave}{logical: if \code{TRUE} (for working with \command{Sweave}) 
@@ -63,9 +73,12 @@
                distributions}
   \item{main}{logical: is a main title to be used? or \cr
               just as argument \code{main} in \code{\link{plot.default}}.}
-  \item{inner}{logical: panels for density/probability function -
+  \item{inner}{logical: do panels for density/probability function -
                         cdf - quantile function have their own titles? or \cr
-               list of length 3: titles for density/probability function -
+               list which is filled to length 3  (resp. 8 for class 
+               \code{UnivarLebDecDistribution}) if necessary
+               (possibly using recycling rules):  titles for 
+               density/probability function -
                cdf - quantile function (each of the same form as argument 
                \code{main} in \code{\link{plot.default}})} 
   \item{sub}{logical: is a sub-title to be used? or \cr
@@ -102,6 +115,18 @@
   \item{pch.a}{character or integer code; plotting characters or symbols for
                attained value; see \code{\link[stats]{points}}}              
   \item{mfColRow}{shall default partition in panels be used --- defaults to \code{TRUE}}
+  \item{to.draw.arg}{Either \code{NULL} (default; everything
+  is plotted) or a vector of either integers 
+  (the indices of the subplots to be drawn) or characters --- the names of
+  the subplots to be drawn: in case of an object \code{x} of class 
+  \code{"DiscreteDistribution"} or \code{"AbscontDistribution"} \code{c("d","p","q")}
+  for density, c.d.f. and quantile function; in case of \code{x} a proper
+  \code{"UnivarLebDecDistribution"} (with pos. weights for both discrete and
+  abs. continuous part) names are 
+  \code{c("p","q","d.c","p.c","q.c","d.d","p.d","q.d")}) 
+  for c.d.f. and quantile function of the composed distribution and the respective
+  three panels for the absolutely continuous and the discrete part, respectively; 
+  }
   \item{\dots}{addtional arguments for \code{plot} --- see 
                \code{\link[stats]{plot}}, 
                \code{\link[stats]{plot.default}}, 
@@ -112,14 +137,18 @@
 \item{plot}{\code{signature(x = "AffLinUnivarLebDecDistribution", y = "missing")}: plots  
    cumulative distribution function and the quantile function }
 \item{plot}{\code{signature(x = "UnivarLebDecDistribution", y = "missing")}: plots a set of
-  eight plots: in the first row,  it plots the 
+  eight plots: in the first row, it plots the 
    cumulative distribution function and the quantile function; in the second
    row the absolutely continuous part (with density, cdf and quantile fct.),
    and in the last row the discrete part (with prob.fct., cdf and quantile fct.). }
+\item{plot}{\code{signature(x = "CompoundDistribution", y = "missing")}: 
+  coerces \code{x} to \code{"UnivarLebDecDistribution"} and uses the corresponding
+  method. }
 \item{plot}{\code{signature(x = "AbscontDistribution", y = "missing")}: plots density, 
    cumulative distribution function and the quantile function }
 \item{plot}{\code{signature(x = "DiscreteDistribution", y = "missing")}: plots probability 
-function, cumulative distribution function and the quantile function}
+  function, cumulative distribution function and the quantile function}
+\item{plot}{\code{signature(x = "DistrList", y = "missing")}: plots a list of distributions}
 }
 Any parameters of \code{plot.default} may be passed on to this particular
 \code{plot} method. 
@@ -200,6 +229,26 @@ wg <- flat.mix(UnivarMixingDistribution(Unif(0,1),Unif(4,5),
 mymix <- UnivarLebDecDistribution(acPart = wg, discretePart = Binom(4,.4),
          acWeight = 0.4)
 plot(mymix)         
+#
+## selection of subpanels for plotting
+N <- Norm()
+par(mfrow=c(1,2))
+plot(N, mfColRow = FALSE, to.draw.arg=c("d","q"))
+plot(N, mfColRow = FALSE, to.draw.arg=c(2,3))
+par(mfrow=c(1,1))
+
+wg <- flat.mix(UnivarMixingDistribution(Unif(0,1),Unif(4,5),
+               withSimplify=FALSE))
+myLC <- UnivarLebDecDistribution(discretePart=Binom(3,.3), acPart = wg,
+          discreteWeight=.2)
+layout(matrix(c(rep(1,6),2,2,3,3,4,4,5,5,5,6,6,6), 
+              nrow=3, byrow=TRUE))
+plot(myLC,mfColRow = FALSE,
+     to.draw.arg=c("p","d.c","p.c","q.c", "p.d","q.d"))
+
+P <- Pois(2)
+plot(as(P,"UnivarLebDecDistribution"),mfColRow = FALSE,to.draw.arg=c("d.d"))
+
 }
 \seealso{\code{\link[stats]{plot}},\code{\link[stats]{plot.default}}, 
          \code{\link[stats]{plot.stepfun}},  \code{\link[stats]{par}}}

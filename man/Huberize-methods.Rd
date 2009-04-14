@@ -29,7 +29,9 @@ distributed according to \code{object};
 the result is of class \code{"UnivarLebDecDistribution"} in general.}
 }}
 \examples{
-plot(Huberize(Norm(),lower=-1,upper=2))
+Hub <- Huberize(Norm(),lower=-1,upper=2)
+Hub 
+plot(Hub)
 }
 \seealso{\code{\link{Truncate}}}
 \keyword{distribution}

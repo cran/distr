@@ -57,7 +57,7 @@ flat.LCD <- function(..., mixCoeff = NULL, withgaps = getdistrOption("withgaps")
     f.c <- AbscontDistribution( r = rnew.c, d = dnew.c, p = pnew.c,
                 q = qnew.c, 
                 .withSim = .withSim, .withArith = TRUE)
-    if(withgaps) setgaps(f.c)
+    if(withgaps && is.null(gaps(f.c))) setgaps(f.c)
     }
     else f.c <- Norm()            
 

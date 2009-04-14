@@ -15,7 +15,8 @@ export("Beta", "Binom", "Cauchy", "Chisq",
        "Naturals", "standardMethods", 
        "distrARITH", "distrMASK", "getLabel", "devNew")
 export("AbscontDistribution")
-export("DistrList", "UnivarDistrList") 
+export("DistrList", "UnivarDistrList")
+export("makeAbscontDistribution") 
 exportClasses("rSpace", "EuclideanSpace", "Reals", 
               "Naturals")
 exportClasses("Parameter")
@@ -40,6 +41,8 @@ exportClasses("UnivariateDistribution", "AbscontDistribution",
               "Hyper", "Logis", "Lnorm", "Nbinom", "Norm", 
               "Pois", "Td", "Unif", "Weibull", "Arcsine",
               "ExpOrGammaOrChisq")
+exportClasses("UnivDistrListOrDistribution")
+exportClasses("CompoundDistribution")
 exportClasses("DistrList", 
               "UnivarDistrList")
 exportMethods("Max", "Max<-", "Min", "Min<-", "d", "df", 
@@ -73,6 +76,9 @@ exportMethods("mixCoeff", "mixCoeff<-", "mixDistr", "mixDistr<-",
               "p.ac", "d.ac", "q.ac", "r.ac")
 exportMethods("decomposePM", "simplifyD", "showobj")
 exportMethods("Truncate","Minimum","Maximum","Huberize")
+exportMethods(".logExact", ".lowerExact")
 export("UnivarMixingDistribution", "UnivarLebDecDistribution")
 export("RtoDPQ.LC", "flat.LCD", "flat.mix")
 exportMethods("abs","exp","^")
+exportMethods("NumbOfSummandsDistr","SummandsDistr")
+export("CompoundDistribution")

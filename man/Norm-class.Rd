@@ -29,6 +29,12 @@ This object is a normal distribution.
     \item{\code{d}:}{Object of class \code{"function"}: density function (calls function \code{dnorm})}
     \item{\code{p}:}{Object of class \code{"function"}: cumulative function (calls function \code{pnorm})}
     \item{\code{q}:}{Object of class \code{"function"}: inverse of the cumulative function (calls function \code{qnorm})}
+    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
+    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
+    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              log version of density, cdf, and quantile function}
+    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              lower tail version of cdf and quantile function}
   }
 }
 \section{Extends}{

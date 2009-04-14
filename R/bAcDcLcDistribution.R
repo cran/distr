@@ -1,20 +1,22 @@
-
 setMethod("*", c("AcDcLcDistribution","AcDcLcDistribution"),
 function(e1,e2){
 
-         if( is(e1,"AffLinUnivarLebDecDistribution"))
-             e1 <- as(e1, "UnivarLebDecDistribution")
-         if( is(e2,"AffLinUnivarLebDecDistribution"))
-             e2 <- as(e2, "UnivarLebDecDistribution")
+ e1 <- .ULC.cast(e1)
+ e2 <- .ULC.cast(e2)
 
-         if( is(e1,"AbscontDistribution"))
-             e1 <- as(as(e1,"AbscontDistribution"), "UnivarLebDecDistribution")
-         if( is(e2,"AbscontDistribution"))
-             e2 <- as(as(e2,"AbscontDistribution"), "UnivarLebDecDistribution")
-         if(is(e1,"DiscreteDistribution"))
-             e1 <- as(as(e1,"DiscreteDistribution"), "UnivarLebDecDistribution")
-         if(is(e2,"DiscreteDistribution"))
-             e2 <- as(as(e2,"DiscreteDistribution"), "UnivarLebDecDistribution")
+#         if( is(e1,"AffLinUnivarLebDecDistribution"))
+#             e1 <- as(e1, "UnivarLebDecDistribution")
+#         if( is(e2,"AffLinUnivarLebDecDistribution"))
+#             e2 <- as(e2, "UnivarLebDecDistribution")
+#
+#         if( is(e1,"AbscontDistribution"))
+#             e1 <- as(as(e1,"AbscontDistribution"), "UnivarLebDecDistribution")
+#         if( is(e2,"AbscontDistribution"))
+#             e2 <- as(as(e2,"AbscontDistribution"), "UnivarLebDecDistribution")
+#         if(is(e1,"DiscreteDistribution"))
+#             e1 <- as(as(e1,"DiscreteDistribution"), "UnivarLebDecDistribution")
+#         if(is(e2,"DiscreteDistribution"))
+#             e2 <- as(as(e2,"DiscreteDistribution"), "UnivarLebDecDistribution")
 
          ep <- getdistrOption("TruncQuantile")
 
@@ -31,7 +33,7 @@ function(e1,e2){
                        as(exp(log(e1DC$pos$D)+log(e2DC$pos$D)),
                           "UnivarLebDecDistribution")
                   else as(Dirac(1), "UnivarLebDecDistribution")
-         
+
          e12mm <- if(w12mm>ep)
                        as(exp(log(-e1DC$neg$D)+log(-e2DC$neg$D)),
                           "UnivarLebDecDistribution")
@@ -48,17 +50,17 @@ function(e1,e2){
 
          e12pm <- .del0dmixfun(e12pm)
          e12mp <- .del0dmixfun(e12mp)
-         
+
          obj <- flat.LCD(mixCoeff = mixCoeff,
                          e12pp, e12mm, e12pm, e12mp,
                          as(Dirac(0),"UnivarLebDecDistribution"))
-         
+
          if(getdistrOption("simplifyD"))
             obj <- simplifyD(obj)
 
          rnew <- function(n, ...){}
          body(rnew) <- substitute({ g1(n, ...) * g2(n, ...) },
-                                    list(g1 = e1@r, g2 = e2@r)) 
+                                    list(g1 = e1@r, g2 = e2@r))
          obj@r <- rnew
          return(obj)
          })
@@ -69,16 +71,18 @@ function(e1,e2){
          e2s <- as.character(deparse(match.call(
                 call = sys.call(sys.parent(1)))$e2))
 
-         if( is(e2,"AffLinUnivarLebDecDistribution"))
-             e2 <- as(e2, "UnivarLebDecDistribution")
+ e2 <- .ULC.cast(e2)
 
-         if( is(e2,"AbscontDistribution"))
-             e2 <- as(as(e2, "AbscontDistribution"), 
-                      "UnivarLebDecDistribution")
+#         if( is(e2,"AffLinUnivarLebDecDistribution"))
+#             e2 <- as(e2, "UnivarLebDecDistribution")
 
-         if( is(e2,"DiscreteDistribution"))
-             e2 <- as(as(e2, "DiscreteDistribution"), 
-                      "UnivarLebDecDistribution")
+#         if( is(e2,"AbscontDistribution"))
+#             e2 <- as(as(e2, "AbscontDistribution"),
+#                      "UnivarLebDecDistribution")
+
+#         if( is(e2,"DiscreteDistribution"))
+#             e2 <- as(as(e2, "DiscreteDistribution"),
+#                      "UnivarLebDecDistribution")
 
          if (discreteWeight(e2)>getdistrOption("TruncQuantile"))
             if (d.discrete(e2)(0)>getdistrOption("TruncQuantile"))
@@ -97,10 +101,10 @@ function(e1,e2){
             e2D <- simplifyD(e2D)
 
          obj <- e1*e2D
-         
+
          rnew <- function(n, ...){}
          body(rnew) <- substitute({ g1 / g2(n, ...) },
-                                    list(g1 = e1, g2 = e2@r)) 
+                                    list(g1 = e1, g2 = e2@r))
          obj@r <- rnew
          return(obj)
          })
@@ -110,11 +114,13 @@ setMethod("/", c("AcDcLcDistribution",
 function(e1,e2){
          e2s <- as.character(deparse(match.call(
                 call = sys.call(sys.parent(1)))$e2))
-         if( is(e2,"AbscontDistribution"))
-             e2 <- as(as(e2,"AbscontDistribution"), "UnivarLebDecDistribution")
+#         if( is(e2,"AbscontDistribution"))
+#             e2 <- as(as(e2,"AbscontDistribution"), "UnivarLebDecDistribution")
 
-         if( is(e2,"DiscreteDistribution"))
-             e2 <- as(as(e2,"DiscreteDistribution"), "UnivarLebDecDistribution")
+#         if( is(e2,"DiscreteDistribution"))
+#             e2 <- as(as(e2,"DiscreteDistribution"), "UnivarLebDecDistribution")
+
+ e2 <- .ULC.cast(e2)
 
          if (discreteWeight(e2)>getdistrOption("TruncQuantile"))
          if (d.discrete(e2)(0)>getdistrOption("TruncQuantile"))
@@ -124,24 +130,24 @@ function(e1,e2){
 
          rnew <- function(n, ...){}
          body(rnew) <- substitute({ g1(n, ...) / g2(n, ...) },
-                                    list(g1 = e1@r, g2 = e2@r)) 
+                                    list(g1 = e1@r, g2 = e2@r))
          obj@r <- rnew
          return(obj)
          })
 
 setMethod("^", c("AcDcLcDistribution","Integer"),
-function(e1,e2){                                                        
+function(e1,e2){
            ep <- getdistrOption("TruncQuantile")
            d00 <- discretePart(e1)@d(0)
            d0 <- discreteWeight(e1)*d00
-           if(d0 > ep){ 
+           if(d0 > ep){
                 d1 <- 1-(1-d0)^e2
                 su <- support(discretePart(e1))
                 pr <- d(discretePart(e1))(su)
                 acW <- acWeight(e1)/(1-d0)
                 discreteP <- DiscreteDistribution(
                                 supp = su[su!=0],
-                                prob = pr[su!=0]/(1-d00))                
+                                prob = pr[su!=0]/(1-d00))
                 e1 <- UnivarLebDecDistribution(acPart = acPart(e1),
                       discretePart = discreteP, acWeight = acW)
                }
@@ -149,17 +155,17 @@ function(e1,e2){
            e1DC <- decomposePM(e1)
            mixCoeff <- c(e1DC$pos$w,e1DC$neg$w)
            mixCoeff <- mixCoeff/sum(mixCoeff)
-           e1p <- if(mixCoeff[1]>ep) 
-                    as(exp(e2*log(e1DC$pos$D)),"UnivarLebDecDistribution") 
-                 else as(Dirac(1), "UnivarLebDecDistribution") 
-           e1m <- if(mixCoeff[2]>ep) 
-                    as((-1)^e2*exp(e2*log(-e1DC$neg$D)),"UnivarLebDecDistribution") 
-                 else as(Dirac((-1)^e2), "UnivarLebDecDistribution") 
-           erg <- flat.LCD(mixCoeff = mixCoeff, e1p, e1m)                   
+           e1p <- if(mixCoeff[1]>ep)
+                    as(exp(e2*log(e1DC$pos$D)),"UnivarLebDecDistribution")
+                 else as(Dirac(1), "UnivarLebDecDistribution")
+           e1m <- if(mixCoeff[2]>ep)
+                    as((-1)^e2*exp(e2*log(-e1DC$neg$D)),"UnivarLebDecDistribution")
+                 else as(Dirac((-1)^e2), "UnivarLebDecDistribution")
+           erg <- flat.LCD(mixCoeff = mixCoeff, e1p, e1m)
 
-#          
-           if(d0 > ep){ 
-                dw <- discreteWeight(erg) 
+#
+           if(d0 > ep){
+                dw <- discreteWeight(erg)
                 acW <- acWeight(erg) * (1-d1)
                 su <- support(discretePart(erg))
                 su0 <- c(su,0)
@@ -167,41 +173,42 @@ function(e1,e2){
                 pr <- c(d(discretePart(erg))(su) * dw * (1-d1), d1)
                 suo <- su0[o]
                 pro <- pr[o]/(1-acW)
-                discreteP <- DiscreteDistribution(supp = suo, prob = pro) 
+                discreteP <- DiscreteDistribution(supp = suo, prob = pro)
                 erg <- UnivarLebDecDistribution(acPart = acPart(erg),
-                       discretePart = discreteP, acWeight = acW)               
+                       discretePart = discreteP, acWeight = acW)
              }
-           if(getdistrOption("simplifyD")) 
+           if(getdistrOption("simplifyD"))
                 erg <- simplifyD(erg)
 
            rnew <- function(n, ...){}
            body(rnew) <- substitute({ g1(n, ...)^g2 },
-                                    list(g1 = e1@r, g2 = e2)) 
+                                    list(g1 = e1@r, g2 = e2))
            erg@r <- rnew
            return(erg)
            })
 
 setMethod("^", c("AcDcLcDistribution","numeric"),
 function(e1,e2){
-  if (is(try(mc <- match.call(call = sys.call(sys.parent(1))), 
+  if (is(try(mc <- match.call(call = sys.call(sys.parent(1))),
          silent=TRUE), "try-error"))
-      {e1s <- "e1"; e2s <- "e2"} 
+      {e1s <- "e1"; e2s <- "e2"}
   else {e1s <- as.character(deparse(mc$e1))
         e2s <- as.character(deparse(mc$e2))}
-  
+
   if (length(e2)>1) stop("length of operator must be 1")
   if (isTRUE(all.equal(e2,1))) return(e1)
   if (isTRUE(all.equal(e2,0))) return(Dirac(1))
 
 
-  if( is(e1,"AbscontDistribution") || is(e1,"DiscreteDistribution") ||
-      is(e1,"AffLinUnivarLebDecDistribution"))
-      e1 <- as(e1, "UnivarLebDecDistribution")
+ e1 <- .ULC.cast(e1)
+#  if( is(e1,"AbscontDistribution") || is(e1,"DiscreteDistribution") ||
+#      is(e1,"AffLinUnivarLebDecDistribution"))
+#      e1 <- as(e1, "UnivarLebDecDistribution")
 
   if (e2<0) return((1/e1)^(-e2))
-  
-  if (.isNatural(e2, tol = 1e-10)) 
-      return(get("^")(e1 = e1, e2 = as(e2,"Integer")))          
+
+  if (.isNatural(e2, tol = 1e-10))
+      return(get("^")(e1 = e1, e2 = as(e2,"Integer")))
 
   ep <- getdistrOption("TruncQuantile")
   d00 <- discretePart(e1)@d(0)
@@ -213,14 +220,14 @@ function(e1,e2){
                     e1s, e2s))
 
   ### special treatment if e2>=0 and d.discrete(e1)>0
-  if(d0 > ep){ 
+  if(d0 > ep){
      d1 <- 1-(1-d0)^e2
      su <- support(discretePart(e1))
      pr <- d(discretePart(e1))(su)
      acW <- acWeight(e1)/(1-d0)
      discreteP <- DiscreteDistribution(
                      supp = su[su!=0],
-                     prob = pr[su!=0]/(1-d00))                
+                     prob = pr[su!=0]/(1-d00))
      e1 <- UnivarLebDecDistribution(acPart = acPart(e1),
            discretePart = discreteP, acWeight = acW)
    }
@@ -228,8 +235,8 @@ function(e1,e2){
    erg <- exp( e2 * log(e1))
 
    ### special treatment if e2>=0 and d.discrete(e1)>0
-   if(d0 > ep){ 
-      dw <- discreteWeight(erg) 
+   if(d0 > ep){
+      dw <- discreteWeight(erg)
       acW <- acWeight(erg) * (1-d1)
       su <- support(discretePart(erg))
       su0 <- c(su,0)
@@ -237,20 +244,20 @@ function(e1,e2){
       pr <- c(d(discretePart(erg))(su) * dw * (1-d1), d1)
       suo <- su0[o]
       pro <- pr[o]/(1-acW)
-      discreteP <- DiscreteDistribution(supp = suo, prob = pro) 
+      discreteP <- DiscreteDistribution(supp = suo, prob = pro)
       erg <- UnivarLebDecDistribution(acPart = acPart(erg),
-             discretePart = discreteP, acWeight = acW)               
+             discretePart = discreteP, acWeight = acW)
    }
-  
+
   if(getdistrOption("simplifyD"))
             erg <- simplifyD(erg)
 
   rnew <- function(n, ...){}
   body(rnew) <- substitute({ g1(n, ...)^g2 },
-                            list(g1 = e1@r, g2 = e2)) 
+                            list(g1 = e1@r, g2 = e2))
   erg@r <- rnew
 
-  return(erg)          
+  return(erg)
   }
 )
 
@@ -262,65 +269,70 @@ function(e1,e2){
  ### check if there are problems
   if (is((e1s <- as.character(deparse(match.call(
                 call = sys.call(sys.parent(1)))$e1))), "try-error"))
-      e1s <- "e1"              
+      e1s <- "e1"
   if (is((e2s <- as.character(deparse(match.call(
                 call = sys.call(sys.parent(1)))$e2))), "try-error"))
-      e2s <- "e2"              
+      e2s <- "e2"
 
- if( is(e1,"AffLinUnivarLebDecDistribution")) 
-     e1 <- as(e1, "UnivarLebDecDistribution")
- if( is(e2,"AffLinUnivarLebDecDistribution")) 
-     e2 <- as(e2, "UnivarLebDecDistribution")
- 
- if( is(e1,"AbscontDistribution")) 
-     e1 <- as(as(e1,"AbscontDistribution"), "UnivarLebDecDistribution")
- if( is(e2,"AbscontDistribution")) 
-     e2 <- as(as(e2,"AbscontDistribution"), "UnivarLebDecDistribution")
+# if( is(e1,"AffLinUnivarLebDecDistribution"))
+#     e1 <- as(e1, "UnivarLebDecDistribution")
+# if( is(e2,"AffLinUnivarLebDecDistribution"))
+#     e2 <- as(e2, "UnivarLebDecDistribution")
+
+# if( is(e1,"AbscontDistribution"))
+#     e1 <- as(as(e1,"AbscontDistribution"), "UnivarLebDecDistribution")
+# if( is(e2,"AbscontDistribution"))
+#     e2 <- as(as(e2,"AbscontDistribution"), "UnivarLebDecDistribution")
 
 
- if( is(e1,"DiscreteDistribution"))
-     e1 <- as(as(e1,"DiscreteDistribution"), "UnivarLebDecDistribution")
- if( is(e2,"DiscreteDistribution"))
-     e2 <- as(as(e2,"DiscreteDistribution"), "UnivarLebDecDistribution")
+# if( is(e1,"DiscreteDistribution"))
+#     e1 <- as(as(e1,"DiscreteDistribution"), "UnivarLebDecDistribution")
+# if( is(e2,"DiscreteDistribution"))
+#     e2 <- as(as(e2,"DiscreteDistribution"), "UnivarLebDecDistribution")
+
+ e1 <- .ULC.cast(e1)
+ e2 <- .ULC.cast(e2)
+
+
  ep <- getdistrOption("TruncQuantile")
- 
+
  if(p(e2)(0)-discreteWeight(e2)*d.discrete(e2)(0)>ep)
     { ## must be able to work with negative exponents
 
          if (d.discrete(e1)(0)*discreteWeight(e1) > ep)
-            stop(gettextf("%s^%s is not well-defined with positive probability ", 
+            stop(gettextf("%s^%s is not well-defined with positive probability ",
                  e1s, e2s))
 
          if ((discreteWeight(e2)>1-ep) && all(.isInteger(support(e2)))){
-              Dlist <- lapply(support(e2), function(x) 
+              Dlist <- lapply(support(e2), function(x)
                   as(do.call("^",list(e1=e1,e2=x)), "UnivarLebDecDistribution"))
-              erg <- as(simplifyD( do.call(flat.LCD, 
+              erg <- as(simplifyD( do.call(flat.LCD,
                         c(Dlist, alist(mixCoeff = d.discrete(e2)(support(e2)))))),
                         "UnivarLebDecDistribution")
               if(getdistrOption("simplifyD")) erg <- simplifyD(erg)
               return(erg)
-              }         
+              }
 
          if (p(e1)(0) > ep)
-            stop(gettextf("%s^%s is not well-defined with positive probability ", 
+            stop(gettextf("%s^%s is not well-defined with positive probability ",
                  e1s, e2s))
     }
-  
+
  if(p(e1)(0)>ep)
     { ## works only for purely natural e2
 
 
          if ((discreteWeight(e2)>1-ep) && all(.isInteger(support(e2)))){
-              Dlist <- lapply(support(e2), function(x) 
+              Dlist <- lapply(support(e2), function(x)
                   as(do.call("^",list(e1=e1,e2=x)), "UnivarLebDecDistribution"))
-              erg <- as(simplifyD( do.call(flat.LCD, 
+              erg <- as(simplifyD( do.call(flat.LCD,
                         c(Dlist, alist(mixCoeff = d.discrete(e2)(support(e2)))))),
                         "UnivarLebDecDistribution")
               if(getdistrOption("simplifyD")) erg <- simplifyD(erg)
               return(erg)
-              }         
+              }
 
-         stop(gettextf("%s^%s is not well-defined with positive probability ", 
+         stop(gettextf("%s^%s is not well-defined with positive probability ",
                  e1s, e2s))
     }
 
@@ -331,10 +343,10 @@ function(e1,e2){
 
  rnew <- function(n, ...){}
  body(rnew) <- substitute({ g1(n, ...)^g2(n, ...) },
-                            list(g1 = e1@r, g2 = e2@r)) 
+                            list(g1 = e1@r, g2 = e2@r))
  erg@r <- rnew
 
- return(erg)                
+ return(erg)
 })
 
 
@@ -343,50 +355,51 @@ function(e1,e2){
  ### check if there are problems
   if (is((e1s <- as.character(deparse(match.call(
                 call = sys.call(sys.parent(1)))$e1))), "try-error"))
-      e1s <- "e1"              
+      e1s <- "e1"
   if (is((e2s <- as.character(deparse(match.call(
                 call = sys.call(sys.parent(1)))$e2))), "try-error"))
-      e2s <- "e2"              
+      e2s <- "e2"
 
- if( is(e2,"AffLinUnivarLebDecDistribution")) 
-     e2 <- as(e2, "UnivarLebDecDistribution")
- if( is(e2,"AbscontDistribution")) 
-     e2 <- as(as(e2,"AbscontDistribution"), "UnivarLebDecDistribution")
- if( is(e2,"DiscreteDistribution"))
-     e2 <- as(as(e2,"DiscreteDistribution"), "UnivarLebDecDistribution")
+ e2 <- .ULC.cast(e2)
+ #e2 <- .if( is(e2,"AffLinUnivarLebDecDistribution"))
+ #    e2 <- as(e2, "UnivarLebDecDistribution")
+ #if( is(e2,"AbscontDistribution"))
+ #    e2 <- as(as(e2,"AbscontDistribution"), "UnivarLebDecDistribution")
+ #if( is(e2,"DiscreteDistribution"))
+ #    e2 <- as(as(e2,"DiscreteDistribution"), "UnivarLebDecDistribution")
 
  ep <- getdistrOption("TruncQuantile")
  if(p(e2)(0)-discreteWeight(e2)*d.discrete(e2)(0)>ep)
     { ## must be able to work with negative exponents
 
          if (abs(e1) < ep)
-             stop(gettextf("%s^%s is not well-defined with positive probability ", 
+             stop(gettextf("%s^%s is not well-defined with positive probability ",
                  e1s, e2s))
 
          if ((discreteWeight(e2)>1-ep) && all(.isInteger(support(e2)))){
-              erg <- DiscreteDistribution(e1^support(e2), 
+              erg <- DiscreteDistribution(e1^support(e2),
                                           d.discrete(e2)(support(e2)))
-              if(!getdistrOption("simplifyD")) 
+              if(!getdistrOption("simplifyD"))
                   erg <- as(erg,"UnivarLebDecDistribution")
-              return(erg)                
+              return(erg)
              }
-         
+
          if (e1 < -ep)
-            stop(gettextf("%s^%s is not well-defined with positive probability ", 
+            stop(gettextf("%s^%s is not well-defined with positive probability ",
                  e1s, e2s))
     }
  if(e1< -ep)
     { ## works only for purely natural e2
 
          if ((discreteWeight(e2)>1-ep) && all(.isInteger(support(e2)))){
-              erg <- DiscreteDistribution(e1^support(e2), 
+              erg <- DiscreteDistribution(e1^support(e2),
                                           d.discrete(e2)(support(e2)))
-             if(!getdistrOption("simplifyD")) 
+             if(!getdistrOption("simplifyD"))
                  erg <- as(erg,"UnivarLebDecDistribution")
-             return(erg)            
-             }    
+             return(erg)
+             }
 
-         stop(gettextf("%s^%s is not well-defined with positive probability ", 
+         stop(gettextf("%s^%s is not well-defined with positive probability ",
                  e1s, e2s))
     }
   le1 <- log(e1)
@@ -396,11 +409,17 @@ function(e1,e2){
 
   rnew <- function(n, ...){}
   body(rnew) <- substitute({ g1^g2(n, ...) },
-                            list(g1 = e1, g2 = e2@r)) 
+                            list(g1 = e1, g2 = e2@r))
   erg@r <- rnew
 
-  return(erg)                
+  return(erg)
 })
+
+setMethod("+", signature(e1="AcDcLcDistribution", e2="AcDcLcDistribution"),
+           function(e1,e2)(.ULC.cast(e1)+(-.ULC.cast(e2))))
+setMethod("-", signature(e1="AcDcLcDistribution", e2="AcDcLcDistribution"),
+           function(e1,e2)(.ULC.cast(e1)+(-.ULC.cast(e2))))
+
 
 setMethod("sign", "AcDcLcDistribution",
             function(x){ 
@@ -415,3 +434,6 @@ setMethod("sign", "AcDcLcDistribution",
 
 setMethod("sqrt", "AcDcLcDistribution",
             function(x) x^0.5)
+
+setMethod("Math", "AcDcLcDistribution",
+          function(x) callGeneric(.ULC.cast(x)))

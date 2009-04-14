@@ -51,7 +51,8 @@ setAs("DiscreteDistribution", "LatticeDistribution",
                        q = from@q, p = from@p, support = from@support, 
                        lattice = .make.lattice.es.vector(from@support), 
                       .withArith = FALSE, .withSim = FALSE, img = from@img,
-                      param = from@param))
+                      param = from@param,.lowerExact = .lowerExact(from),
+                      .logExact = .logExact(from)))
       })
 #setIs("DiscreteDistribution", "LatticeDistribution",
 #      test = function(object) .is.vector.lattice(support(object)),

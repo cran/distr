@@ -308,7 +308,7 @@ setClass("WeibullParameter",
 ##
 ################################
 
-setClass("Distribution", 
+setClass("Distribution",
           representation = representation(
                       img = "rSpace",
                       param = "OptionalParameter",
@@ -317,22 +317,26 @@ setClass("Distribution",
                       p = "OptionalFunction",
                       q = "OptionalFunction", # extended by P.R. 28-03-06
                       .withSim = "logical",   ## 'internal' slots => no
-                      .withArith = "logical"  ## accessor/replacement functions
+                      .withArith = "logical",  ## accessor/replacement functions
+                      .logExact = "logical",
+                      .lowerExact = "logical"
                       ),
          prototype = prototype(
                      r = function(n){ rnorm(n, mean = 0, sd = 1) },
                      d = function(x, log = FALSE)
                             { dnorm(x, mean = 0, sd = 1, log = log) },
                      p = function(q, lower.tail = TRUE, log.p = FALSE )
-                             { pnorm(q, mean = 0, sd = 1, 
+                             { pnorm(q, mean = 0, sd = 1,
                                      lower.tail = lower.tail, log.p = log.p) },
                      q = function(p, lower.tail = TRUE, log.p = FALSE )
-                             { qnorm(p, mean = 0, sd = 1, 
+                             { qnorm(p, mean = 0, sd = 1,
                                      lower.tail = lower.tail, log.p = log.p) },
                      img = new("Reals"),
                      param = NULL,
                      .withArith = FALSE,
-                     .withSim = FALSE
+                     .withSim = FALSE,
+                     .logExact = FALSE,
+                     .lowerExact = FALSE
                      )
          )
 
@@ -361,296 +365,322 @@ setClass("ExpOrGammaOrChisq",
 
 
 ## Class: exponential distribution
-setClass("Exp",  
+setClass("Exp",
           prototype = prototype(
                       r = function(n){ rexp(n, rate = 1) },
                       d = function(x, log = FALSE)
                                   { dexp(x, rate = 1, log = log) },
                       p = function(q, lower.tail = TRUE, log.p = FALSE )
-                                  { pexp(q, rate = 1, lower.tail = lower.tail, 
+                                  { pexp(q, rate = 1, lower.tail = lower.tail,
                                          log.p = log.p) },
                       q = function(q, lower.tail = TRUE, log.p = FALSE )
-                                  { qexp(p, rate = 1, lower.tail = lower.tail, 
+                                  { qexp(p, rate = 1, lower.tail = lower.tail,
                                          log.p = log.p) },
-                      param = new("ExpParameter")
+                      param = new("ExpParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "ExpOrGammaOrChisq"
           )
 
 ## Class: gamma distribution
-setClass("Gammad",  
+setClass("Gammad",
           prototype = prototype(
                       r = function(n){ rgamma(n, shape = 1, scale = 1) },
-                      d = function(x, log = FALSE){ 
-                              dgamma(x, shape = 1, scale = 1, log = log) 
+                      d = function(x, log = FALSE){
+                              dgamma(x, shape = 1, scale = 1, log = log)
                                           },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
-                              pgamma(q, shape = 1, scale = 1, 
-                                     lower.tail = lower.tail, log.p = log.p) 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
+                              pgamma(q, shape = 1, scale = 1,
+                                     lower.tail = lower.tail, log.p = log.p)
                                           },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
-                              qgamma(p, shape = 1, scale = 1, 
-                                     lower.tail = lower.tail, log.p = log.p) 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
+                              qgamma(p, shape = 1, scale = 1,
+                                     lower.tail = lower.tail, log.p = log.p)
                                           },
-                      param = new("GammaParameter")
+                      param = new("GammaParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "ExpOrGammaOrChisq"
           )
 
 ## Class: Chi squared distribution
-setClass("Chisq", 
+setClass("Chisq",
           prototype = prototype(
                       r = function(n){ rchisq(n, df = 1, ncp = 0) },
                       d = function(x, log = FALSE)
                                   { dchisq(x, df = 1, ncp = 0, log = log) },
                       p = function(q, lower.tail = TRUE, log.p = FALSE )
-                                  { pchisq(q, df = 1, ncp = 0, 
-                                           lower.tail = lower.tail, 
+                                  { pchisq(q, df = 1, ncp = 0,
+                                           lower.tail = lower.tail,
                                            log.p = log.p) },
                       q = function(p, lower.tail = TRUE, log.p = FALSE )
-                                  { qchisq(p, df = 1, ncp = 0, 
-                                           lower.tail = lower.tail, 
+                                  { qchisq(p, df = 1, ncp = 0,
+                                           lower.tail = lower.tail,
                                            log.p = log.p) },
-                      param = new("ChisqParameter")
+                      param = new("ChisqParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "ExpOrGammaOrChisq"
           )
 
 ## Class: Laplace or Double Exponential distribution
-setClass("DExp",  
+setClass("DExp",
           prototype = prototype(
-                      r = function(n){ 
-                              (2*rbinom(n ,size = 1, prob = 0.5)-1) * 
-                                 rexp(n, rate = 1) 
+                      r = function(n){
+                              (2*rbinom(n ,size = 1, prob = 0.5)-1) *
+                                 rexp(n, rate = 1)
                               },
                       d = function(x, log = FALSE)
-                              { d0 <-  dexp(abs(x), rate = 1, log = log) 
+                              { d0 <-  dexp(abs(x), rate = 1, log = log)
                                 d0 <- if (log) d0-log(2) else d0 <- d0 / 2
                                 return(d0) },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
                                    if (!lower.tail) q <- -q
-                                   p0 <- ifelse( q <= 0, 
+                                   p0 <- ifelse( q <= 0,
                                                  0.5*pexp(-q, rate = 1,
                                                           lower.tail = FALSE),
                                                  0.5 + 0.5*pexp( q, rate = 1)
                                                     )
-                                   if (log.p)  p0 <- log(p0)       
+                                   if (log.p)  p0 <- log(p0)
                                    return(p0)
                                    },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
                               if (log.p) p <- exp(p)
                               if (!lower.tail) p <- 1-p
-                              ifelse( p <= 0.25,          
+                              ifelse( p <= 0.25,
                                   -qexp(2*p, rate = 1, lower.tail = FALSE),
                                   ifelse( p <= 0.5,
                                       -qexp(1-2*p, rate = 1),
                                       ifelse( p <= 0.75   ,
                                           qexp(2*p - 1, rate = 1),
-                                          qexp(2*(1-p), rate = 1, 
-                                               lower.tail = FALSE) 
-                                            ) 
-                                         ) 
+                                          qexp(2*(1-p), rate = 1,
+                                               lower.tail = FALSE)
+                                            )
+                                         )
                                      )},
-                      param = new("ExpParameter", name = 
+                      param = new("ExpParameter", name =
                       gettext("Parameter of a Laplace/Double Exponential distribution")
-                                 )
+                                 ),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
 
 ## Class: CauchyDistribution
-setClass("Cauchy", 
+setClass("Cauchy",
           prototype = prototype(
                       r = function(n){ rcauchy(n,  location = 0, scale = 1) },
-                      d = function(x, log = FALSE){ 
-                              dcauchy(x,  location = 0, scale = 1, log = log) 
+                      d = function(x, log = FALSE){
+                              dcauchy(x,  location = 0, scale = 1, log = log)
                                           },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
-                              pcauchy(q,  location = 0, scale = 1, 
-                                      lower.tail = lower.tail, log.p = log.p) 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
+                              pcauchy(q,  location = 0, scale = 1,
+                                      lower.tail = lower.tail, log.p = log.p)
                                           },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
-                              qcauchy(p,  location = 0, scale = 1, 
-                                      lower.tail = lower.tail, log.p = log.p) 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
+                              qcauchy(p,  location = 0, scale = 1,
+                                      lower.tail = lower.tail, log.p = log.p)
                                           },
-                      param = new("CauchyParameter")
+                      param = new("CauchyParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
 
 ## Class: normal distribution
-setClass("Norm",  
+setClass("Norm",
           prototype = prototype(
                       r = function(n){ rnorm(n, mean = 0, sd = 1) },
                       d = function(x, log = FALSE)
                               { dnorm(x, mean = 0, sd = 1, log = log) },
                       p = function(q, lower.tail = TRUE, log.p = FALSE )
-                              { pnorm(q, mean = 0, sd = 1, 
+                              { pnorm(q, mean = 0, sd = 1,
                                       lower.tail = lower.tail, log.p = log.p) },
                       q = function(p, lower.tail = TRUE, log.p = FALSE )
-                              { qnorm(p, mean = 0, sd = 1, 
+                              { qnorm(p, mean = 0, sd = 1,
                                       lower.tail = lower.tail, log.p = log.p) },
-                      param = new("UniNormParameter")
+                      param = new("UniNormParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
 
 ## Class: lognormal distribution
-setClass("Lnorm",  
+setClass("Lnorm",
           prototype = prototype(
                       r = function(n){ rlnorm(n, meanlog = 0, sdlog = 1) },
-                      d = function(x, log = FALSE){ 
-                              dlnorm(x, meanlog = 0, sdlog = 1, log = log) 
+                      d = function(x, log = FALSE){
+                              dlnorm(x, meanlog = 0, sdlog = 1, log = log)
                                           },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
-                              plnorm(q, meanlog = 0, sdlog = 1, 
-                                     lower.tail = lower.tail, log.p = log.p) 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
+                              plnorm(q, meanlog = 0, sdlog = 1,
+                                     lower.tail = lower.tail, log.p = log.p)
                                           },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
-                              qlnorm(p, meanlog = 0, sdlog = 1, 
-                                     lower.tail = lower.tail, log.p = log.p) 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
+                              qlnorm(p, meanlog = 0, sdlog = 1,
+                                     lower.tail = lower.tail, log.p = log.p)
                                           },
-                      param = new("LnormParameter")
+                      param = new("LnormParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
 
 ## Class: uniform distribution
-setClass("Unif",  
+setClass("Unif",
           prototype = prototype(
                       r = function(n){ runif(n, min = 0, max = 1) },
                       d = function(x, log = FALSE)
                               { dunif(x,  min = 0, max = 1, log = log) },
                       p = function(q, lower.tail = TRUE, log.p = FALSE )
-                              { punif(q,  min = 0, max = 1, 
+                              { punif(q,  min = 0, max = 1,
                                       lower.tail = lower.tail, log.p = log.p) },
                       q = function(p, lower.tail = TRUE, log.p = FALSE )
-                              { qunif(p,  min = 0, max = 1, 
+                              { qunif(p,  min = 0, max = 1,
                                       lower.tail = lower.tail, log.p = log.p) },
-                      param = new("UnifParameter")
+                      param = new("UnifParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
 
 ## Class: F distribution
-setClass("Fd",  
+setClass("Fd",
           prototype = prototype(
                       r = function(n){ rf(n,  df1 = 1, df2 = 1, ncp = 0) },
-                      d = function(x, log = FALSE){ 
-                              df(x, df1 = 1, df2 = 1, ncp = 0, log = log) 
+                      d = function(x, log = FALSE){
+                              df(x, df1 = 1, df2 = 1, ncp = 0, log = log)
                                           },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
-                              pf(q, df1 = 1, df2 = 1, ncp = 0, 
-                                 lower.tail = lower.tail, log.p = log.p) 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
+                              pf(q, df1 = 1, df2 = 1, ncp = 0,
+                                 lower.tail = lower.tail, log.p = log.p)
                                           },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
-                              qf(p, df1 = 1, df2 = 1, ncp = 0, 
-                                 lower.tail = lower.tail, log.p = log.p) 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
+                              qf(p, df1 = 1, df2 = 1, ncp = 0,
+                                 lower.tail = lower.tail, log.p = log.p)
                                           },
-                      param = new("FParameter")
+                      param = new("FParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
 
 ## Class: Student distribution
-setClass("Td",  
+setClass("Td",
           prototype = prototype(
                       r = function(n){ rt(n,  df = 1, ncp = 0) },
                       d = function(x, log = FALSE)
                               { dt(x,  df = 1, ncp = 0, log = log) },
                       p = function(q, lower.tail = TRUE, log.p = FALSE )
-                              { pt(q,  df = 1, ncp = 0, 
+                              { pt(q,  df = 1, ncp = 0,
                                    lower.tail = lower.tail, log.p = log.p) },
                       q = function(p, lower.tail = TRUE, log.p = FALSE )
-                              { qt(p,  df = 1, ncp = 0, 
+                              { qt(p,  df = 1, ncp = 0,
                                    lower.tail = lower.tail, log.p = log.p) },
-                      param = new("TParameter")
+                      param = new("TParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
 
 
 ## Class: logistic distribution
-setClass("Logis",  
+setClass("Logis",
           prototype = prototype(
                       r = function(n){ rlogis(n, location = 0, scale = 1) },
-                      d = function(x, log = FALSE){ 
-                              dlogis(x, location = 0, scale = 1, log = log) 
+                      d = function(x, log = FALSE){
+                              dlogis(x, location = 0, scale = 1, log = log)
                                           },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
-                              plogis(q, location = 0, scale = 1, 
-                                     lower.tail = lower.tail, log.p = log.p) 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
+                              plogis(q, location = 0, scale = 1,
+                                     lower.tail = lower.tail, log.p = log.p)
                                           },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
-                              qlogis(p, location = 0, scale = 1, 
-                                     lower.tail = lower.tail, log.p = log.p) 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
+                              qlogis(p, location = 0, scale = 1,
+                                     lower.tail = lower.tail, log.p = log.p)
                                           },
-                      param = new("LogisParameter")
+                      param = new("LogisParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
 
 ## Class: BetaDistribution
-setClass("Beta",  
+setClass("Beta",
           prototype = prototype(
-                      r = function(n){ 
-                              rbeta(n,  shape1 = 1, shape2 = 1, ncp = 0) 
+                      r = function(n){
+                              rbeta(n,  shape1 = 1, shape2 = 1, ncp = 0)
                                      },
-                      d = function(x, log = FALSE){ 
-                              dbeta(x,  shape1 = 1, shape2 = 1, ncp = 0, 
-                                    lower.tail = lower.tail, log.p = log.p) 
+                      d = function(x, log = FALSE){
+                              dbeta(x,  shape1 = 1, shape2 = 1, ncp = 0,
+                                    lower.tail = lower.tail, log.p = log.p)
                                           },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
-                              pbeta(q,  shape1 = 1, shape2 = 1, ncp = 0, 
-                                    lower.tail = lower.tail, log.p = log.p) 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
+                              pbeta(q,  shape1 = 1, shape2 = 1, ncp = 0,
+                                    lower.tail = lower.tail, log.p = log.p)
                                           },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
-                              qbeta(p,  shape1 = 1, shape2 = 1, ncp = 0, 
-                                    lower.tail = lower.tail, log.p = log.p) 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
+                              qbeta(p,  shape1 = 1, shape2 = 1, ncp = 0,
+                                    lower.tail = lower.tail, log.p = log.p)
                                           },
-                      param = new("BetaParameter")
+                      param = new("BetaParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
 
 ## Class: Weibull distribution
-setClass("Weibull",  
+setClass("Weibull",
           prototype = prototype(
                       r = function(n){ rweibull(n, shape = 1, scale = 1) },
-                      d = function(x, log = FALSE){ 
-                              dweibull(x, shape = 1, scale = 1, log = log) 
+                      d = function(x, log = FALSE){
+                              dweibull(x, shape = 1, scale = 1, log = log)
                                           },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
-                              pweibull(q, shape = 1, scale = 1, 
-                                       lower.tail = lower.tail, log.p = log.p) 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
+                              pweibull(q, shape = 1, scale = 1,
+                                       lower.tail = lower.tail, log.p = log.p)
                                           },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
-                              qweibull(p, shape = 1, scale = 1, 
-                                       lower.tail = lower.tail, log.p = log.p) 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
+                              qweibull(p, shape = 1, scale = 1,
+                                       lower.tail = lower.tail, log.p = log.p)
                                           },
-                      param = new("WeibullParameter")
+                      param = new("WeibullParameter"),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
 
 ## Class: Arcsine distribution
-setClass("Arcsine",  
+setClass("Arcsine",
           prototype = prototype(
                       r = function(n){ sin((runif(n)-.5)*pi) },
-                      d = function(x, log = FALSE){ 
+                      d = function(x, log = FALSE){
                               x0 <- (abs(x)<1-.Machine$double.eps)
                               x1 <- x^2*x0
                               d <-  x0/sqrt(1-x1)/pi
                               d[.isEqual(abs(x),1)] <- Inf
                               if(log) d<- log(d)
                               return(d)},
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
                               if(!lower.tail) q<- -q
                               q <- pmin(pmax(q,-1),1)
                               p <- asin(q)/pi+1/2
                               if(log.p) p <- log(p)
                               return(p)},
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
                               if(log.p) p <- exp(p)
                               p1 <- p
                               p1[p<0|p>1] <- 0.5
@@ -659,7 +689,9 @@ setClass("Arcsine",
                               q[p<0|p>1] <- NA
                               q[.isEqual(p,0)] <- -1
                               q[.isEqual(p,1)] <-  1
-                              return(q)}                      
+                              return(q)},
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "AbscontDistribution"
           )
@@ -704,7 +736,7 @@ setClass("LatticeDistribution",
 
 
 ### Class: Dirac distribution
-setClass("Dirac",  
+setClass("Dirac",
           prototype = prototype(
                       r = function(n){ array(0, n)},
                       d = function(x, log)
@@ -714,14 +746,14 @@ setClass("Dirac",
                                 return(d0)
                               },
                       p = function(q, lower.tail = TRUE, log.p = FALSE )
-                              { p0 <- as.numeric(q + 10^-10 >= 0) 
+                              { p0 <- as.numeric(q + 10^-10 >= 0)
                                 if (!lower.tail) p0 <- 1-p0
                                 if (log.p) p0 <- log(p0)
                                 return(p0)
                               },
                       q = function(p, lower.tail = TRUE, log.p = FALSE )
-                             {  if (log.p) p <- exp(p) 
-                                if(any((p < 0)|(p > 1))) 
+                             {  if (log.p) p <- exp(p)
+                                if(any((p < 0)|(p > 1)))
                                    warning("q Method of class Dirac produced NaN's.")
                                 q0 <- 0 * p
                                 q0[(p<0) | (p>1)] <- NaN
@@ -730,156 +762,168 @@ setClass("Dirac",
                       param = new("DiracParameter"),
                       support = 0,
                       lattice = new("Lattice",
-                                pivot = 0, width = 1, Length = 1, name = 
+                                pivot = 0, width = 1, Length = 1, name =
                                 gettext("lattice of a Dirac distribution")
-                                )
+                                ),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "LatticeDistribution"
           )
 
 ## Class: Poisson distribution
-setClass("Pois",  
+setClass("Pois",
           prototype = prototype(
                       r = function(n){ rpois(n, lambda = 1) },
                       d = function(x, log = FALSE)
                               { dpois(x, lambda = 1, log = log) },
                       p = function(q, lower.tail = TRUE, log.p = FALSE )
-                              { ppois(q, lambda = 1, lower.tail = lower.tail, 
+                              { ppois(q, lambda = 1, lower.tail = lower.tail,
                                       log.p = log.p) },
                       q = function(p, lower.tail = TRUE, log.p = FALSE )
-                              { qpois(p, lambda = 1, lower.tail = lower.tail, 
+                              { qpois(p, lambda = 1, lower.tail = lower.tail,
                                       log.p = log.p) },
                       img = new("Naturals"),
                       param = new("PoisParameter"),
-                      support = seq( 0, 
+                      support = seq( 0,
                                      qpois(getdistrOption("TruncQuantile"),
-                                           lambda = 1, lower.tail = FALSE), 
+                                           lambda = 1, lower.tail = FALSE),
                                      by = 1
                                     ),
                       lattice = new("Lattice",
-                                pivot = 0, width = 1, Length = Inf, name = 
+                                pivot = 0, width = 1, Length = Inf, name =
                                 gettext("lattice of a Poisson distribution")
-                                )
+                                ),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "LatticeDistribution"
           )
 
 ## Class: negative binomial distribution
-setClass("Nbinom",  
+setClass("Nbinom",
           prototype = prototype(
                       r = function(n){ rnbinom(n, size = 1, prob = 0.5) },
-                      d = function(x, log = FALSE){ 
-                              dnbinom(x, size = 1, prob = 0.5, log = log) 
+                      d = function(x, log = FALSE){
+                              dnbinom(x, size = 1, prob = 0.5, log = log)
                                           },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
-                              pnbinom(q, size = 1, prob = 0.5, 
-                                      lower.tail = lower.tail, log.p = log.p) 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
+                              pnbinom(q, size = 1, prob = 0.5,
+                                      lower.tail = lower.tail, log.p = log.p)
                                           },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
-                              qnbinom(p, size = 1, prob = 0.5, 
-                                      lower.tail = lower.tail, log.p = log.p) 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
+                              qnbinom(p, size = 1, prob = 0.5,
+                                      lower.tail = lower.tail, log.p = log.p)
                                           },
                       img = new("Naturals"),
                       param = new("NbinomParameter"),
                       support = seq( 0,
-                                     qnbinom( 
+                                     qnbinom(
                                         getdistrOption("TruncQuantile"),
                                         size = 1, prob = 0.5, lower.tail = FALSE
                                             ),
                                      by = 1
                                      ),
                       lattice = new("Lattice",
-                                pivot = 0, width = 1, Length = Inf, name = 
+                                pivot = 0, width = 1, Length = Inf, name =
                                 gettext(
                                   "lattice of a Negative Binomial distribution"
                                        )
-                                )
+                                ),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "LatticeDistribution"
           )
 
 ## Class: hypergeometric distribution
-setClass("Hyper",  
+setClass("Hyper",
           prototype = prototype(
                       r = function(nn){ rhyper(nn, m = 1, n = 1, k = 1) },
-                      d = function(x, log = FALSE){ 
-                              dhyper(x, m = 1, n = 1, k = 1, log = log) 
+                      d = function(x, log = FALSE){
+                              dhyper(x, m = 1, n = 1, k = 1, log = log)
                                           },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
-                              phyper(q, m = 1, n = 1, k = 1, 
-                                     lower.tail = lower.tail, log.p = log.p) 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
+                              phyper(q, m = 1, n = 1, k = 1,
+                                     lower.tail = lower.tail, log.p = log.p)
                                           },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
-                              qhyper(p, m = 1, n = 1, k = 1, 
-                                     lower.tail = lower.tail, log.p = log.p) 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
+                              qhyper(p, m = 1, n = 1, k = 1,
+                                     lower.tail = lower.tail, log.p = log.p)
                                           },
                       img = new("Naturals"),
                       param = new("HyperParameter"),
                       support = 0:1,
                       lattice = new("Lattice",
-                                pivot = 0, width = 1, Length = 2, name = 
+                                pivot = 0, width = 1, Length = 2, name =
                                 gettext(
                                   "lattice of a Hypergeometric distribution"
                                        )
-                                )
+                                ),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "LatticeDistribution"
           )
 
 ## Class: binomial distribution
-setClass("Binom", 
+setClass("Binom",
           prototype = prototype(
                       r = function(n){ rbinom(n, size = 1,prob = 0.5) },
-                      d = function(x, log = FALSE){ 
-                              dbinom(x, size = 1, prob = 0.5, log = log) 
+                      d = function(x, log = FALSE){
+                              dbinom(x, size = 1, prob = 0.5, log = log)
                                           },
-                      p = function(q, lower.tail = TRUE, log.p = FALSE ){ 
-                              pbinom(q, size = 1, prob = 0.5, 
-                                     lower.tail = lower.tail, log.p = log.p) 
+                      p = function(q, lower.tail = TRUE, log.p = FALSE ){
+                              pbinom(q, size = 1, prob = 0.5,
+                                     lower.tail = lower.tail, log.p = log.p)
                                           },
-                      q = function(p, lower.tail = TRUE, log.p = FALSE ){ 
-                              qbinom(p, size = 1, prob = 0.5, 
-                                     lower.tail = lower.tail, log.p = log.p) 
+                      q = function(p, lower.tail = TRUE, log.p = FALSE ){
+                              qbinom(p, size = 1, prob = 0.5,
+                                     lower.tail = lower.tail, log.p = log.p)
                                           },
                       img = new("Naturals"),
                       param = new("BinomParameter"),
                       support = 0:1,
                       lattice = new("Lattice",
-                                pivot = 0, width = 1, Length = 2, name = 
+                                pivot = 0, width = 1, Length = 2, name =
                                 gettext(
                                   "lattice of a Binomial distribution"
                                        )
-                                )
+                                ),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "LatticeDistribution"
           )
 
 ## Class: geometric distribution
-setClass("Geom",  
+setClass("Geom",
           prototype = prototype(
                       r = function(n){ rgeom(n, prob = 0.5) },
                       d = function(x, log = FALSE)
                               { dgeom(x, prob = 0.5, log = log) },
                       p = function(q, lower.tail = TRUE, log.p = FALSE )
-                              { pgeom(q, prob = 0.5, lower.tail = lower.tail, 
+                              { pgeom(q, prob = 0.5, lower.tail = lower.tail,
                                       log.p = log.p) },
                       q = function(p, lower.tail = TRUE, log.p = FALSE )
-                              { qgeom(p, prob = 0.5, lower.tail = lower.tail, 
+                              { qgeom(p, prob = 0.5, lower.tail = lower.tail,
                                       log.p = log.p) },
-                      param = new("NbinomParameter", name = 
-                              gettext("Parameter of a Geometric distribution")                                  
+                      param = new("NbinomParameter", name =
+                              gettext("Parameter of a Geometric distribution")
                               ),
-                      support = seq( 0, 
+                      support = seq( 0,
                                      qgeom(getdistrOption("TruncQuantile"),
                                            prob = 0.5, lower.tail = FALSE),
-                                     by = 1 
+                                     by = 1
                                     ),
                       lattice = new("Lattice",
-                                pivot = 0, width = 1, Length = Inf, name = 
+                                pivot = 0, width = 1, Length = Inf, name =
                                 gettext(
                                   "lattice of a Geometric distribution"
                                        )
-                                )
+                                ),
+                     .logExact = TRUE,
+                     .lowerExact = TRUE
                       ),
           contains = "Nbinom"
           )
@@ -941,11 +985,17 @@ setClass("UnivarDistrList",
 
 setClass("UnivarMixingDistribution",
             representation = representation(mixCoeff = "numeric",
-                             mixDistr = "UnivarDistrList"),
-            prototype = prototype(mixCoeff = 1, mixDistr = new("UnivarDistrList")),
+                             mixDistr = "UnivarDistrList",
+                             gaps = "OptionalMatrix",
+                             support = "numeric"),
+            prototype = prototype(mixCoeff = 1, 
+                                  mixDistr = new("UnivarDistrList"),
+                                  gaps = NULL,
+                                  support = numeric(0)),
             contains = "UnivariateDistribution",
             validity = function(object){
-                if(any(object@mixCoeff<0) || sum(object@mixCoeff)>1)
+                if(any(object@mixCoeff< -.Machine$double.eps) || 
+                   sum(object@mixCoeff)>1+.Machine$double.eps)
                    stop("mixing coefficients are no probabilities")
                 return(TRUE)
             })
@@ -979,6 +1029,18 @@ setClass("AffLinUnivarLebDecDistribution",
           contains = "UnivarLebDecDistribution"
           )
 
+         
+setClassUnion("UnivDistrListOrDistribution",
+               c("UnivarDistrList","UnivariateDistribution"))
+
+setClass("CompoundDistribution", representation=representation(
+             NumbOfSummandsDistr = "DiscreteDistribution",
+             SummandsDistr = "UnivDistrListOrDistribution"),
+          prototype=prototype(NumbOfSummandsDistr = new("Pois"),
+              SummandsDistr=new("Norm")),
+          contains = "UnivarMixingDistribution"
+         )
+
 ################################
 ##
 ## virtual Distribution class Unions 
@@ -986,7 +1048,9 @@ setClass("AffLinUnivarLebDecDistribution",
 ################################
 
 setClassUnion("AcDcLcDistribution", c("AbscontDistribution",
-               "DiscreteDistribution", "UnivarLebDecDistribution"))
+               "DiscreteDistribution", "UnivarLebDecDistribution",
+               "CompoundDistribution"))
 
 setClassUnion("AffLinDistribution", c("AffLinAbscontDistribution",
                "AffLinDiscreteDistribution", "AffLinUnivarLebDecDistribution"))
+

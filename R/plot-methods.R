@@ -9,23 +9,40 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
             cex.sub = par("cex.sub"), col.points = par("col"), 
             col.vert = par("col"), col.main = par("col.main"), 
             col.inner = par("col.main"), col.sub = par("col.sub"), 
-            cex.points = 2.0, pch.u = 21, pch.a = 16, mfColRow = TRUE){
+            cex.points = 2.0, pch.u = 21, pch.a = 16, mfColRow = TRUE,
+            to.draw.arg = NULL){
 
      xc <- match.call(call = sys.call(sys.parent(1)))$x
      ### manipulating the ... - argument
      dots <- match.call(call = sys.call(sys.parent(1)), 
-                      expand.dots = FALSE)$"..."
+                        expand.dots = FALSE)$"..."
+
+      to.draw <- 1:3
+      names(to.draw) <- c("d","p","q")
+      if(! is.null(to.draw.arg)){
+         if(is.character(to.draw.arg)) 
+            to.draw <- pmatch(to.draw.arg, names(to.draw))
+         else if(is.numeric(to.draw.arg)) 
+              to.draw <- to.draw.arg
+      }
+      l.draw <- length(to.draw)
+
+     
+     dots$col.hor <- NULL
 
      dots.for.points <- dots[names(dots) %in% c("bg", "lwd", "lty")]
      if (length(dots.for.points) == 0 ) dots.for.points <- NULL
 
      dots.without.pch <- dots[! (names(dots) %in% c("pch", "log"))]
-          
+     if(!is(x,"AbscontDistribution"))
+         x <- .ULC.cast(x)     
      ###
      if(!is.logical(inner))
-         if(!is.list(inner)||length(inner) != 3)
-            stop("Argument 'inner' must either be 'logical' or a 'list' vector of length 3")
-
+         {if(!is.list(inner))
+              inner <- as.list(inner)
+            #stop("Argument 'inner' must either be 'logical' or a 'list'")
+          inner <- .fillList(inner,l.draw)          
+         }
      cex <- if (hasArg(cex)) dots$cex else 1
 
      if (hasArg(cex) && missing(cex.points)) 
@@ -110,7 +127,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      }
      
      if(mfColRow)
-         opar <- par(mfrow = c(1,3), mar = c(bmar,omar[2],tmar,omar[4]))
+         opar <- par(mfrow = c(1,l.draw), mar = c(bmar,omar[2],tmar,omar[4]))
      else
          opar <- par(mar = c(bmar,omar[2],tmar,omar[4]))
      
@@ -123,13 +140,20 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
                    .mpresubs(gettextf("Quantile function of %%C%%Q")) else ""
                           ### double  %% as % is special for gettextf
      }else{
-        inner.d <- .mpresubs(inner[[1]])
-        inner.p <- .mpresubs(inner[[2]])
-        inner.q <- .mpresubs(inner[[3]])
+        iL <- 1:length(to.draw)
+
+        inner.d <- if(1%in%to.draw) .mpresubs(inner[[min(iL[to.draw==1])]]) else NULL
+        inner.p <- if(2%in%to.draw) .mpresubs(inner[[min(iL[to.draw==2])]]) else NULL
+        inner.q <- if(3%in%to.draw) .mpresubs(inner[[min(iL[to.draw==3])]]) else NULL
      }
 
-     lower <- getLow(x, eps = getdistrOption("TruncQuantile")*2)
-     upper <- getUp(x, eps = getdistrOption("TruncQuantile")*2)
+     lower0 <- getLow(x, eps = getdistrOption("TruncQuantile")*2)
+     upper0 <- getUp(x, eps = getdistrOption("TruncQuantile")*2)
+     me <- q(x)(1/2); s <- q(x)(3/4)-q(x)(1/4)
+     lower1 <- me - 6 * s
+     upper1 <- me + 6 * s
+     lower <- max(lower0, lower1)
+     upper <- min(upper0, upper1)
 
      ## ngrid  nr of gridpoints
      ## exactq two p-values are considered equal if difference is
@@ -147,9 +171,15 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      
      
      if(hasArg(ylim))
-         {if(length(ylim)!=2) 
-             stop("Wrong length of Argument ylim"); 
-           ylim1 <- ylim; ylim2 <- ylim;
+         {if (3 %in% to.draw && any( c(1,2) %in% to.draw)){
+                 if(! length(ylim) %in% c(2,4)) 
+                     stop("Wrong length of Argument ylim")
+           }else{
+                 if(! length(ylim) == 2) 
+                     stop("Wrong length of Argument ylim")
+           }                  
+           ylim <- matrix(ylim, 2,2)
+           ylim1 <- ylim[,1]; ylim2 <- ylim[,2];
            }
      else {ylim1 <- c(0,max(dxg[dxg<50])); ylim2 <- c(-0.05,1.05)}
 
@@ -165,29 +195,31 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
           }
 
      o.warn <- getOption("warn"); options(warn = -1)
-     on.exit(options(warn=o.warn))
-     do.call(plot, c(list(x = grid, dxg, type = "l", 
-         ylim = ylim1,  ylab = "d(x)", xlab = "x", log = logpd), 
-         dots.without.pch))
-     options(warn = o.warn)
-
-     title(main = inner.d, line = lineT, cex.main = cex.inner,
-           col.main = col.inner)
-
-
-     options(warn = -1)
-
+     if(1%in%to.draw){
+         on.exit(options(warn=o.warn))
+         do.call(plot, c(list(x = grid, dxg, type = "l", 
+             ylim = ylim1,  ylab = "d(x)", xlab = "x", log = logpd), 
+             dots.without.pch))
+         options(warn = o.warn)
+     
+         title(main = inner.d, line = lineT, cex.main = cex.inner,
+               col.main = col.inner)
+     
+     
+         options(warn = -1)
+     }
      if(is.finite(q(x)(0))) {grid <- c(q(x)(0),grid); pxg <- c(0,pxg)}
      if(is.finite(q(x)(1))) {grid <- c(grid,q(x)(1)); pxg <- c(pxg,1)}
 
-     do.call(plot, c(list(x = grid, pxg, type = "l", 
-          ylim = ylim2, ylab = "p(q)", xlab = "q", log = logpd), 
-          dots.without.pch))
-     options(warn = o.warn)
-
-     title(main = inner.p, line = lineT, cex.main = cex.inner,
-           col.main = col.inner)
-
+     if(2%in%to.draw){
+        do.call(plot, c(list(x = grid, pxg, type = "l", 
+             ylim = ylim2, ylab = "p(q)", xlab = "q", log = logpd), 
+             dots.without.pch))
+        options(warn = o.warn)
+      
+        title(main = inner.p, line = lineT, cex.main = cex.inner,
+              col.main = col.inner)
+     }
      ### quantiles
 
      ### fix finite support bounds
@@ -218,36 +250,37 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
         xo <- grid
      }
      
-     options(warn = -1)
-     do.call(plot, c(list(x = po, xo, type = "n", 
-          xlim = ylim, ylim = xlim, ylab = "q(p)", xlab = "p", 
-          log = logq), dots.without.pch))
-     options(warn = o.warn)
-
+     if(3%in%to.draw){
+        options(warn = -1)
+        do.call(plot, c(list(x = po, xo, type = "n", 
+             xlim = ylim2, ylim = xlim, ylab = "q(p)", xlab = "p", 
+             log = logq), dots.without.pch))
+        options(warn = o.warn)
+    
+        
+        title(main = inner.q, line = lineT, cex.main = cex.inner,
+              col.main = col.inner)
+        
+        options(warn = -1)
+            lines(po,xo, ...)
+        if (verticals && !is.null(gaps(x))){
+            pu <- rep(pu1,3)
+            xu <- c(gaps(x)[,1],gaps(x)[,2],rep(NA,ndots))
+            o <- order(pu)
+            dots.without.pch0 <- dots.without.pch
+            dots.without.pch0$col <- NULL
+            do.call(lines, c(list(pu[o], xu[o], 
+                    col = col.vert), dots.without.pch0))    
+        }
+        options(warn = o.warn)
      
-     title(main = inner.q, line = lineT, cex.main = cex.inner,
-           col.main = col.inner)
-     
-     options(warn = -1)
-         lines(po,xo, ...)
-     if (verticals && !is.null(gaps(x))){
-         pu <- rep(pu1,3)
-         xu <- c(gaps(x)[,1],gaps(x)[,2],rep(NA,ndots))
-         o <- order(pu)
-         dots.without.pch0 <- dots.without.pch
-         dots.without.pch0 $col <- NULL
-         do.call(lines, c(list(pu[o], xu[o], 
-                 col = col.vert), dots.without.pch0))    
-     }
-     options(warn = o.warn)
-
-     
-     if(!is.null(gaps(x)) && do.points){
-        do.call(points, c(list(x = pu1, y = gaps(x)[,1], pch = pch.a, 
-                cex = cex.points, col = col.points), dots.for.points) )
-        do.call(points, c(list(x = pu1, y = gaps(x)[,2], pch = pch.u,
-                cex = cex.points, col = col.points), dots.for.points) )
-     }   
+        if(!is.null(gaps(x)) && do.points){
+           do.call(points, c(list(x = pu1, y = gaps(x)[,1], pch = pch.a, 
+                   cex = cex.points, col = col.points), dots.for.points) )
+           do.call(points, c(list(x = pu1, y = gaps(x)[,2], pch = pch.u,
+                   cex = cex.points, col = col.points), dots.for.points) )
+        }
+     }      
      if (mainL)
          mtext(text = main, side = 3, cex = cex.main, adj = .5, 
                outer = TRUE, padj = 1.4, col = col.main)                            
@@ -255,6 +288,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      if (subL)
          mtext(text = sub, side = 1, cex = cex.sub, adj = .5,
                outer = TRUE, line = -1.6, col = col.sub)                            
+   return(invisible())
    }
    )
 # -------- DiscreteDistribution -------- #
@@ -269,12 +303,26 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
              col.hor = par("col"), col.vert = par("col"), 
              col.main = par("col.main"), col.inner = par("col.main"), 
              col.sub = par("col.sub"),  cex.points = 2.0, 
-             pch.u = 21, pch.a = 16, mfColRow = TRUE){
+             pch.u = 21, pch.a = 16, mfColRow = TRUE,
+             to.draw.arg = NULL){
 
       xc <- match.call(call = sys.call(sys.parent(1)))$x
       ### manipulating the ... - argument
       dots <- match.call(call = sys.call(sys.parent(1)), 
                        expand.dots = FALSE)$"..."
+
+      to.draw <- 1:3
+      names(to.draw) <- c("d","p","q")
+      if(! is.null(to.draw.arg)){
+         if(is.character(to.draw.arg)) 
+            to.draw <- pmatch(to.draw.arg, names(to.draw))
+         else if(is.numeric(to.draw.arg)) 
+              to.draw <- to.draw.arg
+      }
+      l.draw <- length(to.draw)
+
+
+      dots$ngrid <- NULL
 
       dots.for.points <- dots[names(dots) %in% c("bg", "lwd", "lty")]
       if (length(dots.for.points) == 0 ) dots.for.points <- NULL
@@ -282,10 +330,15 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
       dots.without.pch <- dots[! (names(dots) %in% c("pch", 
                                   "main", "sub", "log"))]
       ###
+     if(!is(x,"DiscreteDistribution"))
+         x <- .ULC.cast(x)     
       
      if(!is.logical(inner))
-         if(!is.list(inner)||length(inner) != 3)
-            stop("Argument 'inner' must either be 'logical' or a 'list' vector of length 3")
+         {if(!is.list(inner))
+              inner <- as.list(inner)
+            #stop("Argument 'inner' must either be 'logical' or a 'list'")
+          inner <- .fillList(inner,l.draw)          
+         }
 
      cex <- if (hasArg(cex)) dots$cex else 1
 
@@ -374,7 +427,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
      }
      
      if(mfColRow)
-        opar <- par(mfrow = c(1,3), mar = c(bmar,omar[2],tmar,omar[4]))
+        opar <- par(mfrow = c(1,l.draw), mar = c(bmar,omar[2],tmar,omar[4]))
      else 
         opar <- par(mar = c(bmar,omar[2],tmar,omar[4]))
      
@@ -388,9 +441,11 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
                    .mpresubs(gettextf("Quantile function of %%C%%Q")) else ""
                           ### double  %% as % is special for gettextf
      }else{
-        inner.d <- .mpresubs(inner[[1]])
-        inner.p <- .mpresubs(inner[[2]])
-        inner.q <- .mpresubs(inner[[3]])
+        iL <- 1:length(to.draw)
+
+        inner.d <- if(1%in%to.draw) .mpresubs(inner[[min(iL[to.draw==1])]]) else NULL
+        inner.p <- if(2%in%to.draw) .mpresubs(inner[[min(iL[to.draw==2])]]) else NULL
+        inner.q <- if(3%in%to.draw) .mpresubs(inner[[min(iL[to.draw==3])]]) else NULL
      }
                               
       lower <- min(support(x))
@@ -409,12 +464,17 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
 
        dx <- d(x)(supp)
 
-       if(hasArg(ylim))
-             {if(length(ylim) != 2) 
-                 stop("Wrong length of Argument ylim") 
-              ylim1 <- ylim
-              ylim2 <- ylim
-              }else{
+     if(hasArg(ylim))
+         {if (3 %in% to.draw && any( c(1,2) %in% to.draw)){
+                 if(! length(ylim) %in% c(2,4)) 
+                     stop("Wrong length of Argument ylim")
+           }else{
+                 if(! length(ylim) == 2) 
+                     stop("Wrong length of Argument ylim")
+           }                  
+           ylim <- matrix(ylim, 2,2)
+           ylim1 <- ylim[,1]; ylim2 <- ylim[,2];
+           }else{
               ylim1 <- c(0, max(dx)) 
               ylim2 <- c(-0.05,1.05)
               }
@@ -433,6 +493,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
        o.warn <- getOption("warn")
        options(warn = -1)
        on.exit(options(warn=o.warn))
+     if(1%in%to.draw){
        do.call(plot, c(list(x = supp, dx, type = "h", pch = pch.a,
             ylim = ylim1, xlim=xlim, ylab = "d(x)", xlab = "x", 
             log = logpd), dots.without.pch))
@@ -447,12 +508,13 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
                   cex = cex.points, col = col.points), dots.for.points))
        
        options(warn = -1)
+       }
+     ngrid <- length(supp)
 
-       ngrid <- length(supp)
+     supp1 <- if(ngrid>1) supp else c(-max(1,abs(supp))*.08,0)+supp
+     psupp1 <- c(0,p(x)(supp1))
 
-       supp1 <- if(ngrid>1) supp else c(-max(1,abs(supp))*.08,0)+supp
-       psupp1 <- c(0,p(x)(supp1))
-
+     if(2%in%to.draw){
        do.call(plot, c(list(x = stepfun(x = supp1, y = psupp1), 
                      main = "", verticals = verticals, 
                      do.points = FALSE, 
@@ -482,8 +544,9 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
           do.call(points, c(list(x = supp, 
                   y = c(0,p(x)(supp[-length(supp)])), pch = pch.u, 
                   cex = cex.points, col = col.points), dots.for.points))
-       
-       
+     }  
+
+     if(3%in%to.draw){
        options(warn = -1)
        do.call(plot, c(list(x = stepfun(c(0,p(x)(supp)), 
                             c(NA,supp,NA), right = TRUE), 
@@ -520,24 +583,26 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
            do.call(lines, c(list(x = rep(p(x)(supp[1]),2), y = c(supp[1],supp[2]),  
                   col = col.vert), dots.without.pch0))
           }
-                             
+       }                      
        
-       if (mainL)
+     if (mainL)
            mtext(text = main, side = 3, cex = cex.main, adj = .5, 
                  outer = TRUE, padj = 1.4, col = col.main)                            
        
-       if (subL)
+     if (subL)
            mtext(text = sub, side = 1, cex = cex.sub, adj = .5,
                  outer = TRUE, line = -1.6, col = col.sub)                            
+   return(invisible())
    }
 )
 
 # -------- DistributionList   ---------- #
 
 setMethod("plot", signature(x =  "DistrList", y = "missing"),
-    function(x,  ...){ 
+    function(x, ...){ 
         for(i in 1:length(x)){
-            #devNew()
+            devNew()
             plot(x[[i]],...)
         }
+        return(invisible())
     })

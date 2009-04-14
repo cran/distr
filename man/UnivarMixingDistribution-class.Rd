@@ -13,6 +13,8 @@
 \alias{mixDistr-methods}
 \alias{mixCoeff,UnivarMixingDistribution-method}
 \alias{mixDistr,UnivarMixingDistribution-method}
+\alias{support,UnivarMixingDistribution-method}
+\alias{gaps,UnivarMixingDistribution-method}
 
 \title{Class "UnivarMixingDistribution"}
 \description{\code{UnivarMixingDistribution}-class is a class to formalize 
@@ -39,8 +41,15 @@ Objects can be created by calls of the form
     \item{\code{d}:}{fixed to \code{NULL}}
     \item{\code{p}:}{Object of class \code{"function"}: cumulative distribution function}
     \item{\code{q}:}{Object of class \code{"function"}: quantile function}
+    \item{\code{support}:}{numeric vector --- the union of all support slots of components, if existing}
+    \item{\code{gaps}:}{(numeric) matrix or \code{NULL}; the merged \code{gaps} slots of all components, 
+    if existing (else NULL)}
     \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
     \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
+    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              log version of density, cdf, and quantile function}
+    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              lower tail version of cdf and quantile function}
   }
 }
 \section{Extends}{
@@ -54,6 +63,8 @@ class \code{"Distribution"} by class \code{"UnivariateDistribution"}.
     \item{mixCoeff}{\code{signature(object = "UnivarMixingDistribution")} returns the corresponding slot}
     \item{mixDistr<-}{\code{signature(object = "UnivarMixingDistribution")} replaces the corresponding slot}
     \item{mixDistr}{\code{signature(object = "UnivarMixingDistribution")} returns the corresponding slot}
+    \item{support}{\code{signature(object = "UnivarMixingDistribution")} returns the corresponding slot}
+    \item{gaps}{\code{signature(object = "UnivarMixingDistribution")} returns the corresponding slot}
   }
 }
 

@@ -5,7 +5,12 @@
 ## (c) Matthias Kohl: revised P.R. 030707
 
 DiscreteDistribution <- function(supp, prob, .withArith = FALSE,
-     .withSim = FALSE){
+     .withSim = FALSE, .lowerExact = TRUE, .logExact = FALSE,
+     .DistrCollapse = 
+                  getdistrOption("DistrCollapse"),
+     .DistrCollapse.Unique.Warn = 
+                  getdistrOption("DistrCollapse.Unique.Warn"),
+     .DistrResolution = getdistrOption("DistrResolution")){
     if(!is.numeric(supp))
         stop("'supp' is no numeric vector")
     if(any(!is.finite(supp)))   # admit +/- Inf?
@@ -24,23 +29,34 @@ DiscreteDistribution <- function(supp, prob, .withArith = FALSE,
         if(!all(prob >= 0))
             stop("'prob' contains values < 0")
     }
-    if(length(usupp <- unique(supp)) < len){
-        warning("collapsing to unique support values")
-        prob <- as.vector(tapply(prob, supp, sum))
-        supp <- sort(usupp)
-        len <- length(supp)
-        rm(usupp)
-    }else{
-        o <- order(supp)
-        supp <- supp[o]
-        prob <- prob[o]
-        rm(o)
-    }
+    
+    o <- order(supp)
+    supp <- supp[o]
+    prob <- prob[o]
+    rm(o)
 
-    if(len > 1){
-       if(min(diff(supp)) <
-          getdistrOption("DistrResolution") )
-        stop("grid too narrow --> change DistrResolution")
+    if(.DistrCollapse){
+       if (len>1 && min(diff(supp))< .DistrResolution){
+           erg <- .DistrCollapse(supp, prob, .DistrResolution)
+           if (len>length(erg$prob) && .DistrCollapse.Unique.Warn)
+               warning("collapsing to unique support values")         
+           prob <- erg$prob
+           supp <- erg$supp
+       }
+    }else{    
+       usupp <- unique(supp)
+       if(length(usupp) < len){
+          if(.DistrCollapse.Unique.Warn)
+             warning("collapsing to unique support values")
+          prob <- as.vector(tapply(prob, supp, sum))
+          supp <- sort(usupp)
+          len <- length(supp)
+          rm(usupp)
+       }
+       if(len > 1){
+          if(min(diff(supp))< .DistrResolution)
+             stop("grid too narrow --> change DistrResolution")
+       }
     }
     rm(len)
 
@@ -54,7 +70,8 @@ DiscreteDistribution <- function(supp, prob, .withArith = FALSE,
                       .withSim, min(supp), max(supp), Cont = FALSE)
 
     object <- new("DiscreteDistribution", r = rfun, d = dfun, q = qfun, p=pfun,
-         support = supp, .withArith = .withArith, .withSim = .withSim)
+         support = supp, .withArith = .withArith, .withSim = .withSim,
+         .lowerExact = .lowerExact, .logExact = .logExact)
 }
 
 
@@ -202,6 +219,9 @@ setMethod("q.r", "DiscreteDistribution", function(object){
 
 setMethod("+", c("DiscreteDistribution","DiscreteDistribution"),
 function(e1,e2){
+            
+            if(length(support(e1))==1) return(e2+support(e1))
+            if(length(support(e2))==1) return(e1+support(e2))
             e1.L <- as(e1, "LatticeDistribution")
             e2.L <- as(e2, "LatticeDistribution")
             if(is(e1.L, "LatticeDistribution") & is(e2.L, "LatticeDistribution"))
@@ -234,30 +254,20 @@ function(e1,e2){
 
             #supp.u <- unique(supp)
 
-            len = length(supp)
+            len <- length(supp)
 
             if(len > 1){
-              if(min(abs(diff(supp))) < getdistrOption("DistrResolution"))
-                {if(!getdistrOption("DistrCollapse"))
+               if (min(diff(supp))< getdistrOption("DistrResolution")){
+                   if (getdistrOption("DistrCollapse")){
+                       erg <- .DistrCollapse(supp, prob, 
+                                   getdistrOption("DistrResolution"))
+                       if ( len > length(erg$prob) && 
+                                getdistrOption("DistrCollapse.Unique.Warn") )
+                            warning("collapsing to unique support values")         
+                       prob <- erg$prob
+                       supp <- erg$supp
+                   }else
                     stop("grid too narrow --> change DistrResolution")
-                 else
-                    {supp1 <- 0*supp  
-                     prob1 <- 0*prob
-                     xo <- supp[1]-1
-                     j <- 0
-                     for(i in seq(along=supp))
-                        {if (abs(supp[i]-xo) > getdistrOption("DistrResolution")) 
-                             { j <- j+1
-                               supp1[j] <- supp[i]
-                               prob1[j] <- prob[i] 
-                               xo <- supp1[j]
-                             }
-                        else { prob1[j] <- prob1[j]+prob[i] }
-                        } 
-                     prob <- prob1[1:j]
-                     supp <- supp1[1:j]    
-                     rm(prob1,supp1,i,j,xo)
-                     }
                 }
             }
 
@@ -281,6 +291,10 @@ function(e1,e2){
             object
 
           })
+
+setMethod("+", c("Dirac","DiscreteDistribution"),
+      function(e1,e2){e2+location(e1)})
+
 
 ## binary operators for discrete distributions
 
@@ -352,7 +366,8 @@ setMethod("abs", "DiscreteDistribution",
 
             object <- new("DiscreteDistribution", r = rnew, p = pnew,
                            q = qnew, d = dnew, support = supportnew, 
-                           .withSim = x@.withSim, .withArith = TRUE)
+                           .withSim = x@.withSim, .withArith = TRUE,
+                           .lowerExact = .lowerExact(x))
             object
           })
 
@@ -419,7 +434,6 @@ setMethod("sqrt", "DiscreteDistribution",
             function(x) x^0.5)
 
 }          
-
 setMethod("prob", "DiscreteDistribution", 
 function(object) {sp <- object@support
                   pr <- object@d(sp)
@@ -427,10 +441,12 @@ function(object) {sp <- object@support
                   return(pr)
                   })
 ## Replace Methods
-setReplaceMethod("prob", "DiscreteDistribution", 
+setReplaceMethod("prob", "DiscreteDistribution",  
                   function(object, value){ 
-                  sp <- object@support
-                  .withArith <- object@.withArith
-                  .withSim <- object@.withSim
-                  DiscreteDistribution(supp=sp, prob=value,
-                            .withArith=.withArith,.withSim=.withSim)})
+                  return(DiscreteDistribution(supp = object@support, 
+                             prob = value,
+                            .withArith = object@.withArith,
+                            .withSim = object@.withSim,
+                            .lowerExact = .lowerExact(object), 
+                            .logExact = .logExact(object)))}
+                  )

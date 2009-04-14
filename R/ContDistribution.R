@@ -7,12 +7,14 @@
 AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                    gaps = NULL, param = NULL, img = new("Reals"),
                    .withSim = FALSE, .withArith = FALSE,
+                    .lowerExact = FALSE, .logExact = FALSE,
+                   withgaps = getdistrOption("withgaps"),
                    low1 = NULL, up1 = NULL, low = -Inf, up =Inf,
                    withStand = FALSE,
                    ngrid = getdistrOption("DefaultNrGridPoints"),
                    ep = getdistrOption("TruncQuantile"),
-                   e = getdistrOption("RtoDPQ.e"),
-                   withgaps = getdistrOption("withgaps"))
+                   e = getdistrOption("RtoDPQ.e")
+                  )
 { if(missing(r) && missing(d) && missing(p) && missing(q))
     stop("At least one of arg's r,d,p,q must be given")
 
@@ -40,11 +42,11 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                      silent=TRUE),
                      "try-error")){
                      if(is(try(
-                         stand <- integrate(d,low1,up1)$value,
-                         silent=TRUE),
+                         stand <- integrate(d, low1, up1)$value,
+                         silent = TRUE),
                          "try-error")){
                           n1 <- 2*ngrid+1
-                          n1.odd <- seq(1,n1, by=2)
+                          n1.odd <- seq(1, n1, by = 2)
                           n1.even <- (1:n1)[-n1.odd]
                           x <- seq(low1,up1, length = n1)
                           h <- diff(x)[1]
@@ -68,8 +70,8 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                                  return(d00)
                            }      
               }
-              p <- .D2P(d = d1, ql = low1, qu=up1,  ngrid = ngrid)
-              q <- .P2Q(p = p, ql = low1, qu=up1,  ngrid = ngrid,
+              p <- .D2P(d = d1, ql = low1, qu = up1,  ngrid = ngrid)
+              q <- .P2Q(p = p, ql = low1, qu = up1,  ngrid = ngrid,
                         qL = low, qU = up)
               r <- function(n) q(runif(n)) 
           }else{ 
@@ -84,23 +86,22 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                   up1 <- x0
               }
 
-              q <- .P2Q(p = p, ql = low1, qu=up1,  ngrid = ngrid,
+              q <- .P2Q(p = p, ql = low1, qu = up1,  ngrid = ngrid,
                        qL = low, qU = up)
               r <- function(n) q(runif(n))
               if( is.null(d))
-                 d <- .P2D(p = p, ql = low1, qu=up1,  ngrid = ngrid)
+                 d <- .P2D(p = p, ql = low1, qu = up1,  ngrid = ngrid)
           }
       }else{
           if(is.null(p))
              p <- .Q2P(q, ngrid = ngrid)
-          xseq<-seq(-5,5,0.001)
           r <- function(n) q(runif(n))
           if( is.null(d)){
               if(is.null(low1))
                  low1 <- q(ep)
               if(is.null(up1))
                  up1 <- q(1-ep)
-              d <- .P2D(p = p, ql = low1, qu=up1,  ngrid = ngrid)
+              d <- .P2D(p = p, ql = low1, qu = up1,  ngrid = ngrid)
               }
       }
   }else{
@@ -117,7 +118,7 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                          low1 <- q(ep)
                       if(is.null(up1))
                          up1 <- q(1-ep)
-                      d <- .P2D(p = p, ql = low1, qu=up1,  ngrid = ngrid)
+                      d <- .P2D(p = p, ql = low1, qu = up1,  ngrid = ngrid)
                   }
               }
           }else{
@@ -132,9 +133,9 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                       while(p(x0)< 1-ep && i < 20) x0 <- x0 * 2
                       up1 <- x0
                   }
-                  q <- .P2Q(p = p, ql = low1, qu=up1,  ngrid = ngrid,
+                  q <- .P2Q(p = p, ql = low1, qu = up1,  ngrid = ngrid,
                            qL = low, qU = up)
-                  d <- .P2D(p = p, ql = low1, qu=up1,  ngrid = ngrid)
+                  d <- .P2D(p = p, ql = low1, qu = up1,  ngrid = ngrid)
               }
           }
       }else{
@@ -156,12 +157,12 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
               
                   if(withStand){
                       if(is(try(
-                          stand <- integrate(d,-Inf,Inf)$value,
+                          stand <- integrate(d, -Inf, Inf)$value,
                                 silent=TRUE),
                             "try-error")){
                           if(is(try(
-                              stand <- integrate(d,low1,up1)$value,
-                                    silent=TRUE),
+                              stand <- integrate(d, low1, up1)$value,
+                                    silent = TRUE),
                                 "try-error")){
                               n1 <- 2*ngrid+1
                               n1.odd <- seq(1,n1, by=2)
@@ -212,10 +213,13 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
           }
       }
   }
-  obj <- new("AbscontDistribution", r = r, p = p, q = q, d = d1, .withSim = wS,
-      .withArith = wA, gaps = gaps, param = param, img = img)
+  obj <- new("AbscontDistribution", r = r, d = d1, p = p, q = q, 
+      gaps = gaps, param = param, img = img, .withSim = wS,
+      .withArith = wA, .lowerExact = .lowerExact, .logExact = .logExact)
 
   if(is.null(gaps) && withgaps) setgaps(obj)
+  if(!is.null(obj@gaps)) 
+     obj@q <- .modifyqgaps(pfun = obj@p, qfun = obj@q, gaps = obj@gaps)
   return(obj)
 }
 
@@ -271,6 +275,9 @@ function(object, exactq = 6, ngrid = 50000, ...){
           
           ox <- order(mattab.d[,1])
           mattab.d <- matrix(mattab.d[ox,], ncol = 2)
+          mattab.d <- .consolidategaps(mattab.d)
+          if(nrow(mattab.d)==0) mattab.d <- NULL
+          if(length(mattab.d)==0) mattab.d <- NULL
           } else mattab.d <- NULL
           eval(substitute( "slot<-"(object,'gaps', value = mattab.d)))
        return(invisible())
@@ -389,8 +396,7 @@ setMethod("+", c("AffLinAbscontDistribution","numeric"),
 
 ## Group Math for absolutly continuous distributions
 setMethod("Math", "AbscontDistribution",
-          function(x){
-            rnew <- function(n, ...){}
+          function(x){            rnew <- function(n, ...){}
             body(rnew) <- substitute({ f(g(n, ...)) },
                               list(f = as.name(.Generic), g = x@r))
             object <- AbscontDistribution( r = rnew,
@@ -410,7 +416,8 @@ setMethod("abs", "AbscontDistribution",
             else {VZW <- gaps(x)[,1] <= 0 & gaps(x)[,2] >= 0
                   gapsnew <- t(apply(abs(gaps(x)), 1, sort))
                   gapsnew[VZW,2] <- pmin(-gaps(x)[VZW,1], gaps(x)[VZW,2])
-                  gapsnew[VZW,1] <- 0}
+                  gapsnew[VZW,1] <- 0
+                  gapsnew <- .consolidategaps(gapsnew)}
             
             lower <- max(0, getLow(x))
             upper <- max(-getLow(x) , abs(getUp(x)))
@@ -447,7 +454,8 @@ setMethod("abs", "AbscontDistribution",
 
             object <- AbscontDistribution( r = rnew, p = pnew,
                            q = qnew, d = dnew, gaps = gapsnew, 
-                           .withSim = x@.withSim, .withArith = TRUE)
+                           .withSim = x@.withSim, .withArith = TRUE,
+                           .lowerExact = .lowerExact(x), .logExact = FALSE)
             object
           })
 
@@ -502,3 +510,19 @@ setMethod("sqrt", "AbscontDistribution",
             function(x) x^0.5)
 
 }
+
+#------------------------------------------------------------------------
+# new p.l, q.r methods
+#------------------------------------------------------------------------
+
+setMethod("p.l", signature(object = "AbscontDistribution"),  
+           function(object) p(object))
+
+setMethod("q.r", signature(object = "AbscontDistribution"),  
+           function(object){
+                if(!is.null(gaps(object))) 
+                   .modifyqgaps(pfun = p(object), qfun = q(object), 
+                                gaps = gaps(object), leftright = "right")
+                else
+                    q(object)
+            })

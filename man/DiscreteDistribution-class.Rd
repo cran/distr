@@ -2,9 +2,9 @@
 \docType{class}
 \alias{DiscreteDistribution-class}
 \alias{AffLinDiscreteDistribution-class}
-\alias{sqrt,DiscreteDistribution-method}
-\alias{initialize,DiscreteDistribution-method}                                                       
+\alias{initialize,DiscreteDistribution-method}
 \alias{initialize,AffLinDiscreteDistribution-method}
+\alias{sqrt,DiscreteDistribution-method}
 \alias{coerce,DiscreteDistribution,LatticeDistribution-method}
 
 \title{Class "DiscreteDistribution"}
@@ -29,6 +29,10 @@ This generating function, from version 1.9 on, has been moved to this package fr
     \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
     \item{\code{support}:}{Object of class \code{"numeric"}: a (sorted) vector containing the support of the discrete
     density function}
+    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              log version of density, cdf, and quantile function}
+    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              lower tail version of cdf and quantile function}
   }
 }
 \section{Extends}{
@@ -38,9 +42,9 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
 \section{Methods}{
   \describe{
     \item{initialize}{\code{signature(.Object = "DiscreteDistribution")}: initialize method }
-    \item{\code{coerce}}{\code{signature(from = "DiscreteDistribution",
-    to = "LatticeDistribution")}: coerces an object from \code{"DiscreteDistribution"}
-    to \code{"LatticeDistribution"} if support of \code{from} is a lattice.}
+    \item{coerce}{\code{signature(from = "DiscreteDistribution", 
+                   to = "LatticeDistribution")}: coerce method to class \code{"LatticeDistribution"}
+                   (checks if support is a lattice)}
     \item{Math}{\code{signature(x = "DiscreteDistribution")}: application of a mathematical function, e.g. \code{sin} or
     \code{tan} to this discrete distribution}
     \code{abs}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{abs(x)}.}
@@ -134,7 +138,23 @@ in partiucalar methods for \code{"*"}, \code{"/"},
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
   }
 
-\note{ Working with a computer, we use a finite interval as support which carries at least mass \code{1-getdistrOption("TruncQuantile")}. }
+\note{ Working with a computer, we use a finite interval as support which 
+       carries at least mass \code{1-getdistrOption("TruncQuantile")}. \cr
+       
+       Also, we require that support points have distance at least       
+       \code{getdistrOption("DistrResoltion")}, if this condition fails,
+       upon a suggestion by Jacob van Etten, \email{jacobvanetten@yahoo.com},
+       we use the global option \code{getdistrOption("DistrCollapse")} to
+       decide whether we use collapsing or not. If we do so, we collapse support 
+       points if they are too close to each other, taking
+       the (left most) median among them as new support point which accumulates
+       all the mass of the collapsed points. 
+       With \code{getdistrOption("DistrCollapse")==FALSE}, we at least collapse
+       points according to the result of \code{unique()}, and if after this
+       collapsing, the minimal distance is less than \code{getdistrOption("DistrResoltion")},
+       we throw an error. By \code{getdistrOption("DistrCollapse.Unique.Warn")},
+       we control, whether we throw a warning upon collapsing or not.       
+       }
 
 \seealso{
 \code{\link{Parameter-class}}

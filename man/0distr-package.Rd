@@ -43,12 +43,12 @@ corresponding image distributions.
 \details{
 \tabular{ll}{
 Package: \tab distr\cr
-Version: \tab 2.0.6 \cr
-Date: \tab 2009-02-19 \cr
-Depends: \tab R(>= 2.2.0), methods, graphics, startupmsg, sfsmisc,
-SweaveListingUtils\cr
+Version: \tab 2.1 \cr
+Date: \tab 2009-04-14 \cr
+Depends: \tab R(>= 2.2.0), methods, graphics, startupmsg\cr
+Imports: \tab stats\cr
 LazyLoad: \tab yes\cr
-License: \tab LGPL-3\cr
+License: \tab GPL (version 2 or later)\cr
 URL: \tab http://distr.r-forge.r-project.org/\cr
 }}
 
@@ -111,13 +111,15 @@ Distribution classes
 slots: [<name>(<class>)] 
 img(rSpace), param(OptionalParameter),
 r(function), d(OptionalFunction), p(OptionalFunction), q(OptionalFunction),
-.withSim(logical), .withArith(logical)
+.withSim(logical), .withArith(logical), .logExact(logical), .lowerExact(logical)
+
 
 "Distribution"
 |>"UnivariateDistribution"
 |>|>"UnivarMixingDistribution"
 |>|>|>"UnivarLebDecDistribution"
 |>|>|>|>"AffLinUnivarLebDecDistribution"
+|>|>|>"CompoundDistribution"
 |>|>"AbscontDistribution"
 |>|>|>"AffLinAbscontDistribution"
 |>|>|>"Arcsine"
@@ -239,6 +241,7 @@ Accuracy of these arithmetics is controlled by global options which may
 be inspected / set by \code{distroptions()} and \code{getdistrOption()}, 
 confer \link{distroptions} .
 }
+
 \section{Extension Packages in distrXXX family}{
 Please note that there are extension packages of this packages
 available on CRAN,
@@ -284,11 +287,6 @@ a vignette for packages \pkg{distr}, \pkg{distrSim}, \pkg{distrTEst}, and
 \pkg{distrEx} is included into the mere documentation package \pkg{distrDoc} 
 and may be called by 
 \code{require("distrDoc");vignette("distr")}
-
-a small vignette on how to generate new distributions with packages \pkg{distr}
-and  \pkg{distrEx} is included and may be called by 
-\code{vignette("newDistributions")}
-
 
 %a more detailed manual for \pkg{distr}, \pkg{distrSim}, \pkg{distrTEst}, and \pkg{distrEx} may be downloaded from  
 %\url{http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/distr.pdf}

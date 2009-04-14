@@ -27,7 +27,9 @@ UnivarLebDecDistribution <- function(acPart, discretePart, acWeight, discreteWei
                 r = discretePart@r, d = NULL, q = discretePart@q,
                 mixCoeff = c(acWeight = 0, discreteWeight = 1),
                 mixDistr = new("UnivarDistrList", list(acPart = acPart,
-                                discretePart = discretePart))
+                                discretePart = discretePart)),
+                support = support(discretePart),
+                gaps = gaps(acPart)                
               )
              )}
     if(discreteWeight < getdistrOption("TruncQuantile"))
@@ -36,7 +38,9 @@ UnivarLebDecDistribution <- function(acPart, discretePart, acWeight, discreteWei
                 r = acPart@r, d = NULL, q = acPart@q,
                 mixCoeff = c(acWeight = 1, discreteWeight = 0),
                 mixDistr = new("UnivarDistrList", list(acPart = acPart,
-                                discretePart = discretePart))
+                                discretePart = discretePart)),
+                support = support(discretePart),
+                gaps = gaps(acPart)
               )
              )
 
@@ -58,14 +62,15 @@ UnivarLebDecDistribution <- function(acPart, discretePart, acWeight, discreteWei
 
     supp <- discretePart@support
     gaps <- .mergegaps(acPart@gaps,discretePart@support)
-    mixDistr[[1]]@gaps <- gaps
+    #mixDistr[[1]]@gaps <- gaps
 
     qL1 <- min(getLow(acPart), getLow(discretePart))
     qU1 <- max(getUp(acPart), getUp(discretePart))
     n <- getdistrOption("DefaultNrGridPoints")
     h <- (qU1-qL1)/n
-    xseq <- unique(sort(c(seq(from = qL1, to = qU1, by = h),gaps,supp,
-                   supp-getdistrOption("DistrResolution") )))
+    ep <- getdistrOption("DistrResolution")
+    xseq <- unique(sort(c(seq(from = qL1, to = qU1, by = h),gaps-ep,gaps,
+                   gaps+ep,supp-ep,supp, supp+ep )))
     px.l <- pnew(xseq, lower.tail = TRUE)
     px.u <- pnew(xseq, lower.tail = FALSE)
 
@@ -75,10 +80,12 @@ UnivarLebDecDistribution <- function(acPart, discretePart, acWeight, discreteWei
     qnew <- .makeQNew(xseq, px.l, px.u, FALSE, qL2, qU2)
     .withSim <- acPart@.withSim | discretePart@.withSim
     .withArith <- acPart@.withArith | discretePart@.withArith
+    .lowerExact <- .lowerExact(acPart) & .lowerExact(discretePart)
 
     new("UnivarLebDecDistribution", p = pnew, r = rnew, d = NULL, q = qnew,
          mixCoeff = mixCoeff, mixDistr = mixDistr, .withSim = .withSim,
-         .withArith = .withArith)
+         .withArith = .withArith, .lowerExact = .lowerExact, support = supp,
+         gaps = gaps)
 }
 
 ############################## Accessor / Replacement functions
@@ -123,30 +130,126 @@ setReplaceMethod("acWeight", "UnivarLebDecDistribution",
                  discreteWeight = 1-value)
           obj})
 
+#setMethod("support", "UnivarLebDecDistribution",
+#           function(object) object@mixDistr[[2]]@support)
 
-setMethod("support", "UnivarLebDecDistribution",
-           function(object) object@mixDistr[[2]]@support)
-
-setMethod("gaps", "UnivarLebDecDistribution",
-           function(object) object@mixDistr[[1]]@gaps)
+#setMethod("gaps", "UnivarLebDecDistribution",
+#           function(object) object@mixDistr[[1]]@gaps)
 
 
 setMethod("p.discrete", "UnivarLebDecDistribution",
-           function(object) object@mixDistr[[2]]@p)
+           function(object, CondOrAbs="cond"){ 
+                  CondOrAbs0 <- pmatch(CondOrAbs,c("cond","abs"),nomatch=1)
+                  pd <- object@mixDistr[[2]]@p
+                  if(CondOrAbs0==1)
+                       return(pd)
+                  else {wd <- discreteWeight(object)
+                        return(function(q, lower.tail = TRUE, log.p = FALSE ){
+                               wd * pd(q, lower.tail = lower.tail, log.p = log.p)
+                        })
+                  }   
+           })
+setMethod("d.discrete", "UnivarLebDecDistribution",
+           function(object, CondOrAbs="cond"){ 
+                  CondOrAbs0 <- pmatch(CondOrAbs,c("cond","abs"),nomatch=1)
+                  dd <- object@mixDistr[[2]]@d
+                  if(CondOrAbs0==1)
+                       return(dd)
+                  else {wd <- discreteWeight(object)
+                        return(function(x, log = FALSE ){
+                               wd * dd(x, log = log)
+                        })
+                  }   
+           })
 setMethod("q.discrete", "UnivarLebDecDistribution",
            function(object) object@mixDistr[[2]]@q)
-setMethod("d.discrete", "UnivarLebDecDistribution",
-           function(object) object@mixDistr[[2]]@d)
 setMethod("r.discrete", "UnivarLebDecDistribution",
            function(object) object@mixDistr[[2]]@r)
 setMethod("p.ac", "UnivarLebDecDistribution",
-           function(object) object@mixDistr[[1]]@p)
+           function(object, CondOrAbs="cond"){ 
+                  CondOrAbs0 <- pmatch(CondOrAbs,c("cond","abs"),nomatch=1)
+                  pd <- object@mixDistr[[1]]@p
+                  if(CondOrAbs0==1)
+                       return(pd)
+                  else {wa <- acWeight(object)
+                        return(function(q, lower.tail = TRUE, log.p = FALSE ){
+                               wa * pd(q, lower.tail = lower.tail, log.p = log.p)
+                        })
+                  }   
+           })
+setMethod("d.ac", "UnivarLebDecDistribution",
+           function(object, CondOrAbs="cond"){ 
+                  CondOrAbs0 <- pmatch(CondOrAbs,c("cond","abs"),nomatch=1)
+                  dd <- object@mixDistr[[1]]@d
+                  if(CondOrAbs0==1)
+                       return(dd)
+                  else {wa <- acWeight(object)
+                        return(function(x, log = FALSE ){
+                               wa * dd(x, log = log)
+                        })
+                  }   
+           })
 setMethod("q.ac", "UnivarLebDecDistribution",
            function(object) object@mixDistr[[1]]@q)
-setMethod("d.ac", "UnivarLebDecDistribution",
-           function(object) object@mixDistr[[1]]@d)
 setMethod("r.ac", "UnivarLebDecDistribution",
            function(object) object@mixDistr[[1]]@r)
+
+
+
+setMethod("p.l", "UnivarLebDecDistribution", function(object){
+           ep <- getdistrOption("TruncQuantile")
+           w.d <- discreteWeight(object)
+           w.a <- acWeight(object)   
+           if(w.d<ep) return(p(object))
+           mixCoeff <- c(w.a,w.d)
+           p.a <- p(acPart(object))
+           p.d <- p.l(discretePart(object))
+           return(function(q, lower.tail = TRUE, log.p = FALSE){
+                  p <- cbind(p.a(q, lower.tail = lower.tail),
+                             p.d(q, lower.tail = lower.tail))
+                  p <- as.vector(p%*%mixCoeff)
+                  if(log.p) p <- log(p)
+                  return(p)
+                 })
+       })
+
+### right continuous quantile function
+
+setMethod("q.r", "UnivarLebDecDistribution", function(object){
+    ep <- getdistrOption("TruncQuantile")
+    if(discreteWeight(object)<ep) return(q(object))
+    supp <- support(object)
+    gaps <- gaps(object)
+    aP <- acPart(object)
+    dP <- discretePart(object)
+    pl <- p.l(object)
+    qL1 <- min(getLow(aP), getLow(dP))
+    qU1 <- max(getUp(aP), getUp(dP))
+    n <- getdistrOption("DefaultNrGridPoints")
+    h <- (qU1-qL1)/n
+    xseq <- unique(sort(c(seq(from = qL1, to = qU1, by = h),
+                   gaps-ep,gaps,gaps+ep,
+                   supp-ep,supp, supp+ep )))
+    px.l <- pl(q=xseq, lower.tail = TRUE)
+    px.u <- pl(q=xseq, lower.tail = FALSE)
+
+    qL2 <- min(aP@q(0),dP@q(0))
+    qU2 <- max(aP@q(1),dP@q(1))
+
+    return( .makeQNew(xseq, px.l, px.u, FALSE, qL2, qU2))
+})
+
+
+
+
+
+
+setMethod("prob", "UnivarLebDecDistribution", 
+function(object) {pr0 <- prob(as(object@mixDistr[[2]],"DiscreteDistribution"))
+                  d <- discreteWeight(object)
+                  return(rbind("cond"=pr0,"abs"=d*pr0))})
+                  
+
 
 ############################## setAs relations
 
@@ -273,7 +376,9 @@ setMethod("*", c("UnivarLebDecDistribution","numeric"),
                     q = Distr@q, X0 = e1, mixDistr = Distr@mixDistr,
                     mixCoeff = Distr@mixCoeff,
                     a = e2, b = 0, .withSim  = e1@.withSim,
-                    .withArith = TRUE)
+                    .logExact = .logExact(e1), .lowerExact = .lowerExact(e1),
+                    .withArith = TRUE, support= support(Distr),
+                    gaps = gaps(Distr))
           object})
 
 setMethod("+", c("UnivarLebDecDistribution","numeric"),
@@ -292,7 +397,9 @@ setMethod("+", c("UnivarLebDecDistribution","numeric"),
                     q = Distr@q, X0 = e1, mixDistr = Distr@mixDistr,
                     mixCoeff = Distr@mixCoeff,
                     a = 1, b = e2, .withSim  = e1@.withSim,
-                    .withArith = TRUE)
+                    .withArith = TRUE, support= support(Distr),
+                    .logExact = .logExact(e1), .lowerExact = .lowerExact(e1),
+                    gaps = gaps(Distr))
           object})
 
 #setMethod("*", c("numeric","UnivarLebDecDistribution"),

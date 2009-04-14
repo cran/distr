@@ -12,6 +12,7 @@
 \alias{.qmixfun}
 \alias{.rmixfun}
 \alias{.del0dmixfun}
+\alias{.ULC.cast}
 \alias{.loupmixfun}
 \alias{.make.lattice.es.vector}
 \alias{.presubs}
@@ -49,6 +50,11 @@
 \alias{.csimpsum}
 \alias{.primefun}
 \alias{.IssueWarn}
+\alias{.fillList}
+\alias{.trunc.up}
+\alias{.trunc.low}
+\alias{.modifyqgaps}
+\alias{.DistrCollapse}
 \alias{devNew}
 
 \title{Internal functions of package distr}
@@ -94,12 +100,14 @@ These functions are used internally by package distr.}
 .makeQNew(x, px.l, px.u, notwithLLarg = FALSE, yL , yR, Cont = TRUE)
 .mergegaps(gaps, support)
 .mergegaps2(gaps1, gaps2)
-.pmixfun(mixDistr, mixCoeff)
+.consolidategaps(gaps)
+.pmixfun(mixDistr, mixCoeff, leftright = "right")
 .dmixfun(mixDistr, mixCoeff, withStand = FALSE, supp = NULL)
 .rmixfun(mixDistr, mixCoeff)
-.qmixfun(mixDistr, mixCoeff, Cont = TRUE, pnew)
+.qmixfun(mixDistr, mixCoeff, Cont = TRUE, pnew, gaps = NULL, leftright = "left")
 .del0dmixfun(mixDistr)
 .loupmixfun(mixDistr)
+.ULC.cast(x)
 .expm.d(e1)
 .expm.c(e1)
 .logm.d(e1)
@@ -112,12 +120,17 @@ These functions are used internally by package distr.}
 .csimpsum(fx)
 .primefun(f,x, nm = NULL)
 .IssueWarn(Arith,Sim)
+.fillList(list0, len=length(list0))
+.trunc.up(object, upper)
+.trunc.low(object, lower)
+.modifyqgaps(pfun, qfun, gaps, leftright = "left")
+.DistrCollapse(support, prob, eps = getdistrOption("DistrResolution"))
 devNew(...)
 }
 
 
 \arguments{
-  \item{x}{a (numeric) vector}
+  \item{x}{a (numeric) vector, or (in case of \code{.ULC.cast}) an object of class \code{"AcDcLcDistribution"}}
   \item{y}{a (numeric) vector}
   \item{f}{a function in one (numeric) argument}
   \item{lattice}{a lattice (of class \code{Lattice})}
@@ -131,7 +144,7 @@ devNew(...)
   \item{tol}{an error tolerance (numeric)}
   \item{e1}{a distribution object}
   \item{e2}{a numeric}
-  \item{object}{a distribution object}
+  \item{object}{a distribution object}  
   \item{argList}{an (unevaluated) list of arguments passed to \code{m(object)}  
         where  \code{m} is in \code{d,p,q}}
   \item{stand}{factor for a (Lebesgue) density to integrate to 1}
@@ -179,6 +192,7 @@ devNew(...)
  \item{gaps,gaps1,gaps2}{matrices \code{m} with two columns, 
              such that \code{t(m)}, interpreted as vector, is ordered}         
  \item{support}{support vector of a univariate discrete distribution}         
+ \item{prob}{probability vector for a univariate discrete distribution}         
  \item{mixDistr}{an object of class \code{UnivarDistrList}}
  \item{mixCoeff}{an object of class \code{numeric}; a probability vector}
  \item{pnew}{a function \code{function(q, lower.tail = TRUE, log.p = FALSE}
@@ -187,9 +201,9 @@ devNew(...)
  that the sum of the values of the result evaluated at argument \code{supp} is 1}
  \item{supp}{NULL or \code{numeric}; if \code{withStand} is \code{TRUE} used
  to standardize such that the result is a probability density.}
- \item{p}{slot \code{p} of an object of class \code{"AbscontDistribution"}} 
+ \item{p,pfun}{slot \code{p} of an object of class \code{"AbscontDistribution"}} 
  \item{d}{slot \code{d} of an object of class \code{"AbscontDistribution"}} 
- \item{q}{slot \code{q} of an object of class \code{"AbscontDistribution"}} 
+ \item{q,qfun}{slot \code{q} of an object of class \code{"AbscontDistribution"}} 
  \item{xx}{a given grid of x-values for functions \code{p}, \code{d} to be
  evaluated at}  
  \item{ql,qu}{lower and upper \code{getdistrOption("TruncQuantile")}-quantile of
@@ -204,6 +218,16 @@ devNew(...)
               or logically-``any'' of these slots in a collection of such objects} 
  \item{Sim}{logical; slot \code{.withSim} of a distribution object,
               or logically-``any'' of these slots in a collection of such objects} 
+ \item{list0}{list, the elements of which are to be copied to a new list using
+              recycling if necessary}
+ \item{len}{length of the list to be filled}              
+ \item{lower}{lower truncation point}
+ \item{upper}{upper truncation point}
+ \item{leftright}{character; for slot \code{q}: if partially matched to \code{"right"} 
+                  function will return the right continuous version, else
+                  the left continuous version; for slot \code{p}: if partially 
+                  matched to \code{"left"} the left continuous version, else
+                  the right continuous version;}
  \item{...}{arguments passed through to other functions}
 }
 
@@ -285,6 +309,8 @@ the support slot of a discrete distribution; if necessary, a gap interval
 \code{.mergegaps2} merges two gap matrices of two a.c. distributions \code{X1} 
 and \code{X2} such that in the intervals of the resulting gap matrix, 
 neither \code{X1} nor \code{X2} carries mass.
+\code{.consolidategaps} consolidates a gap matrix, i.e. joins adjacent 
+gap intervals.  
 
 \code{.pmixfun}, \code{.dmixfun}, \code{.rmixfun}, and \code{.qmixfun}
 fill the slots \code{p}, \code{d}, \code{r}, and \code{q}
@@ -297,6 +323,10 @@ the mixing distribution.
 \code{.del0dmixfun} sets (if slot \code{d.ac} is not \code{NULL}) the return
 value of slot function \code{d.ac} of \code{mixDistr} 
 for argument \code{0} to \code{0}.
+
+\code{.ULC.cast} coerces an object of class \code{"AcDcLcDistribution"} to
+class \code{"UnivarLebDecDistribution"}, using \code{simplifyD}.
+
 
 \code{.expm.d,.expm.c} for discrete, resp. a.c. argument \code{e1} fill the 
 slots \code{p}, \code{d}, \code{r}, and \code{q}
@@ -321,6 +351,21 @@ Simpson quadrature method, returning already the function values
 of the prime function on a grid; it is to mimick the behaviour
 of \code{cumsum}. \code{.primefun} is similar but more flexible and
 produces the prime function as a function.
+
+\code{.fillList} fills a new list with the elements of a given list \code{list0}
+                 until length \code{len} is reached using recycling if necessary.
+
+\code{.trunc.up}, \code{.trunc.low}  provide common routines for
+classes \code{DiscreteDistribution} and \code{AbscontDistribution} for 
+one-sided truncation, using (for slot \code{r}) Peter Dalgaard's clever 
+log-tricks as indicated in 
+\url{http://article.gmane.org/gmane.comp.lang.r.general/126112}.
+
+\code{.modifyqgaps} modifies slot \code{q} for objects of class 
+     \code{AbscontDistribution} in the presence of gaps, i.e.; if slot
+     \code{gaps} is not \code{NULL}. If argument \code{leftright} does not
+     partially match \code{"right"} (default) returns the left continuous
+     version of the quantile function, else the right continuous one.
 
 \code{devNew} opens a new device. This function is for back compatibility
 with R versions < 2.8.0.
@@ -367,6 +412,7 @@ with R versions < 2.8.0.
 \code{q(x)(1)}, \code{qu}, the maximal value of 
 \code{q(x)(getdistrOption("TruncQuantile"), lower.tail = FALSE)},
 \code{x} running through the members of \code{mixDistr} in each case.}
+\item{.ULC.cast}{an object of class \code{"UnivarLebDecDistribution"}.}
 \item{.expm.d,.logm.d}{an object of class \code{"DiscreteDistribution"}.} 
 \item{.expm.c,.logm.c}{an object of class \code{"AbscontDistribution"}.} 
 \item{.P2D}{a density \code{d} as function \code{function(x,  log = FALSE)}.}
@@ -377,11 +423,22 @@ with R versions < 2.8.0.
 \item{.csimpsum}{a vector of evaluations of the prime function at the grid points.}
 \item{.primefun}{the prime function as a function.}
 \item{.IssueWarn}{a list with two warnings to be issued each of which may be empty.}
-\item{devNew}{returns the return value of the device opened, usually invisible 'NULL'.}
+\item{.fillList}{a list.}
+\item{.trunc.up,.trunc.low}{a list with elements \code{r,p,d,q} (in this order).}
+\item{.DistrCollapse}{upon a suggestion by Jacob van Etten, 
+       \email{jacobvanetten@yahoo.com}: help function to collapse the support 
+       points of a discrete distributions if they are too close to each other;
+       here argument \code{support} is the (original; already sorted) support
+       and \code{prob} a corresponding probability vector of same length.
+       Criterium for collapsing: a distance smaller than argument
+       \code{eps}.
+       }
+\item{devNew}{returns the return value of the device opened, 
+usually invisible \code{NULL}.}
 }
 
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}
+  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
 

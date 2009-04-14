@@ -1,9 +1,16 @@
 \name{Distribution-class}
 \docType{class}
 \alias{Distribution-class}
+\alias{.logExact}
+\alias{.logExact-methods}
+\alias{.logExact,Distribution-method}
+\alias{.lowerExact}
+\alias{.lowerExact-methods}
+\alias{.lowerExact,Distribution-method}
 
 \title{Class "Distribution"}
-\description{ The \code{Distribution-class} is the mother-class of the class \code{UnivariateDistribution}.}
+\description{ The \code{Distribution-class} is the mother-class of 
+class \code{UnivariateDistribution}.}
 \section{Objects from the Class}{
   Objects can be created by calls of the form \code{new("Distribution")}.
 }
@@ -14,21 +21,44 @@
     \item{\code{param}:}{Object of class \code{"OptionalParameter"}: the parameter }
     \item{\code{r}:}{Object of class \code{"function"}: generates random numbers}
     \item{\code{d}:}{Object of class \code{"OptionalFunction"}: density function}
-    \item{\code{p}:}{Object of class \code{"OptionalFunction"}: cumulative distribution function}
+    \item{\code{p}:}{Object of class \code{"OptionalFunction"}: cumulative 
+    distribution function}
     \item{\code{q}:}{Object of class \code{"OptionalFunction"}: quantile function}
-    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
-    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
+    \item{\code{.withArith}:}{logical: used internally to issue warnings as to 
+            interpretation of arithmetics}
+    \item{\code{.withSim}:}{logical: used internally to issue warnings as to 
+          accuracy}
+    \item{\code{.logExact}:}{logical: used internally to flag the case where 
+    there are explicit formulae for the log version of density, cdf, and 
+    quantile function}
+    \item{\code{.lowerExact}:}{logical: used internally to flag the case where 
+    there are explicit formulae for the lower tail version of cdf and quantile 
+    function}
   }
 }
 
 \section{Methods}{
   \describe{
-    \item{img}{\code{signature(object = "Distribution")}: returns the space of the image}
-    \item{param}{\code{signature(object = "Distribution")}: returns the parameter}
-    \item{r}{\code{signature(object = "Distribution")}: returns the random number generator }
-    \item{d}{\code{signature(object = "Distribution")}: returns the density function }
-    \item{p}{\code{signature(object = "Distribution")}: returns the cumulative distribution function }
-    \item{q}{\code{signature(object = "Distribution")}: returns the quantile function}
+    \item{img}{\code{signature(object = "Distribution")}: returns the space of 
+                 the image}
+    \item{param}{\code{signature(object = "Distribution")}: returns the 
+                 parameter}
+    \item{r}{\code{signature(object = "Distribution")}: returns the random 
+              number generator }
+    \item{d}{\code{signature(object = "Distribution")}: returns the density 
+              function }
+    \item{p}{\code{signature(object = "Distribution")}: returns the cumulative 
+              distribution function }
+    \item{q}{\code{signature(object = "Distribution")}: returns the quantile 
+                function}
+    \item{.logExact}{\code{signature(object = "Distribution")}: returns slot 
+      \code{.logExact} if existing; else tries to convert the object to a newer 
+      version of its class by \code{\link{conv2NewVersion}} and
+      returns the corresponding slot of the converted object.}
+    \item{.lowerExact}{\code{signature(object = "Distribution")}: returns slot 
+       \code{.lowerExact} if existing; else tries to convert the object to a 
+       newer version of its class by \code{\link{conv2NewVersion}} and
+     returns the corresponding slot of the converted object.}
   }
 }
 

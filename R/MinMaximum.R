@@ -195,7 +195,7 @@ setMethod("Minimum",
             px.u <- pnew(xseq, lower.tail = FALSE)
 
             qnew <- .makeQNew(xseq, px.l, px.u, FALSE, qL, qU)
-
+            
             return(AbscontDistribution( r = rnew,
                    d = dnew, p = pnew, q = qnew, gaps = gaps(e1),
                    .withArith = TRUE))

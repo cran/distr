@@ -7,7 +7,8 @@
 \alias{lattice,LatticeDistribution-method}
 \alias{initialize,LatticeDistribution-method}
 \alias{initialize,AffLinLatticeDistribution-method}
-%\alias{coerce,LatticeDistribution,DiscreteDistribution-method}
+\alias{sqrt,LatticeDistribution-method}
+\alias{coerce,LatticeDistribution,DiscreteDistribution-method}
 \alias{coerce,AffLinLatticeDistribution,AffLinDiscreteDistribution-method}
 
 
@@ -53,6 +54,12 @@ function \code{RtoDPQ.d} then approximates the three remaining slots \code{d},
     density function}
     \item{\code{lattice}:}{Object of class \code{"Lattice"}: the lattice 
                            generating the support.}
+    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
+    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
+    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              log version of density, cdf, and quantile function}
+    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              lower tail version of cdf and quantile function}
   }
 }
 \section{Extends}{
@@ -87,11 +94,13 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
     \item{-}{\code{signature(e1 = "LatticeDistribution", 
     e2 = "LatticeDistribution")}: Convolution of two lattice
     distributions. The slots p, d and q are approximated by grids.}
+    \item{\code{sqrt}}{\code{signature(x = "LatticeDistribution")}:  exact 
+         image distribution of \code{sqrt(x)}.}
     \item{\code{lattice}}{accessor method to the corresponding slot.}
-%    \item{\code{coerce}}{\code{signature(from = "LatticeDistribution",
-%    to = "DiscreteDistribution")}: coerces an object from 
-%    \code{"LatticeDistribution"} to \code{"DiscreteDistribution"}
-%    thereby cancelling out support points with probability 0.}
+    \item{\code{coerce}}{\code{signature(from = "LatticeDistribution",
+    to = "DiscreteDistribution")}: coerces an object from 
+    \code{"LatticeDistribution"} to \code{"DiscreteDistribution"}
+    thereby cancelling out support points with probability 0.}
   }
 }
 

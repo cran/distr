@@ -112,6 +112,23 @@ setMethod("showobj", "UnivarMixingDistribution",
             }
           )
 
+setMethod("showobj", "CompoundDistribution",
+          function(object, className = class(object)[1]){
+              txt <- gettextf("An object of class \"%s\"\n\n", className)
+              txt <- c(txt,
+                     gettextf("The frequency distribution is:\n%s",
+                              paste(showobj(NumbOfSummandsDistr(object)), collapse="")))
+              txt <- c(txt,
+                     gettextf("The summands distribution is/are:\n%s",
+                              paste(showobj(SummandsDistr(object)), collapse="")))
+              txt <- c(txt,
+                     gettextf("\nThis Distribution is:\n%s",
+                              paste(showobj(simplifyD(object)), collapse="")))                                            
+            return(txt)
+            }
+          )
+
+
 #------ UnivarLebDecDistribution ---------- #
 
 setMethod("show", "UnivarLebDecDistribution",

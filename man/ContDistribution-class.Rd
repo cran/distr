@@ -6,6 +6,7 @@
 \alias{sqrt,AbscontDistribution-method}
 \alias{initialize,AbscontDistribution-method}
 \alias{initialize,AffLinAbscontDistribution-method}
+\alias{sqrt,AbscontDistribution-method}
 
 \title{Class "AbscontDistribution"}
 \description{The \code{AbscontDistribution}-class is the mother-class of the classes \code{Beta}, \code{Cauchy}, 
@@ -36,8 +37,14 @@ The result of these calls is an absolutely continuous distribution.
           may be inspected by the accessor \code{\link{gaps}()} and modified by a corresponding
           replacement method. It may also be filled automatically by 
          \code{\link{setgaps}()}. For saved objects from earlier versions, we provide functions
-         \code{\link{isOldVersion}} and \code{\link{conv2NewVersion}}.}}
-}
+         \code{\link{isOldVersion}} and \code{\link{conv2NewVersion}}.}
+    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
+    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
+    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              log version of density, cdf, and quantile function}
+    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
+                              lower tail version of cdf and quantile function}
+}}
 \section{Extends}{
 Class \code{"UnivariateDistribution"}, directly. \cr
 Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
@@ -56,6 +63,7 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
     \code{log10}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{log10(x)}.}
     \code{gamma}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{gamma(x)}.}
     \code{lgamma}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{lgamma(x)}.}
+    \code{sqrt}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{sqrt(x)}.}
     \item{-}{\code{signature(e1 = "AbscontDistribution")}: application of `-' to this absolutely continuous distribution}
     \item{*}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}: multiplication of this absolutely continuous 
     distribution by an object of class `numeric'}

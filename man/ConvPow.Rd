@@ -23,11 +23,12 @@
 
 \usage{
   convpow(D1,...)
-  \S4method{convpow}{AcDcLcDistribution}(D1,N)
   \S4method{convpow}{AbscontDistribution}(D1,N)
-  \S4method{convpow}{LatticeDistribution}(D1,N)
+  \S4method{convpow}{LatticeDistribution}(D1,N, 
+                     ep = getdistrOption("TruncQuantile"))
   \S4method{convpow}{DiscreteDistribution}(D1,N)
-  \S4method{convpow}{AcDcLcDistribution}(D1,N)
+  \S4method{convpow}{AcDcLcDistribution}(D1,N, 
+                     ep = getdistrOption("TruncQuantile"))
 }
 
 \arguments{
@@ -35,6 +36,13 @@
             \code{"LatticeDistribution"} or of \code{"UnivarLebDecDistribution"}}
   \item{\dots}{not yet used; meanwhile takes up N }
   \item{N}{ an integer or 0 (for 0 returns Dirac(0), for 1 D1)}
+  \item{ep}{ numeric of length 1 in (0,1) ---
+             for \code{"LatticeDistribution"}: support points will be 
+             cancelled if their probability is less than \code{ep};
+             for \code{"UnivarLebDecDistribution"}: if \code{(acWeight(object)<ep)} 
+             we work with the discrete parts only, and, similarly, if
+             \code{(discreteWeight(object)<ep)} we with the absolutely continuous 
+             parts only.}
   }
 \details{
   in the methods implemented a second argument \code{N} is obligatory;

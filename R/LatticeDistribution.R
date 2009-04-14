@@ -189,17 +189,47 @@ function(e1,e2){
             ### Lattice Calculations:
             w1 <- width(lattice(e1))
             w2 <- width(lattice(e2))
+            sup1 <- support(e1)
+            sup2 <- support(e2)
+            maxl <- length(sup1)*length(sup2)
+                              ### length of product grid
+            csup <- unique(sort(c(sup1,sup2)))
+                              ### grid width of convolution grid
 
-            if (abs(abs(w1)-abs(w2)) < getdistrOption("DistrResolution")){
-               w <- w1
-               ###  else need common lattice
-            }else{
+            w <- min(diff(csup))
+            commonsup <- unique(sort(c(outer(sup1,sup2,"+"))))
+                              ### grid width of convolution grid
+            dcs <- abs(diff(commonsup))
+            mw <- min(dcs[dcs>getdistrOption("DistrResolution")])
+            if (abs(abs(w1)-abs(w2)) > getdistrOption("DistrResolution")){
                    W <- sort(abs(c(w1,w2)))
-                   if (W[2] %% W[1] > getdistrOption("DistrResolution"))
-                       return(as(e1, "DiscreteDistribution") +
-                              as(e2, "DiscreteDistribution"))
+                   if (W[2] %% W[1] > getdistrOption("DistrResolution")){
+
+                         ## check whether arrangement on common grid really
+                         ## saves something
+
+                         prob1 <- d(e1)(sup1)
+                         prob2 <- d(e2)(sup2)
+                              ###  convolutional grid
+                         comsup <- seq(min(commonsup),max(commonsup), by = mw)
+
+                         fct <- function(sup0, prob0, bw){
+                              ### expand original grid,prob onto new width:
+                                    sup00 <- seq(min(sup0), max(sup0), by = mw)
+                                    prb0 <- 0 * sup00
+                                    ind0 <- sup00 %in% sup0
+                                    prb0[ind0] <- prob0
+                                    return(LatticeDistribution(supp = sup00,
+                                                               prob = prb0))
+                                    }
+                        if(length(comsup) < maxl)
+                           return( fct(sup1,prob1,mw)  + fct(sup2,prob2,mw))
+                        else
+                           return(as(e1, "DiscreteDistribution") +
+                                  as(e2, "DiscreteDistribution"))
+                   }
                    else
-                       w <- W[1] #generate common lattice / support
+                       w <- mw #generate common lattice / support
                   }
 
             newlat <- NULL
@@ -252,7 +282,7 @@ function(e1,e2){
                                     getdistrOption("TruncQuantile")/2)+1,
                                length(supp1)
                            )
-                rsum.l <- 1 + sum( cumsum(newd) < 
+                rsum.l <- 1 + sum( cumsum(newd) <
                                    getdistrOption("TruncQuantile")/2)
                 newd <- newd[rsum.l:rsum.u]
                 newd <- newd/sum(newd)
@@ -263,12 +293,21 @@ function(e1,e2){
                                length(supp1)
                            )
                 rsum.l <- 1 + sum( cumsum(newd) < .Machine$double.eps)
+
                 newd <- newd[rsum.l:rsum.u]
                 newd <- newd/sum(newd)
-                supp1 <- supp1[rsum.l:rsum.u]}
+                supp1 <- supp1[rsum.l:rsum.u]
+            }
+            supp2 <- supp1[newd > getdistrOption("TruncQuantile")]
+            newd2 <- newd[newd  > getdistrOption("TruncQuantile")]
+            newd2 <- newd2/sum(newd2)
 
-            return(LatticeDistribution(supp = supp1, prob = newd,
-                                       lattice = newlat, .withArith = TRUE))
+            if( length(supp1) >= 2 * length(supp2))
+               return(DiscreteDistribution(supp = supp2, prob = newd2,
+                                           .withArith = TRUE))
+            else
+               return(LatticeDistribution(supp = supp1, prob = newd,
+                                          .withArith = TRUE))
           })
 
 ## extra methods

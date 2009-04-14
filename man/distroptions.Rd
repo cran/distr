@@ -14,6 +14,9 @@
 \alias{withSweave}
 %\alias{simplifyD}
 \alias{withgaps}
+\alias{DistributionAggregate}
+\alias{DistributionAggregate.Unique.Warn}
+
 
 \title{
   functions to change the global variables of the package `distr'
@@ -49,7 +52,7 @@ getdistrOption(x)
 \describe{
 \item{\code{DefaultNrGridPoints}}{default number of grid points in integration, default value: \code{2^12}}
 \item{\code{DistrResolution}}{minimal spacing between two mass points in a discrete distribution, default value: \code{1e-6}}
-\item{\code{DistrCollapse}}{logical; in convolving discrete distributions, shall support points
+\item{\code{DistrCollapse}}{logical; in discrete distributions, shall support points
 with distance smaller than \code{DistrResolution} be collapsed; default value:  \code{TRUE}}
 \item{\code{TruncQuantile}}{argument for \code{q}-slot at which to truncate; also, for discrete distributions, 
  support is restricted to [\code{q(TruncQuantile)},\code{q(1-TruncQuantile)}], default value: \code{1e-5}}
@@ -71,6 +74,10 @@ on corresponding cdf's or densities; default value: \code{TRUE}}
    ---default \code{TRUE}}
   \item{\code{simplifyD}}{ controls whether in the return value of arithmetic
   operations there is a call to \code{simplifyD} or not ---default \code{TRUE}}
+\item{\code{DistrCollapse.Unique.Warn}}{controls whether there is a warning
+      whenever collapsing occurs or when two points are collapsed by a call to
+      \code{unique()} (default behaviour if \code{DistrCollapse} is \code{FALSE});
+      ---default \code{FALSE}}
 }
 } 
 \examples{

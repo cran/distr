@@ -52,7 +52,7 @@ legend("topleft", legend=c("exact", "FFT"),
 
 ## quantile functions
 x <- seq(from = eps, to = 1-eps, length = 1000)
-plot("topleft", type = "l", lwd = 5)
+plot(x, q(AB)(x), type = "l", lwd = 5) 
 lines(x , q(AB1)(x), col = "orange", lwd = 1) 
 title("Quantile functions")
 legend(0, q(AB)(eps, lower.tail = FALSE), 
