@@ -129,6 +129,7 @@ inCx <- sapply(inp,
                inC <- gsub(frompat[i],totxt,inC)
            }else inC <- gsub(frompat[i], topat[[i]], inC)
          }
+      return(inC)
     })
 if (length(inCx) > 1) {
    inCx <- paste(inCx, c(rep(",", length(inCx)-1), ""),
