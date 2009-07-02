@@ -47,6 +47,9 @@
 \usepackage{ifpdf}
 %
 \usepackage{amssymb}
+\usepackage{url}
+%
+%
 \usepackage[%
 baseurl={r-forge.r-project.org},%
 pdftitle={How to generate new distributions in packages distr, distrEx},%
@@ -65,9 +68,9 @@ pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
 \newcommand{\N}{\mathbb{N}}
 %
 % -------------------------------------------------------------------------------
+\RequirePackage{fancyvrb}
 \RequirePackage{listings}
-\usepackage{Sweave}
-% -------------------------------------------------------------------------------
+%\usepackage{Sweave}
 \SweaveOpts{keep.source=TRUE}
 % -------------------------------------------------------------------------------
 <<SweaveListingsPreparations, results=tex, echo=FALSE>>=
@@ -402,6 +405,9 @@ Ruckdeschel P., Kohl M., Stabla T., and Camphausen F.
 %\newblock See also {http://www.uni-bayreuth.de/departments/math/org/mathe7/RUCKDESCHEL/pubs/distr.pdf}
 
 \end{thebibliography}
+<<cleanup, echo=FALSE>>=
+unloadNamespace("SweaveListingUtils")
+@
 
 % -------------------------------------------------------------------------------
 \end{document}
