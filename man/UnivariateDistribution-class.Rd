@@ -12,25 +12,31 @@
 }
 \section{Slots}{
   \describe{
-    \item{\code{img}:}{Object of class \code{"Reals"}:
+    \item{\code{img}}{Object of class \code{"Reals"}:
       the space of the image of this distribution which has dimension 1
       and the name "Real Space"} 
-    \item{\code{param}:}{Object of class \code{"Parameter"}:
+    \item{\code{param}}{Object of class \code{"Parameter"}:
       the parameter of this distribution}
-    \item{\code{r}:}{Object of class \code{"function"}:
+    \item{\code{r}}{Object of class \code{"function"}:
       generates random numbers}
-    \item{\code{d}:}{Object of class \code{"function"}:
+    \item{\code{d}}{Object of class \code{"function"}:
       density function}
-    \item{\code{p}:}{Object of class \code{"function"}:
+    \item{\code{p}}{Object of class \code{"function"}:
       cumulative distribution function}
-    \item{\code{q}:}{Object of class \code{"function"}:
+    \item{\code{q}}{Object of class \code{"function"}:
       quantile function}
-    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
-    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
-    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              log version of density, cdf, and quantile function}
-    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              lower tail version of cdf and quantile function}
+    \item{\code{.withArith}}{logical: used internally to issue warnings as to 
+            interpretation of arithmetics}
+    \item{\code{.withSim}}{logical: used internally to issue warnings as to 
+          accuracy}
+    \item{\code{.logExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the log version of density, cdf, and 
+    quantile function}
+    \item{\code{.lowerExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the lower tail version of cdf and quantile 
+    function}
+    \item{\code{Symmetry}}{object of class \code{"DistributionSymmetry"};
+     used internally to avoid unnecessary calculations.}
   }
 }
 \section{Extends}{

@@ -92,10 +92,16 @@ setMethod("Truncate", "AbscontDistribution",
 
             qnew <- .makeQNew(xseq, px.l, px.u, FALSE, qL2, qU2)
 
-            return(AbscontDistribution( r = rnew, gaps = newgaps,
+            erg <- AbscontDistribution( r = rnew, gaps = newgaps,
                    d = dnew, p = pnew, q = qnew, .withArith = TRUE,
-                   .withSim = object@.withSim, 
-                   .lowerExact = .lowerExact(object)))
+                   .withSim = object@.withSim,  
+                   .lowerExact = .lowerExact(object))
+
+            if(is(object@Symmetry,"SphericalSymmetry"))
+                    if(.isEqual(lower+upper,2*SymmCenter(object@Symmetry))) 
+                       erg@Symmetry <- SphericalSymmetry(SymmCenter(object@Symmetry))        
+
+            return(erg)
           })
 
 setMethod("Truncate", "LatticeDistribution",
@@ -154,6 +160,9 @@ setMethod("Truncate", "LatticeDistribution",
                           .withArith = TRUE, .withSim = object@.withSim,
                           .logExact = TRUE, .lowerExact = .lowerExact(object),
                           support = support))
+                if(is(object@Symmetry,"SphericalSymmetry"))
+                      if(.isEqual(lower+upper,2*SymmCenter(object@Symmetry))) 
+                       X@Symmetry <- SphericalSymmetry(SymmCenter(object@Symmetry))        
                 return(X)
                }
             }
@@ -171,10 +180,14 @@ setMethod("Truncate", "DiscreteDistribution",
             if(! length(newsupport))
                stop("too little mass between args 'lower' and 'upper'")
             pnewsupport <- d(object)(newsupport)/sum(d(object)(newsupport))
-            DiscreteDistribution(supp = newsupport, prob = pnewsupport,
+            erg <- DiscreteDistribution(supp = newsupport, prob = pnewsupport,
                      .withArith = TRUE, .withSim = object@.withSim,
                      .lowerExact = .lowerExact(object), 
                      .logExact = .logExact(object))
+            if(is(object@Symmetry,"SphericalSymmetry"))
+               if(.isEqual(lower+upper,2*SymmCenter(object@Symmetry))) 
+                  erg@Symmetry <- SphericalSymmetry(SymmCenter(object@Symmetry))        
+            erg      
           })
 
 setMethod("Truncate", "UnivarLebDecDistribution",
@@ -198,4 +211,8 @@ setMethod("Truncate", "UnivarLebDecDistribution",
             if(withSimplify) Dnew <- simplifyD(Dnew)
             Dnew@.lowerExact  <- .lowerExact(aD) && .lowerExact(dD)
             Dnew@.logExact <- .logExact(aD) && .logExact(dD)
+            
+            if(is(object@Symmetry,"SphericalSymmetry"))
+               if(.isEqual(lower+upper,2*SymmCenter(object@Symmetry))) 
+                  Dnew@Symmetry <- SphericalSymmetry(SymmCenter(object@Symmetry))        
             Dnew})

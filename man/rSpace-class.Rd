@@ -8,7 +8,7 @@ take naturals as values. rSpace is the mother-class of the class EuclideanSpace.
 \section{Objects from the Class}{A virtual Class: No objects may be created from it.}
 \section{Slots}{
   \describe{
-    \item{\code{name}:}{Object of class \code{"character"}: the name of the space }
+    \item{\code{name}}{Object of class \code{"character"}: the name of the space }
   }
 }
 \section{Methods}{

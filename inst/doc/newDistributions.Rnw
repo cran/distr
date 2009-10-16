@@ -19,9 +19,9 @@
 \usepackage{svn-multi}
 % Version control information:
 \svnidlong
-{$HeadURL: svn+ssh://ruckdeschel@svn.r-forge.r-project.org/svnroot/distr/pkg/distr/inst/doc/newDistributions.Rnw $}
-{$LastChangedDate: 2009-03-24 11:49:33 +0100 (Di, 24 Mrz 2009) $}
-{$LastChangedRevision: 439 $}
+{$HeadURL: svn+ssh://stamats@svn.r-forge.r-project.org/svnroot/distr/branches/distr-2.2/pkg/distr/inst/doc/newDistributions.Rnw $}
+{$LastChangedDate: 2009-08-21 00:41:15 +0200 (Fr, 21. Aug 2009) $}
+{$LastChangedRevision: 536 $}
 {$LastChangedBy: ruckdeschel $}
 %\svnid{$Id: example_main.tex 146 2008-12-03 13:29:19Z martin $}
 % Don't forget to set the svn property 'svn:keywords' to
@@ -46,10 +46,8 @@
 %
 \usepackage{ifpdf}
 %
-\usepackage{amssymb}
 \usepackage{url}
-%
-%
+\usepackage{amssymb}
 \usepackage[%
 baseurl={r-forge.r-project.org},%
 pdftitle={How to generate new distributions in packages distr, distrEx},%
@@ -70,7 +68,8 @@ pagecolor=darkblue,raiselinks,plainpages,pdftex]{hyperref}
 % -------------------------------------------------------------------------------
 \RequirePackage{fancyvrb}
 \RequirePackage{listings}
-%\usepackage{Sweave}
+%\usepackage{Sweave} no longer needed
+% -------------------------------------------------------------------------------
 \SweaveOpts{keep.source=TRUE}
 % -------------------------------------------------------------------------------
 <<SweaveListingsPreparations, results=tex, echo=FALSE>>=
@@ -408,7 +407,6 @@ Ruckdeschel P., Kohl M., Stabla T., and Camphausen F.
 <<cleanup, echo=FALSE>>=
 unloadNamespace("SweaveListingUtils")
 @
-
 % -------------------------------------------------------------------------------
 \end{document}
 % -------------------------------------------------------------------------------

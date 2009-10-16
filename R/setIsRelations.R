@@ -46,13 +46,14 @@ setAs("DiscreteDistribution", "LatticeDistribution",
       function(from){
         if(!.is.vector.lattice(from@support))
             return(from)
-        else
-            return(new("LatticeDistribution", r = from@r, d = from@d, 
-                       q = from@q, p = from@p, support = from@support, 
-                       lattice = .make.lattice.es.vector(from@support), 
-                      .withArith = FALSE, .withSim = FALSE, img = from@img,
-                      param = from@param,.lowerExact = .lowerExact(from),
-                      .logExact = .logExact(from)))
+        else{ to <- new("LatticeDistribution")
+              slotNames <- slotNames(from)
+              lst <- sapply(slotNames, function(x) slot(from,x))
+              names(lst) <- slotNames
+              lst$lattice <- .make.lattice.es.vector(from@support)
+              for (i in 1: length(lst))
+                   slot(to, name = names(lst)[i]) <- lst[[i]]
+              return(to)}
       })
 #setIs("DiscreteDistribution", "LatticeDistribution",
 #      test = function(object) .is.vector.lattice(support(object)),

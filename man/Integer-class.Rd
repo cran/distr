@@ -12,7 +12,7 @@ new("Integer",
 }
 \section{Slots}{
 \describe{
-    \item{\code{.Data}:}{Object of class \code{"numeric"}}
+    \item{\code{.Data}}{Object of class \code{"numeric"}}
   }
 }
 \section{Extends}{

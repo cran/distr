@@ -78,29 +78,35 @@ Objects can be created by calls of the form
 }
 \section{Slots}{
   \describe{
-    \item{\code{mixCoeff}:}{Object of class \code{"numeric"}: a vector of length
+    \item{\code{mixCoeff}}{Object of class \code{"numeric"}: a vector of length
             2 of probabilities for the respective a.c. and discrete part of
             the object}
-    \item{\code{mixDistr}:}{Object of class \code{"UnivarDistrList"}: a list of
+    \item{\code{mixDistr}}{Object of class \code{"UnivarDistrList"}: a list of
     univariate distributions containing the a.c. and discrete components; must be of
     length 2; the first component must be of class \code{"AbscontDistribution"},
     the second of class \code{"DiscreteDistribution"}.}
-    \item{\code{img}:}{Object of class \code{"Reals"}: the space of the image of this distribution which has dimension 1
+    \item{\code{img}}{Object of class \code{"Reals"}: the space of the image of this distribution which has dimension 1
     and the name "Real Space" }
-    \item{\code{param}:}{Object of class \code{"Parameter"}: the parameter of this distribution, having only the
+    \item{\code{param}}{Object of class \code{"Parameter"}: the parameter of this distribution, having only the
     slot name "Parameter of a discrete distribution" }
-    \item{\code{r}:}{Object of class \code{"function"}: generates random numbers}
-    \item{\code{d}:}{fixed to \code{NULL}}
-    \item{\code{p}:}{Object of class \code{"function"}: cumulative distribution function}
-    \item{\code{q}:}{Object of class \code{"function"}: quantile function}
-    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
-    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
-    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              log version of density, cdf, and quantile function}
-    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              lower tail version of cdf and quantile function}
-    \item{\code{support}:}{numeric vector --- the support slot of the discrete part}
-    \item{\code{gaps}:}{(numeric) matrix or \code{NULL}; --- the gaps slot of 
+    \item{\code{r}}{Object of class \code{"function"}: generates random numbers}
+    \item{\code{d}}{fixed to \code{NULL}}
+    \item{\code{p}}{Object of class \code{"function"}: cumulative distribution function}
+    \item{\code{q}}{Object of class \code{"function"}: quantile function}
+    \item{\code{.withArith}}{logical: used internally to issue warnings as to 
+            interpretation of arithmetics}
+    \item{\code{.withSim}}{logical: used internally to issue warnings as to 
+          accuracy}
+    \item{\code{.logExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the log version of density, cdf, and 
+    quantile function}
+    \item{\code{.lowerExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the lower tail version of cdf and quantile 
+    function}
+    \item{\code{Symmetry}}{object of class \code{"DistributionSymmetry"};
+     used internally to avoid unnecessary calculations.}
+    \item{\code{support}}{numeric vector --- the support slot of the discrete part}
+    \item{\code{gaps}}{(numeric) matrix or \code{NULL}; --- the gaps slot of 
                          the absolutely continuous part}
   }
 }
@@ -158,19 +164,19 @@ class \code{"Distribution"} by class \code{"UnivariateDistribution"}.
       create a \code{"UnivarLebDecDistribution"} object from a \code{"AbscontDistribution"} object}
     \item{coerce}{\code{signature(from = "DiscreteDistribution", to = "UnivarLebDecDistribution")}:
       create a \code{"UnivarLebDecDistribution"} object from a \code{"DiscreteDistribution"} object}
-    \item{Math}{\code{signature(x = "UnivarLebDecDistribution")}: application of a mathematical function, e.g. \code{sin} or
-    \code{tan} to this discrete distribution}
-    \code{abs}{\code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{abs(x)}.}
-    \code{exp}{\code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{exp(x)}.}
-    \code{sign}{\code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{sign(x)}.}
-    \code{sign}{\code{signature(x = "AcDcLcDistribution")}:  exact image distribution of \code{sign(x)}.}
-    \code{sqrt}{\code{signature(x = "AcDcLcDistribution")}:  exact image distribution of \code{sqrt(x)}.}
-    \code{log}{\code{signature(x = "UnivarLebDecDistribution")}:  (with optional further argument \code{base}, 
-    defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.}
-    \code{log10}{\code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{log10(x)}.}
-    \code{sqrt}{\code{signature(x = "UnivarLebDecDistribution")}:  exact 
-         image distribution of \code{sqrt(x)}.}
-    \code{sqrt}{\code{signature(x = "AcDcLcDistribution")}:  exact image distribution of \code{sqrt(x)}.}
+    \item{Math}{\code{signature(x = "UnivarLebDecDistribution")}: application of a mathematical function, e.g. \code{sin} or \code{tan} to this discrete distribution
+    \itemize{
+      \item \code{abs}: \code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{abs(x)}.
+      \item \code{exp}: \code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{exp(x)}.
+      \item \code{sign}: \code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{sign(x)}.
+      \item \code{sign}: \code{signature(x = "AcDcLcDistribution")}:  exact image distribution of \code{sign(x)}.
+      \item \code{sqrt}: \code{signature(x = "AcDcLcDistribution")}:  exact image distribution of \code{sqrt(x)}.
+      \item \code{log}: \code{signature(x = "UnivarLebDecDistribution")}:  (with optional further argument \code{base}, defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.
+      \item \code{log10}: \code{signature(x = "UnivarLebDecDistribution")}:  exact image distribution of \code{log10(x)}.
+      \item \code{sqrt}: \code{signature(x = "UnivarLebDecDistribution")}:  exact 
+          image distribution of \code{sqrt(x)}.
+      \item \code{sqrt}: \code{signature(x = "AcDcLcDistribution")}:  exact image distribution of \code{sqrt(x)}.
+    }}
     \item{-}{\code{signature(e1 = "UnivarLebDecDistribution")}: application of `-' to this distribution}
     \item{*}{\code{signature(e1 = "UnivarLebDecDistribution", e2 = "numeric")}: multiplication of this distribution
     by an object of class `numeric'}
@@ -203,7 +209,7 @@ To enhance accuracy of several functionals on distributions,
   (of class \code{"UnivarLebDecDistribution"}), to capture the fact 
   that the object has the same distribution as \code{a * X0 + b}. This is 
   the class of the return value of methods 
-  \itemize{
+  \describe{
     \item{-}{\code{signature(e1 = "UnivarLebDecDistribution")}}
     \item{*}{\code{signature(e1 = "UnivarLebDecDistribution", e2 = "numeric")}}
     \item{/}{\code{signature(e1 = "UnivarLebDecDistribution", e2 = "numeric")}}

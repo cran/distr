@@ -12,9 +12,9 @@ Usually an object of this class is not needed on its own, it is generated automa
 }
 \section{Slots}{
   \describe{
-    \item{\code{Max}:}{Object of class \code{"numeric"}: the Max of a uniform distribution }
-    \item{\code{Min}:}{Object of class \code{"numeric"}: the Min of a uniform distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{Max}}{Object of class \code{"numeric"}: the Max of a uniform distribution }
+    \item{\code{Min}}{Object of class \code{"numeric"}: the Min of a uniform distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

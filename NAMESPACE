@@ -45,6 +45,11 @@ exportClasses("UnivDistrListOrDistribution")
 exportClasses("CompoundDistribution")
 exportClasses("DistrList", 
               "UnivarDistrList")
+exportClasses("OptionalNumeric", "PosSemDefSymmMatrix",
+              "PosDefSymmMatrix",
+              "Symmetry", "DistributionSymmetry",
+              "NoSymmetry", "EllipticalSymmetry", "SphericalSymmetry",
+              "DistrSymmList")
 exportMethods("Max", "Max<-", "Min", "Min<-", "d", "df", 
               "df<-", "df1", "df1<-", "df2", 
               "df2<-", "dimension", "dimension<-", "name", 
@@ -76,9 +81,15 @@ exportMethods("mixCoeff", "mixCoeff<-", "mixDistr", "mixDistr<-",
               "p.ac", "d.ac", "q.ac", "r.ac")
 exportMethods("decomposePM", "simplifyD", "showobj")
 exportMethods("Truncate","Minimum","Maximum","Huberize")
-exportMethods(".logExact", ".lowerExact")
+exportMethods("solve", "sqrt")
+exportMethods("type", "SymmCenter", "Symmetry", ".logExact", ".lowerExact")
 export("UnivarMixingDistribution", "UnivarLebDecDistribution")
 export("RtoDPQ.LC", "flat.LCD", "flat.mix")
 exportMethods("abs","exp","^")
 exportMethods("NumbOfSummandsDistr","SummandsDistr")
 export("CompoundDistribution")
+export("PosDefSymmMatrix","PosSemDefSymmMatrix")
+export("NoSymmetry", "EllipticalSymmetry", "SphericalSymmetry",
+       "DistrSymmList") 
+export("qqbounds")
+exportMethods("qqplot")

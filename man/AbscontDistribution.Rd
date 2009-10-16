@@ -4,24 +4,8 @@
 \title{Generating function "AbscontDistribution"}
 \description{Generates an object of class  \code{"AbscontDistribution"}}
 
-\synopsis{AbscontDistribution(r = NULL, d = NULL, p = NULL, q = NULL,
-                   gaps = NULL, param = NULL, img = new("Reals"),
-                   .withSim = FALSE, .withArith = FALSE,
-                    .lowerExact = FALSE, .logExact = FALSE,
-                   withgaps = getdistrOption("withgaps"),
-                   low1 = NULL, up1 = NULL, low = -Inf, up =Inf,
-                   withStand = FALSE,
-                   ngrid = getdistrOption("DefaultNrGridPoints"),
-                   ep = getdistrOption("TruncQuantile"),
-                   e = getdistrOption("RtoDPQ.e"))
-}
 \usage{
-  AbscontDistribution(r)
-  AbscontDistribution(r = NULL, d)
-  AbscontDistribution(r = NULL, d = NULL, p)
-  AbscontDistribution(r = NULL, d = NULL, p = NULL, d)
-  AbscontDistribution(r, d, p, q)
-  AbscontDistribution(r = NULL, d = NULL, p = NULL, q = NULL,
+AbscontDistribution(r = NULL, d = NULL, p = NULL, q = NULL,
                    gaps = NULL, param = NULL, img = new("Reals"),
                    .withSim = FALSE, .withArith = FALSE,
                     .lowerExact = FALSE, .logExact = FALSE,
@@ -30,7 +14,8 @@
                    withStand = FALSE,
                    ngrid = getdistrOption("DefaultNrGridPoints"),
                    ep = getdistrOption("TruncQuantile"),
-                   e = getdistrOption("RtoDPQ.e"))
+                   e = getdistrOption("RtoDPQ.e"),
+                   Symmetry = NoSymmetry())
 }
 \arguments{
   \item{r}{slot \code{r} to be filled} 
@@ -59,8 +44,21 @@
                      part is calculated exactly, avoing a ``\code{1-.}''.}
   \item{.logExact}{normally not set by the user: whether in determining slots \code{d,p,q},
          we make particular use of a logarithmic representation to enhance accuracy.}
+  \item{Symmetry}{you may help \R in calculations if you tell it whether
+    the distribution is non-symmetric (default) or symmetric with respect
+    to a center; in this case use \code{Symmetry=SphericalSymmetry(center)}.}
 }
 \details{
+  Typical usages are
+  \preformatted{
+  AbscontDistribution(r)
+  AbscontDistribution(r = NULL, d)
+  AbscontDistribution(r = NULL, d = NULL, p)
+  AbscontDistribution(r = NULL, d = NULL, p = NULL, d)
+  AbscontDistribution(r, d, p, q)
+  }
+
+
 Minimally, only one of the slots \code{r}, \code{d}, \code{p} or \code{q} needs to be given as argument.
 The other non-given slots are then reconstructed according to the following scheme:
 

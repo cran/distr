@@ -1,7 +1,69 @@
 ######################################################################
 #  News: to package distr 
 ######################################################################
+
+(first two numbers of package versions do not necessarily reflect 
+ package-individual development, but rather are chosen for the 
+ distrXXX family as a whole in order to ease updating "depends" 
+ information)
  
+##############
+v 2.2
+##############
+
+user-visible CHANGES:
+
++ moved Distribution symmetry classes and corresponding methods/functions from distrMod to distr 
+  * introduced new slot "Symmetry" (of Class "DistributionSymmetry") in class Distribution 
+  * adapted all algorithms in distr (arithmetics; generators) to take care about this new slot
+
+
++ (sort of) version management
+  * enhanced conv2NewVersion --- did not work before as intended in cases where
+    there is a particular initialized method with less arguments...
+  * correspondingly .lowerExact, .logExact Symmetry methods now are exported 
+  * .lowerExact, .logExact methods now issue a warning before coercing to new version and 
+    return corresponding slot of converted object
+  * corrected some small bug in demo ConvolutionNormalDistr.R
+  * method for UnivarMixingDistribution 
+
++ enhanced abs() 
+  * for ContDistribution / DiscreteDistribution
+  * for ContDistribution now forces argument x --- caused errors in mad() for instance
+
++ in distr generating functions [Univar]DistrList() gain Dlist argument
+
++ plotting:
+  * new diagnostic function qqplot to check the compatibility of two distributions
+    + special method for first argument "UnivariateDistribution" (to be checked
+      for compatibility) and for second argument of class "UnivariateDistribution"
+      (H_0 distribution)
+    + comes with corresponding (pointwise/simultaneous) confidence intervals
+
+
+GENERAL ENHANCEMENTS:
+
++ added tests/Examples folder with file distr-Ex.Rout.save to have
+  some automatic testing
++ added field "Encoding: latin1" to all DESCRIPTION files in order to avoid problems 
+  with e.g. Windows locale when svn replaces $LastChangedDate
++ added TOBEDONE (sic!) files for each package (by accident also in trunc; these are empty so far)
++ vignette: 
+  * included svn-multi style files to /inst/doc folders for upload on CRAN
+
+BUGFIXES:
+
++ fixed an inconsistency of Truncate for DiscreteDistributions; to better match Huberize and Min/Max
+  Truncation should be done for m<=object<=M instead of m<object<=M --- also the reason why 
+  demo censoredPois of distrMod threw errors.
++ changed initialize methods for AbscontDistribution and DiscreteDistribution in distr;
++ RtoDPQ.LC now correctly sets .withArith, .withSim slots in discretePart and .logExact, 
+  .lowerExact in both discretePart and acPart
++ fixed a minor error in manual to plot-methods
++ fixed issue in .presubs after change of for() etc semantics
++ fixed buglet in .qmixfun
++ internal helper function .trunc.low wrongly used p.l and q.r ...
+
 ##############
 v 2.1
 ##############

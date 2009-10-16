@@ -3,11 +3,16 @@
 
 \title{Generating function for DistrList-class}
 \description{Generates an object of class \code{"DistrList"}.}
-\usage{DistrList(...)}
+\usage{DistrList(..., Dlist)}
 \arguments{
-  \item{\dots}{Objects of class \code{"Distribution"} which
-    shall form the list of distributions.}
+  \item{\dots}{Objects of class \code{"Distribution"} (or subclasses)}
+  \item{Dlist}{an optional list or object of class \code{"DistrList"};
+  if not missing it is appended to argument \code{\dots}; this way
+  \code{DistrList} may also be called with a list (or
+  \code{"DistrList"}-object) as argument as suggested in an e-mail
+  by Krunoslav Sever (thank you!)}
 }
+
 %\details{}
 \value{Object of class \code{"DistrList"}}
 %\references{}

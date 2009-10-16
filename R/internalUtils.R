@@ -612,6 +612,10 @@ return(f)
 #x0 <- x00[idx]               ### maximal x's
 #y0 <- y00[idx]
 #f1 <- approxfun(x = x0, y = y0, yleft = y0[1], yright = y0[length(y0)])
+isna <- is.na(x)|is.na(y)
+x <- x[!isna]
+y <- y[!isna]
+
 l0 <- length(unique(x[!.isEqual01(x)]))
 if(l0 > 1){
    yl <- if(is.finite(yleft)) yleft  else y[1]

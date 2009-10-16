@@ -14,8 +14,8 @@ Usually an object of this class is not needed on its own. \code{EuclideanSpace} 
 }
 \section{Slots}{
   \describe{
-    \item{\code{dimension}:}{Object of class \code{"numeric"}: the dimension of the space, by default = 1 }
-    \item{\code{name}:}{Object of class \code{"character"}: the name of the space, by default = "Euclidean Space"}
+    \item{\code{dimension}}{Object of class \code{"numeric"}: the dimension of the space, by default = 1 }
+    \item{\code{name}}{Object of class \code{"character"}: the name of the space, by default = "Euclidean Space"}
   }
 }
 \section{Extends}{

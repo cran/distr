@@ -14,10 +14,10 @@
 }
 \section{Slots}{
   \describe{
-    \item{\code{shape1}:}{Object of class \code{"numeric"}: the shape1 of a beta distribution }
-    \item{\code{shape2}:}{Object of class \code{"numeric"}: the shape2 of a beta distribution }
-    \item{\code{ncp}:}{Object of class \code{"numeric"}: the noncentrality parameter of a beta distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{shape1}}{Object of class \code{"numeric"}: the shape1 of a beta distribution }
+    \item{\code{shape2}}{Object of class \code{"numeric"}: the shape2 of a beta distribution }
+    \item{\code{ncp}}{Object of class \code{"numeric"}: the noncentrality parameter of a beta distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

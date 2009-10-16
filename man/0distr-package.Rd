@@ -23,10 +23,10 @@ same arguments as those of package \pkg{stats}, i.e.; for a distribution object
 \code{X} we may call these functions as 
 
 \itemize{
-\item{}{\code{r(X)(n)}}
-\item{}{\code{d(X)(x, log = FALSE)}}
-\item{}{\code{p(X)(q, lower.tail = TRUE, log.p = FALSE)}}
-\item{}{\code{q(X)(p, lower.tail = TRUE, log.p = FALSE)}}
+\item \code{r(X)(n)}
+\item \code{d(X)(x, log = FALSE)}
+\item \code{p(X)(q, lower.tail = TRUE, log.p = FALSE)}
+\item \code{q(X)(p, lower.tail = TRUE, log.p = FALSE)}
 } 
 
 For the arguments of these function slots see e.g. \code{\link{rnorm}}.
@@ -42,13 +42,13 @@ corresponding image distributions.
 
 \details{
 \tabular{ll}{
-Package: \tab distr\cr
-Version: \tab 2.1 \cr
-Date: \tab 2009-04-14 \cr
-Depends: \tab R(>= 2.2.0), methods, graphics, startupmsg\cr
-Imports: \tab stats\cr
-LazyLoad: \tab yes\cr
-License: \tab GPL (version 2 or later)\cr
+Package: \tab distr \cr
+Version: \tab 2.2 \cr
+Date: \tab 2009-09-04 \cr
+Depends: \tab R(>= 2.2.0), methods, graphics, startupmsg, sfsmisc,
+SweaveListingUtils\cr
+LazyLoad: \tab yes \cr
+License: \tab LGPL-3 \cr
 URL: \tab http://distr.r-forge.r-project.org/\cr
 }}
 
@@ -106,59 +106,65 @@ which are all now available analytically.\cr
 (see Parameter classes).
 
 \preformatted{
+[*]: there is a generating function with the same name
 
+##########################
 Distribution classes
+##########################
 slots: [<name>(<class>)] 
 img(rSpace), param(OptionalParameter),
 r(function), d(OptionalFunction), p(OptionalFunction), q(OptionalFunction),
-.withSim(logical), .withArith(logical), .logExact(logical), .lowerExact(logical)
+.withSim(logical), .withArith(logical), .logExact(logical), .lowerExact(logical),
+Symmetry(DistributionSymmetry)
 
 
 "Distribution"
 |>"UnivariateDistribution"
-|>|>"UnivarMixingDistribution"
-|>|>|>"UnivarLebDecDistribution"
+|>|>"UnivarMixingDistribution"            [*]
+|>|>|>"UnivarLebDecDistribution"          [*]
 |>|>|>|>"AffLinUnivarLebDecDistribution"
-|>|>|>"CompoundDistribution"
-|>|>"AbscontDistribution"
+|>|>|>"CompoundDistribution"              [*]
+|>|>"AbscontDistribution"                 [*]
 |>|>|>"AffLinAbscontDistribution"
-|>|>|>"Arcsine"
-|>|>|>"Beta"
-|>|>|>"Cauchy"
+|>|>|>"Arcsine"                           [*]
+|>|>|>"Beta"                              [*]
+|>|>|>"Cauchy"                            [*]
 |>|>|>"ExpOrGammaOrChisq" (VIRTUAL)
-|>|>|>|>"Exp"
-|>|>|>|>"Gammad"
-|>|>|>|>"Chisq"
-|>|>|>"Fd"
-|>|>|>"Lnorm"
-|>|>|>"Logis"
-|>|>|>"Norm"
-|>|>|>"Td"
-|>|>|>"Unif"
-|>|>|>"Weibull"
-|>|>|"DiscreteDistribution"
-|>|>|>"AffLinDiscreteDistribution"
-|>|>|>"LatticeDistribution"
-|>|>|>|>"AffLinLatticeDistribution"
-|>|>|>|>"Binom"
-|>|>|>|>"Dirac"
-|>|>|>|>"Hyper"
-|>|>|>|>"NBinom"
-|>|>|>|>|>"Geom"
-|>|>|>|>"Pois"
+|>|>|>|>"Exp"                             [*]
+|>|>|>|>"Gammad"                          [*]
+|>|>|>|>"Chisq"                           [*]
+|>|>|>"Fd"                                [*]
+|>|>|>"Lnorm"                             [*]
+|>|>|>"Logis"                             [*]
+|>|>|>"Norm"                              [*]
+|>|>|>"Td"                                [*]
+|>|>|>"Unif"                              [*]
+|>|>|>"Weibull"                           [*]
+|>|>|"DiscreteDistribution"               [*]
+|>|>|>"AffLinDiscreteDistribution"        
+|>|>|>"LatticeDistribution"               [*]
+|>|>|>|>"AffLinLatticeDistribution"       
+|>|>|>|>"Binom"                           [*]
+|>|>|>|>"Dirac"                           [*]
+|>|>|>|>"Hyper"                           [*]
+|>|>|>|>"NBinom"                          [*]
+|>|>|>|>|>"Geom"                          [*]
+|>|>|>|>"Pois"                            [*]
 
 "AffLinDistribution" = union ( "AffLinAbscontDistribution", 
                                "AffLinDiscreteDistribution",
                                "AffLinUnivarLebDecDistribution" )
 
 "DistrList" 
-|>"UnivarDistrList"
+|>"UnivarDistrList"                       [*]
 
 "AcDcLc" = union ( "AbscontDistribution", 
                    "DiscreteDistribution",
                    "UnivarLebDecDistribution" )
 
+##########################
 Parameter classes
+##########################
 
 "OptionalParameter"
 |>"Parameter"
@@ -182,20 +188,57 @@ Parameter classes
 |>|>"UnifParameter"
 |>|>"WeibullParameter"
 
+##########################
 Space classes
+##########################
 
 "rSpace"
 |>"EuclideanSpace"
 |>|>"Reals"
 |>"Lattice"
 |>"Naturals"
+
+##########################
+Symmetry classes
+##########################
+slots:
+type(character), SymmCenter(ANY)
+
+"Symmetry"
+|>"NoSymmetry"          [*]
+|>"EllipticalSymmetry"  [*] 
+|>|>"SphericalSymmetry" [*]
+|>"DistributionSymmetry"
+|>"FunctionSymmetry"
+|>|>"NonSymmetric"      [*]
+|>|>"EvenSymmetric"     [*]
+|>|>"OddSymmetric"      [*]
+
+list thereof
+"DistrSymmList"         [*] 
+"FunSymmList"           [*]
+
+
+##########################
+Matrix classes
+##########################
+slots:
+none
+"PosSemDefSymmMatrix" [*] is subclass of class "matrix" of package "base".
+|>"PosDefSymmMatrix"  [*]
+
+##########################
+Class unions
+##########################
+"OptionalNumeric" = union("numeric", "NULL")
+"OptionalMatrix" = union("matrix","NULL")
 }
 }
 
 
 \section{Methods}{
 
-The group \code{Math} of unary (see \link[base]{Math}) as well as 
+The group \code{Math} of unary (see \link[methods:S4groupGeneric]{Math}) as well as 
 convolution are made available for distributions, see \link{operators-methods};
 in particular for convolution powers, we have method \link{convpow}.
 Besides, there are \code{plot} and \code{print}-methods for distributions.
@@ -260,7 +303,16 @@ on simulations generated by \pkg{distrSim}.}
 our distribution classes.}
 \item{\pkg{distrMod}}{provides classes for parametric models and hence covers,
 in an object orientated way, estimation in statistical models.}
+\item{\pkg{distrEllipse}}{provides classes for elliptically symmetric
+distributions.}
 }
+}
+
+\section{Package versions}{
+Note: The first two numbers of package versions do not necessarily reflect
+ package-individual development, but rather are chosen for the
+ distrXXX family as a whole in order to ease updating "depends"
+ information.
 }
 
 \section{Acknowledgement}{

@@ -13,7 +13,8 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                    withStand = FALSE,
                    ngrid = getdistrOption("DefaultNrGridPoints"),
                    ep = getdistrOption("TruncQuantile"),
-                   e = getdistrOption("RtoDPQ.e")
+                   e = getdistrOption("RtoDPQ.e"),
+                   Symmetry = NoSymmetry() 
                   )
 { if(missing(r) && missing(d) && missing(p) && missing(q))
     stop("At least one of arg's r,d,p,q must be given")
@@ -215,7 +216,8 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
   }
   obj <- new("AbscontDistribution", r = r, d = d1, p = p, q = q, 
       gaps = gaps, param = param, img = img, .withSim = wS,
-      .withArith = wA, .lowerExact = .lowerExact, .logExact = .logExact)
+      .withArith = wA, .lowerExact = .lowerExact, .logExact = .logExact,
+      Symmetry = Symmetry)
 
   if(is.null(gaps) && withgaps) setgaps(obj)
   if(!is.null(obj@gaps)) 
@@ -254,8 +256,9 @@ function(object, exactq = 6, ngrid = 50000, ...){
        upper <- getUp(object, eps = getdistrOption("TruncQuantile")*2)
        #lower <- 0 ; upper <- 8
        dist <- upper - lower
-       grid <- seq(from = lower - 0.1 * dist, to = upper + 0.1 * dist, 
-                          length = ngrid) 
+       low1 <- max(q(object)(0),lower-0.1*dist)
+       upp1 <- min(q(object)(1),upper+0.1*dist)
+       grid <- seq(from = low1, to = upp1, length = ngrid) 
        dxg <- d(object)(grid)
        
        ix <-  1:ngrid
@@ -339,6 +342,10 @@ function(e1,e2){
 
             rm(d2, dpe1,dpe2, ftpe1,ftpe2)
             rm(h, px.l, px.u, rfun, dfun, qfun, pfun, upper, lower)
+            if(is(e1@Symmetry,"SphericalSymmetry")&& 
+               is(e2@Symmetry,"SphericalSymmetry"))
+               object@Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry)+
+                                                     SymmCenter(e2@Symmetry))   
             object
           })
 
@@ -383,16 +390,31 @@ setMethod("*", c("AbscontDistribution","numeric"),
           function(e1, e2) {Distr <-  .multm(e1,e2, "AbscontDistribution")                               
                             if(is(Distr, "AffLinDistribution"))
                                  Distr@X0 <- e1
+                            if(is(e1@Symmetry,"SphericalSymmetry"))
+                               Distr@Symmetry <- 
+                                 SphericalSymmetry(SymmCenter(e1@Symmetry)*e2)
+
                             Distr})
 setMethod("+", c("AbscontDistribution","numeric"),
            function(e1, e2) {Distr <-  .plusm(e1,e2, "AbscontDistribution")                               
                             if(is(Distr, "AffLinDistribution"))
                                  Distr@X0 <- e1
+                            if(is(e1@Symmetry,"SphericalSymmetry"))
+                               Distr@Symmetry <- 
+                                 SphericalSymmetry(SymmCenter(e1@Symmetry)+e2)
                             Distr})                            
 setMethod("*", c("AffLinAbscontDistribution","numeric"),
-          function(e1, e2) .multm(e1,e2, "AffLinAbscontDistribution"))
+          function(e1, e2){Distr <-  .multm(e1,e2, "AffLinAbscontDistribution")
+                           if(is(e1@Symmetry,"SphericalSymmetry"))
+                               Distr@Symmetry <- 
+                                 SphericalSymmetry(SymmCenter(e1@Symmetry)*e2)
+                           Distr                         })
 setMethod("+", c("AffLinAbscontDistribution","numeric"),
-           function(e1, e2) .plusm(e1,e2, "AffLinAbscontDistribution"))
+           function(e1, e2){Distr <-  .plusm(e1,e2, "AffLinAbscontDistribution")
+                            if(is(e1@Symmetry,"SphericalSymmetry"))
+                               Distr@Symmetry <- 
+                                 SphericalSymmetry(SymmCenter(e1@Symmetry)+e2)
+                            Distr                         })
 
 ## Group Math for absolutly continuous distributions
 setMethod("Math", "AbscontDistribution",
@@ -406,26 +428,93 @@ setMethod("Math", "AbscontDistribution",
 
 ## exact: abs for absolutly continuous distributions
 setMethod("abs", "AbscontDistribution",
-          function(x){
-            if (.isEqual(p(x)(0),0)) return(x)
-            rnew <- function(n, ...){}
-            body(rnew) <- substitute({ abs(g(n, ...)) },
-                                         list(g = x@r))
-            if (is.null(gaps(x)))
+    function(x){
+       if (.isEqual(p(x)(0),0)) return(x)
+       xx <- x
+       rnew <- function(n, ...){}
+       body(rnew) <- substitute({ abs(g(n, ...)) }, list(g = xx@r))
+       
+       isSym0 <- FALSE
+       if(is(Symmetry(xx),"SphericalSymmetry"))
+          if(.isEqual(SymmCenter(Symmetry(xx)),0))
+             isSym0 <- TRUE  
+       
+       if(isSym0){
+          if (is.null(gaps(xx)))
+              gapsnew <- NULL
+          else {gapsnew <- gaps[gaps[,2]>=0,]
+                VZW <- gapsnew[,1] <= 0 
+                gapsnew[VZW,1] <- 0
+                gapsnew <- .consolidategaps(gapsnew)}
+          dOx <- d(xx)
+
+          dxlog <- if("log" %in% names(formals(dOx))) 
+                        quote({dOx(x, log = TRUE)})
+                   else quote({log(dOx(x))})
+          pxlog <- if("log.p" %in% names(formals(p(x))) && 
+                       "lower.tail" %in% names(formals(p(x)))) 
+                        quote({p(xx)(q, lower.tail = FALSE, log.p = TRUE)})
+                   else
+                        quote({log(1-p(xx)(q))})
+
+          qxlog <- if("lower.tail" %in% names(formals(q(xx)))) 
+                          quote({qx <- if(lower.tail)
+                                          q(xx)((1+p1)/2)
+                                       else
+                                          q(xx)(p1/2,lower.tail=FALSE)}) 
+                      else
+                          quote({qx <- q(xx)(if(lower.tail) (1+p1)/2 else 1-p1/2)})
+          if("lower.tail" %in% names(formals(q(xx)))&& 
+             "log.p" %in% names(formals(q(xx))))           
+              qxlog <- quote({qx <- if(lower.tail) q(xx)((1+p1)/2)
+                                       else
+                                          q(xx)(if(log.p)p-log(2)
+                                               else p1/2,lower.tail=FALSE,log.p=log.p)}) 
+          dnew <- function(x, log = FALSE){}
+          body(dnew) <- substitute({
+                    dx <- (dxlog0 + log(2))*(x>=0)
+                    if (!log) dx <- exp(dx)
+                    dx[x<0] <- if(log) -Inf else 0
+                    return(dx)
+                    }, list(dxlog0 = dxlog))
+            
+          pnew <- function(q, lower.tail = TRUE, log.p = FALSE){}
+          body(pnew) <- substitute({
+                    if (!lower.tail){
+                        px <- (log(2) + pxlog0)*(q>=0)
+                        if(!log.p) px <- exp(px)
+                    }else{
+                        px <- pmax(2 * p(x)(q) - 1,0)
+                        if(log.p) px <- log(px)
+                    }
+                    return(px)            
+            }, list(pxlog0 = pxlog))
+
+          qnew <- function(p, lower.tail = TRUE, log.p = FALSE){}
+          body(qnew) <- substitute({
+                   p1 <- if(log.p) exp(p) else p 
+                   qxlog0
+                   qx[p1<0] <- NaN
+                   if (any((p1 < -.Machine$double.eps)|(p1 > 1+.Machine$double.eps)))
+                   warning(gettextf("q method of %s produced NaN's ", objN))
+                   return(qx)
+            }, list(qxlog0 = qxlog, objN= quote(.getObjName(1))))
+                   
+       }else{
+            if (is.null(gaps(xx)))
                 gapsnew <- NULL
-            else {VZW <- gaps(x)[,1] <= 0 & gaps(x)[,2] >= 0
-                  gapsnew <- t(apply(abs(gaps(x)), 1, sort))
-                  gapsnew[VZW,2] <- pmin(-gaps(x)[VZW,1], gaps(x)[VZW,2])
+            else {VZW <- gaps(xx)[,1] <= 0 & gaps(xx)[,2] >= 0
+                  gapsnew <- t(apply(abs(gaps(xx)), 1, sort))
+                  gapsnew[VZW,2] <- pmin(-gaps(xx)[VZW,1], gaps(x)[VZW,2])
                   gapsnew[VZW,1] <- 0
                   gapsnew <- .consolidategaps(gapsnew)}
             
-            lower <- max(0, getLow(x))
-            upper <- max(-getLow(x) , abs(getUp(x)))
+            lower <- max(0, getLow(xx))
+            upper <- max(-getLow(xx) , abs(getUp(xx)))
 
             n <- getdistrOption("DefaultNrFFTGridPointsExponent")
             h <- (upper-lower)/2^n
 
-            xx <- x
             x.g <- seq(from = lower, to = upper, by = h)
 
             dnew <- function(x, log = FALSE){
@@ -437,27 +526,36 @@ setMethod("abs", "AbscontDistribution",
                     return(dx)
             }
             
-            pnew <- function(q, lower.tail = TRUE, log.p = FALSE){
-                    px <- (q>=0) * (p(x)(q) - p(x)(-q))                    
-                    if (!lower.tail) px <- 1 - px
+            pxlow <- if("lower.tail" %in% names(formals(p(xx))))
+                        substitute({p(xx)(q, lower=FALSE)})
+                   else
+                        substitute({1-p(xx)(q)})
+
+            pnew <- function(q, lower.tail = TRUE, log.p = FALSE){}
+            body(pnew) <- substitute({
+                    px <- if (lower.tail)
+                            (q>=0) * (p(xx)(q) - p(xx)(-q))                    
+                          else pxlow0 + p(xx)(-q)
                     if (log.p) px <- log(px)
                     return(px)
-            }
+            }, list(pxlow0 = pxlow))
 
             px.l <- pnew(x.g + 0.5*h)
             px.u <- pnew(x.g + 0.5*h, lower.tail = FALSE)
             
-            yR <- max(q(x)(1), abs(q(x)(0)))
+            yR <- max(q(xx)(1), abs(q(xx)(0)))
 
             qnew <- .makeQNew(x.g + 0.5*h, px.l, px.u,
                               notwithLLarg = FALSE,  lower, yR)
-
-            object <- AbscontDistribution( r = rnew, p = pnew,
-                           q = qnew, d = dnew, gaps = gapsnew, 
-                           .withSim = x@.withSim, .withArith = TRUE,
-                           .lowerExact = .lowerExact(x), .logExact = FALSE)
-            object
-          })
+    
+            lowerExact <- FALSE
+ 
+    }
+    object <- AbscontDistribution( r = rnew, p = pnew, q = qnew, d = dnew, 
+                     gaps = gapsnew,  .withSim = xx@.withSim, .withArith = TRUE,
+                     .lowerExact = .lowerExact(x), .logExact = FALSE)
+    object
+    })
 
 ## exact: exp for absolutly continuous distributions
 setMethod("exp", "AbscontDistribution",

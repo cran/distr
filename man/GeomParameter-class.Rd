@@ -13,9 +13,9 @@ is instantiated.
 }
 \section{Slots}{
   \describe{
-    \item{\code{prob}:}{Object of class \code{"numeric"}: the probability of a 
+    \item{\code{prob}}{Object of class \code{"numeric"}: the probability of a 
                         geometric distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: 
+    \item{\code{name}}{Object of class \code{"character"}: 
                         a name / comment for the parameters }
   }
 }

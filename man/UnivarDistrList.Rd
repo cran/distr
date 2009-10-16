@@ -3,10 +3,14 @@
 
 \title{Generating function for UnivarDistrList-class}
 \description{Generates an object of class \code{"UnivarDistrList"}.}
-\usage{UnivarDistrList(...)}
+\usage{UnivarDistrList(..., Dlist)}
 \arguments{
-  \item{\dots}{Objects of class \code{"UnivariateDistribution"} which
-    shall form the list of univariate distributions.}
+  \item{\dots}{Objects of class \code{"UnivariateDistribution"} (or subclasses)}
+  \item{Dlist}{an optional list or object of class \code{"UnivarDistrList"};
+  if not missing it is appended to argument \code{\dots}; this way
+  \code{UnivarMixingDistribution} may also be called with a list (or
+  \code{"UnivarDistrList"}-object) as argument as suggested in an e-mail
+  by Krunoslav Sever (thank you!)}
 }
 %\details{}
 \value{Object of class \code{"UnivarDistrList"}}

@@ -4,7 +4,7 @@
 
 ############################################################################
 ### ------------------------------------------------
-### In this comment substitute 'xxx' by 'df' and 'sd', respectively
+### In this comment substitute 'xxx' by 'qqplot', 'df', and 'sd', respectively
 ### ------------------------------------------------
 ### We intentionally mask function 'xxx' from stats in order to add a formal
 ### argument "...". 
@@ -57,6 +57,21 @@ sd <- function(x, ...){
       na.rm <- ifelse(hasArg(na.rm), dots$"na.rm", FALSE)
       stats::sd(x = x, na.rm = na.rm)
       }
+
+## masking function qqplot
+
+#if(!isGeneric("qqplot"))
+    setGeneric("qqplot", function(x, y, ...) standardGeneric("qqplot"))
+
+setMethod("qqplot", signature(x="ANY",y="ANY"), function(x, y,
+    plot.it = TRUE, xlab = deparse(substitute(x)),
+    ylab = deparse(substitute(y)), ...){
+    mc <- match.call(call = sys.call(sys.parent(1)))
+    if(missing(xlab)) mc$xlab <- xlab
+    if(missing(ylab)) mc$ylab <- ylab
+    mcl <- as.list(mc)[-1]
+    return(invisible(do.call(stats::qqplot, args=mcl)))
+    })
 
 ### ---------------------------
 ### "multiple-purpose generics" --- 
@@ -417,3 +432,13 @@ if(!isGeneric(".lowerExact"))
 if(!isGeneric(".logExact"))
     setGeneric(".logExact", function(object) 
                 standardGeneric(".logExact"))
+
+if(!isGeneric("type")){
+    setGeneric("type", function(object) standardGeneric("type"))
+}
+if(!isGeneric("SymmCenter")){
+    setGeneric("SymmCenter", function(object) standardGeneric("SymmCenter"))
+}
+if(!isGeneric("Symmetry")){
+    setGeneric("Symmetry", function(object) standardGeneric("Symmetry"))
+}

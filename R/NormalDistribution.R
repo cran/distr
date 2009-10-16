@@ -57,7 +57,10 @@ setValidity("UniNormParameter", function(object){
 ##
 ################################
 
-Norm <- function(mean = 0, sd = 1) new("Norm", mean = mean, sd = sd)
+Norm <- function(mean = 0, sd = 1) {
+   N <- new("Norm", mean = mean, sd = sd)
+   N@Symmetry <- SphericalSymmetry(mean)
+   N}
 
 ## wrapped access methods
 setMethod("mean", "Norm", function(x, ...) mean(param(x)))
@@ -90,15 +93,19 @@ setMethod("sd<-", "Norm",
 
 setMethod("+", c("Norm","Norm"),
           function(e1,e2){
-              new("Norm", sd = sqrt(sd(e1)^2 + sd(e2)^2), 
+              N<- new("Norm", sd = sqrt(sd(e1)^2 + sd(e2)^2), 
                    mean = mean(e1) + mean(e2),  .withArith = TRUE)
+              N@Symmetry <- SphericalSymmetry(mean(e1)+mean(e2))
+              N 
           })
 
 ## extra methods for normal distribution
 setMethod("+", c("Norm","numeric"),
           function(e1, e2){
             if (length(e2)>1) stop("length of operator must be 1")
-            new("Norm", mean = mean(e1) + e2, sd = sd(e1), .withArith = TRUE) 
+            N <- new("Norm", mean = mean(e1) + e2, sd = sd(e1), .withArith = TRUE) 
+            N@Symmetry <- SphericalSymmetry(mean(e1)+ e2)
+            N           
           })
 
 setMethod("*", c("Norm","numeric"),
@@ -106,6 +113,8 @@ setMethod("*", c("Norm","numeric"),
             if (length(e2)>1) stop("length of operator must be 1")
             if (isTRUE(all.equal(e2,0))) 
                 return(new("Dirac", location = 0, .withArith = TRUE))
-            new("Norm", mean = mean(e1) * e2, 
+            N<- new("Norm", mean = mean(e1) * e2, 
                  sd = sd(e1) * abs(e2), .withArith = TRUE)
+            N@Symmetry <- SphericalSymmetry(mean(e1)*e2)
+            N           
           })

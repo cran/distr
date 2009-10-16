@@ -6,6 +6,9 @@ setMethod("SummandsDistr", signature="CompoundDistribution",
 
 CompoundDistribution<- function( NumbOfSummandsDistr, SummandsDistr, .withSim = FALSE,
                                  withSimplify = FALSE){
+
+  Symmetry <- NoSymmetry()
+  
   if(!is(NumbOfSummandsDistr,"DiscreteDistribution"))
     stop("Argument 'NumbOfSummandsDistr' must be of class 'DiscreteDistribution'")
   supp <- support(NumbOfSummandsDistr)
@@ -28,6 +31,7 @@ CompoundDistribution<- function( NumbOfSummandsDistr, SummandsDistr, .withSim = 
              x0 <- convpow(SummandsDistr,dsuppNot0[i])
              S <- S + x0
              lI[[i+is0]] <- S
+        Symmetry <- Symmetry(SummandsDistr)
         }
      }else{
        supp <- min(supp):max(supp)
@@ -37,10 +41,20 @@ CompoundDistribution<- function( NumbOfSummandsDistr, SummandsDistr, .withSim = 
        if(is0 && length(supp)==length(SummandsDistr))
           SummandsDistr <- SummandsDistr[2:length(SummandsDistr)]
        S <- 0
+       Symm1 <- Symmetry(SummandsDistr[[1]])
+       SymmL <- is(Symm1, "SphericalSymmetry")
+       SymmC <- if(SymmL) SymmCenter(Symm1) else NULL
        for(i in 1:(length(supp)-is0)){
+           if(SymmL && i>1){
+              SymmI <- Symmetry(SummandsDistr[[i]])
+              SymmL <- is(SymmI, "SphericalSymmetry")
+              if(SymmL)
+                 SymmL <- .isEqual(SymmCenter(SymmI),SymmC)
+           }    
            S <- S + SummandsDistr[[i]]
            lI[[i+is0]] <- S
        }
+       if(SymmL) Symmetry <- SphericalSymmetry(SymmC) 
      }
   UV <- do.call("UnivarMixingDistribution",
                  args = c(list(mixCoeff = d(NumbOfSummandsDistr)(supp),
@@ -52,7 +66,8 @@ CompoundDistribution<- function( NumbOfSummandsDistr, SummandsDistr, .withSim = 
               SummandsDistr = SummandsDistr,
               p = UV@p, r = UV@r, d = UV@d, q = UV@q,
               mixCoeff = UV@mixCoeff, mixDistr = UV@mixDistr,
-              .withSim = .withSim, .withArith = TRUE)
+              .withSim = .withSim, .withArith = TRUE,
+              Symmetry = Symmetry)
 
    if(withSimplify) return(simplifyD(obj))
    else return(obj)

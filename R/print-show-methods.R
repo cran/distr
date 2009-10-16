@@ -1,3 +1,11 @@
+setMethod("show", "Symmetry", 
+    function(object){ 
+        cat(gettextf("type of symmetry:\t%s\n", object@type))
+        if(!is.null(object@SymmCenter))
+            cat(gettext("center of symmetry:\n"))
+            print(object@SymmCenter, quote = FALSE)
+    })
+
 #------  UnivariateDistribution ---------- #
 
 

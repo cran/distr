@@ -100,20 +100,20 @@
                     \code{\link[stats]{plot.stepfun}}}              
   \item{cex.main}{magnification to be used for main titles relative
           to the current setting of \code{cex}; as in 
-          \code{\link[stats]{par}}}
+          \code{\link[graphics]{par}}}
   \item{cex.inner}{magnification to be used for inner titles relative
           to the current setting of \code{cex}; as in 
-          \code{\link[stats]{par}}}
+          \code{\link[graphics]{par}}}
   \item{cex.sub}{magnification to be used for sub titles relative
           to the current setting of \code{cex}; as in 
-          \code{\link[stats]{par}}}
+          \code{\link[graphics]{par}}}
   \item{col.main}{character or integer code; color for the main title}              
   \item{col.inner}{character or integer code; color for the inner title}              
   \item{col.sub}{character or integer code; color for the sub title}              
   \item{pch.u}{character or integer code; plotting characters or symbols for
-               unattained value; see \code{\link[stats]{points}}}              
+               unattained value; see \code{\link[graphics]{points}}}              
   \item{pch.a}{character or integer code; plotting characters or symbols for
-               attained value; see \code{\link[stats]{points}}}              
+               attained value; see \code{\link[graphics]{points}}}              
   \item{mfColRow}{shall default partition in panels be used --- defaults to \code{TRUE}}
   \item{to.draw.arg}{Either \code{NULL} (default; everything
   is plotted) or a vector of either integers 
@@ -128,8 +128,8 @@
   three panels for the absolutely continuous and the discrete part, respectively; 
   }
   \item{\dots}{addtional arguments for \code{plot} --- see 
-               \code{\link[stats]{plot}}, 
-               \code{\link[stats]{plot.default}}, 
+               \code{\link[graphics]{plot}}, 
+               \code{\link[graphics]{plot.default}}, 
                \code{\link[stats]{plot.stepfun}} }
 }
 \details{
@@ -165,7 +165,7 @@ and a "generated on <data>"-tag in case of \code{sub}.
 Of course, if \code{main} / \code{inner} / \code{sub} are \code{character}, this
 is used for the title; in case of \code{inner} it is then checked whether it
 has length 3. In all title arguments, the following patterns are substituted:
-\itemize{
+\describe{
 \item{\code{"\%C"}}{class of argument \code{x}}
 \item{\code{"\%P"}}{parameters of \code{x} in form of a comma-separated list of 
                    <value>'s coerced to character}
@@ -250,8 +250,8 @@ P <- Pois(2)
 plot(as(P,"UnivarLebDecDistribution"),mfColRow = FALSE,to.draw.arg=c("d.d"))
 
 }
-\seealso{\code{\link[stats]{plot}},\code{\link[stats]{plot.default}}, 
-         \code{\link[stats]{plot.stepfun}},  \code{\link[stats]{par}}}
+\seealso{\code{\link[graphics]{plot}},\code{\link[graphics]{plot.default}}, 
+         \code{\link[stats]{plot.stepfun}},  \code{\link[graphics]{par}}}
 \keyword{methods}
 \keyword{hplot}
 \keyword{distribution}

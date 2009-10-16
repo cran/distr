@@ -20,30 +20,36 @@ This object is a Poisson distribution.
 }
 \section{Slots}{
   \describe{
-    \item{\code{img}:}{Object of class \code{"Naturals"}:
+    \item{\code{img}}{Object of class \code{"Naturals"}:
       The space of the image of this distribution has got dimension 1
       and the name "Natural Space".}
-    \item{\code{param}:}{Object of class \code{"PoisParameter"}:
+    \item{\code{param}}{Object of class \code{"PoisParameter"}:
       the parameter of this distribution (lambda), declared at its
       instantiation}
-    \item{\code{r}:}{Object of class \code{"function"}:
+    \item{\code{r}}{Object of class \code{"function"}:
       generates random numbers (calls function rpois)}
-    \item{\code{d}:}{Object of class \code{"function"}:
+    \item{\code{d}}{Object of class \code{"function"}:
       density function (calls function dpois)}
-    \item{\code{p}:}{Object of class \code{"function"}:
+    \item{\code{p}}{Object of class \code{"function"}:
       cumulative function (calls function ppois)}
-    \item{\code{q}:}{Object of class \code{"function"}:
+    \item{\code{q}}{Object of class \code{"function"}:
       inverse of the cumulative function (calls function qpois).
       The quantile is defined as the smallest value \eqn{x} such that
       \eqn{F(x) \ge p}, where \eqn{F} is the distribution function.}
-    \item{\code{support}:}{Object of class \code{"numeric"}: a (sorted)
+    \item{\code{support}}{Object of class \code{"numeric"}: a (sorted)
       vector containing the support of the discrete density function}
-    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
-    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
-    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              log version of density, cdf, and quantile function}
-    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              lower tail version of cdf and quantile function}
+    \item{\code{.withArith}}{logical: used internally to issue warnings as to 
+            interpretation of arithmetics}
+    \item{\code{.withSim}}{logical: used internally to issue warnings as to 
+          accuracy}
+    \item{\code{.logExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the log version of density, cdf, and 
+    quantile function}
+    \item{\code{.lowerExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the lower tail version of cdf and quantile 
+    function}
+    \item{\code{Symmetry}}{object of class \code{"DistributionSymmetry"};
+     used internally to avoid unnecessary calculations.}
   }
 }
 \section{Extends}{

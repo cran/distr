@@ -10,7 +10,8 @@ DiscreteDistribution <- function(supp, prob, .withArith = FALSE,
                   getdistrOption("DistrCollapse"),
      .DistrCollapse.Unique.Warn = 
                   getdistrOption("DistrCollapse.Unique.Warn"),
-     .DistrResolution = getdistrOption("DistrResolution")){
+     .DistrResolution = getdistrOption("DistrResolution"),
+     Symmetry = NoSymmetry()){
     if(!is.numeric(supp))
         stop("'supp' is no numeric vector")
     if(any(!is.finite(supp)))   # admit +/- Inf?
@@ -71,7 +72,7 @@ DiscreteDistribution <- function(supp, prob, .withArith = FALSE,
 
     object <- new("DiscreteDistribution", r = rfun, d = dfun, q = qfun, p=pfun,
          support = supp, .withArith = .withArith, .withSim = .withSim,
-         .lowerExact = .lowerExact, .logExact = .logExact)
+         .lowerExact = .lowerExact, .logExact = .logExact, Symmetry = Symmetry)
 }
 
 
@@ -288,8 +289,13 @@ function(e1,e2){
                            q = qfun, support = supp,
                            .withSim = .withSim, .withArith = TRUE)
             rm(rfun, dfun, qfun, pfun)
-            object
 
+            if(is(e1@Symmetry,"SphericalSymmetry")&& 
+               is(e2@Symmetry,"SphericalSymmetry"))
+               object@Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry)+
+                                                     SymmCenter(e2@Symmetry))   
+
+            object
           })
 
 setMethod("+", c("Dirac","DiscreteDistribution"),
@@ -302,19 +308,41 @@ setMethod("*", c("DiscreteDistribution","numeric"),
            function(e1, e2) { Distr <- .multm(e1,e2, "DiscreteDistribution")
                               if(is(Distr, "AffLinDistribution"))
                                  Distr@X0 <- e1
+
+                              if(is(e1@Symmetry,"SphericalSymmetry"))
+                                 Distr@Symmetry <- 
+                                   SphericalSymmetry(SymmCenter(e1@Symmetry)*e2)
+
                               Distr
                              })
 setMethod("+", c("DiscreteDistribution","numeric"),
            function(e1, e2) { Distr <- .plusm(e1,e2, "DiscreteDistribution")
                               if(is(Distr, "AffLinDistribution"))
                                  Distr@X0 <- e1
+
+                              if(is(e1@Symmetry,"SphericalSymmetry"))
+                                 Distr@Symmetry <- 
+                                   SphericalSymmetry(SymmCenter(e1@Symmetry)+e2)
+
                               Distr
                              })
 
 setMethod("*", c("AffLinDiscreteDistribution","numeric"),
-           function(e1, e2) .multm(e1,e2, "AffLinDiscreteDistribution"))
+           function(e1, e2) {
+                Distr <- .multm(e1,e2, "AffLinDiscreteDistribution")
+                if(is(e1@Symmetry,"SphericalSymmetry"))
+                      Distr@Symmetry <- 
+                        SphericalSymmetry(SymmCenter(e1@Symmetry)*e2)
+                Distr                
+                })
 setMethod("+", c("AffLinDiscreteDistribution","numeric"),
-           function(e1, e2) .plusm(e1,e2, "AffLinDiscreteDistribution"))
+           function(e1, e2) {
+                Distr <- .plusm(e1,e2, "AffLinDiscreteDistribution")
+                if(is(e1@Symmetry,"SphericalSymmetry"))
+                      Distr@Symmetry <- 
+                        SphericalSymmetry(SymmCenter(e1@Symmetry)*e2)
+                Distr                
+                })
 
 ## Group Math for discrete distributions
 setMethod("Math", "DiscreteDistribution",
@@ -332,16 +360,86 @@ setMethod("Math", "Dirac",
                        Dirac(lc)})
 
 ## exact: abs for discrete distributions
-setMethod("abs", "DiscreteDistribution",
-          function(x){
+setMethod("abs", "DiscreteDistribution",function(x){
+       
+       rnew <- function(n, ...){}
+       body(rnew) <- substitute({ abs(g(n, ...)) },
+                                      list(g = x@r))
+       
+       xx <- x
+       supportnew <- support(x)
+       
+       isSym0 <- FALSE
+       if(is(Symmetry(x),"SphericalSymmetry"))
+          if(.isEqual(SymmCenter(Symmetry(x)),0))
+             isSym0 <- TRUE  
+       
+       if(isSym0){
+          supportnew <- supportnew[supportnew>=0]
+       
+          .lowerExact = .lowerExact(x)
+
+          dxlog <- if("log" %in% names(formals(d(x)))) 
+                        quote({dx <- d(xx)(x, log = TRUE)})
+                   else quote({dx <-  log(d(xx)(x))})
+          pxlog <- if("log.p" %in% names(formals(p(x))) && 
+                       "lower.tail" %in% names(formals(p(x)))) 
+                        quote({p(x)(q, lower.tail = FALSE, log.p = TRUE)})
+                   else
+                        quote({log(1-p(x)(q))})
+
+
+          qxlog <- if("lower.tail" %in% names(formals(q(x)))) 
+                          quote({qx <- if(lower.tail)
+                                          q(x)((1+p1)/2)
+                                       else
+                                          q(x)(p1/2,lower.tail=FALSE)}) 
+                      else
+                          quote({qx <- q(x)(if(lower.tail) (1+p1)/2 else 1-p1/2)})
+          if("lower.tail" %in% names(formals(q(x)))&& 
+             "log.p" %in% names(formals(q(x))))           
+              qxlog <- quote({qx <- if(lower.tail) q(x)((1+p1)/2)
+                                       else
+                                          q(x)(if(log.p)p-log(2)
+                                               else p1/2,lower.tail=FALSE,log.p=log.p)}) 
+
+
+          dnew <- function(x, log = FALSE){}
+          body(dnew) <- substitute({
+                    dxlog0
+                    dx[x>0] <- dx+log(2)
+                    if (!log) dx <- exp(dx)
+                    dx[x<0] <- if(log) -Inf else 0
+                    return(dx)
+                    }, list(dxlog0 = dxlog))
+            
+          pnew <- function(q, lower.tail = TRUE, log.p = FALSE){}
+          body(pnew) <- substitute({
+                    if (!lower.tail){
+                        px <- (log(2) + pxlog0)*(q>=0)
+                        if(!log.p) px <- exp(px)
+                    }else{
+                        px <- pmax(2 * p(x)(q) - 1,0)
+                        if(log.p) px <- log(px)
+                    }
+                    return(px)            
+            }, list(pxlog0 = pxlog))
+
+          qnew <- function(p, lower.tail = TRUE, log.p = FALSE){}
+          body(qnew) <- substitute({
+                   p1 <- if(log.p) exp(p) else p
+                   qxlog0
+                   qx[p1<0] <- NaN
+                   if (any((p1 < -.Machine$double.eps)|(p1 > 1+.Machine$double.eps)))
+                   warning(gettextf("q method of %s produced NaN's ", objN))
+                   return(qx)
+            }, list(qxlog0 = qxlog, objN= quote(.getObjName(1))))
+
+       }else{
             if (.isEqual(p.l(x)(0),0)) return(x)
-            rnew <- function(n, ...){}
-            body(rnew) <- substitute({ abs(g(n, ...)) },
-                                         list(g = x@r))
 
-            supportnew <- sort(unique(abs(support(x))))
+            supportnew <- sort(unique(abs(supportnew)))
 
-            xx <- x
             dnew <- function(x, log = FALSE){
                     o.warn <- getOption("warn"); options(warn = -1)
                     on.exit(options(warn=o.warn))
@@ -349,27 +447,35 @@ setMethod("abs", "DiscreteDistribution",
                     options(warn = o.warn)
                     if (log) dx <- log(dx)
                     return(dx)
-            }
+                 }
             
-            pnew <- function(q, lower.tail = TRUE, log.p = FALSE){
-                    px <- (q>=0) * (p(x)(q) - p.l(x)(-q))                    
-                    if (!lower.tail) px <- 1 - px
+            pxlow <- if("lower.tail" %in% names(formals(p(x)))) 
+                        substitute({p(x)(q, lower=FALSE)})
+                   else
+                        substitute({1-p(x)(q)})
+
+            pnew <- function(q, lower.tail = TRUE, log.p = FALSE){}
+            body(pnew) <- substitute({
+                    px <- if (lower.tail)
+                            (q>=0) * (p(x)(q) - p.l(x)(-q))                    
+                          else pxlow0 + p.l(x)(-q)
                     if (log.p) px <- log(px)
                     return(px)
-            }
+            }, list(pxlow0=pxlow))
 
             prob <- dnew(supportnew)
             
             qnew <- .makeQNew(supportnew, cumsum(prob), 
                             rev(cumsum(rev(prob))), notwithLLarg = x@.withSim, 
                             min(supportnew), max(supportnew), Cont = FALSE)
-
-            object <- new("DiscreteDistribution", r = rnew, p = pnew,
-                           q = qnew, d = dnew, support = supportnew, 
-                           .withSim = x@.withSim, .withArith = TRUE,
-                           .lowerExact = .lowerExact(x))
-            object
-          })
+            
+         }
+         object <- new("DiscreteDistribution", r = rnew, p = pnew,
+                        q = qnew, d = dnew, support = supportnew, 
+                        .withSim = x@.withSim, .withArith = TRUE,
+                        .lowerExact = .lowerExact(x))
+         object
+})
 
 ## exact: abs for discrete distributions
 setMethod("exp", "DiscreteDistribution",

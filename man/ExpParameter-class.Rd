@@ -12,8 +12,8 @@ is instantiated.
 }
 \section{Slots}{
   \describe{
-    \item{\code{rate}:}{Object of class \code{"numeric"}: the rate of an exponential distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{rate}}{Object of class \code{"numeric"}: the rate of an exponential distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

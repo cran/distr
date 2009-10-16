@@ -12,9 +12,9 @@ is instantiated.
 }
 \section{Slots}{
   \describe{
-    \item{\code{ncp}:}{Object of class \code{"numeric"}: the ncp of a chi-squared distribution }
-    \item{\code{df}:}{Object of class \code{"numeric"}: the df of a chi-squared distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{ncp}}{Object of class \code{"numeric"}: the ncp of a chi-squared distribution }
+    \item{\code{df}}{Object of class \code{"numeric"}: the df of a chi-squared distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

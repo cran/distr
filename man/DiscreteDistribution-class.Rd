@@ -17,22 +17,26 @@ This generating function, from version 1.9 on, has been moved to this package fr
 
 \section{Slots}{
   \describe{
-    \item{\code{img}:}{Object of class \code{"Reals"}: the space of the image of this distribution which has dimension 1
+    \item{\code{img}}{Object of class \code{"Reals"}: the space of the image of this distribution which has dimension 1
     and the name "Real Space" }
-    \item{\code{param}:}{Object of class \code{"Parameter"}: the parameter of this distribution, having only the
+    \item{\code{param}}{Object of class \code{"Parameter"}: the parameter of this distribution, having only the
     slot name "Parameter of a discrete distribution" }
-    \item{\code{r}:}{Object of class \code{"function"}: generates random numbers}
-    \item{\code{d}:}{Object of class \code{"function"}: density/probability function}
-    \item{\code{p}:}{Object of class \code{"function"}: cumulative distribution function}
-    \item{\code{q}:}{Object of class \code{"function"}: quantile function}
-    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
-    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
-    \item{\code{support}:}{Object of class \code{"numeric"}: a (sorted) vector containing the support of the discrete
-    density function}
-    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              log version of density, cdf, and quantile function}
-    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              lower tail version of cdf and quantile function}
+    \item{\code{r}}{Object of class \code{"function"}: generates random numbers}
+    \item{\code{d}}{Object of class \code{"function"}: density/probability function}
+    \item{\code{p}}{Object of class \code{"function"}: cumulative distribution function}
+    \item{\code{q}}{Object of class \code{"function"}: quantile function}
+    \item{\code{.withArith}}{logical: used internally to issue warnings as to 
+            interpretation of arithmetics}
+    \item{\code{.withSim}}{logical: used internally to issue warnings as to 
+          accuracy}
+    \item{\code{.logExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the log version of density, cdf, and 
+    quantile function}
+    \item{\code{.lowerExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the lower tail version of cdf and quantile 
+    function}
+    \item{\code{Symmetry}}{object of class \code{"DistributionSymmetry"};
+     used internally to avoid unnecessary calculations.}
   }
 }
 \section{Extends}{
@@ -45,17 +49,17 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
     \item{coerce}{\code{signature(from = "DiscreteDistribution", 
                    to = "LatticeDistribution")}: coerce method to class \code{"LatticeDistribution"}
                    (checks if support is a lattice)}
-    \item{Math}{\code{signature(x = "DiscreteDistribution")}: application of a mathematical function, e.g. \code{sin} or
-    \code{tan} to this discrete distribution}
-    \code{abs}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{abs(x)}.}
-    \code{exp}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{exp(x)}.}
-    \code{sign}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{sign(x)}.}
-    \code{sqrt}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{sqrt(x)}.}
-    \code{log}{\code{signature(x = "DiscreteDistribution")}:  (with optional further argument \code{base}, 
-    defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.}
-    \code{log10}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{log10(x)}.}
-    \code{gamma}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{gamma(x)}.}
-    \code{lgamma}{\code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{lgamma(x)}.}
+    \item{Math}{\code{signature(x = "DiscreteDistribution")}: application of a mathematical function, e.g. \code{sin} or \code{tan} to this discrete distribution
+    \itemize{
+      \item \code{abs}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{abs(x)}.
+      \item \code{exp}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{exp(x)}.
+      \item \code{sign}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{sign(x)}.
+      \item \code{sqrt}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{sqrt(x)}.
+      \item \code{log}: \code{signature(x = "DiscreteDistribution")}:  (with optional further argument \code{base}, defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.
+      \item \code{log10}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{log10(x)}.
+      \item \code{gamma}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{gamma(x)}.
+      \item \code{lgamma}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{lgamma(x)}.
+    }}
     \item{-}{\code{signature(e1 = "DiscreteDistribution")}: application of `-' to this discrete distribution}
     \item{*}{\code{signature(e1 = "DiscreteDistribution", e2 = "numeric")}: multiplication of this discrete distribution
     by an object of class `numeric'}
@@ -96,7 +100,7 @@ To enhance accuracy of several functionals on distributions,
   (of class \code{"DiscreteDistribution"}), to capture the fact 
   that the object has the same distribution as \code{a * X0 + b}. This is 
   the class of the return value of methods 
-  \itemize{
+  \describe{
     \item{-}{\code{signature(e1 = "DiscreteDistribution")}}
     \item{*}{\code{signature(e1 = "DiscreteDistribution", e2 = "numeric")}}
     \item{/}{\code{signature(e1 = "DiscreteDistribution", e2 = "numeric")}}

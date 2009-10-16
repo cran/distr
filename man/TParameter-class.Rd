@@ -12,9 +12,9 @@ Usually an object of this class is not needed on its own, it is generated automa
 }
 \section{Slots}{
   \describe{
-    \item{\code{df}:}{Object of class \code{"numeric"}: the degrees of freedom of a T distribution }
-    \item{\code{ncp}:}{Object of class \code{"numeric"}: the noncentrality parameter of a T distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{df}}{Object of class \code{"numeric"}: the degrees of freedom of a T distribution }
+    \item{\code{ncp}}{Object of class \code{"numeric"}: the noncentrality parameter of a T distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

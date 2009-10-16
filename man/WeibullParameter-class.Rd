@@ -12,9 +12,9 @@ is instantiated.
 }
 \section{Slots}{
   \describe{
-    \item{\code{shape}:}{Object of class \code{"numeric"}: the shape of a Weibull distribution }
-    \item{\code{scale}:}{Object of class \code{"numeric"}: the scale of a Weibull distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{shape}}{Object of class \code{"numeric"}: the shape of a Weibull distribution }
+    \item{\code{scale}}{Object of class \code{"numeric"}: the scale of a Weibull distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

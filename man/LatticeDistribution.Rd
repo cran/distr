@@ -18,15 +18,11 @@ function \code{RtoDPQ.d} then approximates the three remaining slots \code{d},
 \code{p} and \code{q} by random sampling.
 }
 
-\synopsis{LatticeDistribution(lattice = NULL, supp = NULL, prob = NULL,
-                       .withArith = FALSE, .withSim = FALSE,
-                       DiscreteDistribution = NULL, check = TRUE)}
 \usage{
-  LatticeDistribution(DiscreteDistribution)
-  LatticeDistribution(lattice, DiscreteDistribution)
-  LatticeDistribution(lattice, supp, prob, .withArith, .withSim, check = FALSE)
-  LatticeDistribution(lattice, supp, prob)
-  LatticeDistribution(supp)
+  LatticeDistribution(lattice = NULL, supp = NULL, prob = NULL,
+                       .withArith = FALSE, .withSim = FALSE,
+                       DiscreteDistribution = NULL, check = TRUE,
+                       Symmetry = NoSymmetry())
 }
 \arguments{
   \item{DiscreteDistribution}{an object of class \code{DiscreteDistribution}
@@ -52,8 +48,21 @@ function \code{RtoDPQ.d} then approximates the three remaining slots \code{d},
                \code{LatticeDistribution()}
                returns an object of \code{DiscreteDistribution}, ignoring
                argument \code{lattice}}
+  \item{Symmetry}{you may help \R in calculations if you tell it whether
+    the distribution is non-symmetric (default) or symmetric with respect
+    to a center; in this case use \code{Symmetry=SphericalSymmetry(center)}.}
 }
 \details{
+  Typical usages are
+  \preformatted{
+  LatticeDistribution(DiscreteDistribution)
+  LatticeDistribution(lattice, DiscreteDistribution)
+  LatticeDistribution(lattice, supp, prob, .withArith, .withSim, check = FALSE)
+  LatticeDistribution(lattice, supp, prob)
+  LatticeDistribution(supp)
+  }
+
+
   For the generating function \code{LatticeDistribution()}, the arguments
   are processed in the following order:\cr
 %

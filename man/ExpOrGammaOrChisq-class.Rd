@@ -10,8 +10,7 @@ internally.
 }
  
 \section{Objects from the Class}{
-This class is virtual, hence cannot be
-instantiated.
+This class is virtual, hence cannot be instantiated.
 }
 
 \section{Extends}{

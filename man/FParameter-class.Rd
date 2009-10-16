@@ -11,11 +11,10 @@
 }
 \section{Slots}{
   \describe{
-    \item{\code{df1}:}{Object of class \code{"numeric"}: the degrees of freedom of the nominator of an F distribution}
-    \item{\code{df2}:}{Object of class \code{"numeric"}: the degrees of freedom of the denominator of an F distribution}
-    \item{\code{ncp}:}{Object of class \code{"numeric"}: the noncentrality parameter of an F distribution }
-    \item{\code{name}:}{Object of class \code{"character"}:
-      a name / comment for the parameters}
+    \item{\code{df1}}{Object of class \code{"numeric"}: the degrees of freedom of the nominator of an F distribution}
+    \item{\code{df2}}{Object of class \code{"numeric"}: the degrees of freedom of the denominator of an F distribution}
+    \item{\code{ncp}}{Object of class \code{"numeric"}: the noncentrality parameter of an F distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters}
   }
 }
 \section{Extends}{

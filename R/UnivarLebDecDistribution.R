@@ -82,10 +82,19 @@ UnivarLebDecDistribution <- function(acPart, discretePart, acWeight, discreteWei
     .withArith <- acPart@.withArith | discretePart@.withArith
     .lowerExact <- .lowerExact(acPart) & .lowerExact(discretePart)
 
+    Symmetry <- NoSymmetry()
+    if(is(acPart@Symmetry,"SphericalSymmetry")&& 
+       is(discretePart@Symmetry,"SphericalSymmetry"))
+       if(.isEqual(SymmCenter(Symmetry(acPart)),
+                   SymmCenter(Symmetry(discretePart))))
+       Symmetry <- SphericalSymmetry(SymmCenter(Symmetry(acPart)))   
+
+
+
     new("UnivarLebDecDistribution", p = pnew, r = rnew, d = NULL, q = qnew,
          mixCoeff = mixCoeff, mixDistr = mixDistr, .withSim = .withSim,
          .withArith = .withArith, .lowerExact = .lowerExact, support = supp,
-         gaps = gaps)
+         gaps = gaps, Symmetry = Symmetry)
 }
 
 ############################## Accessor / Replacement functions

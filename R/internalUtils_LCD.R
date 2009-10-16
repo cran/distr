@@ -2,6 +2,7 @@
 
 .mergegaps <- function(gaps, support){
  if(is.null(gaps)) return(NULL)
+ if(is.null(support)) return(gaps)
  if(length(support)==0) return(gaps)
  
  mm <- rbind(cbind(gaps[ ,1],1),
@@ -150,11 +151,12 @@
 .qmixfun <- function(mixDistr, mixCoeff, Cont = TRUE, pnew, gaps = NULL, 
                      leftright = "left"){
   l <- length(mixCoeff)
+  if(l==0) return(NULL)
   loup <- .loupmixfun(mixDistr)
 
   n <- getdistrOption("DefaultNrGridPoints")
-  up <- min(loup$qu,1000)#getdistrOption("LARGE")
-  lo <- max(loup$ql,-1000)#getdistrOption("LARGE")
+  up <- if(is.finite(loup$qu)) loup$qu else  1000 #min(loup$qu,1000)#getdistrOption("LARGE")
+  lo <- if(is.finite(loup$ql)) loup$ql else -1000 #max(loup$ql,-1000)#getdistrOption("LARGE")
 
   h <- (up-lo)/n
   suppsA <- NULL
@@ -167,6 +169,8 @@
             suppsA,
             suppsA-getdistrOption("DistrResolution"))
   xseq <- sort(unique(xseq))          
+  if(length(xseq)<2)
+     xseq <- c(min(lo,up)-0.1,max(lo,up)+0.1)
 
   px.l <- pnew(xseq, lower.tail = TRUE)
   px.u <- pnew(xseq, lower.tail = FALSE)
@@ -179,6 +183,15 @@
 
 
 .loupmixfun <- function(mixDistr){
+    if(length(mixDistr)==0) return(list(qL = NA, ql = NA, qU = NA, qu = NA))
+    if(length(mixDistr)==1){
+      q1 <- q(mixDistr[[1]])
+      return(list(qL = q1(p = 0, lower.tail = TRUE),
+                  ql = q1(p = getdistrOption("TruncQuantile"), lower.tail = TRUE),
+                  qU = q1(p = 0, lower.tail = FALSE),
+                  qu = q1(p = getdistrOption("TruncQuantile"), lower.tail =FALSE)
+                  ))
+    }
     qL0 <- as.vector(unlist(lapply(mixDistr, function(x)
                          do.call(x@q,list(p = 0, lower.tail = TRUE)))))
     qL1 <- as.vector(unlist(lapply(mixDistr, function(x)

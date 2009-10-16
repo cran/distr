@@ -62,6 +62,13 @@ function(e1,e2){
          body(rnew) <- substitute({ g1(n, ...) * g2(n, ...) },
                                     list(g1 = e1@r, g2 = e2@r))
          obj@r <- rnew
+
+          if(is(e1@Symmetry,"SphericalSymmetry")&&
+             is(e2@Symmetry,"SphericalSymmetry"))
+             if(.isEqual(SymmCenter(e1@Symmetry),0) && 
+                .isEqual(SymmCenter(e2@Symmetry),0))
+                 obj@Symmetry <-  SphericalSymmetry(0)   
+
          return(obj)
          })
 
@@ -106,6 +113,11 @@ function(e1,e2){
          body(rnew) <- substitute({ g1 / g2(n, ...) },
                                     list(g1 = e1, g2 = e2@r))
          obj@r <- rnew
+
+          if(is(e2@Symmetry,"SphericalSymmetry"))
+             if(.isEqual(SymmCenter(e2@Symmetry),0))
+                  obj@Symmetry <-  SphericalSymmetry(0)   
+
          return(obj)
          })
 
@@ -132,6 +144,13 @@ function(e1,e2){
          body(rnew) <- substitute({ g1(n, ...) / g2(n, ...) },
                                     list(g1 = e1@r, g2 = e2@r))
          obj@r <- rnew
+
+          if(is(e1@Symmetry,"SphericalSymmetry")&&
+             is(e2@Symmetry,"SphericalSymmetry"))
+             if(.isEqual(SymmCenter(e1@Symmetry),0) && 
+                .isEqual(SymmCenter(e2@Symmetry),0))
+                 obj@Symmetry <-  SphericalSymmetry(0)   
+
          return(obj)
          })
 
@@ -426,10 +445,12 @@ setMethod("sign", "AcDcLcDistribution",
             if(is(x,"AbscontDistribution")) d0 <-0
             else if(is(x,"DiscreteDistribution")) d0 <- d(x)(0)
             else d0 <- d.discrete(as(x,UnivarLebDecDistribution))(0)
-            DiscreteDistribution(supp=c(-1,0,1), 
-                prob=c(p(x)(-getdistrOption("TruncQuantile")),
-                       d0,
-                       p(x)(getdistrOption("TruncQuantile"), lower=FALSE)))                     
+            pm <- p(x)(-getdistrOption("TruncQuantile"))
+            pp <- p(x)(getdistrOption("TruncQuantile"), lower=FALSE)
+            Symmetry <- NoSymmetry()
+            if(.isEqual(pm,pp))
+               Symmetry <- SphericalSymmetry(0)
+            DiscreteDistribution(supp = c(-1,0,1), prob = c(pm, d0, pp))
             })
 
 setMethod("sqrt", "AcDcLcDistribution",

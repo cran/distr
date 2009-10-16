@@ -13,8 +13,8 @@ continuous distribution is instantiated.
 }
 \section{Slots}{
   \describe{
-    \item{\code{dimension}:}{Object of class \code{"character"}: the dimension of the space, by default = 1 }
-    \item{\code{name}:}{Object of class \code{"character"}: the name of the space, by default = "Real Space"}
+    \item{\code{dimension}}{Object of class \code{"character"}: the dimension of the space, by default = 1 }
+    \item{\code{name}}{Object of class \code{"character"}: the name of the space, by default = "Real Space"}
   }
 }
 \usage{Reals()}

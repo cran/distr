@@ -7,6 +7,9 @@
 \alias{.lowerExact}
 \alias{.lowerExact-methods}
 \alias{.lowerExact,Distribution-method}
+\alias{Symmetry}
+\alias{Symmetry-methods}
+\alias{Symmetry,Distribution-method}
 
 \title{Class "Distribution"}
 \description{ The \code{Distribution-class} is the mother-class of 
@@ -17,23 +20,25 @@ class \code{UnivariateDistribution}.}
 
 \section{Slots}{
   \describe{
-    \item{\code{img}:}{Object of class \code{"rSpace"}: the space of the image }
-    \item{\code{param}:}{Object of class \code{"OptionalParameter"}: the parameter }
-    \item{\code{r}:}{Object of class \code{"function"}: generates random numbers}
-    \item{\code{d}:}{Object of class \code{"OptionalFunction"}: density function}
-    \item{\code{p}:}{Object of class \code{"OptionalFunction"}: cumulative 
+    \item{\code{img}}{Object of class \code{"rSpace"}: the space of the image }
+    \item{\code{param}}{Object of class \code{"OptionalParameter"}: the parameter }
+    \item{\code{r}}{Object of class \code{"function"}: generates random numbers}
+    \item{\code{d}}{Object of class \code{"OptionalFunction"}: density function}
+    \item{\code{p}}{Object of class \code{"OptionalFunction"}: cumulative 
     distribution function}
-    \item{\code{q}:}{Object of class \code{"OptionalFunction"}: quantile function}
-    \item{\code{.withArith}:}{logical: used internally to issue warnings as to 
+    \item{\code{q}}{Object of class \code{"OptionalFunction"}: quantile function}
+    \item{\code{.withArith}}{logical: used internally to issue warnings as to 
             interpretation of arithmetics}
-    \item{\code{.withSim}:}{logical: used internally to issue warnings as to 
+    \item{\code{.withSim}}{logical: used internally to issue warnings as to 
           accuracy}
-    \item{\code{.logExact}:}{logical: used internally to flag the case where 
+    \item{\code{.logExact}}{logical: used internally to flag the case where 
     there are explicit formulae for the log version of density, cdf, and 
     quantile function}
-    \item{\code{.lowerExact}:}{logical: used internally to flag the case where 
+    \item{\code{.lowerExact}}{logical: used internally to flag the case where 
     there are explicit formulae for the lower tail version of cdf and quantile 
     function}
+    \item{\code{Symmetry}}{object of class \code{"DistributionSymmetry"};
+     used internally to avoid unnecessary calculations.}
   }
 }
 
@@ -57,6 +62,10 @@ class \code{UnivariateDistribution}.}
       returns the corresponding slot of the converted object.}
     \item{.lowerExact}{\code{signature(object = "Distribution")}: returns slot 
        \code{.lowerExact} if existing; else tries to convert the object to a 
+       newer version of its class by \code{\link{conv2NewVersion}} and
+     returns the corresponding slot of the converted object.}
+    \item{Symmetry:}{returns slot \code{Symmetry} if existing; else
+    tries to convert the object to a 
        newer version of its class by \code{\link{conv2NewVersion}} and
      returns the corresponding slot of the converted object.}
   }

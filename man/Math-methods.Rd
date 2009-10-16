@@ -26,10 +26,10 @@
 \title{ Methods for Functions from group `Math' in Package `distr' }
 \description{Math-methods provide automatical generation of image distributions
 for random variables transformed by functions from group
-\code{\link[methods]{Math}}}
+\code{\link[methods:S4groupGeneric]{Math}}}
 \section{Methods}{\describe{
     \item{Math}{\code{signature(x = "AbscontDistribution")}: application of a
-      mathematical function from group \code{\link[methods]{Math}}, e.g.
+      mathematical function from group \code{\link[methods:S4groupGeneric]{Math}}, e.g.
       \code{sin} or \code{exp}  (including
       \code{log, log10, gamma, lgamma}), to this
       absolutely continouos distribution}
@@ -38,12 +38,12 @@ for random variables transformed by functions from group
       \code{log, log10, gamma, lgamma}), to this
       discrete distribution}
     \item{Math}{\code{signature(x = "UnivarLebDecDistribution")}: application of a
-      mathematical function from group \code{\link[methods]{Math}}, e.g.
+      mathematical function from group \code{\link[methods:S4groupGeneric]{Math}}, e.g.
       \code{sin} or \code{exp}  (including
       \code{log, log10, gamma, lgamma}), to this
       Lebesgue decomposed distribution}
     \item{Math}{\code{signature(x = "UnivarLebDecDistribution")}: application of a
-      mathematical function from group \code{\link[methods]{Math}}, e.g.
+      mathematical function from group \code{\link[methods:S4groupGeneric]{Math}}, e.g.
       \code{sin} or \code{exp}  (including
       \code{log, log10, gamma, lgamma}), to this
        distribution of class \code{"AcDcLcDistribution"}}

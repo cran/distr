@@ -134,6 +134,11 @@ function(e1,e2){
 
      object <- AbscontDistribution( r = rfun, d = dfun, p = pfun,
                     q = qfun, .withSim = FALSE, .withArith = TRUE)
+
+     if(is(e1@Symmetry,"SphericalSymmetry")&& 
+        is(e2@Symmetry,"SphericalSymmetry"))
+           object@Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry)+
+                                                 SymmCenter(e2@Symmetry))   
      object
      }) 
 

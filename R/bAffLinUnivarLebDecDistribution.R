@@ -30,6 +30,11 @@ setMethod("*", c("AffLinUnivarLebDecDistribution","numeric"),
                 obj <- simplifyD(obj)
              return(obj)
           }   
+
+          Symmetry <- NoSymmetry()
+          if(is(e1@Symmetry,"SphericalSymmetry"))
+             Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry) + e2)   
+
           object <- new("AffLinUnivarLebDecDistribution",
                     r = Distr@r, d = Distr@d, p = Distr@p,
                     q = Distr@q, X0 = e1@X0, mixDistr = Distr@mixDistr,
@@ -37,7 +42,8 @@ setMethod("*", c("AffLinUnivarLebDecDistribution","numeric"),
                     a = e1@a*e2, b = e1@b, .withSim  = e1@.withSim,
                     .withArith = TRUE,
                     .logExact = .logExact(e1), .lowerExact = .lowerExact(e1),
-                     gaps = gaps(Distr), support = support(Distr)
+                     gaps = gaps(Distr), support = support(Distr),
+                     Symmetry = Symmetry
                      )
           object})
 
@@ -66,6 +72,10 @@ setMethod("+", c("AffLinUnivarLebDecDistribution","numeric"),
              return(obj)
           }   
           
+          Symmetry <- NoSymmetry()
+          if(is(e1@Symmetry,"SphericalSymmetry"))
+             Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry) * e2)   
+
           object <- new("AffLinUnivarLebDecDistribution",
                     r = Distr@r, d = Distr@d, p = Distr@p,
                     q = Distr@q, X0 = e1@X0, mixDistr = Distr@mixDistr,
@@ -73,7 +83,8 @@ setMethod("+", c("AffLinUnivarLebDecDistribution","numeric"),
                     a = e1@a, b = e1@b+e2, .withSim  = e1@.withSim,
                     .withArith = TRUE,
                     .logExact = .logExact(e1), .lowerExact = .lowerExact(e1),
-                     gaps = gaps(Distr), support = support(Distr)
+                     gaps = gaps(Distr), support = support(Distr),
+                     Symmetry = Symmetry
                      )
           object})
 

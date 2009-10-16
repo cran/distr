@@ -21,20 +21,26 @@ This object is a normal distribution.
 }
 \section{Slots}{
   \describe{
-    \item{\code{img}:}{Object of class \code{"Reals"}: The domain of this distribution has got dimension 1
+    \item{\code{img}}{Object of class \code{"Reals"}: The domain of this distribution has got dimension 1
     and the name "Real Space". }
-    \item{\code{param}:}{Object of class \code{"UniNormParameter"}: the parameter of this distribution (mean and sd),
+    \item{\code{param}}{Object of class \code{"UniNormParameter"}: the parameter of this distribution (mean and sd),
      declared at its instantiation }
-    \item{\code{r}:}{Object of class \code{"function"}: generates random numbers (calls function \code{rnorm})}
-    \item{\code{d}:}{Object of class \code{"function"}: density function (calls function \code{dnorm})}
-    \item{\code{p}:}{Object of class \code{"function"}: cumulative function (calls function \code{pnorm})}
-    \item{\code{q}:}{Object of class \code{"function"}: inverse of the cumulative function (calls function \code{qnorm})}
-    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
-    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
-    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              log version of density, cdf, and quantile function}
-    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              lower tail version of cdf and quantile function}
+    \item{\code{r}}{Object of class \code{"function"}: generates random numbers (calls function \code{rnorm})}
+    \item{\code{d}}{Object of class \code{"function"}: density function (calls function \code{dnorm})}
+    \item{\code{p}}{Object of class \code{"function"}: cumulative function (calls function \code{pnorm})}
+    \item{\code{q}}{Object of class \code{"function"}: inverse of the cumulative function (calls function \code{qnorm})}
+    \item{\code{.withArith}}{logical: used internally to issue warnings as to 
+            interpretation of arithmetics}
+    \item{\code{.withSim}}{logical: used internally to issue warnings as to 
+          accuracy}
+    \item{\code{.logExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the log version of density, cdf, and 
+    quantile function}
+    \item{\code{.lowerExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the lower tail version of cdf and quantile 
+    function}
+    \item{\code{Symmetry}}{object of class \code{"DistributionSymmetry"};
+     used internally to avoid unnecessary calculations.}
   }
 }
 \section{Extends}{

@@ -451,7 +451,7 @@ usually invisible \code{NULL}.}
 \code{\link{convpow}},
 \code{\link{operators}},
 \code{\link{plot-methods}}
-\code{\link[grDevices]{dev.new}}
+\code{\link[grDevices:dev]{dev.new}}
 }
 \keyword{internal}
 \concept{utilities}

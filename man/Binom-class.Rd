@@ -20,30 +20,36 @@ This object is a binomial distribution.
 }
 \section{Slots}{
   \describe{
-    \item{\code{img}:}{Object of class \code{"Naturals"}: The space of the 
+    \item{\code{img}}{Object of class \code{"Naturals"}: The space of the 
      image of this distribution has got dimension 1 and the 
      name "Natural Space". }
-    \item{\code{param}:}{Object of class \code{"BinomParameter"}: the parameter 
+    \item{\code{param}}{Object of class \code{"BinomParameter"}: the parameter 
           of this distribution (\code{prob}, \code{size}), declared at its 
           instantiation }
-    \item{\code{r}:}{Object of class \code{"function"}: generates random 
+    \item{\code{r}}{Object of class \code{"function"}: generates random 
           numbers (calls function \code{rbinom}) }
-    \item{\code{d}:}{Object of class \code{"function"}: density function (calls 
+    \item{\code{d}}{Object of class \code{"function"}: density function (calls 
           function \code{dbinom}) }
-    \item{\code{p}:}{Object of class \code{"function"}: cumulative function 
+    \item{\code{p}}{Object of class \code{"function"}: cumulative function 
           (calls function \code{pbinom}) }
-    \item{\code{q}:}{Object of class \code{"function"}: inverse of the 
+    \item{\code{q}}{Object of class \code{"function"}: inverse of the 
            cumulative function (calls function \code{qbinom}).
     The quantile is defined as the smallest value x such that F(x) >= p, where 
             F is the cumulative function. }
-    \item{\code{support}:}{Object of class \code{"numeric"}: a (sorted) 
+    \item{\code{support}}{Object of class \code{"numeric"}: a (sorted) 
             vector containing the support of the discrete density function}
-    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
-    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
-    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              log version of density, cdf, and quantile function}
-    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              lower tail version of cdf and quantile function}
+    \item{\code{.withArith}}{logical: used internally to issue warnings as to 
+            interpretation of arithmetics}
+    \item{\code{.withSim}}{logical: used internally to issue warnings as to 
+          accuracy}
+    \item{\code{.logExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the log version of density, cdf, and 
+    quantile function}
+    \item{\code{.lowerExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the lower tail version of cdf and quantile 
+    function}
+    \item{\code{Symmetry}}{object of class \code{"DistributionSymmetry"};
+     used internally to avoid unnecessary calculations.}
   }
 }
 \section{Extends}{

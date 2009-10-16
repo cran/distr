@@ -12,8 +12,8 @@ is instantiated.
 }
 \section{Slots}{
   \describe{
-    \item{\code{location}:}{Object of class \code{"numeric"}: the location of a Dirac distribution }\cr
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{location}}{Object of class \code{"numeric"}: the location of a Dirac distribution }\cr
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

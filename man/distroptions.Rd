@@ -14,7 +14,7 @@
 \alias{withSweave}
 %\alias{simplifyD}
 \alias{withgaps}
-\alias{DistributionAggregate}
+\alias{use.generalized.inverse.by.default}
 \alias{DistributionAggregate.Unique.Warn}
 
 
@@ -74,6 +74,14 @@ on corresponding cdf's or densities; default value: \code{TRUE}}
    ---default \code{TRUE}}
   \item{\code{simplifyD}}{ controls whether in the return value of arithmetic
   operations there is a call to \code{simplifyD} or not ---default \code{TRUE}}
+\item{use.generalized.inverse.by.default}{logical; decides whether by default
+(i.e., if argument \code{generalized} of \code{\link{solve}} is not explicitely
+set), \code{\link{solve}} is to use generalized inverses if the original 
+\code{solve}-method from package \pkg{base} fails; if the option is \code{FALSE}, 
+in case of failure, and unless argument \code{generalized} is not explicitely 
+set to \code{TRUE}, \code{solve} will throw an error as is 
+the \pkg{base}-method behavior. The default value is \code{TRUE}.  
+  }
 \item{\code{DistrCollapse.Unique.Warn}}{controls whether there is a warning
       whenever collapsing occurs or when two points are collapsed by a call to
       \code{unique()} (default behaviour if \code{DistrCollapse} is \code{FALSE});
@@ -94,7 +102,7 @@ distroptions("WarningArith" = FALSE)
          # switches off warnings as to arithmetics
 distroptions(currentDistrOptions)
 }
-\seealso{\code{\link[base]{options}}, \code{\link[base]{getOption}}}
+\seealso{\code{\link[base]{options}}, \code{\link[base:options]{getOption}}}
 \keyword{distribution}
 \concept{global options}
 \concept{options}

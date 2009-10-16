@@ -14,11 +14,11 @@ is instantiated.
 }
 \section{Slots}{
   \describe{
-    \item{\code{prob}:}{Object of class \code{"numeric"}: 
+    \item{\code{prob}}{Object of class \code{"numeric"}: 
           the probability of a binomial distribution }
-    \item{\code{size}:}{Object of class \code{"numeric"}: 
+    \item{\code{size}}{Object of class \code{"numeric"}: 
           the size of a binomial distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: 
+    \item{\code{name}}{Object of class \code{"character"}: 
           a name / comment for the parameters }
   }
 }

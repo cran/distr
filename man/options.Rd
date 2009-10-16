@@ -11,7 +11,7 @@
 }
 \details{We do not change the behaviour of \code{options} or \code{getOption};
 for the general documentation to these two functions, 
-confer \code{\link[base]{options}}, \code{\link[base]{getOption}}. Here
+confer \code{\link[base]{options}}, \code{\link[base:options]{getOption}}. Here
 we only document added options.}
 \author{
   Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr 
@@ -21,7 +21,7 @@ we only document added options.}
 \describe{
 \item{\code{"newDevice"}}{logical; controls behaviour when generating several plots within
 one function; if \code{TRUE} a call to \code{\link{devNew}} is inserted to hook function
-\code{\link[graphics]{plot.new}}; if \code{FALSE}, we reproduce the usual behaviour 
+\code{\link[graphics:frame]{plot.new}}; if \code{FALSE}, we reproduce the usual behaviour 
 in \pkg{graphics}, i.e.; we do not call \code{\link{devNew}}. Defaults to \code{FALSE}.}
 }
 } 
@@ -29,7 +29,7 @@ in \pkg{graphics}, i.e.; we do not call \code{\link{devNew}}. Defaults to \code{
 getOption("newDevice") 
 options("newDevice"=TRUE) 
 }
-\seealso{\code{\link[base]{options}}, \code{\link[base]{getOption}}}
+\seealso{\code{\link[base]{options}}, \code{\link[base:options]{getOption}}}
 \keyword{environment}
 \keyword{iplot}
 \keyword{dplot}

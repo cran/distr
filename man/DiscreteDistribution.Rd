@@ -4,21 +4,14 @@
 \title{Generating function "DiscreteDistribution"}
 \description{Generates an object of class  \code{"DiscreteDistribution"}}
 
-\synopsis{DiscreteDistribution(supp, prob, .withArith = FALSE, .withSim = FALSE,
-             .lowerExact = TRUE, .logExact = FALSE,
-             .DistrCollapse = getdistrOption("DistrCollapse"),
-             .DistrCollapse.Unique.Warn = 
-                  getdistrOption("DistrCollapse.Unique.Warn"),
-             .DistrResolution = getdistrOption("DistrResolution"))
-         }
 \usage{
   DiscreteDistribution(supp, prob, .withArith=FALSE, .withSim=FALSE, 
                        .lowerExact = TRUE, .logExact = FALSE,
              .DistrCollapse = getdistrOption("DistrCollapse"),
              .DistrCollapse.Unique.Warn = 
                   getdistrOption("DistrCollapse.Unique.Warn"),
-             .DistrResolution = getdistrOption("DistrResolution"))
-  DiscreteDistribution(supp)
+             .DistrResolution = getdistrOption("DistrResolution"),
+             Symmetry = NoSymmetry())
 }
 \arguments{
   \item{supp}{numeric vector which forms the support
@@ -41,10 +34,19 @@
       \code{unique()} (default behaviour if \code{.DistrCollapse} is \code{FALSE})}
 \item{.DistrResolution}{minimal spacing between two mass points in a discrete 
                         distribution}
+\item{Symmetry}{you may help \R in calculations if you tell it whether
+   the distribution is non-symmetric (default) or symmetric with respect
+   to a center; in this case use \code{Symmetry=SphericalSymmetry(center)}.}
 }
 \details{
   If \code{prob} is missing, all elements in \code{supp}
-  are equally weighted.
+  are equally weighted.\cr
+  
+  Typical usages are
+  \preformatted{
+    DiscreteDistribution(supp)
+  }
+  
 }
 \value{Object of class \code{"DiscreteDistribution"}}
 

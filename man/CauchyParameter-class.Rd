@@ -7,14 +7,13 @@
 \description{ The parameter of a Cauchy distribution, used by Cauchy-class}
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("CauchyParameter", location, scale)}.
-Usually an object of this class is not needed on its own, it is generated automatically when an object of the class Cauchy
-is instantiated. 
+Usually an object of this class is not needed on its own, it is generated automatically when an object of the class Cauchy is instantiated. 
 }
 \section{Slots}{
   \describe{
     \item{\code{location}:}{Object of class \code{"numeric"}: the location of a Cauchy distribution }
-    \item{\code{scale}:}{Object of class \code{"numeric"}: the scale of a Cauchy distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{scale}}{Object of class \code{"numeric"}: the scale of a Cauchy distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

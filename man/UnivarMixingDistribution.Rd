@@ -18,7 +18,7 @@
   \item{withSimplify}{\code{"logical"}: shall the return value be piped through a 
    call to \code{simplifyD}?}
 }
-\details{If \code{mixCoeff} is missing, all elements in \code{\ldots}
+\details{If \code{mixCoeff} is missing, all elements in \code{\dots}
   are equally weighted.}
 \value{Object of class \code{"UnivarMixingDistribution"}, or if 
 argument \code{withSimplify} is \code{TRUE} and the resulting 

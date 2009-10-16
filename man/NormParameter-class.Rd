@@ -12,9 +12,9 @@
 }
 \section{Slots}{
   \describe{
-    \item{\code{sd}:}{Object of class \code{"numeric"}: the sd of a normal distribution }
-    \item{\code{mean}:}{Object of class \code{"numeric"}: the mean of a normal distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{sd}}{Object of class \code{"numeric"}: the sd of a normal distribution }
+    \item{\code{mean}}{Object of class \code{"numeric"}: the mean of a normal distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

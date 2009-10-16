@@ -24,20 +24,24 @@ This object is a F distribution.
 }
 \section{Slots}{
   \describe{
-    \item{\code{img}:}{Object of class \code{"Reals"}: The space of the image of this distribution has got dimension 1
-    and the name "Real Space". }
-    \item{\code{param}:}{Object of class \code{"FParameter"}: the parameter of this distribution (df1 and df2),
-     declared at its instantiation }
-    \item{\code{r}:}{Object of class \code{"function"}: generates random numbers (calls function rf)}
-    \item{\code{d}:}{Object of class \code{"function"}: density function (calls function df)}
-    \item{\code{p}:}{Object of class \code{"function"}: cumulative function (calls function pf)}
-    \item{\code{q}:}{Object of class \code{"function"}: inverse of the cumulative function (calls function qf)}
-    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
-    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
-    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              log version of density, cdf, and quantile function}
-    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              lower tail version of cdf and quantile function}
+    \item{\code{img}}{Object of class \code{"Reals"}: The space of the image of this distribution has got dimension 1 and the name "Real Space". }
+    \item{\code{param}}{Object of class \code{"FParameter"}: the parameter of this distribution (df1 and df2), declared at its instantiation }
+    \item{\code{r}}{Object of class \code{"function"}: generates random numbers (calls function rf)}
+    \item{\code{d}}{Object of class \code{"function"}: density function (calls function df)}
+    \item{\code{p}}{Object of class \code{"function"}: cumulative function (calls function pf)}
+    \item{\code{q}}{Object of class \code{"function"}: inverse of the cumulative function (calls function qf)}
+    \item{\code{.withArith}}{logical: used internally to issue warnings as to 
+            interpretation of arithmetics}
+    \item{\code{.withSim}}{logical: used internally to issue warnings as to 
+          accuracy}
+    \item{\code{.logExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the log version of density, cdf, and 
+    quantile function}
+    \item{\code{.lowerExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the lower tail version of cdf and quantile 
+    function}
+    \item{\code{Symmetry}}{object of class \code{"DistributionSymmetry"};
+     used internally to avoid unnecessary calculations.}
   }
 }
 \section{Extends}{

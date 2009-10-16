@@ -12,9 +12,9 @@ Usually an object of this class is not needed on its own, it is generated automa
 }
 \section{Slots}{
   \describe{
-    \item{\code{scale}:}{Object of class \code{"numeric"}: the scale of a logistic distribution }
-    \item{\code{location}:}{Object of class \code{"numeric"}: the location of a logistic distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{scale}}{Object of class \code{"numeric"}: the scale of a logistic distribution }
+    \item{\code{location}}{Object of class \code{"numeric"}: the location of a logistic distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

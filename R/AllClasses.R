@@ -9,6 +9,8 @@
 .onAttach <- function(library, pkg)
 {
   unlockBinding(".distroptions", asNamespace("distr"))
+  unlockBinding(".distrExInstalled", asNamespace("distr"))
+
 ## global variable needed for flat.R
 ##  unlockBinding(".OkTyp", asNamespace("distr"))
     msga <- gettext(
@@ -41,6 +43,9 @@ buildStartupMessage(pkg = "distr", msga, msgb, msgc, msgd, library = library,
 setClassUnion("OptionalMatrix", 
                c("matrix","NULL")
                )
+### from Matthias' thesis / ROptEst
+## optional numeric
+setClassUnion("OptionalNumeric", c("numeric", "NULL"))
 
 ################################
 ##
@@ -304,6 +309,82 @@ setClass("WeibullParameter",
 
 ################################
 ##
+## matrix classes
+##
+################################
+## positive definite, symmetric matrices with finite entries
+setClass("PosSemDefSymmMatrix", contains = "matrix",
+            prototype = prototype(matrix(1)),
+            validity = function(object){
+                if(nrow(object) != ncol(object))
+                    stop("no square matrix")
+                if(any(!is.finite(object)))
+                    stop("inifinite or missing values in matrix")
+                if(!isTRUE(all.equal(object, t(object), .Machine$double.eps^0.5,
+                                     check.attributes = FALSE)))
+                    stop("matrix is not symmetric")
+                if(!all(eigen(object)$values > -100*.Machine$double.eps))
+                   stop("matrix is (numerically) not positive semi - definite")
+               return(TRUE)
+            })
+
+## positive definite, symmetric matrices with finite entries
+setClass("PosDefSymmMatrix", contains = "PosSemDefSymmMatrix",
+            validity = function(object){
+               if(!all(eigen(object)$values > 100*.Machine$double.eps))
+                   stop("matrix is (numerically) not positive definite")
+               valid <- getValidity(getClass("PosSemDefSymmMatrix"))
+               valid(as(object, "PosSemDefSymmMatrix"))
+               return(TRUE)
+            })
+
+
+################################
+##
+## symmetry classes
+##
+################################
+
+### from Matthias' thesis / ROptEst / moved from distrMod
+
+## class of symmetries
+setClass("Symmetry", representation(type = "character",
+                                    SymmCenter = "ANY"),
+                     contains = "VIRTUAL")
+
+## symmetry of distributions
+setClass("DistributionSymmetry", contains = c("Symmetry", "VIRTUAL"))
+
+## no symmetry
+setClass("NoSymmetry", contains = "DistributionSymmetry",
+            prototype = prototype(type = "non-symmetric distribution",
+                                  SymmCenter = NULL))
+
+## elliptical symmetry
+setClass("EllipticalSymmetry", contains = "DistributionSymmetry",
+            prototype = prototype(type = "elliptically symmetric distribution",
+                                  SymmCenter = numeric(0)))
+
+## spherical symmetry
+setClass("SphericalSymmetry", contains = "EllipticalSymmetry",
+            prototype = prototype(type = "spherically symmetric distribution",
+                                  SymmCenter = numeric(0)))
+
+## list of symmetry types
+setClass(Class = "DistrSymmList",
+            prototype = prototype(list(new("NoSymmetry"))),
+            contains = "list",
+            validity = function(object){
+                nrvalues <- length(object)
+                for(i in 1:nrvalues)
+                    if(!is(object[[i]], "DistributionSymmetry"))
+                        stop("element ", i, " is no 'DistributionSymmetry'")
+                return(TRUE)
+            })
+
+
+################################
+##
 ## distribution classes
 ##
 ################################
@@ -319,7 +400,8 @@ setClass("Distribution",
                       .withSim = "logical",   ## 'internal' slots => no
                       .withArith = "logical",  ## accessor/replacement functions
                       .logExact = "logical",
-                      .lowerExact = "logical"
+                      .lowerExact = "logical",
+                      Symmetry = "DistributionSymmetry"
                       ),
          prototype = prototype(
                      r = function(n){ rnorm(n, mean = 0, sd = 1) },
@@ -336,7 +418,8 @@ setClass("Distribution",
                      .withArith = FALSE,
                      .withSim = FALSE,
                      .logExact = FALSE,
-                     .lowerExact = FALSE
+                     .lowerExact = FALSE,
+                     Symmetry = new("NoSymmetry")
                      )
          )
 
@@ -465,7 +548,10 @@ setClass("DExp",
                       gettext("Parameter of a Laplace/Double Exponential distribution")
                                  ),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     Symmetry = new("SphericalSymmetry", 
+                                     type = "univariate symmetric distribution",
+                                     SymmCenter = 0)
                       ),
           contains = "AbscontDistribution"
           )
@@ -487,7 +573,10 @@ setClass("Cauchy",
                                           },
                       param = new("CauchyParameter"),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     Symmetry = new("SphericalSymmetry", 
+                                     type = "univariate symmetric distribution",
+                                     SymmCenter = 0)
                       ),
           contains = "AbscontDistribution"
           )
@@ -506,7 +595,10 @@ setClass("Norm",
                                       lower.tail = lower.tail, log.p = log.p) },
                       param = new("UniNormParameter"),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     Symmetry = new("SphericalSymmetry", 
+                                     type = "univariate symmetric distribution",
+                                     SymmCenter = 0)
                       ),
           contains = "AbscontDistribution"
           )
@@ -547,7 +639,10 @@ setClass("Unif",
                                       lower.tail = lower.tail, log.p = log.p) },
                       param = new("UnifParameter"),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     Symmetry = new("SphericalSymmetry", 
+                                     type = "univariate symmetric distribution",
+                                     SymmCenter = .5)
                       ),
           contains = "AbscontDistribution"
           )
@@ -588,7 +683,10 @@ setClass("Td",
                                    lower.tail = lower.tail, log.p = log.p) },
                       param = new("TParameter"),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     Symmetry = new("SphericalSymmetry", 
+                                     type = "univariate symmetric distribution",
+                                     SymmCenter = 0)
                       ),
           contains = "AbscontDistribution"
           )
@@ -691,7 +789,10 @@ setClass("Arcsine",
                               q[.isEqual(p,1)] <-  1
                               return(q)},
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     Symmetry = new("SphericalSymmetry", 
+                                     type = "univariate symmetric distribution",
+                                     SymmCenter = 0)
                       ),
           contains = "AbscontDistribution"
           )
@@ -970,7 +1071,7 @@ setClass("UnivarDistrList",
                 nrvalues <- length(object)
                 for(i in 1:nrvalues)
                     if(!is(object[[i]], "UnivariateDistribution"))
-                        stop("element ", i, " is no 'UniveriateDistribution'")
+                        stop("element ", i, " is no 'UnivariateDistribution'")
                 return(TRUE) 
             })
 
@@ -987,11 +1088,23 @@ setClass("UnivarMixingDistribution",
             representation = representation(mixCoeff = "numeric",
                              mixDistr = "UnivarDistrList",
                              gaps = "OptionalMatrix",
-                             support = "numeric"),
+                             support = "numeric",
+                             Symmetry = "DistributionSymmetry",
+                             .withArith = "logical",
+                             .withSim = "logical",
+                             .logExact = "logical",
+                             .lowerExact = "logical"
+                             ),
             prototype = prototype(mixCoeff = 1, 
                                   mixDistr = new("UnivarDistrList"),
                                   gaps = NULL,
-                                  support = numeric(0)),
+                                  support = numeric(0),
+                                  Symmetry = new("NoSymmetry"),
+                                 .withArith = FALSE,
+                                 .withSim = FALSE,
+                                 .logExact = TRUE,
+                                 .lowerExact = TRUE
+                                  ),
             contains = "UnivariateDistribution",
             validity = function(object){
                 if(any(object@mixCoeff< -.Machine$double.eps) || 

@@ -11,9 +11,9 @@
 }
 \section{Slots}{
   \describe{
-    \item{\code{lambda}:}{Object of class \code{"numeric"}:
+    \item{\code{lambda}}{Object of class \code{"numeric"}:
       the lambda of a Poisson distribution}
-    \item{\code{name}:}{Object of class \code{"character"}:
+    \item{\code{name}}{Object of class \code{"character"}:
       a name / comment for the parameters}
   }
 }

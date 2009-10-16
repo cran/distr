@@ -70,6 +70,10 @@ setMethod("convpow",
 
             object <- new("AbscontDistribution", r = rfun, d = dfun, p = pfun,
                        q = qfun, .withArith = TRUE, .withSim = FALSE)
+
+            if(is(D1@Symmetry,"SphericalSymmetry"))
+               object@Symmetry <- SphericalSymmetry(N*SymmCenter(D1@Symmetry))   
+
             rm(m, dpn, dp1, dpn0, fftdpn)
             rm(h, px.u, px.l, rfun, dfun, qfun, pfun, upper, lower)
            return(object)
@@ -111,13 +115,17 @@ setMethod("convpow",
             supp2 <- supp1[newd>ep]
             newd2 <- newd[newd>ep]
             newd2 <- newd2/sum(newd2)
+
+            Symmetry <- NoSymmetry()
+            if(is(D1@Symmetry,"SphericalSymmetry"))
+               Symmetry <- SphericalSymmetry(N*SymmCenter(D1@Symmetry))   
             
             if( length(supp1) >= 2 * length(supp2))
                return(DiscreteDistribution(supp = supp2, prob = newd2,
-                                           .withArith = TRUE))
+                                           .withArith = TRUE, Symmetry = Symmetry))
             else  
                return(LatticeDistribution(supp = supp1, prob = newd,
-                                          .withArith = TRUE))
+                                          .withArith = TRUE, Symmetry = Symmetry))
 })
 
 ###############################################################################
@@ -183,6 +191,9 @@ setMethod("convpow",
         if(Mm>1) erg <- convpow(erg,Mm,ep=ep)
         if(Rm>0) erg <- sumM(Rm)+ as(erg,"UnivarLebDecDistribution")
         if(is(erg,"UnivarLebDecDistribution")) erg <- simplifyD(erg)
+
+        if(is(D1@Symmetry,"SphericalSymmetry"))
+              erg@Symmetry <- SphericalSymmetry(N*SymmCenter(D1@Symmetry))   
         return(erg)
 })
 #

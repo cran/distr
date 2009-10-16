@@ -22,15 +22,15 @@ The result of these calls is an absolutely continuous distribution.
 }
 \section{Slots}{
   \describe{
-    \item{\code{img}:}{Object of class \code{"Reals"}: the space of the image of this distribution which has dimension 1
+    \item{\code{img}}{Object of class \code{"Reals"}: the space of the image of this distribution which has dimension 1
     and the name "Real Space" }
-    \item{\code{param}:}{Object of class \code{"Parameter"}: the parameter of this distribution, having only 
+    \item{\code{param}}{Object of class \code{"Parameter"}: the parameter of this distribution, having only 
     the slot name "Parameter of an absolutely continuous distribution" }
-    \item{\code{r}:}{Object of class \code{"function"}: generates random numbers}
-    \item{\code{d}:}{Object of class \code{"function"}: density function}
-    \item{\code{p}:}{Object of class \code{"function"}: cumulative distribution function}
-    \item{\code{q}:}{Object of class \code{"function"}: quantile function}
-    \item{\code{gaps}:}{[from version 1.9 on] Object of class \code{"OptionalMatrix"}, 
+    \item{\code{r}}{Object of class \code{"function"}: generates random numbers}
+    \item{\code{d}}{Object of class \code{"function"}: density function}
+    \item{\code{p}}{Object of class \code{"function"}: cumulative distribution function}
+    \item{\code{q}}{Object of class \code{"function"}: quantile function}
+    \item{\code{gaps}}{[from version 1.9 on] Object of class \code{"OptionalMatrix"}, 
           i.e.; an object which may either be \code{NULL} ora \code{matrix}. 
           This slot, if non-\code{NULL}, contains left and right 
           endpoints of intervals where the density of the object is 0. This slot 
@@ -38,12 +38,18 @@ The result of these calls is an absolutely continuous distribution.
           replacement method. It may also be filled automatically by 
          \code{\link{setgaps}()}. For saved objects from earlier versions, we provide functions
          \code{\link{isOldVersion}} and \code{\link{conv2NewVersion}}.}
-    \item{\code{.withArith}:}{logical: used internally to issue warnings as to interpretation of arithmetics}
-    \item{\code{.withSim}:}{logical: used internally to issue warnings as to accuracy}
-    \item{\code{.logExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              log version of density, cdf, and quantile function}
-    \item{\code{.lowerExact}:}{logical: used internally to flag the case where there are explicit formulae for the
-                              lower tail version of cdf and quantile function}
+    \item{\code{.withArith}}{logical: used internally to issue warnings as to 
+            interpretation of arithmetics}
+    \item{\code{.withSim}}{logical: used internally to issue warnings as to 
+          accuracy}
+    \item{\code{.logExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the log version of density, cdf, and 
+    quantile function}
+    \item{\code{.lowerExact}}{logical: used internally to flag the case where 
+    there are explicit formulae for the lower tail version of cdf and quantile 
+    function}
+    \item{\code{Symmetry}}{object of class \code{"DistributionSymmetry"};
+     used internally to avoid unnecessary calculations.}
 }}
 \section{Extends}{
 Class \code{"UnivariateDistribution"}, directly. \cr
@@ -53,38 +59,29 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
   \describe{
     \item{initialize}{\code{signature(.Object = "AbscontDistribution")}: initialize method }
     \item{Math}{\code{signature(x = "AbscontDistribution")}: application of a mathematical function, e.g. \code{sin} or
-    \code{exp} (does not work with \code{log}, \code{sign}!), to this absolutely continouos distribution}
-    \code{abs}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{abs(x)}.}
-    \code{exp}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{exp(x)}.}
-    \code{sign}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{sign(x)}.}
-    \code{sqrt}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{sqrt(x)}.}
-    \code{log}{\code{signature(x = "AbscontDistribution")}:  (with optional further argument \code{base}, 
-    defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.}
-    \code{log10}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{log10(x)}.}
-    \code{gamma}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{gamma(x)}.}
-    \code{lgamma}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{lgamma(x)}.}
-    \code{sqrt}{\code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{sqrt(x)}.}
-    \item{-}{\code{signature(e1 = "AbscontDistribution")}: application of `-' to this absolutely continuous distribution}
-    \item{*}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}: multiplication of this absolutely continuous 
-    distribution by an object of class `numeric'}
-    \item{/}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}: division of this absolutely continuous 
-    distribution by an object of class `numeric'}
-    \item{+}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}: addition of this absolutely continuous 
-    distribution to an object of class `numeric'}
-    \item{-}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}: subtraction of an object of class `numeric' from
-    this absolutely continuous distribution }
-    \item{*}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}: multiplication of this absolutely continuous 
-    distribution by an object of class `numeric'}
-    \item{+}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}: addition of this absolutely continuous 
-    distribution to an object of class `numeric'}
-    \item{-}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}: subtraction of this absolutely continuous 
-    distribution from an object of class `numeric'}
-    \item{+}{\code{signature(e1 = "AbscontDistribution", e2 = "AbscontDistribution")}: Convolution of two absolutely
-    continuous distributions. The slots p, d and q are approximated by grids.}
-    \item{-}{\code{signature(e1 = "AbscontDistribution", e2 = "AbscontDistribution")}: Convolution of two absolutely
-    continuous distributions. The slots p, d and q are approximated by grids.}
-    \item{plot}{\code{signature(object = "AbscontDistribution")}: plots density, cumulative distribution and quantile 
-    function }
+    \code{exp} (does not work with \code{log}, \code{sign}!), to this absolutely continouos distribution
+    \itemize{
+      \item \code{abs}: \code{signature(x = "AbscontDistribution")}: exact image distribution of \code{abs(x)}.
+      \item \code{exp}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{exp(x)}.
+      \item \code{sign}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{sign(x)}.
+      \item \code{sqrt}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{sqrt(x)}.
+      \item \code{log}: \code{signature(x = "AbscontDistribution")}:  (with optional further argument \code{base}, defaulting to \code{exp(1)}) exact image distribution of \code{log(x)}.
+      \item \code{log10}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{log10(x)}.
+      \item \code{gamma}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{gamma(x)}.
+      \item \code{lgamma}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{lgamma(x)}.
+      \item \code{sqrt}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{sqrt(x)}.
+    }}
+    \item{-}{\code{signature(e1 = "AbscontDistribution")}: application of `-' to this absolutely continuous distribution.}
+    \item{*}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}: multiplication of this absolutely continuous distribution by an object of class \code{"numeric"}}
+    \item{/}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}: division of this absolutely continuous distribution by an object of class \code{"numeric"}}
+    \item{+}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}: addition of this absolutely continuous distribution to an object of class \code{"numeric"}.}
+    \item{-}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}: subtraction of an object of class \code{"numeric"} from this absolutely continuous distribution.}
+    \item{*}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}: multiplication of this absolutely continuous distribution by an object of class \code{"numeric"}.}
+    \item{+}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}: addition of this absolutely continuous distribution to an object of class \code{"numeric"}.}
+    \item{-}{\code{signature(e1 = "numeric", e2 = "AbscontDistribution")}: subtraction of this absolutely continuous distribution from an object of class \code{"numeric"}.}
+    \item{+}{\code{signature(e1 = "AbscontDistribution", e2 = "AbscontDistribution")}: Convolution of two absolutely continuous distributions. The slots p, d and q are approximated by grids.}
+    \item{-}{\code{signature(e1 = "AbscontDistribution", e2 = "AbscontDistribution")}: Convolution of two absolutely continuous distributions. The slots p, d and q are approximated by grids.}
+    \item{plot}{\code{signature(object = "AbscontDistribution")}: plots density, cumulative distribution and quantile function.}
   }
 }
 
@@ -97,7 +94,7 @@ To enhance accuracy of several functionals on distributions,
   (of class \code{"AbscontDistribution"}), to capture the fact 
   that the object has the same distribution as \code{a * X0 + b}. This is 
   the class of the return value of methods 
-  \itemize{
+  \describe{
     \item{-}{\code{signature(e1 = "AbscontDistribution")}}
     \item{*}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}}
     \item{/}{\code{signature(e1 = "AbscontDistribution", e2 = "numeric")}}

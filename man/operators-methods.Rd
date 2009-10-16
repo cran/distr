@@ -98,7 +98,7 @@
 
 \description{Arithmetics and unary mathematical transformations for distributions}
 
-\details{Arithmetics as well as all functions from group \code{Math}, see \code{\link[methods]{Math}}
+\details{Arithmetics as well as all functions from group \code{Math}, see \code{\link[methods:S4groupGeneric]{Math}}
 are provided for distributions; wherever possible exact expressions are used; else 
 random variables are generated according to this transformation and subsequently the remaining
 slots filled by \code{\link{RtoDPQ}}, \code{\link{RtoDPQ.d}}}

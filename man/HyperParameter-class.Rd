@@ -12,10 +12,10 @@ is instantiated.
 }
 \section{Slots}{
   \describe{
-    \item{\code{k}:}{Object of class \code{"numeric"}: k of a hypergeometric distribution }
-    \item{\code{m}:}{Object of class \code{"numeric"}: m of a hypergeometric distribution }
-    \item{\code{n}:}{Object of class \code{"numeric"}: n of a hypergeometric distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{k}}{Object of class \code{"numeric"}: k of a hypergeometric distribution }
+    \item{\code{m}}{Object of class \code{"numeric"}: m of a hypergeometric distribution }
+    \item{\code{n}}{Object of class \code{"numeric"}: n of a hypergeometric distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{

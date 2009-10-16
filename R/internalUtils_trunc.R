@@ -81,7 +81,7 @@
            p0[ind] <- if(lower.tail) 0 else 1
            if(log.p) p0[ind] <- log(p0[ind])
            q1 <- q[!ind]
-           p1 <- Pl(q1, lower.tail=FALSE,
+           p1 <- p(object)(q1, lower.tail=FALSE,
                            log.p = TRUE)-plN
            p0[!ind] <- if(!log.p || lower.tail) exp(p1) else p1
            if(lower.tail) p0[!ind] <- 1-p0[!ind]
@@ -120,7 +120,7 @@
            if(log.p && !lower.tail) p1l <- plN + p1
            else{ if(log.p) p1 <- exp(p1)
                  p1l <- plN + if(lower.tail) log(1-p1) else log(p1) }
-           q0[in01] <- Qr(p1l, lower.tail = FALSE, log.p = TRUE)
+           q0[in01] <- q(object)(p1l, lower.tail = FALSE, log.p = TRUE)
            q0[indNA] <- NA
            return(q0)
    }

@@ -12,7 +12,7 @@
 }
 \section{Slots}{
   \describe{
-      \item{\code{.Data}:}{Object of class \code{"list"}. 
+      \item{\code{.Data}}{Object of class \code{"list"}. 
       A list of univariate distributions.}
   }
 }

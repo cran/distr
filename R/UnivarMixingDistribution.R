@@ -8,6 +8,10 @@ UnivarMixingDistribution <- function(..., Dlist, mixCoeff,
             ldots <- c(ldots, Dlist.L)
        }
     l <- length(ldots)
+
+    if(l==0) stop ("No components given")
+    if(l==1) return(ldots[[1]])
+    
     mixDistr <- do.call(UnivarDistrList,args=ldots)
     ep <- .Machine$double.eps
     if(missing(mixCoeff))
@@ -36,7 +40,7 @@ UnivarMixingDistribution <- function(..., Dlist, mixCoeff,
            try(gaps <- gaps(mixDistr[[i]]), silent=TRUE)
         }else{
            if(!is(try(gaps0 <- gaps(mixDistr[[i]]), silent=TRUE),"try-error"))
-               gaps <- .mergegaps2(gaps,gaps0)
+               if(!is.null(gaps0)) gaps <- .mergegaps2(gaps,gaps0)
         }
     }    
     support <- numeric(0)
@@ -55,6 +59,13 @@ UnivarMixingDistribution <- function(..., Dlist, mixCoeff,
          .withArith = .withArith,.lowerExact =.lowerExact, gaps = gaps, 
          support = support)
 
+    if (all( as.logical(lapply(mixDistr, function(x) is(x@Symmetry,"SphericalSymmetry"))))){
+       sc <- SymmCenter(mixDistr[[1]]@Symmetry) 
+       if (all( as.logical(lapply(mixDistr, function(x) .isEqual(SymmCenter(x@Symmetry),sc)))))
+           obj@Symmetry <- SphericalSymmetry(sc)    
+    }
+    
+    
     if (withSimplify)
         obj <- simplifyD(obj)
 
@@ -92,3 +103,44 @@ setMethod("q.r", signature(object = "UnivarMixingDistribution"),
                 else
                     q(object)
             })
+
+#------------------------------------------------------------------------
+# new accessor methods
+#------------------------------------------------------------------------
+
+setMethod(".lowerExact", "UnivarMixingDistribution", function(object){ 
+             er <- is(try(slot(object, ".lowerExact"), silent = TRUE), "try-error")
+             if(er){ object0 <- conv2NewVersion(object)
+                     objN <- paste(substitute(object))
+                     warning(gettextf("'%s' was generated in an old version of this class.\n",
+                                     objN),
+                            gettextf("'%s' has been converted to the new version",objN),
+                            gettextf(" of this class by a call to 'conv2NewVersion'.\n")
+                            )           
+                    eval.parent(substitute(object<-object0))                    
+                    return(object0@.lowerExact)}
+             object@.lowerExact})
+setMethod(".logExact", "UnivarMixingDistribution", function(object){
+             er <- is(try(slot(object, ".logExact"), silent = TRUE), "try-error")
+             if(er){ object0 <- conv2NewVersion(object)
+                     objN <- paste(substitute(object))
+                     warning(gettextf("'%s' was generated in an old version of this class.\n",
+                                     objN),
+                            gettextf("'%s' has been converted to the new version",objN),
+                            gettextf(" of this class by a call to 'conv2NewVersion'.\n")
+                            )           
+                    eval.parent(substitute(object<-object0))
+                    return(object0@.logExact)}
+             object@.logExact})
+setMethod("Symmetry", "UnivarMixingDistribution", function(object){
+             er <- is(try(slot(object, "Symmetry"), silent = TRUE), "try-error")
+             if(er){ object0 <- conv2NewVersion(object)
+                     objN <- paste(substitute(object))
+                     warning(gettextf("'%s' was generated in an old version of this class.\n",
+                                     objN),
+                            gettextf("'%s' has been converted to the new version",objN),
+                            gettextf(" of this class by a call to 'conv2NewVersion'.\n")
+                            )           
+                    eval.parent(substitute(object<-object0))
+                    return(object0@Symmetry)}
+             object@Symmetry})

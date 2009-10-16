@@ -12,9 +12,9 @@ is instantiated.
 }
 \section{Slots}{
   \describe{
-    \item{\code{meanlog}:}{Object of class \code{"numeric"}: the mean of a log normal distribution }
-    \item{\code{sdlog}:}{Object of class \code{"numeric"}: the sd of a log normal distribution }
-    \item{\code{name}:}{Object of class \code{"character"}: a name / comment for the parameters }
+    \item{\code{meanlog}}{Object of class \code{"numeric"}: the mean of a log normal distribution }
+    \item{\code{sdlog}}{Object of class \code{"numeric"}: the sd of a log normal distribution }
+    \item{\code{name}}{Object of class \code{"character"}: a name / comment for the parameters }
   }
 }
 \section{Extends}{
