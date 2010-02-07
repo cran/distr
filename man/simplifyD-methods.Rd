@@ -48,6 +48,7 @@ to \code{simplifyD}.}
 
 \seealso{\code{\link{Huberize}}, \code{\link{Minimum}}}
 \examples{
+set.seed(123)
 Mix1 <- UnivarMixingDistribution(Norm(),Binom(2,.3),
   UnivarLebDecDistribution(acPart = Chisq(df = 2), discretePart = Nbinom(3,.09),
                            acWeight = 0.3),

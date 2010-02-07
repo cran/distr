@@ -1,6 +1,6 @@
 
-R version 2.10.0 beta (2009-10-15 r50107)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.10.1 Patched (2010-01-12 r50990)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -17,77 +17,12 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> ### * <HEADER>
-> ###
-> attach(NULL, name = "CheckExEnv")
-> assign("nameEx",
-+        local({
-+ 	   s <- "__{must remake R-ex/*.R}__"
-+            function(new) {
-+                if(!missing(new)) s <<- new else s
-+            }
-+        }),
-+        pos = "CheckExEnv")
-> ## Add some hooks to label plot pages for base and grid graphics
-> assign("base_plot_hook",
-+        function() {
-+            pp <- par(c("mfg","mfcol","oma","mar"))
-+            if(all(pp$mfg[1:2] == c(1, pp$mfcol[2]))) {
-+                outer <- (oma4 <- pp$oma[4]) > 0; mar4 <- pp$mar[4]
-+                mtext(sprintf("help(\"%s\")", nameEx()), side = 4,
-+                      line = if(outer)max(1, oma4 - 1) else min(1, mar4 - 1),
-+                outer = outer, adj = 1, cex = .8, col = "orchid", las=3)
-+            }
-+        },
-+        pos = "CheckExEnv")
-> assign("grid_plot_hook",
-+        function() {
-+            grid::pushViewport(grid::viewport(width=grid::unit(1, "npc") -
-+                               grid::unit(1, "lines"), x=0, just="left"))
-+            grid::grid.text(sprintf("help(\"%s\")", nameEx()),
-+                            x=grid::unit(1, "npc") + grid::unit(0.5, "lines"),
-+                            y=grid::unit(0.8, "npc"), rot=90,
-+                            gp=grid::gpar(col="orchid"))
-+        },
-+        pos = "CheckExEnv")
-> setHook("plot.new",     get("base_plot_hook", pos = "CheckExEnv"))
-> setHook("persp",        get("base_plot_hook", pos = "CheckExEnv"))
-> setHook("grid.newpage", get("grid_plot_hook", pos = "CheckExEnv"))
-> assign("cleanEx",
-+        function(env = .GlobalEnv) {
-+ 	   rm(list = ls(envir = env, all.names = TRUE), envir = env)
-+            RNGkind("default", "default")
-+ 	   set.seed(1)
-+    	   options(warn = 1)
-+ 	   .CheckExEnv <- as.environment("CheckExEnv")
-+ 	   delayedAssign("T", stop("T used instead of TRUE"),
-+ 		  assign.env = .CheckExEnv)
-+ 	   delayedAssign("F", stop("F used instead of FALSE"),
-+ 		  assign.env = .CheckExEnv)
-+ 	   sch <- search()
-+ 	   newitems <- sch[! sch %in% .oldSearch]
-+ 	   for(item in rev(newitems))
-+                eval(substitute(detach(item), list(item=item)))
-+ 	   missitems <- .oldSearch[! .oldSearch %in% sch]
-+ 	   if(length(missitems))
-+ 	       warning("items ", paste(missitems, collapse=", "),
-+ 		       " have been removed from the search path")
-+        },
-+        pos = "CheckExEnv")
-> assign("ptime", proc.time(), pos = "CheckExEnv")
-> ## at least one package changes these via ps.options(), so do this
-> ## before loading the package.
-> ## Use postscript as incomplete files may be viewable, unlike PDF.
-> ## Choose a size that is close to on-screen devices, fix paper
-> grDevices::ps.options(width = 7, height = 7, paper = "a4", reset = TRUE)
-> grDevices::postscript("distr-Ex.ps")
-> 
-> assign("par.postscript", graphics::par(no.readonly = TRUE), pos = "CheckExEnv")
-> options(contrasts = c(unordered = "contr.treatment", ordered = "contr.poly"))
+> pkgname <- "distr"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
 > options(warn = 1)
 > library('distr')
 Loading required package: startupmsg
-:startupmsg>  Utilities for start-up messages (version 0.7)
+:startupmsg>  Utilities for start-up messages (version 0.7.1)
 :startupmsg> 
 :startupmsg>  For more information see ?"startupmsg",
 :startupmsg>  NEWS("startupmsg")
@@ -95,7 +30,8 @@ Loading required package: startupmsg
 Loading required package: sfsmisc
 Loading required package: SweaveListingUtils
 :SweaveListingUtils>  Utilities for Sweave together with
-:SweaveListingUtils>  TeX listings package (version 0.4)
+:SweaveListingUtils>  TeX listings package (version
+:SweaveListingUtils>  0.4.1)
 :SweaveListingUtils> 
 :SweaveListingUtils>  Some functions from package 'base'
 :SweaveListingUtils>  are intentionally masked ---see
@@ -123,7 +59,7 @@ Attaching package: 'SweaveListingUtils'
 	 require 
 
 :distr>  Object orientated implementation of distributions (version
-:distr>  2.2)
+:distr>  2.2.1)
 :distr> 
 :distr>  Attention: Arithmetics on distribution objects are
 :distr>  understood as operations on corresponding random variables
@@ -153,8 +89,8 @@ Attaching package: 'distr'
 
 > 
 > assign(".oldSearch", search(), pos = 'CheckExEnv')
-> assign(".oldNS", loadedNamespaces(), pos = 'CheckExEnv')
-> cleanEx(); nameEx("0distr-package")
+> cleanEx()
+> nameEx("0distr-package")
 > ### * 0distr-package
 > 
 > flush(stderr()); flush(stdout())
@@ -318,7 +254,8 @@ Attaching package: 'distr'
 > plot(Z+sin(Norm()))
 > 
 > 
-> cleanEx(); nameEx("AbscontDistribution-class")
+> cleanEx()
+> nameEx("AbscontDistribution-class")
 > ### * AbscontDistribution-class
 > 
 > flush(stderr()); flush(stdout())
@@ -350,7 +287,8 @@ Attaching package: 'distr'
 > 
 > 
 > 
-> cleanEx(); nameEx("AbscontDistribution")
+> cleanEx()
+> nameEx("AbscontDistribution")
 > ### * AbscontDistribution
 > 
 > flush(stderr()); flush(stdout())
@@ -376,7 +314,8 @@ Attaching package: 'distr'
 > 
 > 
 > 
-> cleanEx(); nameEx("Arcsine-class")
+> cleanEx()
+> nameEx("Arcsine-class")
 > ### * Arcsine-class
 > 
 > flush(stderr()); flush(stdout())
@@ -401,7 +340,8 @@ Attaching package: 'distr'
 > 
 > 
 > 
-> cleanEx(); nameEx("Beta-class")
+> cleanEx()
+> nameEx("Beta-class")
 > ### * Beta-class
 > 
 > flush(stderr()); flush(stdout())
@@ -437,7 +377,8 @@ Attaching package: 'distr'
 > 
 > 
 > 
-> cleanEx(); nameEx("BetaParameter-class")
+> cleanEx()
+> nameEx("BetaParameter-class")
 > ### * BetaParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -456,7 +397,8 @@ Attaching package: 'distr'
 > 
 > 
 > 
-> cleanEx(); nameEx("Binom-class")
+> cleanEx()
+> nameEx("Binom-class")
 > ### * Binom-class
 > 
 > flush(stderr()); flush(stdout())
@@ -488,7 +430,8 @@ Attaching package: 'distr'
 > 
 > 
 > 
-> cleanEx(); nameEx("BinomParameter-class")
+> cleanEx()
+> nameEx("BinomParameter-class")
 > ### * BinomParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -507,7 +450,8 @@ Attaching package: 'distr'
 > 
 > 
 > 
-> cleanEx(); nameEx("Cauchy-class")
+> cleanEx()
+> nameEx("Cauchy-class")
 > ### * Cauchy-class
 > 
 > flush(stderr()); flush(stdout())
@@ -543,7 +487,8 @@ Distribution Object of Class: Td
 > 
 > 
 > 
-> cleanEx(); nameEx("CauchyParameter-class")
+> cleanEx()
+> nameEx("CauchyParameter-class")
 > ### * CauchyParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -562,7 +507,8 @@ Distribution Object of Class: Td
 > 
 > 
 > 
-> cleanEx(); nameEx("Chisq-class")
+> cleanEx()
+> nameEx("Chisq-class")
 > ### * Chisq-class
 > 
 > flush(stderr()); flush(stdout())
@@ -598,7 +544,8 @@ Distribution Object of Class: Gammad
 > 
 > 
 > 
-> cleanEx(); nameEx("ChisqParameter-class")
+> cleanEx()
+> nameEx("ChisqParameter-class")
 > ### * ChisqParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -617,7 +564,8 @@ Distribution Object of Class: Gammad
 > 
 > 
 > 
-> cleanEx(); nameEx("CompoundDistribution-class")
+> cleanEx()
+> nameEx("CompoundDistribution-class")
 > ### * CompoundDistribution-class
 > 
 > flush(stderr()); flush(stdout())
@@ -667,7 +615,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("CompoundDistribution")
+> cleanEx()
+> nameEx("CompoundDistribution")
 > ### * CompoundDistribution
 > 
 > flush(stderr()); flush(stdout())
@@ -732,7 +681,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("ConvPow")
+> cleanEx()
+> nameEx("ConvPow")
 > ### * ConvPow
 > 
 > flush(stderr()); flush(stdout())
@@ -757,7 +707,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("DExp-class")
+> cleanEx()
+> nameEx("DExp-class")
 > ### * DExp-class
 > 
 > flush(stderr()); flush(stdout())
@@ -791,7 +742,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("Dirac-class")
+> cleanEx()
+> nameEx("Dirac-class")
 > ### * Dirac-class
 > 
 > flush(stderr()); flush(stdout())
@@ -822,7 +774,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("DiracParameter-class")
+> cleanEx()
+> nameEx("DiracParameter-class")
 > ### * DiracParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -841,7 +794,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("DiscreteDistribution-class")
+> cleanEx()
+> nameEx("DiscreteDistribution-class")
 > ### * DiscreteDistribution-class
 > 
 > flush(stderr()); flush(stdout())
@@ -894,7 +848,8 @@ Warning in q.r(D2)(pp + 1e-05) : NaN's produced
 > 
 > 
 > 
-> cleanEx(); nameEx("DiscreteDistribution")
+> cleanEx()
+> nameEx("DiscreteDistribution")
 > ### * DiscreteDistribution
 > 
 > flush(stderr()); flush(stdout())
@@ -919,7 +874,8 @@ Distribution Object of Class: DiscreteDistribution
 > 
 > 
 > 
-> cleanEx(); nameEx("DistrList-class")
+> cleanEx()
+> nameEx("DistrList-class")
 > ### * DistrList-class
 > 
 > flush(stderr()); flush(stdout())
@@ -948,7 +904,8 @@ An object of class "DistrList"
 > 
 > 
 > 
-> cleanEx(); nameEx("DistrList")
+> cleanEx()
+> nameEx("DistrList")
 > ### * DistrList
 > 
 > flush(stderr()); flush(stdout())
@@ -987,7 +944,8 @@ function (...)
 > 
 > 
 > 
-> cleanEx(); nameEx("DistrSymmList-class")
+> cleanEx()
+> nameEx("DistrSymmList-class")
 > ### * DistrSymmList-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1001,7 +959,7 @@ function (...)
 > 
 > new("DistrSymmList", list(NoSymmetry(), SphericalSymmetry(SymmCenter = 1), 
 +                           EllipticalSymmetry(SymmCenter = 2)))
-An object of class “DistrSymmList”
+An object of class "DistrSymmList"
 [[1]]
 type of symmetry:	non-symmetric distribution
 NULL
@@ -1019,7 +977,8 @@ center of symmetry:
 > 
 > 
 > 
-> cleanEx(); nameEx("DistrSymmList")
+> cleanEx()
+> nameEx("DistrSymmList")
 > ### * DistrSymmList
 > 
 > flush(stderr()); flush(stdout())
@@ -1033,7 +992,7 @@ center of symmetry:
 > 
 > DistrSymmList(NoSymmetry(), SphericalSymmetry(SymmCenter = 1), 
 +               EllipticalSymmetry(SymmCenter = 2))
-An object of class “DistrSymmList”
+An object of class "DistrSymmList"
 [[1]]
 type of symmetry:	non-symmetric distribution
 NULL
@@ -1060,7 +1019,8 @@ function (...)
 > 
 > 
 > 
-> cleanEx(); nameEx("EllipticalSymmetry-class")
+> cleanEx()
+> nameEx("EllipticalSymmetry-class")
 > ### * EllipticalSymmetry-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1079,7 +1039,8 @@ numeric(0)
 > 
 > 
 > 
-> cleanEx(); nameEx("EllipticalSymmetry")
+> cleanEx()
+> nameEx("EllipticalSymmetry")
 > ### * EllipticalSymmetry
 > 
 > flush(stderr()); flush(stdout())
@@ -1107,7 +1068,8 @@ function (SymmCenter = 0)
 > 
 > 
 > 
-> cleanEx(); nameEx("EuclideanSpace-class")
+> cleanEx()
+> nameEx("EuclideanSpace-class")
 > ### * EuclideanSpace-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1131,7 +1093,8 @@ function (SymmCenter = 0)
 > 
 > 
 > 
-> cleanEx(); nameEx("Exp-class")
+> cleanEx()
+> nameEx("Exp-class")
 > ### * Exp-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1180,7 +1143,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("ExpOrGammaOrChisq-class")
+> cleanEx()
+> nameEx("ExpOrGammaOrChisq-class")
 > ### * ExpOrGammaOrChisq-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1196,7 +1160,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("ExpParameter-class")
+> cleanEx()
+> nameEx("ExpParameter-class")
 > ### * ExpParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1215,7 +1180,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("FParameter-class")
+> cleanEx()
+> nameEx("FParameter-class")
 > ### * FParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1234,7 +1200,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("Fd-class")
+> cleanEx()
+> nameEx("Fd-class")
 > ### * Fd-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1265,7 +1232,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("GammaParameter-class")
+> cleanEx()
+> nameEx("GammaParameter-class")
 > ### * GammaParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1284,7 +1252,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("Gammad-class")
+> cleanEx()
+> nameEx("Gammad-class")
 > ### * Gammad-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1311,7 +1280,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("Geom-class")
+> cleanEx()
+> nameEx("Geom-class")
 > ### * Geom-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1349,7 +1319,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("GeomParameter-class")
+> cleanEx()
+> nameEx("GeomParameter-class")
 > ### * GeomParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1375,7 +1346,8 @@ class 'NbinomParameter' soon.
 > 
 > 
 > 
-> cleanEx(); nameEx("Huberize-methods")
+> cleanEx()
+> nameEx("Huberize-methods")
 > ### * Huberize-methods
 > 
 > flush(stderr()); flush(stdout())
@@ -1406,7 +1378,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("Hyper-class")
+> cleanEx()
+> nameEx("Hyper-class")
 > ### * Hyper-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1433,7 +1406,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("HyperParameter-class")
+> cleanEx()
+> nameEx("HyperParameter-class")
 > ### * HyperParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1452,7 +1426,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("Lattice-class")
+> cleanEx()
+> nameEx("Lattice-class")
 > ### * Lattice-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1471,7 +1446,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("LatticeDistribution-class")
+> cleanEx()
+> nameEx("LatticeDistribution-class")
 > ### * LatticeDistribution-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1508,7 +1484,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("LatticeDistribution")
+> cleanEx()
+> nameEx("LatticeDistribution")
 > ### * LatticeDistribution
 > 
 > flush(stderr()); flush(stdout())
@@ -1528,7 +1505,8 @@ Distribution Object of Class: LatticeDistribution
 > 
 > 
 > 
-> cleanEx(); nameEx("Lnorm-class")
+> cleanEx()
+> nameEx("Lnorm-class")
 > ### * Lnorm-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1555,7 +1533,8 @@ Distribution Object of Class: LatticeDistribution
 > 
 > 
 > 
-> cleanEx(); nameEx("LnormParameter-class")
+> cleanEx()
+> nameEx("LnormParameter-class")
 > ### * LnormParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1574,7 +1553,8 @@ Distribution Object of Class: LatticeDistribution
 > 
 > 
 > 
-> cleanEx(); nameEx("Logis-class")
+> cleanEx()
+> nameEx("Logis-class")
 > ### * Logis-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1602,7 +1582,8 @@ Distribution Object of Class: LatticeDistribution
 > 
 > 
 > 
-> cleanEx(); nameEx("LogisParameter-class")
+> cleanEx()
+> nameEx("LogisParameter-class")
 > ### * LogisParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1621,7 +1602,8 @@ Distribution Object of Class: LatticeDistribution
 > 
 > 
 > 
-> cleanEx(); nameEx("MakeAbscontDistribution")
+> cleanEx()
+> nameEx("MakeAbscontDistribution")
 > ### * MakeAbscontDistribution
 > 
 > flush(stderr()); flush(stdout())
@@ -1663,7 +1645,8 @@ Warning in function (object)  :
 > 
 > 
 > 
-> cleanEx(); nameEx("MinMaximum-methods")
+> cleanEx()
+> nameEx("MinMaximum-methods")
 > ### * MinMaximum-methods
 > 
 > flush(stderr()); flush(stdout())
@@ -1691,7 +1674,8 @@ Warning in function (object)  :
 > 
 > 
 > 
-> cleanEx(); nameEx("Naturals-class")
+> cleanEx()
+> nameEx("Naturals-class")
 > ### * Naturals-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1713,7 +1697,8 @@ Warning in function (object)  :
 > 
 > 
 > 
-> cleanEx(); nameEx("Nbinom-class")
+> cleanEx()
+> nameEx("Nbinom-class")
 > ### * Nbinom-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1740,7 +1725,8 @@ Warning in function (object)  :
 > 
 > 
 > 
-> cleanEx(); nameEx("NbinomParameter-class")
+> cleanEx()
+> nameEx("NbinomParameter-class")
 > ### * NbinomParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1759,7 +1745,8 @@ Warning in function (object)  :
 > 
 > 
 > 
-> cleanEx(); nameEx("NoSymmetry-class")
+> cleanEx()
+> nameEx("NoSymmetry-class")
 > ### * NoSymmetry-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1777,7 +1764,8 @@ NULL
 > 
 > 
 > 
-> cleanEx(); nameEx("NoSymmetry")
+> cleanEx()
+> nameEx("NoSymmetry")
 > ### * NoSymmetry
 > 
 > flush(stderr()); flush(stdout())
@@ -1802,7 +1790,8 @@ function ()
 > 
 > 
 > 
-> cleanEx(); nameEx("Norm-class")
+> cleanEx()
+> nameEx("Norm-class")
 > ### * Norm-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1831,7 +1820,8 @@ function ()
 > 
 > 
 > 
-> cleanEx(); nameEx("NormParameter-class")
+> cleanEx()
+> nameEx("NormParameter-class")
 > ### * NormParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1850,7 +1840,8 @@ function ()
 > 
 > 
 > 
-> cleanEx(); nameEx("Pois-class")
+> cleanEx()
+> nameEx("Pois-class")
 > ### * Pois-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1879,7 +1870,8 @@ function ()
 > 
 > 
 > 
-> cleanEx(); nameEx("PoisParameter-class")
+> cleanEx()
+> nameEx("PoisParameter-class")
 > ### * PoisParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1898,7 +1890,8 @@ function ()
 > 
 > 
 > 
-> cleanEx(); nameEx("PosDefSymmMatrix-class")
+> cleanEx()
+> nameEx("PosDefSymmMatrix-class")
 > ### * PosDefSymmMatrix-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1911,14 +1904,15 @@ function ()
 > ### ** Examples
 > 
 > new("PosDefSymmMatrix", diag(2))
-An object of class “PosDefSymmMatrix”
+An object of class "PosDefSymmMatrix"
      [,1] [,2]
 [1,]    1    0
 [2,]    0    1
 > 
 > 
 > 
-> cleanEx(); nameEx("PosDefSymmMatrix")
+> cleanEx()
+> nameEx("PosDefSymmMatrix")
 > ### * PosDefSymmMatrix
 > 
 > flush(stderr()); flush(stdout())
@@ -1932,27 +1926,28 @@ An object of class “PosDefSymmMatrix”
 > ### ** Examples
 > 
 > PosSemDefSymmMatrix(1)
-An object of class “PosSemDefSymmMatrix”
+An object of class "PosSemDefSymmMatrix"
      [,1]
 [1,]    1
 > PosSemDefSymmMatrix(diag(2))
-An object of class “PosSemDefSymmMatrix”
+An object of class "PosSemDefSymmMatrix"
      [,1] [,2]
 [1,]    1    0
 [2,]    0    1
 > PosDefSymmMatrix(1)
-An object of class “PosDefSymmMatrix”
+An object of class "PosDefSymmMatrix"
      [,1]
 [1,]    1
 > PosDefSymmMatrix(diag(2))
-An object of class “PosDefSymmMatrix”
+An object of class "PosDefSymmMatrix"
      [,1] [,2]
 [1,]    1    0
 [2,]    0    1
 > 
 > 
 > 
-> cleanEx(); nameEx("Reals-class")
+> cleanEx()
+> nameEx("Reals-class")
 > ### * Reals-class
 > 
 > flush(stderr()); flush(stdout())
@@ -1970,7 +1965,8 @@ An object of class “PosDefSymmMatrix”
 > 
 > 
 > 
-> cleanEx(); nameEx("RtoDPQ.LC")
+> cleanEx()
+> nameEx("RtoDPQ.LC")
 > ### * RtoDPQ.LC
 > 
 > flush(stderr()); flush(stdout())
@@ -1997,7 +1993,8 @@ Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
 > 
 > 
 > 
-> cleanEx(); nameEx("RtoDPQ")
+> cleanEx()
+> nameEx("RtoDPQ")
 > ### * RtoDPQ
 > 
 > flush(stderr()); flush(stdout())
@@ -2029,7 +2026,7 @@ function (x, log = FALSE)
     else d0 <- df1(x)/stand
     return(d0)
 }
-<environment: 0x44e3050>
+<environment: 0x480b150>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2050,7 +2047,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x5700bf0>
+<environment: 0x45f96d0>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2068,7 +2065,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x5d2ada0>
+<environment: 0x3b80180>
 
 > 
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -2078,7 +2075,8 @@ function (p, lower.tail = TRUE, log.p = FALSE)
 > 
 > 
 > 
-> cleanEx(); nameEx("RtoDPQ.d")
+> cleanEx()
+> nameEx("RtoDPQ.d")
 > ### * RtoDPQ.d
 > 
 > flush(stderr()); flush(stdout())
@@ -2111,7 +2109,7 @@ function (x, log = FALSE)
     else d0 <- df1(x)/stand
     return(d0)
 }
-<environment: 0x58d5540>
+<environment: 0x4baa228>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2132,7 +2130,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x55466a8>
+<environment: 0x51643e8>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2150,7 +2148,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x4522c18>
+<environment: 0x5348ac0>
 
 > 
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -2160,7 +2158,8 @@ function (p, lower.tail = TRUE, log.p = FALSE)
 > 
 > 
 > 
-> cleanEx(); nameEx("SphericalSymmetry-class")
+> cleanEx()
+> nameEx("SphericalSymmetry-class")
 > ### * SphericalSymmetry-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2179,7 +2178,8 @@ numeric(0)
 > 
 > 
 > 
-> cleanEx(); nameEx("SphericalSymmetry")
+> cleanEx()
+> nameEx("SphericalSymmetry")
 > ### * SphericalSymmetry
 > 
 > flush(stderr()); flush(stdout())
@@ -2207,7 +2207,8 @@ function (SymmCenter = 0)
 > 
 > 
 > 
-> cleanEx(); nameEx("TParameter-class")
+> cleanEx()
+> nameEx("TParameter-class")
 > ### * TParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2226,7 +2227,8 @@ function (SymmCenter = 0)
 > 
 > 
 > 
-> cleanEx(); nameEx("Td-class")
+> cleanEx()
+> nameEx("Td-class")
 > ### * Td-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2257,7 +2259,8 @@ function (SymmCenter = 0)
 > 
 > 
 > 
-> cleanEx(); nameEx("Truncate-methods")
+> cleanEx()
+> nameEx("Truncate-methods")
 > ### * Truncate-methods
 > 
 > flush(stderr()); flush(stdout())
@@ -2285,7 +2288,8 @@ function (SymmCenter = 0)
 > 
 > 
 > 
-> cleanEx(); nameEx("UniNormParameter-class")
+> cleanEx()
+> nameEx("UniNormParameter-class")
 > ### * UniNormParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2304,7 +2308,8 @@ function (SymmCenter = 0)
 > 
 > 
 > 
-> cleanEx(); nameEx("Unif-class")
+> cleanEx()
+> nameEx("Unif-class")
 > ### * Unif-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2341,7 +2346,8 @@ Distribution Object of Class: Beta
 > 
 > 
 > 
-> cleanEx(); nameEx("UnifParameter-class")
+> cleanEx()
+> nameEx("UnifParameter-class")
 > ### * UnifParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2360,7 +2366,8 @@ Distribution Object of Class: Beta
 > 
 > 
 > 
-> cleanEx(); nameEx("UnivarDistrList-class")
+> cleanEx()
+> nameEx("UnivarDistrList-class")
 > ### * UnivarDistrList-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2389,7 +2396,8 @@ An object of class "UnivarDistrList"
 > 
 > 
 > 
-> cleanEx(); nameEx("UnivarDistrList")
+> cleanEx()
+> nameEx("UnivarDistrList")
 > ### * UnivarDistrList
 > 
 > flush(stderr()); flush(stdout())
@@ -2428,7 +2436,8 @@ function (...)
 > 
 > 
 > 
-> cleanEx(); nameEx("UnivarLebDecDistribution-class")
+> cleanEx()
+> nameEx("UnivarLebDecDistribution-class")
 > ### * UnivarLebDecDistribution-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2530,7 +2539,8 @@ acWeight
 > 
 > 
 > 
-> cleanEx(); nameEx("UnivarLebDecDistribution")
+> cleanEx()
+> nameEx("UnivarLebDecDistribution")
 > ### * UnivarLebDecDistribution
 > 
 > flush(stderr()); flush(stdout())
@@ -2562,7 +2572,8 @@ An object of class "UnivarLebDecDistribution"
 > 
 > 
 > 
-> cleanEx(); nameEx("UnivarMixingDistribution-class")
+> cleanEx()
+> nameEx("UnivarMixingDistribution-class")
 > ### * UnivarMixingDistribution-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2614,7 +2625,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("UnivarMixingDistribution")
+> cleanEx()
+> nameEx("UnivarMixingDistribution")
 > ### * UnivarMixingDistribution
 > 
 > flush(stderr()); flush(stdout())
@@ -2631,7 +2643,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("Weibull-class")
+> cleanEx()
+> nameEx("Weibull-class")
 > ### * Weibull-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2658,7 +2671,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("WeibullParameter-class")
+> cleanEx()
+> nameEx("WeibullParameter-class")
 > ### * WeibullParameter-class
 > 
 > flush(stderr()); flush(stdout())
@@ -2677,7 +2691,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("decomposePM-methods")
+> cleanEx()
+> nameEx("decomposePM-methods")
 > ### * decomposePM-methods
 > 
 > flush(stderr()); flush(stdout())
@@ -2786,7 +2801,8 @@ discreteWeight
 > 
 > 
 > 
-> cleanEx(); nameEx("distrARITH")
+> cleanEx()
+> nameEx("distrARITH")
 > ### * distrARITH
 > 
 > flush(stderr()); flush(stdout())
@@ -2877,7 +2893,8 @@ So don't be surprised if they will change from call to call.
 > 
 > 
 > 
-> cleanEx(); nameEx("distrMASK")
+> cleanEx()
+> nameEx("distrMASK")
 > ### * distrMASK
 > 
 > flush(stderr()); flush(stdout())
@@ -2929,7 +2946,8 @@ matrices and an adapted eigen decomposition for 'PosSemDefSymmMatrix'.
 > 
 > 
 > 
-> cleanEx(); nameEx("distroptions")
+> cleanEx()
+> nameEx("distroptions")
 > ### * distroptions
 > 
 > flush(stderr()); flush(stdout())
@@ -2974,7 +2992,8 @@ $WarningArith
 > 
 > 
 > 
-> cleanEx(); nameEx("flat.LCD")
+> cleanEx()
+> nameEx("flat.LCD")
 > ### * flat.LCD
 > 
 > flush(stderr()); flush(stdout())
@@ -3006,7 +3025,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("flat.mix")
+> cleanEx()
+> nameEx("flat.mix")
 > ### * flat.mix
 > 
 > flush(stderr()); flush(stdout())
@@ -3078,7 +3098,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("getLabel")
+> cleanEx()
+> nameEx("getLabel")
 > ### * getLabel
 > 
 > flush(stderr()); flush(stdout())
@@ -3110,7 +3131,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("liesInSupport")
+> cleanEx()
+> nameEx("liesInSupport")
 > ### * liesInSupport
 > 
 > flush(stderr()); flush(stdout())
@@ -3142,7 +3164,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("operators-methods")
+> cleanEx()
+> nameEx("operators-methods")
 > ### * operators-methods
 > 
 > flush(stderr()); flush(stdout())
@@ -3305,7 +3328,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("options")
+> cleanEx()
+> nameEx("options")
 > ### * options
 > 
 > flush(stderr()); flush(stdout())
@@ -3323,7 +3347,8 @@ NULL
 > 
 > 
 > 
-> cleanEx(); nameEx("plot-methods")
+> cleanEx()
+> nameEx("plot-methods")
 > ### * plot-methods
 > 
 > flush(stderr()); flush(stdout())
@@ -3425,7 +3450,8 @@ dev.new(): using pdf(file="Rplots24.pdf")
 > 
 > 
 > graphics::par(get("par.postscript", pos = 'CheckExEnv'))
-> cleanEx(); nameEx("qqbounds")
+> cleanEx()
+> nameEx("qqbounds")
 > ### * qqbounds
 > 
 > flush(stderr()); flush(stdout())
@@ -3580,7 +3606,8 @@ TRUE TRUE
 > 
 > 
 > 
-> cleanEx(); nameEx("qqplot")
+> cleanEx()
+> nameEx("qqplot")
 > ### * qqplot
 > 
 > flush(stderr()); flush(stdout())
@@ -3728,7 +3755,8 @@ $y
 > 
 > 
 > 
-> cleanEx(); nameEx("simplifyD-methods")
+> cleanEx()
+> nameEx("simplifyD-methods")
 > ### * simplifyD-methods
 > 
 > flush(stderr()); flush(stdout())
@@ -3744,6 +3772,7 @@ $y
 > 
 > ### ** Examples
 > 
+> set.seed(123)
 > Mix1 <- UnivarMixingDistribution(Norm(),Binom(2,.3),
 +   UnivarLebDecDistribution(acPart = Chisq(df = 2), discretePart = Nbinom(3,.09),
 +                            acWeight = 0.3),
@@ -3813,7 +3842,8 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > 
 > 
 > 
-> cleanEx(); nameEx("simplifyr-methods")
+> cleanEx()
+> nameEx("simplifyr-methods")
 > ### * simplifyr-methods
 > 
 > flush(stderr()); flush(stdout())
@@ -3829,14 +3859,15 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > F <- ( Norm() + Binom() + Pois() + Exp() ) * 2 - 10
 > system.time(r(F)(10^6))
    user  system elapsed 
-  0.856   0.036   0.963 
+  0.790   0.040   0.836 
 > simplifyr(F, size = 10^6)
 > system.time(r(F)(10^6))
    user  system elapsed 
-  0.052   0.004   0.054 
+  0.040   0.000   0.043 
 > 
 > 
-> cleanEx(); nameEx("standardMethods")
+> cleanEx()
+> nameEx("standardMethods")
 > ### * standardMethods
 > 
 > flush(stderr()); flush(stdout())
@@ -3866,7 +3897,7 @@ setReplaceMethod("b", "testclass", function(object, value){ object@b <- value; o
 > ### * <FOOTER>
 > ###
 > cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  151.525 0.288 154.889 0.008 0.008 
+Time elapsed:  154.42 0.39 154.85 0.02 0.02 
 > grDevices::dev.off()
 postscript 
          2 

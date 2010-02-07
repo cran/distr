@@ -618,8 +618,8 @@ y <- y[!isna]
 
 l0 <- length(unique(x[!.isEqual01(x)]))
 if(l0 > 1){
-   yl <- if(is.finite(yleft)) yleft  else y[1]
-   yr <- if(is.finite(yright)) yright else y[length(y)]
+   yl <- if(!is.na(yleft) && is.finite(yleft))  yleft  else y[1]
+   yr <- if(!is.na(yright)&& is.finite(yright)) yright else y[length(y)]
 
    f1 <- approxfun(x = x, y = y, yleft = yl, yright = yr)
 }else{ 
