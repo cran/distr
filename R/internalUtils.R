@@ -612,6 +612,9 @@ return(f)
 #x0 <- x00[idx]               ### maximal x's
 #y0 <- y00[idx]
 #f1 <- approxfun(x = x0, y = y0, yleft = y0[1], yright = y0[length(y0)])
+yleft <- yleft[1]
+yright <- yright[1]
+
 isna <- is.na(x)|is.na(y)
 x <- x[!isna]
 y <- y[!isna]
