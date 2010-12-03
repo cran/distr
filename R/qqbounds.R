@@ -31,6 +31,8 @@ qqbounds <- function(x,D,alpha,n,withConf.pw, withConf.sim,
                          getdistrOption("DistrResolution")),lower.tail=FALSE)
       c.crit.l <- q(D)(pmax(p.l-c.crit/sqrt(n),
                        getdistrOption("DistrResolution")))
+      c.crit.l[abs(c.crit.l)==Inf] <- NA
+      c.crit.r[abs(c.crit.r)==Inf] <- NA
       c.crit.l[SIi == 2 | SIi == 3] <- NA
       c.crit.r[SIi == 2 | SIi == 3] <- NA
       c.c[SI.in,1:2] <- cbind(c.crit.l,c.crit.r)
@@ -39,6 +41,8 @@ qqbounds <- function(x,D,alpha,n,withConf.pw, withConf.sim,
       c.crit.i <- x.in + c.crit.i/sqrt(n)
       c.crit.i[SIi == 2 | SIi == 3] <- NA
       c.c[SI.in,3:4] <- c.crit.i
+      c.c[SI.in & abs(c.crit.i[,1])==Inf,3] <- NA
+      c.c[SI.in & abs(c.crit.i[,2])==Inf,4] <- NA
    }
    return(list(crit = c.c, err=c(sim=te.s,pw=te.i)))
 }

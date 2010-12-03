@@ -25,8 +25,8 @@ setMethod("simplifyr", "UnivariateDistribution",
 ## density should use DefaultNrGridPoints equally spaced points for evaluation
 
 RtoDPQ <- function(r, e = getdistrOption("RtoDPQ.e"),
-                      n = getdistrOption("DefaultNrGridPoints")){
-  zz <- r(10^e)
+                      n = getdistrOption("DefaultNrGridPoints"), y = NULL){
+  zz <- if(!is.null(y)) y else r(10^e)
   zz <- zz[!is.na(zz)]
   
   dxy <-  xy.coords(density(zz, n = n))
@@ -72,8 +72,9 @@ RtoDPQ.d <- function(r, e = getdistrOption("RtoDPQ.e")){
 ### new from 2.0:
 
 RtoDPQ.LC <- function(r, e = getdistrOption("RtoDPQ.e"),
-                      n = getdistrOption("DefaultNrGridPoints")){
-  zz <- r(10^e)
+                      n = getdistrOption("DefaultNrGridPoints"), y = NULL){
+
+  zz <- if(!is.null(y)) y else r(10^e)
   hasDis <- FALSE
   zz.nr <- zz
 

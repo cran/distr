@@ -154,8 +154,9 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
      if (!withSweave){
            devNew(width = width, height = height)
            }
-     omar <- par("mar")
-     on.exit(par(omar))
+     omar <- par("mar", no.readonly = TRUE)
+ #    omar$cin <- omar$cra <- omar$csi <- omar$cxy <-  omar$din <- NULL
+     if(mfColRow) (on.exit(par(omar, no.readonly = TRUE)))
      
      mainL <- FALSE
      subL <- FALSE
@@ -214,7 +215,7 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
      }
 
      if(mfColRow){
-        opar <- par("mfrow", mar = c(bmar,omar[2],tmar,omar[4]))
+        opar <- par("mfrow", mar = c(bmar,omar[2],tmar,omar[4]), no.readonly = TRUE)
         ## common:
         com.drw <- (1:2)[( (1:2) %in%to.draw )]
         disc.drw <-(1:3)[( (3:5) %in%to.draw )]
@@ -245,7 +246,7 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
            }
         if(nrw.drw >0 ) layout(matrix(ma.drw, byrow=TRUE,  nrow=nrw.drw))
      }else 
-        opar <- par(mar = c(bmar,omar[2],tmar,omar[4]))
+        opar <- par(mar = c(bmar,omar[2],tmar,omar[4]), no.readonly = TRUE)
 
      if(is.logical(inner)){
         inner.p <- if (inner)

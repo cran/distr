@@ -23,9 +23,9 @@ setValidity("NbinomParameter", function(object){
   if(length(size(object)) != 1)
     stop("size has to be a numeric of length 1")    
   if(size(object) < 0)
-    stop("size has to be a not negative natural")
-  if(!identical(floor(size(object)), size(object)))
-    stop("size has to be a not negative natural")
+    stop("size has to be non-negative")
+#  if(!identical(floor(size(object)), size(object)))
+#    stop("size has to be a not negative natural")
   else return(TRUE)
 })
 

@@ -39,7 +39,8 @@
                     n,exact.sCI=(n<100),exact.pCI=(n<100),
                     nosym.pCI = FALSE, with.legend = TRUE,
                     legend.bg = "white", legend.pos = "topleft",
-                    legend.cex = 0.8)
+                    legend.cex = 0.8, legend.pref = "", legend.postf = "",
+                    legend.alpha = alpha)
 
 .deleteItemsMCL(mcl)
 .distrExInstalled
@@ -87,6 +88,9 @@ are \code{x.i+t/sqrt(n)+del.i/sqrt(n)} and \code{x.i-t/sqrt(n)+del.i/sqrt(n)}.}
 \item{legend.bg}{background color for the legend}
 \item{legend.pos}{position for the legend}
 \item{legend.cex}{magnification factor for the legend}
+\item{legend.pref}{character to be prepended to legend text}
+\item{legend.postf}{character to be appended to legend text}
+\item{legend.alpha}{nominal coverage probability}
 \item{mcl}{arguments in call as a list}
 }
 

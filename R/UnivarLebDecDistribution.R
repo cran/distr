@@ -1,12 +1,12 @@
 UnivarLebDecDistribution <- function(acPart, discretePart, acWeight, discreteWeight,
-                                     r = NULL, e = NULL, n = NULL){
+                                     r = NULL, e = NULL, n = NULL, y = NULL){
 
     if(missing(discretePart) && missing(acPart) && missing(r) )
        stop("at least one of 'discretePart' resp. 'acPart'  resp. 'r' must be given")
     if(missing(discretePart) && missing(acPart))
        {if(missing(e)) e <- getdistrOption("RtoDPQ.e")
         if(missing(n)) n <- getdistrOption("DefaultNrGridPoints")
-        return(RtoDPQ.LC(r = r, e = e, n = n))}
+        return(RtoDPQ.LC(r = r, e = e, n = n, y = y))}
 
     if(missing(discretePart)) {discreteWeight <- 0; acWeight <- 1;
                                discretePart <- new("Dirac")}

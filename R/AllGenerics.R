@@ -320,7 +320,7 @@ if(!isGeneric("conv2NewVersion"))
 if(!isGeneric("setgaps"))
    setGeneric("setgaps", function(object, ...) standardGeneric("setgaps"))
 
-#### generics for log, log10, lgamma, gamma
+#### generics for log, log10, lgamma, gamma, digamma
 
 
 if(getRversion()<'2.9.0'){
@@ -330,6 +330,8 @@ if(!isGeneric("log10"))
    setGeneric("log10")
 if(!isGeneric("lgamma"))
    setGeneric("lgamma")
+if(!isGeneric("digamma"))
+   setGeneric("digamma")
 if(!isGeneric("gamma"))
    setGeneric("gamma")
 if(!isGeneric("sign"))

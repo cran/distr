@@ -64,7 +64,7 @@ exportMethods("Max", "Max<-", "Min", "Min<-", "d", "df",
               "shape1", "shape1<-", "shape2", "shape2<-", 
               "size", "size<-", "support", "initialize", 
               "print", "plot", "+", "-", "/", "*", "coerce",
-              "Math", "log", "log10", "gamma", "lgamma", 
+              "Math", "log", "log10", "gamma", "lgamma", "digamma", 
               "dim", "show", "convpow", "pivot", "sign",
               "lattice", "width", "Length", "pivot<-", 
               "width<-", "Length<-", "liesInSupport",
@@ -91,5 +91,5 @@ export("CompoundDistribution")
 export("PosDefSymmMatrix","PosSemDefSymmMatrix")
 export("NoSymmetry", "EllipticalSymmetry", "SphericalSymmetry",
        "DistrSymmList") 
-export("qqbounds")
+export("qqbounds","igamma")
 exportMethods("qqplot")

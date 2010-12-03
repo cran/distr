@@ -69,6 +69,7 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
       \item \code{log10}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{log10(x)}.
       \item \code{gamma}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{gamma(x)}.
       \item \code{lgamma}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{lgamma(x)}.
+      \item \code{digamma}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{digamma(x)}.
       \item \code{sqrt}: \code{signature(x = "AbscontDistribution")}:  exact image distribution of \code{sqrt(x)}.
     }}
     \item{-}{\code{signature(e1 = "AbscontDistribution")}: application of `-' to this absolutely continuous distribution.}
@@ -165,9 +166,9 @@ A1 <-  E+1 # a new absolutely continuous distributions with exact slots d, p, q
 A2 <-  A1*3 # a new absolutely continuous distributions with exact slots d, p, q
 A3 <- N*0.9 + E*0.1 # a new absolutely continuous distribution with approximated slots d, p, q
 r(A3)(1) # one random number generated from this distribution, e.g. -0.7150937
-d(A3)(0) # The (approximated) density for x=0 is 0.4379882.
-p(A3)(0) # The (approximated) probability that x <= 0 is 0.4562021.
-q(A3)(.1) # The (approximated) 10 percent quantile is 0.1.
+d(A3)(0) # The (approximated) density for x=0 is 0.43799.
+p(A3)(0) # The (approximated) probability that x <= 0 is 0.45620.
+q(A3)(.1) # The (approximated) 10 percent quantile is -1.06015.
 }
 \keyword{distribution}
 \concept{absolutely continuous distribution}

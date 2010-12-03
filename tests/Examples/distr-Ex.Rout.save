@@ -1,7 +1,8 @@
 
-R version 2.10.1 Patched (2010-01-12 r50990)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.12.1 Patched (2011-01-04 r53913)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -30,8 +31,7 @@ Loading required package: startupmsg
 Loading required package: sfsmisc
 Loading required package: SweaveListingUtils
 :SweaveListingUtils>  Utilities for Sweave together with
-:SweaveListingUtils>  TeX listings package (version
-:SweaveListingUtils>  0.4.1)
+:SweaveListingUtils>  TeX listings package (version 0.5)
 :SweaveListingUtils> 
 :SweaveListingUtils>  Some functions from package 'base'
 :SweaveListingUtils>  are intentionally masked ---see
@@ -52,14 +52,12 @@ Loading required package: SweaveListingUtils
 
 Attaching package: 'SweaveListingUtils'
 
+The following object(s) are masked from 'package:base':
 
-	The following object(s) are masked from package:base :
+    library, require
 
-	 library,
-	 require 
-
-:distr>  Object orientated implementation of distributions (version
-:distr>  2.2.1)
+:distr>  Object oriented implementation of distributions (version
+:distr>  2.3)
 :distr> 
 :distr>  Attention: Arithmetics on distribution objects are
 :distr>  understood as operations on corresponding random variables
@@ -80,12 +78,9 @@ Attaching package: 'SweaveListingUtils'
 
 Attaching package: 'distr'
 
+The following object(s) are masked from 'package:stats':
 
-	The following object(s) are masked from package:stats :
-
-	 df,
-	 qqplot,
-	 sd 
+    df, qqplot, sd
 
 > 
 > assign(".oldSearch", search(), pos = 'CheckExEnv')
@@ -105,6 +100,8 @@ Attaching package: 'distr'
 > X <- Unif(2,3)
 > Y <- Pois(lambda = 3)
 > Z <- X+Y  # generates Law of corresponding independent variables
+Warning in .makeDNew(x, dpn, h = 1, standM = "int") :
+  'integrate()' threw an error ---hence a simpler approximation was used for standardizing the density which may be inaccurate; see 'distr:::.makeDNew'.
 > p(Z)(0.2)
 [1] 0
 > r(Z)(1000)
@@ -278,11 +275,11 @@ Attaching package: 'distr'
 > A3 <- N*0.9 + E*0.1 # a new absolutely continuous distribution with approximated slots d, p, q
 > r(A3)(1) # one random number generated from this distribution, e.g. -0.7150937
 [1] -0.5492378
-> d(A3)(0) # The (approximated) density for x=0 is 0.4379882.
+> d(A3)(0) # The (approximated) density for x=0 is 0.43799.
 [1] 0.4379965
-> p(A3)(0) # The (approximated) probability that x <= 0 is 0.4562021.
+> p(A3)(0) # The (approximated) probability that x <= 0 is 0.45620.
 [1] 0.4561991
-> q(A3)(.1) # The (approximated) 10 percent quantile is 0.1.
+> q(A3)(.1) # The (approximated) 10 percent quantile is -1.06015.
 [1] -1.060145
 > 
 > 
@@ -1353,7 +1350,7 @@ class 'NbinomParameter' soon.
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: Huberize-methods
-> ### Title: Methods for function Huberize in Package `distr'
+> ### Title: Methods for function Huberize in Package 'distr'
 > ### Aliases: Huberize-methods Huberize Huberize,AcDcLcDistribution-method
 > ### Keywords: distribution methods
 > 
@@ -1632,8 +1629,6 @@ Warning in function (object)  :
 see 'distrARITH()'; for switching off this warning see '?distroptions'
 >   plot(Hu)
 >   Hu0 <- makeAbscontDistribution(Hu)
-Warning in .makeDNew(xx, dx, h = NULL, Cont = TRUE, standM = "integrate") :
-  'integrate()' threw an error ---result may be inaccurate.
 >   Hu0
 Distribution Object of Class: AbscontDistribution
 Warning in function (object)  :
@@ -1652,7 +1647,7 @@ Warning in function (object)  :
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: Minimum-methods
-> ### Title: Methods for functions Minimum and Maximum in Package `distr'
+> ### Title: Methods for functions Minimum and Maximum in Package 'distr'
 > ### Aliases: Minimum-methods Minimum Maximum-methods Maximum
 > ###   Minimum,AbscontDistribution,AbscontDistribution-method
 > ###   Minimum,DiscreteDistribution,DiscreteDistribution-method
@@ -1981,8 +1976,6 @@ An object of class "PosDefSymmMatrix"
 > 
 > rn2 <- function(n)ifelse(rbinom(n,1,0.3),rnorm(n)^2,rbinom(n,4,.3))
 > x <- RtoDPQ.LC(r = rn2, e = 4, n = 512)
-Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
-  'integrate()' threw an error ---result may be inaccurate.
 > plot(x)
 > # returns density, cumulative distribution and quantile function of
 > # squared standard normal distribution
@@ -2009,15 +2002,11 @@ Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
 > 
 > rn2 <- function(n){rnorm(n)^2}
 > x <- RtoDPQ(r = rn2, e = 4, n = 512)
-Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
-  'integrate()' threw an error ---result may be inaccurate.
 > # returns density, cumulative distribution and quantile function of
 > # squared standard normal distribution
 > x$dfun(4)
-[1] 0.02970112
+[1] 0.02970328
 > RtoDPQ(r = rn2, e = 5, n = 1024) # for a better result
-Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
-  'integrate()' threw an error ---result may be inaccurate.
 $dfun
 function (x, log = FALSE) 
 {
@@ -2026,7 +2015,7 @@ function (x, log = FALSE)
     else d0 <- df1(x)/stand
     return(d0)
 }
-<environment: 0x480b150>
+<environment: 0x4638830>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2047,7 +2036,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x45f96d0>
+<environment: 0x5f318c8>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2065,7 +2054,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x3b80180>
+<environment: 0x5206de8>
 
 > 
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -2091,16 +2080,12 @@ function (p, lower.tail = TRUE, log.p = FALSE)
 > 
 > rn2 <- function(n){rnorm(n)^2}
 > x <- RtoDPQ(r = rn2, e = 4, n = 512)
-Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
-  'integrate()' threw an error ---result may be inaccurate.
 > # returns density, cumulative distribution and quantile function of
 > # squared standard  normal distribution
 > 
 > x$dfun(4)
-[1] 0.02970112
+[1] 0.02970328
 > RtoDPQ(r = rn2, e = 5, n = 1024) # for a better result
-Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
-  'integrate()' threw an error ---result may be inaccurate.
 $dfun
 function (x, log = FALSE) 
 {
@@ -2109,7 +2094,7 @@ function (x, log = FALSE)
     else d0 <- df1(x)/stand
     return(d0)
 }
-<environment: 0x4baa228>
+<environment: 0x5ce2990>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2130,7 +2115,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x51643e8>
+<environment: 0x59ccca8>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2148,7 +2133,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x5348ac0>
+<environment: 0x503b630>
 
 > 
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -2266,7 +2251,7 @@ function (SymmCenter = 0)
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: Truncate-methods
-> ### Title: Methods for function Truncate in Package `distr'
+> ### Title: Methods for function Truncate in Package 'distr'
 > ### Aliases: Truncate-methods Truncate Truncate,AbscontDistribution-method
 > ###   Truncate,DiscreteDistribution-method
 > ###   Truncate,LatticeDistribution-method
@@ -2698,7 +2683,7 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: decomposePM-methods
-> ### Title: Methods for function decomposePM in Package `distr'
+> ### Title: Methods for function decomposePM in Package 'distr'
 > ### Aliases: decomposePM-methods decomposePM
 > ###   decomposePM,AbscontDistribution-method
 > ###   decomposePM,DiscreteDistribution-method
@@ -2953,7 +2938,7 @@ matrices and an adapted eigen decomposition for 'PosSemDefSymmMatrix'.
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: distroptions
-> ### Title: functions to change the global variables of the package `distr'
+> ### Title: functions to change the global variables of the package 'distr'
 > ### Aliases: distroptions getdistrOption DefaultNrGridPoints
 > ###   DistrResolution DistrCollapse TruncQuantile WarningSim WarningArith
 > ###   DefaultNrFFTGridPointsExponent RtoDPQ.e WarningArith WarningSim
@@ -3128,6 +3113,24 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 1 0.97946338 100        Exp(1)
 2 0.01814266 100    Norm(0, 1)
 3 1.29391589 100 Weibull(1, 1)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("igamma")
+> ### * igamma
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: igamma
+> ### Title: Inverse of the digamma function
+> ### Aliases: igamma
+> ### Keywords: math
+> 
+> ### ** Examples
+> 
+> igamma(digamma(c(1e-4,1,20,1e8)))
+[1] 1.000000e-04 1.000000e+00 2.099929e+01 1.734795e+09
 > 
 > 
 > 
@@ -3335,7 +3338,7 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: options
-> ### Title: additional options in package `distr'
+> ### Title: additional options in package 'distr'
 > ### Aliases: options newDevice
 > ### Keywords: environment iplot dplot
 > 
@@ -3354,7 +3357,7 @@ NULL
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: plot-methods
-> ### Title: Methods for Function plot in Package `distr'
+> ### Title: Methods for Function plot in Package 'distr'
 > ### Aliases: plot plot-methods
 > ###   plot,AffLinUnivarLebDecDistribution,missing-method
 > ###   plot,UnivarLebDecDistribution,missing-method
@@ -3613,7 +3616,7 @@ TRUE TRUE
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: qqplot
-> ### Title: Methods for Function qqplot in Package `distr'
+> ### Title: Methods for Function qqplot in Package 'distr'
 > ### Aliases: qqplot qqplot-methods qqplot,ANY,ANY-method
 > ###   qqplot,UnivariateDistribution,UnivariateDistribution-method
 > ### Keywords: hplot distribution
@@ -3762,7 +3765,7 @@ $y
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: simplifyD-methods
-> ### Title: Methods for function simplifyD in Package `distr'
+> ### Title: Methods for function simplifyD in Package 'distr'
 > ### Aliases: simplifyD-methods simplifyD
 > ###   simplifyD,AbscontDistribution-method
 > ###   simplifyD,DiscreteDistribution-method
@@ -3849,7 +3852,7 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: simplifyr-methods
-> ### Title: Methods for Function simplifyr in Package `distr'
+> ### Title: Methods for Function simplifyr in Package 'distr'
 > ### Aliases: simplifyr-methods simplifyr
 > ###   simplifyr,UnivariateDistribution-method
 > ### Keywords: math distribution arith
@@ -3859,11 +3862,11 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > F <- ( Norm() + Binom() + Pois() + Exp() ) * 2 - 10
 > system.time(r(F)(10^6))
    user  system elapsed 
-  0.790   0.040   0.836 
+  0.750   0.020   0.768 
 > simplifyr(F, size = 10^6)
 > system.time(r(F)(10^6))
    user  system elapsed 
-  0.040   0.000   0.043 
+  0.040   0.000   0.038 
 > 
 > 
 > cleanEx()
@@ -3897,7 +3900,7 @@ setReplaceMethod("b", "testclass", function(object, value){ object@b <- value; o
 > ### * <FOOTER>
 > ###
 > cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  154.42 0.39 154.85 0.02 0.02 
+Time elapsed:  149.19 0.26 149.969 0 0 
 > grDevices::dev.off()
 postscript 
          2 

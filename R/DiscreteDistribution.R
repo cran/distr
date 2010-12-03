@@ -519,6 +519,19 @@ setMethod("sign", "DiscreteDistribution",
           })
 
 
+setMethod("digamma", "DiscreteDistribution",
+          function(x){
+            px0 <- p(x)(0)
+            if(px0>0) stop("argument of 'digamma' must be concentrated on positive values")
+            rnew <-  function(n, ...){}
+            body(rnew) <- substitute({ digamma(g(n, ...)) }, list(g = x@r))
+            
+            object <- DiscreteDistribution( 
+                     supp=digamma(support(x)), 
+                     prob=prob(x), .withArith = TRUE)
+            object
+          })
+
 setMethod("lgamma", "DiscreteDistribution",
           function(x){
             rnew = function(n, ...){}

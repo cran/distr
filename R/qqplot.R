@@ -17,12 +17,16 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     cex.pch = par("cex"), col.pch = par("col"),
     jit.fac = 0, check.NotInSupport = TRUE,
     col.NotInSupport = "red", with.legend = TRUE, legend.bg = "white",
-    legend.pos = "topleft", legend.cex = 0.8){
+    legend.pos = "topleft", legend.cex = 0.8, legend.pref = "", 
+    legend.postf = "", legend.alpha = alpha.CI){
 
     mc <- match.call(call = sys.call(sys.parent(1)))
     if(missing(xlab)) mc$xlab <- as.character(deparse(mc$x))
     if(missing(ylab)) mc$ylab <- as.character(deparse(mc$y))
     mcl <- as.list(mc)[-1]
+    mcl$withSweave <- NULL
+    mcl$mfColRow <- NULL
+
     force(x)
 
     pp <- ppoints(n)
@@ -65,9 +69,9 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     if (!withSweave){
            devNew(width = width, height = height)
     }
-    opar <- par("mfrow")
-    on.exit(do.call(par, list(mfrow=opar)))
-    if(mfColRow) opar1 <- par(mfrow = c(1,1))
+    opar <- par("mfrow", no.readonly = TRUE)
+    if(mfColRow) on.exit(do.call(par, list(mfrow=opar)))
+    if(mfColRow) opar1 <- par(mfrow = c(1,1), no.readonly = TRUE)
 
     ret <- do.call(stats::qqplot, args=mcl)
 
@@ -100,7 +104,8 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
                   n, exact.sCI = exact.sCI, exact.pCI = exact.pCI,
                   nosym.pCI = nosym.pCI, with.legend = with.legend,
                   legend.bg = legend.bg, legend.pos = legend.pos,
-                  legend.cex = legend.cex)
+                  legend.cex = legend.cex, legend.pref = legend.pref,
+                  legend.postf = legend.postf, legend.alpha = legend.alpha)
        }
     }
     return(ret)

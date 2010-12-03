@@ -11,7 +11,7 @@ NormApprox <- U12 - 6
 
 x <- seq(-4,4,0.001)
 
-opar <- par(mfrow = c(2,1))
+opar <- par(mfrow = c(2,1), no.readonly = TRUE)
 
 plot(x, d(NormApprox)(x),
      type = "l",

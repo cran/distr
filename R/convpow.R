@@ -103,9 +103,9 @@ setMethod("convpow",
 
             ## convolution theorem for DFTs
             newd <- Re(fft(ftde1^N, inverse = TRUE)) / length(ftde1)
-            newd <- (abs(newd) >= .Machine$double.eps)*newd
+            newd <- (newd >= .Machine$double.eps)*newd
 
-            rsum.u <- min( sum( rev(cumsum(rev(newd))) <= ep/2)+1, length(supp1))
+            rsum.u <- min( sum( cumsum(rev(newd)) > ep/2)+1, length(supp1))
             rsum.l <- max( sum( cumsum(newd) < ep/2), 1)
 
             newd <- newd[rsum.l:rsum.u]

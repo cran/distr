@@ -59,6 +59,7 @@ Class \code{"Distribution"}, by class \code{"UnivariateDistribution"}.
       \item \code{log10}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{log10(x)}.
       \item \code{gamma}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{gamma(x)}.
       \item \code{lgamma}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{lgamma(x)}.
+      \item \code{digamma}: \code{signature(x = "DiscreteDistribution")}:  exact image distribution of \code{digamma(x)}.
     }}
     \item{-}{\code{signature(e1 = "DiscreteDistribution")}: application of `-' to this discrete distribution}
     \item{*}{\code{signature(e1 = "DiscreteDistribution", e2 = "numeric")}: multiplication of this discrete distribution

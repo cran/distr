@@ -4,15 +4,22 @@
 \description{
   function to do get empirical density, cumulative distribution and quantile function from random numbers}
 \usage{
-RtoDPQ(r, e = getdistrOption("RtoDPQ.e"), n = getdistrOption("DefaultNrGridPoints"))
+RtoDPQ(r, e = getdistrOption("RtoDPQ.e"), n = getdistrOption("DefaultNrGridPoints"), y = NULL)
 }
 \arguments{
   \item{r}{ the random number generator }
   \item{e}{ \eqn{10^e} numbers are generated, a higher number leads to a better result. }
   \item{n}{ The number of grid points used to create the approximated functions, a higher number leads to a better result.}
+  \item{y}{a (numeric) vector or \code{NULL}}
 }
 \details{
-RtoDPQ generates \eqn{10^e} random numbers, by default \deqn{e = RtoDPQ.e}. The density is formed on the basis of \eqn{n}
+RtoDPQ generates \eqn{10^e} random numbers, by default \deqn{e = RtoDPQ.e}. 
+Instead of using simulated grid points, we have an optional parameter \code{y}
+for using N. Horbenko's quantile trick: i.e.; on an equally spaced grid \code{x.grid} on [0,1], apply
+\code{f(q(x)(x.grid))} and write the result to \code{y} and produce density and cdf from this
+value \code{y} given to \code{RtoDPQ} as argument (instead of simulating grid points).
+
+The density is formed on the basis of \eqn{n}
 points using approxfun and density, by default \deqn{n = DefaultNrGridPoints}.
 The cumulative distribution function and the quantile function are also created on the basis of \eqn{n} points using 
 \code{approxfun} and \code{ecdf}.  Of course, the results are usually not exact as they rely on random numbers.}

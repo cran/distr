@@ -8,6 +8,104 @@
  information)
  
 ##############
+v 2.3
+##############
+
+user-visible CHANGES:
+
+- parameter size in NegbinomDistribution can now be real-valued
+- introduced igamma, the inverse of digamma and corresponding transformations;
+  distr: drastically reduced memory needed by smaller grid for igamma 
++ distr: implemented Nataliya's quantile trick to avoid simulated grid points
+
+GENERAL ENHANCEMENTS:
+
++ [qqplot] 
+    - had forgot to delete some legend arguments from call mcl ...
+    - gains arguments legend.pref and legend.postf to pre/ap-pend text before/after legend text
+    - CIs in qqplot may now comprise +-Inf values  
+    - gains argument legend.alpha to be able to distinguish nominal and actual confidence level
+
+under the hood:
++ DESCRIPTION files and package-help files gain a tag 
+  SVNRevision to be filled by get[All]RevNr.R from utils in distr
+
+BUGFIXES:
+
++ old version of AllClasses.R for package "distr" was fetched 
+  from R-Forge - warning after merging branch 2.2 into trunk
+
++ got strange unreproducible error reports in the example to 
+  simplifyD; set seed now to avoid this.
+
++ (hopefully) fixed http://n4.nabble.com/R-devel-f909078.html
+
++ fixed an error with qqplot in distr: mfColRow did not work as it should
+  ... now can be used in multipanel plots
++ fixed minor error in internals-qqplot.R 
+
++ for restoring old par() values, not all attributes may be set; 
+  hence deleted them from stored value in plot functions by something like
+  opar$cin <- opar$cra <- opar$csi <- opar$cxy <-  opar$din <- NULL
+
++ Typos in plot functions... 
+
++ implemented Matthias' proposals, ie
+  (1)
+  [old]
+            newd <- (abs(newd) >= .Machine$double.eps)*newd
+  [new]
+            newd <- (newd >= .Machine$double.eps)*newd
+
+  (2)
+  [old]
+            rsum.u <- min( sum( rev(cumsum(rev(newd))) <= ep/2)+1, length(supp1))
+  [new]
+            rsum.u <- min( sum( !(cumsum(rev(newd)) <= ep/2))+1, length(supp1))
+
+
++ a renaming schedule : enforcing ending .R in convpow.R
+
++ fixed typo in corrected version of Convpow.R
+
++ tentative fix for Uwe Ligges' bug report obsevered in 
+   http://cran.r-project.org/bin/windows/contrib/2.12/check/distr-check.log  15-06-2010
+
+
++ unnecessary Rplots.pdf deleted from inst folders of 
+  distr and distrMod (are created anyway during vignette build)
+
++ changed mail address:
+  triggered by mail by Sven Sewitz sas69@cam.ac.uk, replaced all dead links 
+  to distr.pdf in www files by url to vignette of distrDoc on CRAN;
+  also replaced uni-bayreuth.de mail address by itwm.fraunhofer.de one
+
+----------------
+Changes after changes in R , R-forge
+----------------
+
++ cleanup issues:
+
+   -Package: distr Version: 2.2 Flavor: r-devel-linux-ix86
+    Check: package vignettes ... WARNING
+    *** Weave Errors ***
+    File /home/hornik/tmp/R.check/r-devel/Work/PKGS/distr.Rcheck/inst/doc/newDistributions.Rnw :
+    chunk 20 (label=cleanup) 
+    Error : package ‘SweaveListingUtils’ is required by ‘distr’ so will not be detached
+
+
+  => removed tag in distr.Rnw in distrDoc
+     <<cleanup, echo=FALSE>>=
+       unloadNamespace("SweaveListingUtils")
+     @
+     similarly in newDistributions.Rnw 
+
+  => small changes in SweaveListingUtils in order to pass R CMD check again...
+
+
+
+  
+##############
 v 2.2
 ##############
 

@@ -5,7 +5,7 @@
 \description{Generates an object of class \code{"UnivarLebDecDistribution"}.}
 \usage{
 UnivarLebDecDistribution(acPart, discretePart, acWeight, discreteWeight,
-                                     r = NULL, e = NULL, n = NULL)
+                                     r = NULL, e = NULL, n = NULL, y = NULL)
 }
 \arguments{
   \item{acPart}{Object of class \code{"AbscontDistribution"} (or subclasses); 
@@ -26,14 +26,21 @@ UnivarLebDecDistribution(acPart, discretePart, acWeight, discreteWeight,
   \item{n}{optional argument; if argument \code{r} is given, this is the number
            gridpoints used in filling the empty p,d,q slots of this object; if missing filled
            with \code{getdistrOption("DefaultNrGridPoints")}.}
+  \item{y}{a (numeric) vector or \code{NULL}}
 }
 
 \details{At least one of arguments \code{discretePart}, \code{acPart}, or \code{r}
          must be given; if the first two are missing, slots are filled by a call
-         to \code{RtoDPQ.LV}. For this purpose argument \code{r} is used together
+         to \code{RtoDPQ.LC}. For this purpose argument \code{r} is used together
          with arguments \code{e} and \code{n}. If the latter are missing they are
          filled with \code{getdistrOption("RtoDPQ.e")} and 
          \code{getdistrOption("DefaultNrGridPoints")}, respectively.
+         For the a.c. part, similarly to \code{\link{RtoDPQ}} we have an optional 
+         parameter \code{y} for using N. Horbenko's quantile trick: i.e.; on an 
+         equally spaced grid \code{x.grid} on [0,1], apply 
+         \code{f(q(x)(x.grid))}, write the result to \code{y} and use these
+         values instead of simulated ones.
+         
          If argument \code{discretePart} is missing but  \code{acPart} is not,
          \code{discreteWeight} is set to 0 and \code{discretePart} is set to \code{Dirac(0)}.
          If argument   \code{acPart}  is missing but \code{discretePart} is not,

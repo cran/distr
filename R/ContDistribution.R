@@ -418,10 +418,19 @@ setMethod("+", c("AffLinAbscontDistribution","numeric"),
 
 ## Group Math for absolutly continuous distributions
 setMethod("Math", "AbscontDistribution",
-          function(x){            rnew <- function(n, ...){}
+          function(x){            
+
+            rnew <- function(n, ...){}           
             body(rnew) <- substitute({ f(g(n, ...)) },
                               list(f = as.name(.Generic), g = x@r))
-            object <- AbscontDistribution( r = rnew,
+            
+            n <- 10^getdistrOption("RtoDPQ.e")+1
+            u <- seq(0,1,length=n+1); u <- (u[1:n]+u[2:(n+1)])/2
+            y <- callGeneric(q(x)(u))
+            DPQnew <- RtoDPQ(r=rnew, y=y)
+                       
+            object <- AbscontDistribution(d = DPQnew$d, p = DPQnew$p, 
+                           r = rnew, q = DPQnew$q,
                            .withSim = TRUE, .withArith = TRUE)
             object
           })
@@ -587,23 +596,82 @@ setMethod("sign", "AbscontDistribution",
 
 
 
+setMethod("digamma", "AbscontDistribution",
+          function(x){
+            rnew <-  function(n, ...){}
+            body(rnew) <- substitute({ digamma(g(n, ...)) }, list(g = x@r))
+            px0 <- p(x)(0)
+            if(px0>0) stop("argument of 'digamma' must be concentrated on positive values")
+            xx <- x
+                    
+            pnew <- function(q, lower.tail = TRUE, log.p = FALSE){
+                    iq <- igamma(q) 
+                    px <- p(xx)(iq, lower.tail = lower.tail, log.p = log.p)
+                    return(px)
+            }
+            dnew <- function(x, log = FALSE){
+                    ix <- igamma(x)
+                    dx <- d(xx)(ix, log = log)
+                    nx <- trigamma(ix)
+                    if(log) dx <- dx - log(nx)
+                    else dx <- dx/nx
+                    return(dx)
+            }
+            
+            .x <- sort(c(qexp(unique(pmin(seq(0,1,length=5e4)+1e-10,1-1e-10))),
+                       -abs(rnorm(1e4)),
+                       qcauchy(seq(0.999,1-1e-10,length=5e3),lower.tail=FALSE)))
+            i <- 0; x0 <- 1
+            while(pnew(x0,lower.tail = FALSE)>  getdistrOption("TruncQuantile") && i < 20) 
+                 x0 <- x0 * 2
+             up1 <- x0
+            i <- 0; x0 <- -1
+            while(pnew(x0)> getdistrOption("TruncQuantile") && i < 20) 
+                 x0 <- x0 * 2
+             low1 <- x0
+          
+
+            
+            qnew <- .P2Q(p = pnew, xx =.x,
+                         ql = low1, qu=up1,  
+                         ngrid = getdistrOption("DefaultNrGridPoints"),
+                            qL = -Inf, qU = Inf)
+ 
+            
+            object <- AbscontDistribution( r = rnew, d = dnew, p = pnew, q=qnew,
+                           .withSim = TRUE, .withArith = TRUE, .logExact = FALSE)
+            object
+          })
+
 setMethod("lgamma", "AbscontDistribution",
           function(x){
-            rnew = function(n, ...){}
+            rnew <- function(n, ...){}
             body(rnew) <- substitute({ lgamma(g(n, ...)) }, list(g = x@r))
-            object <- AbscontDistribution( r = rnew,
-                           .withSim = TRUE, .withArith = TRUE)
+
+            n <- 10^getdistrOption("RtoDPQ.e")+1
+            u <- seq(0,1,length=n+1); u <- (u[1:n]+u[2:(n+1)])/2
+            y <- lgamma(q(x)(u))
+            DPQnew <- RtoDPQ(r=rnew, y=y)
+            
+            object <- AbscontDistribution( r = rnew, d = DPQnew$d, p = DPQnew$p,
+                           q=DPQnew$q, .withSim = TRUE, .withArith = TRUE)
             object
           })
 
 setMethod("gamma", "AbscontDistribution",
           function(x){
-            rnew = function(n, ...){}
+            rnew <- function(n, ...){}
             body(rnew) <- substitute({ gamma(g(n, ...)) }, list(g = x@r))
-            object <- AbscontDistribution( r = rnew,
-                           .withSim = TRUE, .withArith = TRUE)
+            n <- 10^getdistrOption("RtoDPQ.e")+1
+            u <- seq(0,1,length=n+1); u <- (u[1:n]+u[2:(n+1)])/2
+            y <- gamma(q(x)(u))
+            DPQnew <- RtoDPQ(r=rnew, y=y)
+
+            object <- AbscontDistribution( r = rnew, d = DPQnew$d, p = DPQnew$p,
+                           q=DPQnew$q, .withSim = TRUE, .withArith = TRUE)
             object
           })
+          
 setMethod("sqrt", "AbscontDistribution",
             function(x) x^0.5)
 

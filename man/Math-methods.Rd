@@ -19,6 +19,8 @@
 \alias{sign,DiscreteDistribution-method}
 \alias{log10,AbscontDistribution-method}
 \alias{log10,DiscreteDistribution-method}
+\alias{digamma,AbscontDistribution-method}
+\alias{digamma,DiscreteDistribution-method}
 \alias{lgamma,AbscontDistribution-method}
 \alias{lgamma,DiscreteDistribution-method}
 \alias{gamma,AbscontDistribution-method}
@@ -31,11 +33,11 @@ for random variables transformed by functions from group
     \item{Math}{\code{signature(x = "AbscontDistribution")}: application of a
       mathematical function from group \code{\link[methods:S4groupGeneric]{Math}}, e.g.
       \code{sin} or \code{exp}  (including
-      \code{log, log10, gamma, lgamma}), to this
+      \code{log, log10, gamma, lgamma, digamma}), to this
       absolutely continouos distribution}
     \item{Math}{\code{signature(x = "DiscreteDistribution")}: application of a
       mathematical function, e.g. sin or exp  (including
-      \code{log, log10, gamma, lgamma}), to this
+      \code{log, log10, gamma, lgamma, digamma}), to this
       discrete distribution}
     \item{Math}{\code{signature(x = "UnivarLebDecDistribution")}: application of a
       mathematical function from group \code{\link[methods:S4groupGeneric]{Math}}, e.g.
