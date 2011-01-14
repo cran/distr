@@ -19,8 +19,8 @@
 \usepackage{svn-multi}
 % Version control information:
 \svnidlong
-{$HeadURL: file:///srv/svn/distr/pkg/distr/inst/doc/newDistributions.Rnw $}
-{$LastChangedDate: 2010-12-02 14:41:24 +0100 (Thu, 02 Dec 2010) $}
+{$HeadURL: svn+ssh://ruckdeschel@svn.r-forge.r-project.org/svnroot/distr/pkg/distr/inst/doc/newDistributions.Rnw $}
+{$LastChangedDate: 2010-12-02 14:41:24 +0100 (Do, 02 Dez 2010) $}
 {$LastChangedRevision: 694 $}
 {$LastChangedBy: ruckdeschel $}
 %\svnid{$Id: example_main.tex 146 2008-12-03 13:29:19Z martin $}
