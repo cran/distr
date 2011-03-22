@@ -1,6 +1,6 @@
 Package: distr
-Version: 2.3.1
-Date: 2011-01-14
+Version: 2.3.2
+Date: 2011-03-22
 Title: Object oriented implementation of distributions
 Description: S4 Classes and Methods for distributions
 Author: Florian Camphausen, Matthias Kohl, Peter Ruckdeschel, Thomas
@@ -14,10 +14,10 @@ LazyLoad: yes
 Encoding: latin1
 License: LGPL-3
 URL: http://distr.r-forge.r-project.org/
-LastChangedDate: {$LastChangedDate: 2011-02-14 23:52:26 +0100 (Mo, 14
-        Feb 2011) $}
-LastChangedRevision: {$LastChangedRevision: 722 $}
-SVNRevision: 699
-Packaged: 2011-02-15 09:31:15 UTC; ruckdesc
+LastChangedDate: {$LastChangedDate: 2011-03-22 21:44:29 +0100 (Di, 22
+        Mrz 2011) $}
+LastChangedRevision: {$LastChangedRevision: 724 $}
+SVNRevision: 723
+Packaged: 2011-03-26 16:53:36 UTC; ruckdesc
 Repository: CRAN
-Date/Publication: 2011-02-15 14:31:02
+Date/Publication: 2011-03-27 08:50:35

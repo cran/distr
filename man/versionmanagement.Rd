@@ -10,7 +10,7 @@
 \title{ Methods for Version Management in Package `distr' }
 \description{Version-Management-methods}
 \usage{isOldVersion(object)
-new.object <- conv2NewVersion(object)
+conv2NewVersion(object)
 \S4method{isOldVersion}{ANY}(object)
 \S4method{conv2NewVersion}{ANY}(object)
 \S4method{conv2NewVersion}{LatticeDistribution}(object)

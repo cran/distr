@@ -141,9 +141,12 @@ setMethod("showobj", "CompoundDistribution",
 
 setMethod("show", "UnivarLebDecDistribution",
           function(object){
-           objs <- as.character(deparse(           
-           match.call(
-                   call = sys.call(sys.parent(1)))$object))
+           sc <- sys.call(sys.parent(1))
+           if(identical(sc[[1]], as.name("show"))){
+              objs <- as.character(deparse(match.call(call = sc)$object))
+           }else{
+              objs <- "<obj>"
+           }
             cls <- class(object)[1]
             cat(showobj(object, className = cls, objs = objs))
            ws <- .IssueWarn(object@.withArith, object@.withSim)          
@@ -153,8 +156,8 @@ setMethod("show", "UnivarLebDecDistribution",
 
 setMethod("showobj", "UnivarLebDecDistribution",
           function(object, className = class(object)[1], objs){
-              if(missing(objs)) objs <- "" 
-              else if(length(grep("<S4 object ", objs))) objs <- ""
+              if(missing(objs)) objs <- "<obj>" 
+              else if(length(grep("<S4 object ", objs))) objs <- "<obj>"
               txt <- gettextf("An object of class \"%s\"\n", className)
               txt <- c(txt,
                        gettextf("--- a Lebesgue decomposed distribution:\n\n"))
