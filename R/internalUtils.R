@@ -48,6 +48,114 @@ setAs("numeric","Integer",function(from) new("Integer",as.integer(from)))
 }
 
 #------------------------------------------------------------------------------
+### internal help function to determin common lattice width
+#------------------------------------------------------------------------------
+
+.EuclidAlgo <- function(n1,n2){
+   r<- 2
+   m <- round(max(n1,n2))
+   n <- round(min(n1,n2))
+   if (n==1) return(1)
+   while (r>1){
+      r <- m %% n
+      m <- n
+      if(r==1) return(1)
+      if(r==0) break
+      n <- r
+      }
+   return(n)
+}
+.getCommonWidth <- function(x1,x2, tol=.Machine$double.eps){
+  rI <- function(x) .isInteger(x, tol = x * tol)
+  if(rI(x1)&&rI(x2)) return(.EuclidAlgo(x1,x2))
+  if(rI(10000*x1) && rI(10000*x2)) return(.EuclidAlgo(10000*x1,10000*x2)/10000)
+  n <- max(x1,x2); m <- min(x1,x2)
+  if(rI(n/m)) return(m)
+  vc <- 1:10000
+  vecT <- sapply(vc,function(x) rI(x*(n/m)))
+  vec <- m/vc
+#  print(min(vc[vecT]))
+  if(any(vecT)) return((vec/min(vc[vecT]))[1])
+  return(NULL)  
+}
+
+#------------------------------------------------------------------------------
+### %in% for numerics with tolerance
+#------------------------------------------------------------------------------
+.inWithTol <- function(x,y,tol=.Machine$double.eps){
+   sapply(x, function(u) any(abs(u-y)<tol))
+}                                                                         
+
+#------------------------------------------------------------------------------
+### brute force convolution
+#------------------------------------------------------------------------------
+.convDiscrDiscr <- function(e1,e2){
+            convolutedsupport <- rep(support(e1), each = length(support(e2))) +
+                                 support(e2)
+
+            gridvalues1 <- d(e1)(support(e1)); gridvalues2 <- d(e2)(support(e2))
+            convolutedvalues <- rep(gridvalues1, each = length(support(e2))) *
+                                gridvalues2
+            rm(gridvalues1,gridvalues2)
+
+            tmptable <- data.frame(x = convolutedsupport, dx = convolutedvalues)
+            rm(convolutedsupport,convolutedvalues)
+            tmp <- tapply(tmptable$dx, tmptable$x, sum)
+            rm(tmptable)
+
+            supp.u <- as.numeric(names(tmp))
+            prob.u <- as.numeric(tmp)
+
+            o <- order(supp.u)
+            supp <- supp.u[o]
+            prob <- prob.u[o]
+
+            #supp.u <- unique(supp)
+
+            len <- length(supp)
+
+            if(len > 1){
+               if (min(diff(supp))< getdistrOption("DistrResolution")){
+                   if (getdistrOption("DistrCollapse")){
+                       erg <- .DistrCollapse(supp, prob, 
+                                   getdistrOption("DistrResolution"))
+                       if ( len > length(erg$prob) && 
+                                getdistrOption("DistrCollapse.Unique.Warn") )
+                            warning("collapsing to unique support values")         
+                       prob <- erg$prob
+                       supp <- erg$supp
+                   }else
+                    stop("grid too narrow --> change DistrResolution")
+                }
+            }
+
+            rm(tmp, len)
+
+            .withSim <- e1@.withSim || e2@.withSim
+
+            rfun <- function(n) {}
+            body(rfun) <- substitute({ f(n) + g(n) },
+                                         list(f = e1@r, g = e2@r))
+
+            dfun <- .makeDNew(supp, prob, Cont = FALSE)
+            pfun <- .makePNew(supp, prob, .withSim, Cont = FALSE)
+            qfun <- .makeQNew(supp, cumsum(prob), rev(cumsum(rev(prob))),
+                      .withSim, min(supp), max(supp), Cont = FALSE)
+
+            object <- new("DiscreteDistribution", r = rfun, d = dfun, p = pfun,
+                           q = qfun, support = supp,
+                           .withSim = .withSim, .withArith = TRUE)
+            rm(rfun, dfun, qfun, pfun)
+
+            if(is(e1@Symmetry,"SphericalSymmetry")&& 
+               is(e2@Symmetry,"SphericalSymmetry"))
+               object@Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry)+
+                                                     SymmCenter(e2@Symmetry))   
+
+            object
+          }
+
+#------------------------------------------------------------------------------
 ### .fm, .fM, .fM2 functions
 #------------------------------------------------------------------------------
 
@@ -658,18 +766,13 @@ return(f)
             df1 <- mfun(x = x, y = dx1, yleft = 0, yright = 0)
 
             if (standM == "sum")
-                stand <- sum(dx)
-            else{
-                stand <- try(integrate(df1, -Inf, Inf)$value, TRUE)
-                if (is(stand,"try-error")){
-                    xm <- min(0.95*x,1.05*x) ## trick if x can be >0 or <0
-                    xM <- max(0.95*x,1.05*x)
-                    stand <- try(integrate(df1, xm, xM)$value, TRUE)
-                    if (is(stand,"try-error")){
-                        warning("'integrate()' threw an error ---hence a simpler approximation was used for standardizing the density which may be inaccurate; see 'distr:::.makeDNew'.")
-                        stand <- sum(df1(x))*h*(x[2]-x[1])
-                    }
-                }
+                   stand <- sum(dx)
+            else   {
+            stand <- try(integrate(df1, -Inf, Inf)$value, TRUE)
+            if (is(stand,"try-error")){
+               warning("'integrate()' threw an error ---result may be inaccurate.")
+               stand <- sum(df1(x))*h*(x[2]-x[1])
+               }
             }
             dfun <- function(x, log = FALSE)
                     {if (log)

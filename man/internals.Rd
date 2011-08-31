@@ -17,6 +17,8 @@
 \alias{.make.lattice.es.vector}
 \alias{.presubs}
 \alias{.inArgs}
+\alias{.EuclidAlgo}
+\alias{.getCommonWidth}
 \alias{.isEqual}
 \alias{.isIn}
 \alias{.setEqual}
@@ -55,6 +57,8 @@
 \alias{.trunc.low}
 \alias{.modifyqgaps}
 \alias{.DistrCollapse}
+\alias{.convDiscrDiscr}
+\alias{.inWithTol}
 \alias{devNew}
 
 \title{Internal functions of package distr}
@@ -125,6 +129,10 @@ These functions are used internally by package distr.}
 .trunc.low(object, lower)
 .modifyqgaps(pfun, qfun, gaps, leftright = "left")
 .DistrCollapse(support, prob, eps = getdistrOption("DistrResolution"))
+.EuclidAlgo(n1,n2)
+.getCommonWidth(x1,x2, tol=.Machine$double.eps)
+.convDiscrDiscr(e1,e2)
+.inWithTol(x,y,tol=.Machine$double.eps)
 devNew(...)
 }
 
@@ -228,6 +236,10 @@ devNew(...)
                   the left continuous version; for slot \code{p}: if partially 
                   matched to \code{"left"} the left continuous version, else
                   the right continuous version;}
+ \item{n1}{integer argument for \code{.EuclidAlgo}}
+ \item{n2}{integer argument for \code{.EuclidAlgo}}
+ \item{x1}{width argument for \code{.getCommonWidth}}
+ \item{x2}{width argument for \code{.getCommonWidth}}
  \item{...}{arguments passed through to other functions}
 }
 
@@ -366,7 +378,14 @@ log-tricks as indicated in
      \code{gaps} is not \code{NULL}. If argument \code{leftright} does not
      partially match \code{"right"} (default) returns the left continuous
      version of the quantile function, else the right continuous one.
-
+ 
+\code{.EuclidAlgo} computes the greatest common divisor of two integers by 
+      means of the Euclidean algorithm.
+\code{.getCommonWidth} for two lattices with widths \code{x1} and \code{x2}
+      computes the smallest common lattice width for convolution.
+\code{.convDiscrDiscr} computes the convolution of two discrete distributions by
+    brute force.
+\code{.inWithTol} works like \code{\%in\%} but with a given tolerance.
 \code{devNew} opens a new device. This function is for back compatibility
 with R versions < 2.8.0.
 }
@@ -433,6 +452,11 @@ with R versions < 2.8.0.
        Criterium for collapsing: a distance smaller than argument
        \code{eps}.
        }
+\item{.EuclidAlgo}{returns the greatest common divisor (an integer).}
+\item{.getCommonWidth}{returns the  smallest common lattice width (a numeric).}
+\item{.convDiscrDiscr}{returns the convolution of two discrete distributions.}
+\item{.inWithTol}{returns a logical vector of same lenght as \code{x} for the
+    matches (up to tolerance) with vector \code{y}.}
 \item{devNew}{returns the return value of the device opened, 
 usually invisible \code{NULL}.}
 }

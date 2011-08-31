@@ -15,7 +15,7 @@ DiscreteDistribution <- function(supp, prob, .withArith = FALSE,
     if(!is.numeric(supp))
         stop("'supp' is no numeric vector")
     if(any(!is.finite(supp)))   # admit +/- Inf?
-        stop("inifinite or missing values in supp")
+        stop("infinite or missing values in supp")
     len <- length(supp)
     if(missing(prob)){
         prob <- rep(1/len, len)
@@ -23,7 +23,7 @@ DiscreteDistribution <- function(supp, prob, .withArith = FALSE,
         if(len != length(prob))
             stop("'supp' and 'prob' must have equal lengths")
         if(any(!is.finite(prob)))
-            stop("inifinite or missing values in prob")
+            stop("infinite or missing values in prob")
         if(!identical(all.equal(sum(prob), 1,
                           tolerance = 2*getdistrOption("TruncQuantile")), TRUE))
             stop("sum of 'prob' has to be (approximately) 1")
@@ -226,77 +226,14 @@ function(e1,e2){
             e1.L <- as(e1, "LatticeDistribution")
             e2.L <- as(e2, "LatticeDistribution")
             if(is(e1.L, "LatticeDistribution") & is(e2.L, "LatticeDistribution"))
-                {w1 <- width(lattice(e1.L))
-                 w2 <- width(lattice(e2.L))
-                 W <- sort(abs(c(w1,w2)))
-                 if (abs(abs(w1)-abs(w2))<getdistrOption("DistrResolution") ||
-                     W[2] %% W[1] < getdistrOption("DistrResolution") )
-                     return(e1.L + e2.L)
-                } 
-            convolutedsupport <- rep(support(e1), each = length(support(e2))) +
-                                 support(e2)
-
-            gridvalues1 <- d(e1)(support(e1)); gridvalues2 <- d(e2)(support(e2))
-            convolutedvalues <- rep(gridvalues1, each = length(support(e2))) *
-                                gridvalues2
-            rm(gridvalues1,gridvalues2)
-
-            tmptable <- data.frame(x = convolutedsupport, dx = convolutedvalues)
-            rm(convolutedsupport,convolutedvalues)
-            tmp <- tapply(tmptable$dx, tmptable$x, sum)
-            rm(tmptable)
-
-            supp.u <- as.numeric(names(tmp))
-            prob.u <- as.numeric(tmp)
-
-            o <- order(supp.u)
-            supp <- supp.u[o]
-            prob <- prob.u[o]
-
-            #supp.u <- unique(supp)
-
-            len <- length(supp)
-
-            if(len > 1){
-               if (min(diff(supp))< getdistrOption("DistrResolution")){
-                   if (getdistrOption("DistrCollapse")){
-                       erg <- .DistrCollapse(supp, prob, 
-                                   getdistrOption("DistrResolution"))
-                       if ( len > length(erg$prob) && 
-                                getdistrOption("DistrCollapse.Unique.Warn") )
-                            warning("collapsing to unique support values")         
-                       prob <- erg$prob
-                       supp <- erg$supp
-                   }else
-                    stop("grid too narrow --> change DistrResolution")
-                }
-            }
-
-            rm(tmp, len)
-
-            .withSim <- e1@.withSim || e2@.withSim
-
-            rfun <- function(n) {}
-            body(rfun) <- substitute({ f(n) + g(n) },
-                                         list(f = e1@r, g = e2@r))
-
-            dfun <- .makeDNew(supp, prob, Cont = FALSE)
-            pfun <- .makePNew(supp, prob, .withSim, Cont = FALSE)
-            qfun <- .makeQNew(supp, cumsum(prob), rev(cumsum(rev(prob))),
-                      .withSim, min(supp), max(supp), Cont = FALSE)
-
-            object <- new("DiscreteDistribution", r = rfun, d = dfun, p = pfun,
-                           q = qfun, support = supp,
-                           .withSim = .withSim, .withArith = TRUE)
-            rm(rfun, dfun, qfun, pfun)
-
-            if(is(e1@Symmetry,"SphericalSymmetry")&& 
-               is(e2@Symmetry,"SphericalSymmetry"))
-               object@Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry)+
-                                                     SymmCenter(e2@Symmetry))   
-
-            object
-          })
+                  {w1 <- width(lattice(e1.L))
+                   w2 <- width(lattice(e2.L))
+                   W <- sort(abs(c(w1,w2)))
+                   if (abs(abs(w1)-abs(w2))<getdistrOption("DistrResolution") ||
+                       W[2] %% W[1] < getdistrOption("DistrResolution") )
+                       return(e1.L + e2.L)
+                  } 
+            .convDiscrDiscr(e1,e2)})
 
 setMethod("+", c("Dirac","DiscreteDistribution"),
       function(e1,e2){e2+location(e1)})
@@ -569,3 +506,5 @@ setReplaceMethod("prob", "DiscreteDistribution",
                             .lowerExact = .lowerExact(object), 
                             .logExact = .logExact(object)))}
                   )
+
+

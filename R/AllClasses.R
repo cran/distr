@@ -1,7 +1,7 @@
 ############# preparations ################
 # (.onload, .onattach ...)
 .onLoad <- function(lib, pkg) { # extended 03-28-06: P.R. 
-    require("methods", character = TRUE, quietly = TRUE)
+##    require("methods", character = TRUE, quietly = TRUE)
 }
 
 
@@ -722,7 +722,7 @@ setClass("Beta",
                                      },
                       d = function(x, log = FALSE){
                               dbeta(x,  shape1 = 1, shape2 = 1, ncp = 0,
-                                    lower.tail = lower.tail, log.p = log.p)
+                                    log = log)
                                           },
                       p = function(q, lower.tail = TRUE, log.p = FALSE ){
                               pbeta(q,  shape1 = 1, shape2 = 1, ncp = 0,

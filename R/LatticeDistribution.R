@@ -12,12 +12,12 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
         {  D <- DiscreteDistribution
            if (is(lattice, "Lattice")) 
              { ### check consistency with support of DiscreteDistribution} 
-              if( !.is.consistent(lattice, support(D), eq.space = FALSE)){         
-                 if (check)
+              if (check){
+                 if( !.is.consistent(lattice, support(D), eq.space = FALSE))         
                      stop(paste("Argument 'lattice' is inconsistent to",
                             " the support of argument 'DiscreteDistribution'." , 
                             sep = ""))
-                 else return(D)}           
+              }           
               return(new("AffLinLatticeDistribution", r = D@r, d = D@d, 
                           q = D@q, p = D@p, support = D@support, 
                           a = D@a, b = D@b, X0 = D@X0,
@@ -25,11 +25,11 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                           .withSim = .withSim, img = D@img,
                           param = D@param, Symmetry = Symmetry))
               }else{
-               if( !.is.vector.lattice(support(D))){ 
-                   if (check)
+               if (check){
+                   if( !.is.vector.lattice(support(D)))
                        stop(paste("Support of argument 'DiscreteDistribution' ",
                               "is not a lattice.", sep = ""))
-                   else return(D)}           
+               }           
                return(new("AffLinLatticeDistribution", r = D@r, d = D@d, 
                           q = D@q, p = D@p, support = D@support, 
                           lattice = .make.lattice.es.vector(D@support), 
@@ -44,23 +44,23 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
         {  D <- DiscreteDistribution
            if (is(lattice, "Lattice")) 
              { ### check consistency with support of DiscreteDistribution} 
-              if( !.is.consistent(lattice, support(D), eq.space = FALSE)){         
-                 if (check)
+              if (check){
+                  if( !.is.consistent(lattice, support(D), eq.space = FALSE))         
                      stop(paste("Argument 'lattice' is inconsistent to the",
                             " support of argument 'DiscreteDistribution'." , 
                             sep = ""))
-                 else return(D)}           
+              }           
               return(new("LatticeDistribution", r = D@r, d = D@d, 
                           q = D@q, p = D@p, support = D@support, 
                           lattice = lattice, .withArith = .withArith, 
                           .withSim = .withSim, img = D@img,
                           param = D@param, Symmetry = Symmetry))
               }else{
-               if( !.is.vector.lattice(support(D))){ 
-                 if (check)
+               if (check){
+                   if( !.is.vector.lattice(support(D)))
                      stop(paste("Support of argument 'DiscreteDistribution' is",
                               "not a lattice.", sep = " "))
-                 else return(D)}           
+               }           
  
                return(new("LatticeDistribution", r = D@r, d = D@d, 
                           q = D@q, p = D@p, support = D@support, 
@@ -76,10 +76,10 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                                    .withArith = .withArith, 
                                    .withSim = .withSim, Symmetry = Symmetry )
         
-        if( !.is.consistent(lattice, supp, eq.space = FALSE)){         
-            if (check)     
+        if (check){
+            if( !.is.consistent(lattice, supp, eq.space = FALSE))         
                 stop("Argument 'lattice' is inconsistent to argument 'supp'.")
-            else return(D)}
+        }
         
         return(new("LatticeDistribution", r = r(D), d = d(D), 
                     q = q(D), p = p(D), support = supp, 
@@ -103,9 +103,10 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                           lattice = lattice, .withArith = .withArith, 
                           .withSim = .withSim, Symmetry = Symmetry))
                   }else{ 
-                   if (check)
+                   #if (check)
                        stop("Lengths of lattice and probabilities differ.")
-                   else return(D)}    
+                   #else return(D)
+                   }    
               }else {if (is.null(prob))
                         stop(paste("Insufficient information given to ",
                                    "determine distribution.", sep = ""))
@@ -126,18 +127,16 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
             {if (is.null(prob)) prob <- supp*0+1/length(supp)
              D <- DiscreteDistribution(supp, prob, .withArith = .withArith, 
                                        .withSim = .withSim, Symmetry = Symmetry )
-             if (!.is.vector.lattice (supp)){
-                 if (check)
+             if (check){
+                 if (!.is.vector.lattice (supp))
                      stop("Argument 'supp' given is not a lattice.")
-                 else return (D)    
-             }else{ 
-                  return(new("LatticeDistribution", r = D@r, d = D@d, 
+             }    
+             return(new("LatticeDistribution", r = D@r, d = D@d, 
                              q = D@q, p = D@p, support = D@support, 
                              lattice = .make.lattice.es.vector(D@support), 
                              .withArith = D@.withArith, 
                              .withSim = D@.withSim, img = D@img,
                              param = D@param, Symmetry = Symmetry))                           
-                 }
             }else 
              stop("Insufficient information given to determine distribution.")
 }
@@ -183,78 +182,96 @@ setAs("AffLinLatticeDistribution","AffLinDiscreteDistribution",
 
 setMethod("+", c("LatticeDistribution", "LatticeDistribution"),
 function(e1,e2){
-            ### Step 1
+            if(length(support(e1))==1) return(e2+support(e1))
+            if(length(support(e2))==1) return(e1+support(e2))
 
-#            e1 <- as(e1, "LatticeDistribution")
-#            e2 <- as(e2, "LatticeDistribution")
-#                  ### casting necessary due to setIs
+### Lattice calculations:
 
-            ### Lattice Calculations:
-            w1 <- width(lattice(e1))
-            w2 <- width(lattice(e2))
             sup1 <- support(e1)
             sup2 <- support(e2)
-            maxl <- length(sup1)*length(sup2)
-                              ### length of product grid
-            csup <- unique(sort(c(sup1,sup2)))
-                              ### grid width of convolution grid
+            # left and right endpoint of convolution support
+            su12.l <- sup1[1]+sup2[1]
+            su12.r <- (rev(sup1))[1]+(rev(sup2))[1]
 
-            w <- min(diff(csup))
-            commonsup <- unique(sort(c(outer(sup1,sup2,"+"))))
-                              ### grid width of convolution grid
-            dcs <- abs(diff(commonsup))
-            mw <- min(dcs[dcs>getdistrOption("DistrResolution")])
-            if (abs(abs(w1)-abs(w2)) > getdistrOption("DistrResolution")){
-                   W <- sort(abs(c(w1,w2)))
-                   if (W[2] %% W[1] > getdistrOption("DistrResolution")){
+            l1 <- length(sup1)
+            l2 <- length(sup2)
 
-                         ## check whether arrangement on common grid really
-                         ## saves something
+            lat1 <- lattice(e1)
+            lat2 <- lattice(e2)
+            L1 <- Length(lat1)
+            L2 <- Length(lat2)
+            w1 <- width(lat1)
+            w2 <- width(lat2)
 
-                         prob1 <- d(e1)(sup1)
-                         prob2 <- d(e2)(sup2)
-                              ###  convolutional grid
-                         comsup <- seq(min(commonsup),max(commonsup), by = mw)
 
-                         fct <- function(sup0, prob0, bw){
-                              ### expand original grid,prob onto new width:
-                                    sup00 <- seq(min(sup0), max(sup0), by = mw)
-                                    prb0 <- 0 * sup00
-                                    ind0 <- sup00 %in% sup0
-                                    prb0[ind0] <- prob0
-                                    return(LatticeDistribution(supp = sup00,
-                                                               prob = prb0))
-                                    }
-                        if(length(comsup) < maxl)
-                           return( fct(sup1,prob1,mw)  + fct(sup2,prob2,mw))
-                        else
-                           return(as(e1, "DiscreteDistribution") +
-                                  as(e2, "DiscreteDistribution"))
-                   }
-                   else
-                       w <- mw #generate common lattice / support
+            ### take care if lattice is infinite
+            L.inf <- !(is.finite(L1)&&is.finite(L2))
+            if(L.inf){
+               if(is.finite(L2)){
+                  if(w1>0)
+                     L.lr <- +1
+                  else
+                     L.lr <- -1   
+               }else{    
+                  if(is.finite(L1)){
+                     if(w2>0)
+                        L.lr <- +1
+                     else
+                        L.lr <- -1   
+                  }else{
+                     if(w1*w2>0) L.lr <- if(w1>0) +1 else -1
+                     if(w1*w2<0) L.lr <- if(abs(su12.l)<abs(su12.r)) +1 else -1
                   }
+               }
+            }   
 
-            newlat <- NULL
-            ### if any lattice is infinite: see if we can keep this in mind:
-            if( ! (is.finite(Length(lattice(e1))) &&
-                   is.finite(Length(lattice(e2)))   )  &&
-                width(lattice(e1)) * width(lattice(e2)) > 0 )
-                {p1 <- pivot(lattice(e1))
-                 p2 <- pivot(lattice(e2))
-                 p <- p1 + p2
-                 w0 <- if (width(lattice(e1))>0) w else -w
-                 newlat <- Lattice(pivot = p, width = w0, Length = Inf)
-                }
-            ### end Lattice Calculations
 
+            e0 <- NULL
+            tol0 <- .distroptions$DistrResolution/1000
+            
+            ## treat case separately when Discr + Discr is "faster"
+            if(l1*l2 < 100){ 
+                     d0 <- .convDiscrDiscr(e1,e2)
+                     sup0 <- support(d0)
+                     md <- min(diff(sup0))
+                     sup00 <- seq(from=min(sup0),to=max(sup0),by=md)
+                     sup0s <- intersect(sup00,sup0)
+                     sup01 <- .inWithTol(sup00, sup0s, tol=tol0)
+                     sup10 <- .inWithTol(sup0, sup0s, tol=tol0)
+                     if(!all(sup10)) return(d0)
+                     pr0 <- sup00*0
+                     pr0[sup01] <- (prob(d0))[sup10]
+                     pr0 <- pr0/sum(pr0)                              
+                     e0 <- LatticeDistribution(supp=sup00, prob=pr0)           
+                     if(L.inf){
+                         e0@lattice <- if(L.lr>0){ 
+                            Lattice(pivot = su12.l, width = wa, Length = Inf) 
+                                }else{ 
+                            Lattice(pivot = su12.r, width = -wa, Length = Inf)}
+                     }       
+               }
+ 
+            ## step 1 common width
+            wa <- .getCommonWidth(abs(w1),abs(w2),
+                      tol=tol0)
+
+
+            ## treat case separately when no common support, i.e. when 
+            ## w1/w2 is not "rational" enough
+            
+            if(is.null(wa))  return(.convDiscrDiscr(e1,e2))
+            
+            
+            w0 <- ifelse(w1<0,-1,1) * wa
+            pi1 <- pivot(lat1)
+            pi2 <- pivot(lat2)                        
             ### Step 2
-            supp0 <- seq(by = abs(w),
-                         from = min(support(e1), support(e2)),
-                         to   = max(support(e1), support(e2)))
-
-            d1 <- d(e1)(supp0)
-            d2 <- d(e2)(supp0)
+            supp0 <- seq(by = wa, from = min(sup1-pi1, sup2-pi2), to = max(sup1-pi1, sup2-pi2))
+            s1 <- .inWithTol(supp0,sup1-pi1,tol0)
+            s2 <- .inWithTol(supp0,sup2-pi2,tol0)
+            d1 <- d2 <- 0*supp0
+            d1[s1] <- prob(as(e1,"LatticeDistribution"))
+            d2[s2] <- prob(as(e2,"LatticeDistribution"))
 
             L <- length(supp0)
             Ln <- 2^(ceiling(log(L)/log(2))+1)
@@ -270,13 +287,14 @@ function(e1,e2){
 
             ## convolution theorem for DFTs
             newd <- (Re(fft(ftde1*ftde2, inverse = TRUE)) / Ln)[1:(2*L+1)]
-            newd <- (newd >= .Machine$double.eps)*newd
+            newd <- (newd >= .Machine$double.eps^1.5)*newd
 
 
             ## reduction to relevant support
-            supp1 <- seq(by = abs(w),
-                         from = 2 * min(support(e1), support(e2)),
-                         to   = 2 * max(support(e1), support(e2)))
+            supp1 <- seq(by = wa,
+                         from = 2 * min(sup1-pi1, sup2-pi2),
+                         to   = 2 * max(sup1-pi1, sup2-pi2))+pi1+pi2
+
             L1 <- length(supp1)
             newd <- newd[1:L1]
 
@@ -287,9 +305,6 @@ function(e1,e2){
                            )
                 rsum.l <- 1 + sum( cumsum(newd) <
                                    getdistrOption("TruncQuantile")/2)
-                newd <- newd[rsum.l:rsum.u]
-                newd <- newd/sum(newd)
-                supp1 <- supp1[rsum.l:rsum.u]
             }else{
                 rsum.u <- min( sum( rev(cumsum(rev(newd))) >=
                                     .Machine$double.eps),
@@ -297,12 +312,15 @@ function(e1,e2){
                            )
                 rsum.l <- 1 + sum( cumsum(newd) < .Machine$double.eps)
 
-                newd <- newd[rsum.l:rsum.u]
-                newd <- newd/sum(newd)
-                supp1 <- supp1[rsum.l:rsum.u]
             }
-            supp2 <- supp1[newd > getdistrOption("TruncQuantile")]
-            newd2 <- newd[newd  > getdistrOption("TruncQuantile")]
+            wi1 <- rsum.l:rsum.u
+            newd <- newd[wi1]
+            newd <- newd/sum(newd)
+            supp1 <- supp1[wi1]
+
+            wi2 <- newd > getdistrOption("TruncQuantile")
+            supp2 <- supp1[wi2]
+            newd2 <- newd[wi2]
             newd2 <- newd2/sum(newd2)
 
             Symmetry <- NoSymmetry()
@@ -311,13 +329,21 @@ function(e1,e2){
                Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry)+
                                               SymmCenter(e2@Symmetry))   
 
-            
-            if( length(supp1) >= 2 * length(supp2))
+            if( length(supp1) >= 2 * length(supp2)){
                return(DiscreteDistribution(supp = supp2, prob = newd2,
                                            .withArith = TRUE, Symmetry = Symmetry))
-            else
-               return(LatticeDistribution(supp = supp1, prob = newd,
-                                          .withArith = TRUE, Symmetry = Symmetry))
+            }else{
+               e0 <- LatticeDistribution(supp = supp1, prob = newd,
+                                         .withArith = TRUE, Symmetry = Symmetry,
+                                         check = FALSE)
+               if(L.inf){
+                  e0@lattice <- if(L.lr>0){ 
+                            Lattice(pivot = su12.l, width = wa, Length = Inf) 
+                         }else{ 
+                            Lattice(pivot = su12.r, width = -wa, Length = Inf)}
+               }
+               return(e0)
+            }
           })
 
 ## extra methods
@@ -336,7 +362,8 @@ setMethod("+", c("LatticeDistribution", "numeric"),
                  Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry)+e2)   
               
               LatticeDistribution(lattice = L, 
-                     DiscreteDistribution = Distr, Symmetry = Symmetry)                                        
+                     DiscreteDistribution = Distr, Symmetry = Symmetry, 
+                     check = FALSE)                                        
               })       
 
 setMethod("*", c("LatticeDistribution", "numeric"),
@@ -356,7 +383,8 @@ setMethod("*", c("LatticeDistribution", "numeric"),
                      Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry) * e2)   
               
                   return(LatticeDistribution(lattice = L, 
-                          DiscreteDistribution = Distr, Symmetry = Symmetry))
+                          DiscreteDistribution = Distr, Symmetry = Symmetry, 
+                          check = FALSE))
                 }
              }
           )              
@@ -371,7 +399,8 @@ setMethod("+", c("AffLinLatticeDistribution", "numeric"),
               LatticeDistribution(lattice = L, 
                      DiscreteDistribution = 
                         as(e1, "AffLinDiscreteDistribution") + e2,
-                        Symmetry = Symmetry)                     
+                        Symmetry = Symmetry, 
+                     check = FALSE)                     
               })       
 
 setMethod("*", c("AffLinLatticeDistribution", "numeric"),
@@ -388,7 +417,8 @@ setMethod("*", c("AffLinLatticeDistribution", "numeric"),
                   return(LatticeDistribution(lattice = L, 
                           DiscreteDistribution = 
                              as(e1, "AffLinDiscreteDistribution") * 
-                             e2, Symmetry = Symmetry))
+                             e2, Symmetry = Symmetry, 
+                             check = FALSE))
                 }
              }
           )              
