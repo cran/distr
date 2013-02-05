@@ -81,28 +81,44 @@
    x[ord]
 }
 
+
+.pk2 <- if(getRversion()<"2.16.0") function(p0, n){
+                 .C("pkolmogorov2x", p = as.double(p0),
+                     as.integer(n), PACKAGE = "stats")$p
+        }else function(p0,n){
+                 .Call(stats:::C_pKolmogorov2x, p0, n) #, PACKAGE = "stats")
+        }
+.pks2 <- if(getRversion()<"2.16.0") function(x, tol){
+                 .C("pkstwo", as.integer(1),
+                    p = as.double(x), as.double(tol), PACKAGE = "stats")$p
+        }else function(x, tol){
+                 .Call(stats:::C_pKS2, p = x, tol) #, PACKAGE = "stats")
+        }
+
+
 .q2kolmogorov <- function(alpha,n,exact=(n<100)){ ## Kolmogorovstat
+ if(is.numeric(alpha)) alpha <- as.vector(alpha)
+ else stop("Level alpha must be numeric.")
+ if(any(is.na(alpha))) stop("Level alpha must not contain missings.")
  if(exact){
  fct <- function(p0){
  ### from ks.test from package stats:
-    .C("pkolmogorov2x", p = as.double(p0),
-       as.integer(n), PACKAGE = "stats")$p -alpha
+    .pk2(p0,n) -alpha
   }
  res <- uniroot(fct,lower=0,upper=1)$root*sqrt(n)
  }else{
  ### from ks.test from package stats:
- pkstwo <- function(x, tol = 1e-06) {
-        if (is.numeric(x))
-            x <- as.vector(x)
-        else stop("argument 'x' must be numeric")
-        p <- rep(0, length(x))
-        p[is.na(x)] <- NA
-        IND <- which(!is.na(x) & (x > 0))
-        if (length(IND)) {
-            p[IND] <- .C("pkstwo", as.integer(length(x[IND])),
-                p = as.double(x[IND]), as.double(tol), PACKAGE = "stats")$p
-        }
-        return(p)
+ pkstwo <- function(x, tol = 1e-09) {
+        #if (is.numeric(x))
+        #    x <- as.vector(x)
+        #else stop("argument 'x' must be numeric")
+        #p <- rep(0, length(x))
+        #p[is.na(x)] <- NA
+        #IND <- which(!is.na(x) & (x > 0))
+        #if (length(IND)) {
+            .pks2(x,tol) -alpha
+        #}
+        # return(p)
     }
  ###  end of code from package stats
  fct <- function(p0){
@@ -204,7 +220,8 @@
    SI.c <- SIi>0
    x.in <- x[SI.in]
    x.c <- x.in[SI.c]
-   x.d <- x.in[!SI.c]
+   x.d <- x.in[!SI.c]        
+   
 
    qqb <- qqbounds(x,D,alpha,n,withConf.pw, withConf.sim,
                    exact.sCI,exact.pCI,nosym.pCI)
@@ -286,7 +303,8 @@
     mcl$col.IdL <- mcl$alpha.CI <- mcl$lty.IdL <-  NULL
     mcl$col.NotInSupport <- mcl$check.NotInSupport <- NULL
     mcl$exact.sCI <- mcl$exact.pCI <- NULL
-    mcl$withConf <- mcl$withIdLine <- mcl$distance <- NULL
+    mcl$withConf <- mcl$withConf.sim <- mcl$withConf.pw <- NULL
+    mcl$withIdLine <- mcl$distance <- NULL
     mcl$col.pCI <- mcl$lty.pCI <- mcl$col.sCI <- mcl$lty.sCI <- NULL
     mcl$lwd.IdL <- mcl$lwd.pCI <- mcl$lwd.sCI <- NULL
     mcl$withLab <- mcl$lab.pts <- mcl$which.lbs <- NULL

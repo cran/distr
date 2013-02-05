@@ -12,6 +12,7 @@
 \alias{WarningArith}
 \alias{WarningSim}
 \alias{withSweave}
+\alias{warn.makeDNew}
 %\alias{simplifyD}
 \alias{withgaps}
 \alias{use.generalized.inverse.by.default}
@@ -86,6 +87,9 @@ the \pkg{base}-method behavior. The default value is \code{TRUE}.
       whenever collapsing occurs or when two points are collapsed by a call to
       \code{unique()} (default behaviour if \code{DistrCollapse} is \code{FALSE});
       ---default \code{FALSE}}
+\item{\code{warn.makeDNew}}{controls whether a warning is issued once in
+      internal utility \code{.makeDNew} standard integration with
+      \code{integrate} throws an error---default \code{TRUE}}
 }
 } 
 \examples{

@@ -242,7 +242,10 @@ function(e1,e2){
                      pr0 <- sup00*0
                      pr0[sup01] <- (prob(d0))[sup10]
                      pr0 <- pr0/sum(pr0)                              
-                     e0 <- LatticeDistribution(supp=sup00, prob=pr0)           
+                     lat <- Lattice(pivot = sup00[1], width = md, 
+                                    Length = length(sup00))
+                     e0 <- LatticeDistribution(supp = sup00, prob = pr0, 
+                                               lattice = lat, check = FALSE)           
                      if(L.inf){
                          e0@lattice <- if(L.lr>0){ 
                             Lattice(pivot = su12.l, width = wa, Length = Inf) 
@@ -270,8 +273,8 @@ function(e1,e2){
             s1 <- .inWithTol(supp0,sup1-pi1,tol0)
             s2 <- .inWithTol(supp0,sup2-pi2,tol0)
             d1 <- d2 <- 0*supp0
-            d1[s1] <- prob(as(e1,"LatticeDistribution"))
-            d2[s2] <- prob(as(e2,"LatticeDistribution"))
+            d1[s1] <- prob(as(e1,"DiscreteDistribution"))
+            d2[s2] <- prob(as(e2,"DiscreteDistribution"))
 
             L <- length(supp0)
             Ln <- 2^(ceiling(log(L)/log(2))+1)
@@ -333,7 +336,10 @@ function(e1,e2){
                return(DiscreteDistribution(supp = supp2, prob = newd2,
                                            .withArith = TRUE, Symmetry = Symmetry))
             }else{
+               lat <- Lattice(pivot=supp1[1],width=wa, Length=length(supp1))
+
                e0 <- LatticeDistribution(supp = supp1, prob = newd,
+                                         lattice = lat,
                                          .withArith = TRUE, Symmetry = Symmetry,
                                          check = FALSE)
                if(L.inf){

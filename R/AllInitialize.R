@@ -279,14 +279,14 @@ setMethod("initialize", "LatticeDistribution",
             
              OS  <- D@support 
 
-#             if(is.null(lattice))  
-#               {  if(! .is.vector.lattice(OS))
-#                      stop("Support as given/generated is not a lattice.")
-#                  .Object@lattice <- .make.lattice.es.vector(OS)
-#             }else{
+             #if(is.null(lattice))  
+             #  {  if(! .is.vector.lattice(OS))
+             #         stop("Support as given/generated is not a lattice.")
+             #     .Object@lattice <- .make.lattice.es.vector(OS)
+             #}else{
                   .Object@lattice <- if(is.null(lattice )) 
                           new("Lattice") else lattice
-#             }
+             #}
 
 
             .Object@support <- OS

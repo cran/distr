@@ -239,6 +239,8 @@ inCx <- sapply(inp,
          }
       return(inC)
     })
+if(length(grep("expression",inCx))>0)
+   inCx <- gsub("expression\\(", "", gsub("\\)$","",inCx))
 if (length(inCx) > 1) {
    inCx <- paste(inCx, c(rep(",", length(inCx)-1), ""),
                  sep = "", collapse = "\"\\n\",")
@@ -547,6 +549,11 @@ return(outC)
           }
 
 .multm <- function(e1, e2, Dclass = "DiscreteDistribution"){
+
+            withg <- getdistrOption("withgaps")
+            on.exit(distroptions(withgaps=withg))
+            distroptions(withgaps=FALSE)
+
             if (length(e2)>1) stop("length of operator must be 1")
 
             if (.isEqual(e2, 1)) return(e1)
@@ -622,12 +629,17 @@ return(outC)
                  rm(supportnew)
 
             }else if (Dclass == "AffLinAbscontDistribution"){
-                 if(is.null(e1@gaps)) 
+                 trY <- try(
+                 if(is.null(e1@gaps))
                     gapsnew <- NULL
-                 else {gapsnew <- e1@gaps * e2
-                       if (e2 < 0) gapsnew <- 
-                             gapsnew[rev(seq(nrow(gapsnew))),c(2,1),drop = FALSE] }
-                 
+                 else {gapsnew <- e1@gaps
+                       if(is.numeric(gapsnew)&&length(gapsnew)>0){
+                          gapsnew <- matrix(gapsnew * e2, ncol=2)
+                          if (e2 < 0) gapsnew <-
+                             gapsnew[rev(seq(nrow(gapsnew))),c(2,1),drop = FALSE]
+                       }
+                 }, silent=TRUE)
+                 if(is(trY,"try-error")) gapsnew <- NULL
                  dnew <- .makeD(substitute(e1, list(e1 = e1)),
                                 substitute(alist(x = x / e2), list(e2 = e2)),
                                 stand = abs(e2))
@@ -643,11 +655,18 @@ return(outC)
                     .logExact = .logExact(e1), .lowerExact = .lowerExact(e1))
  
             }else if (Dclass == "AbscontDistribution"){
-                 if(is.null(e1@gaps)) 
+                 trY <- try(
+                 if(is.null(e1@gaps))
                     gapsnew <- NULL
-                 else {gapsnew <- e1@gaps * e2
-                       if (e2 < 0) gapsnew <- 
-                            gapsnew[rev(seq(nrow(gapsnew))),c(2,1), drop = FALSE] }
+                 else {gapsnew <- e1@gaps
+                       if(is.numeric(gapsnew)&&length(gapsnew)>0){
+                             gapsnew <- matrix(gapsnew * e2, ncol=2)
+                             if (e2 < 0) gapsnew <-
+                                    gapsnew[rev(seq(nrow(gapsnew))),
+                                            c(2,1),drop = FALSE]
+                             }
+                 }, silent=TRUE)
+                 if(is(trY,"try-error")) gapsnew <- NULL
 
                  dnew <- .makeD(substitute(e1, list(e1 = e1)),
                                 substitute(alist(x = x / e2), list(e2 = e2)),
@@ -770,7 +789,8 @@ return(f)
             else   {
             stand <- try(integrate(df1, -Inf, Inf)$value, TRUE)
             if (is(stand,"try-error")){
-               warning("'integrate()' threw an error ---result may be inaccurate.")
+               if(getdistrOption("warn.makeDNew"))
+                  warning("'integrate()' threw an error ---result may be inaccurate.")
                stand <- sum(df1(x))*h*(x[2]-x[1])
                }
             }
@@ -995,7 +1015,7 @@ return(f)
                            q = qnew, gaps = gapsnew,
                           .withSim = FALSE, .withArith = TRUE,
                     .logExact = .logExact(e1), .lowerExact = .lowerExact(e1))
-            rm(gapsnew)
+            if(exists("gapsnew")) rm(gapsnew)
             rm(pnew, qnew, dnew, rnew)
             object
           }
@@ -1116,6 +1136,7 @@ return(function(q, lower.tail = TRUE, log.p = FALSE){
 # modify slot q for AbscontDistribution if there are gaps
 #------------------------------------------------------------------------------
 .modifyqgaps <- function(pfun, qfun, gaps, leftright = "left"){
+  if(length(gaps)==0) return(qfun)
   p.gaps <- pfun(gaps[,1]) 
   p.gaps.l <- pfun(gaps[,1], lower.tail = FALSE)
   dP <- deparse(body(qfun))

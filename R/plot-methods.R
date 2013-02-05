@@ -33,7 +33,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      dots.for.points <- dots[names(dots) %in% c("bg", "lwd", "lty")]
      if (length(dots.for.points) == 0 ) dots.for.points <- NULL
 
-     dots.without.pch <- dots[! (names(dots) %in% c("pch", "log"))]
+     dots.without.pch <- dots[! (names(dots) %in% c("pch", "log", "xlab", "ylab"))]
      if(!is(x,"AbscontDistribution"))
          x <- .ULC.cast(x)     
      ###
@@ -98,6 +98,42 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
                             qparamstring,
                             as.character(deparse(xc))))
      
+     xlab0 <- list("d"="x", "p"="q", "q"="p")
+     iL <- 1:length(to.draw)
+     .mp2 <- function(dlb = dots$xlab, lb0 = list("d"="x", "p"="q", "q"="p")){
+              dlb0 <- eval(dlb)
+              if (!is.null(dlb)){
+              .mp <- if(is.list(dlb0)) function(x,i){
+                                if(is.call(x)) x <- eval(x)
+                                if(length(i)==0) return(NULL)
+                                i <- min(i)
+                                if(is.character(x[[i]])){
+                                   return(as.character(eval(.mpresubs(x[[i]]))))
+                                }else{
+                                res <- .mpresubs(x[[i]])
+                                if(length(res)==0) return(NULL)
+                                if(is.call(res)) res <- res[-1]
+                                return(res)}
+                                }else function(x,i){
+                                  res <- x[i]
+                                  if(length(res)==0) return(NULL)
+                                  if(is.na(res)) return(NULL)
+                                  return(res)}
+              force(lb0)
+              .mp3 <- .mp(dlb,iL[to.draw==1])
+              if(1%in%to.draw & !is.null(.mp3)) lb0[["d"]] <- .mp3
+              .mp3 <- .mp(dlb,iL[to.draw==2])
+              if(2%in%to.draw & !is.null(.mp3)) lb0[["p"]] <- .mp3
+              .mp3 <- .mp(dlb,iL[to.draw==3])
+              if(3%in%to.draw & !is.null(.mp3)) lb0[["q"]] <- .mp3
+
+             }
+             return(lb0)}
+     xlab0 <- .mp2()
+     dots$xlab <- NULL
+     ylab0 <- .mp2(dlb=dots$ylab, lb0=list("d"="d(x)", "p"="p(q)", "q"="q(p)"))
+     dots$ylab <- NULL
+
      if (hasArg(main)){
          mainL <- TRUE
          if (is.logical(main)){
@@ -199,7 +235,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      if(1%in%to.draw){
          on.exit(options(warn=o.warn))
          do.call(plot, c(list(x = grid, dxg, type = "l", 
-             ylim = ylim1,  ylab = "d(x)", xlab = "x", log = logpd), 
+             ylim = ylim1,  ylab = ylab0[["d"]], xlab = xlab0[["d"]], log = logpd),
              dots.without.pch))
          options(warn = o.warn)
      
@@ -214,7 +250,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
 
      if(2%in%to.draw){
         do.call(plot, c(list(x = grid, pxg, type = "l", 
-             ylim = ylim2, ylab = "p(q)", xlab = "q", log = logpd), 
+             ylim = ylim2, ylab = ylab0[["p"]], xlab = xlab0[["p"]], log = logpd),
              dots.without.pch))
         options(warn = o.warn)
       
@@ -254,7 +290,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      if(3%in%to.draw){
         options(warn = -1)
         do.call(plot, c(list(x = po, xo, type = "n", 
-             xlim = ylim2, ylim = xlim, ylab = "q(p)", xlab = "p", 
+             xlim = ylim2, ylim = xlim, ylab = ylab0[["q"]], xlab = xlab0[["q"]],
              log = logq), dots.without.pch))
         options(warn = o.warn)
     
@@ -322,14 +358,13 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
       }
       l.draw <- length(to.draw)
 
-
       dots$ngrid <- NULL
 
       dots.for.points <- dots[names(dots) %in% c("bg", "lwd", "lty")]
       if (length(dots.for.points) == 0 ) dots.for.points <- NULL
 
       dots.without.pch <- dots[! (names(dots) %in% c("pch", 
-                                  "main", "sub", "log"))]
+                                  "main", "sub", "log", "xlab", "ylab"))]
       ###
      if(!is(x,"DiscreteDistribution"))
          x <- .ULC.cast(x)     
@@ -390,6 +425,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
      }
      else paramstring <- qparamstring <- nparamstring <- ""
 
+
      .mpresubs <- function(inx)
                     .presubs(inx, c("%C", "%D", "%N", "%P", "%Q", "%A"),
                           c(as.character(class(x)[1]),
@@ -398,6 +434,42 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
                             paramstring,
                             qparamstring,
                             as.character(deparse(xc))))
+
+     xlab0 <- list("d"="x", "p"="q", "q"="p")
+     iL <- 1:length(to.draw)
+     .mp2 <- function(dlb = dots$xlab, lb0 = list("d"="x", "p"="q", "q"="p")){
+              dlb0 <- eval(dlb)
+              if (!is.null(dlb)){
+              .mp <- if(is.list(dlb0)) function(x,i){
+                                if(is.call(x)) x <- eval(x)
+                                if(length(i)==0) return(NULL)
+                                i <- min(i)
+                                if(is.character(x[[i]])){
+                                   return(as.character(eval(.mpresubs(x[[i]]))))
+                                }else{
+                                res <- .mpresubs(x[[i]])
+                                if(length(res)==0) return(NULL)
+                                if(is.call(res)) res <- res[-1]
+                                return(res)}
+                                }else function(x,i){
+                                  res <- x[i]
+                                  if(length(res)==0) return(NULL)
+                                  if(is.na(res)) return(NULL)
+                                  return(res)}
+              force(lb0)
+              .mp3 <- .mp(dlb,iL[to.draw==1])
+              if(1%in%to.draw & !is.null(.mp3)) lb0[["d"]] <- .mp3
+              .mp3 <- .mp(dlb,iL[to.draw==2])
+              if(2%in%to.draw & !is.null(.mp3)) lb0[["p"]] <- .mp3
+              .mp3 <- .mp(dlb,iL[to.draw==3])
+              if(3%in%to.draw & !is.null(.mp3)) lb0[["q"]] <- .mp3
+
+             }
+             return(lb0)}
+     xlab0 <- .mp2()
+     dots$xlab <- NULL
+     ylab0 <- .mp2(dlb=dots$ylab, lb0=list("d"="d(x)", "p"="p(q)", "q"="q(p)"))
+     dots$ylab <- NULL
 
      if (hasArg(main)){
          mainL <- TRUE
@@ -497,7 +569,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
        on.exit(options(warn=o.warn))
      if(1%in%to.draw){
        do.call(plot, c(list(x = supp, dx, type = "h", pch = pch.a,
-            ylim = ylim1, xlim=xlim, ylab = "d(x)", xlab = "x", 
+            ylim = ylim1, xlim=xlim, ylab = ylab0[["d"]], xlab = xlab0[["d"]],
             log = logpd), dots.without.pch))
        options(warn = o.warn)
 
@@ -520,7 +592,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
        do.call(plot, c(list(x = stepfun(x = supp1, y = psupp1), 
                      main = "", verticals = verticals, 
                      do.points = FALSE, 
-                     ylim = ylim2, ylab = "p(q)", xlab = "q", 
+                     ylim = ylim2, ylab = ylab0[["p"]], xlab = xlab0[["p"]],
                      col.hor = col.hor, col.vert = col.vert, 
                      log = logpd), dots.without.pch))
        if(do.points)
@@ -553,7 +625,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
        do.call(plot, c(list(x = stepfun(c(0,p(x)(supp)), 
                             c(NA,supp,NA), right = TRUE), 
             main = "", xlim = ylim2, ylim = c(min(supp),max(supp)),
-            ylab = "q(p)", xlab = "p", 
+            ylab = ylab0[["q"]], xlab = xlab0[["q"]],
             verticals = verticals, do.points = do.points, 
             cex.points = cex.points, pch = pch.a, 
             col.points = col.points,

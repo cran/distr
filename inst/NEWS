@@ -8,6 +8,58 @@
  information)
  
 ##############
+v 2.4
+##############
+
+user-visible CHANGES:
+
+
+GENERAL ENHANCEMENTS:
+
+LatticeDistribution:::
++ revised initialize and convolution methods, and generating function
+-> new routine to determine the smallest common grid for convolution
++ Taking up proposal by Baoyue Li, b.li@erasmusmc.nl,  
+   plot methods for distribution objects gain functionality to modify xlab and ylab
+
+
+under the hood:
++ introduce .Rbuildignore files 
++ require no longer called in .onAttach
++ created folder vignettes and moved content of inst/doc/ to it
++ removed lazyload tag in DESCRIPTION
++ updated affiliation info in newDistributions.Rnw
++ deleted inst/doc folder
++ added DESCRIPTION tag "ByteCompile" to all our packages
++ updating maintainer email address and URL.
++ added argument no.readonly = TRUE to assignments of form opar <- par()
++ unified dots-manipulations
++ put some examples in "\dontrun" to reduce check time on CRAN
++ introduced new option warn.makeDNew to suppress annoying warnings when dealing with GEVD
++ deleted no longer needed chm folders
+
+BUGFIXES:
+
++ fixed an error in show method for UnivarLebDecDistribution: 
+  match.call() threw an error
++ fixed problems with .makeDNew - as .makeDNew is not exported
++ error in definition of Beta() --- d slot was wrong
++ corrected typo (inifinite...)
++ typo in Beta-class.Rd (only in TeX mode) discovered by Thomas Kirschenmann, thk3421@gmail.com
++ fixed some issue with X^a, X distribution, a a number ...
++ tried to fix gaps issue as mentioned by Dirk Surmann, surmann@statistik.uni-dortmund.de
++ corrected a bug noticed by frank1828@gmail.com
++ fixed a bug within internals-qqplot : withConf.sim, withConf.pw had not been removed from call with 
+  .deleteItemsMCL; 
++ fixed request by B.Ripley as to installed.packages in branch 2.4
++ fixed gaps issue with .multm
++ fixed issue with gaps (in case length(gaps)==0)
+  
+  and: BDR has changed calls to .C in 2.16.0 to calls to .Call; we used this in qqbounds, 
+  respectively in .q2kolmogorov; now have branching functions .pk2 and .pks2 between ante 2.16. and from 2.16 on
+
+
+##############
 v 2.3
 ##############
 

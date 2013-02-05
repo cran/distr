@@ -189,7 +189,21 @@ to \code{pch} if this arg is given and else to 16, 21, respectively.
 
 If not explicitly set, \code{cex} is set to 1. If not explicitly set, 
 \code{cex.points} is set to $2.0 \code{cex}$ (if \code{cex} is given)
-and to 2.0 else.              
+and to 2.0 else.
+
+If general \code{plot} arguments \code{xlab}, \code{ylab} are not specified,
+they are set to \code{"x"}, \code{"q"}, \code{"p"} for \code{xlab} and
+to \code{"d(x)"}, \code{"p(q)"}, \code{"q(p)"} for \code{ylab} for
+density, cdf and quantile function respectively.
+Otherwise, according to the respective content of \code{to.draw.arg},
+it is supposed to be a list with one entry for each selected panel, i.e.,
+in case \code{x} is an object of class \code{DiscreteDistribution} or
+\code{AbscontDistribution} a list of maximal length maximally 3, respectively,
+in case \code{x} is an object of class \code{UnivarLebDecDistribution}
+In these label arguments, the same pattern substitutions are made as
+for titles. If no character substitutions and mathematical expressions
+are needed, character vectors of respective length instead of lists are
+also allowed for arguments \code{xlab}, \code{ylab}.
 }
 
 \examples{
@@ -199,6 +213,8 @@ plot(Binom(size = 4, prob = 0.3), verticals = FALSE)
 plot(Binom(size = 4, prob = 0.3), main = TRUE)
 plot(Binom(size = 4, prob = 0.3), main = FALSE)
 plot(Binom(size = 4, prob = 0.3), cex.points = 1.2, pch = 20)
+plot(Binom(size = 4, prob = 0.3), xlab = list("a1","a2", "a3"),
+           ylab=list("p"="U","q"="V","d"="W"))
 B <- Binom(size = 4, prob = 0.3)
 plot(B, col = "red", col.points = "green", main = TRUE, col.main = "blue", 
      col.sub = "orange", sub = TRUE, cex.sub = 0.6, col.inner = "brown")
@@ -216,6 +232,9 @@ plot(Norm(), main = "my Distribution: \%A",
 plot(Cauchy())
 plot(Cauchy(), xlim = c(-4,4))
 plot(Chisq())
+### the next ylab argument is just for illustration purposes
+plot(Chisq(),mfColRow = FALSE,to.draw.arg="d",
+     xlab="x",ylab=list(expression(paste(lambda,"-density of \%C(\%P)"))))
 plot(Chisq(), log = "xy", ngrid = 100)
 Ch <- Chisq(); setgaps(Ch); plot(Ch, do.points = FALSE)
 setgaps(Ch, exactq = 3); plot(Ch, verticals = FALSE)
@@ -248,6 +267,9 @@ plot(myLC,mfColRow = FALSE,
 
 P <- Pois(2)
 plot(as(P,"UnivarLebDecDistribution"),mfColRow = FALSE,to.draw.arg=c("d.d"))
+### the next ylab argument is just for illustration purposes
+plot(as(P,"UnivarLebDecDistribution"),mfColRow = FALSE,to.draw.arg=c("d.d"),
+     xlab="x",ylab=list(expression(paste(lambda,"-density of \%C(\%P)"))))
 
 }
 \seealso{\code{\link[graphics]{plot}},\code{\link[graphics]{plot.default}}, 

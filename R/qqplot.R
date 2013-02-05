@@ -62,7 +62,6 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     mcl$y <- yc
 
     mcl <- .deleteItemsMCL(mcl)
-
     mcl$cex <- .makeLenAndOrder(cex.pch,ord.x)
     mcl$col <- .makeLenAndOrder(col.pch,ord.x)
 

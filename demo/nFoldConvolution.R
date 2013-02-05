@@ -40,8 +40,8 @@ setMethod("convpow",
                              q(D1)(getdistrOption("TruncQuantile"))
                            ) 
             upper <- ifelse((q(D1)(1) < Inf), q(D1)(1), 
-                             q(D1)(getdistrOption("TruncQuantile", 
-                                   lower.tail = FALSE))
+                             q(D1)(getdistrOption("TruncQuantile"),
+                                   lower.tail = FALSE)
                            )
 
     ##STEP 2

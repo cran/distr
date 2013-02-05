@@ -1,8 +1,9 @@
 ############# preparations ################
 # (.onload, .onattach ...)
-.onLoad <- function(lib, pkg) { # extended 03-28-06: P.R. 
+### left out P.R. 01-09-11
+##.onLoad <- function(lib, pkg) { # extended 03-28-06: P.R. 
 ##    require("methods", character = TRUE, quietly = TRUE)
-}
+##}
 
 
 

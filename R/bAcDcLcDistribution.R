@@ -156,19 +156,26 @@ function(e1,e2){
 
 setMethod("^", c("AcDcLcDistribution","Integer"),
 function(e1,e2){
+
+           if(.isEqual(e2,0)) return(Dirac(1))
+           if(.isEqual(e2,1)) return(e1)
+
            ep <- getdistrOption("TruncQuantile")
            d00 <- discretePart(e1)@d(0)
            d0 <- discreteWeight(e1)*d00
            if(d0 > ep){
-                d1 <- 1-(1-d0)^e2
-                su <- support(discretePart(e1))
-                pr <- d(discretePart(e1))(su)
-                acW <- acWeight(e1)/(1-d0)
-                discreteP <- DiscreteDistribution(
+                if(.isEqual(d00,1)){
+                   e1 <- acPart(e1)
+                }else{
+                   su <- support(discretePart(e1))
+                   pr <- d(discretePart(e1))(su)
+                   acW <- acWeight(e1)
+                   discreteP <- DiscreteDistribution(
                                 supp = su[su!=0],
                                 prob = pr[su!=0]/(1-d00))
-                e1 <- UnivarLebDecDistribution(acPart = acPart(e1),
-                      discretePart = discreteP, acWeight = acW)
+                   e1 <- UnivarLebDecDistribution(acPart = acPart(e1),
+                         discretePart = discreteP, acWeight = acW)
+                }
                }
 
            e1DC <- decomposePM(e1)
@@ -184,17 +191,20 @@ function(e1,e2){
 
 #
            if(d0 > ep){
-                dw <- discreteWeight(erg)
-                acW <- acWeight(erg) * (1-d1)
-                su <- support(discretePart(erg))
-                su0 <- c(su,0)
-                o <- order(su0)
-                pr <- c(d(discretePart(erg))(su) * dw * (1-d1), d1)
-                suo <- su0[o]
-                pro <- pr[o]/(1-acW)
-                discreteP <- DiscreteDistribution(supp = suo, prob = pro)
-                erg <- UnivarLebDecDistribution(acPart = acPart(erg),
-                       discretePart = discreteP, acWeight = acW)
+                if(.isEqual(d00,1)){
+                    erg <- UnivarLebDecDistribution(acPart = acPart(erg),
+                           discretePart = Dirac(0), acWeight = acW)
+                }else{
+                    su <- support(discretePart(erg))
+                    su0 <- c(su,0)
+                    o <- order(su0)
+                    pr <- c(d(discretePart(erg))(su) * (1-d00), d00)
+                    suo <- su0[o]
+                    pro <- pr[o]
+                    discreteP <- DiscreteDistribution(supp = suo, prob = pro)
+                    erg <- UnivarLebDecDistribution(acPart = acPart(erg),
+                           discretePart = discreteP, acWeight = acW)
+                }
              }
            if(getdistrOption("simplifyD"))
                 erg <- simplifyD(erg)
@@ -240,32 +250,40 @@ function(e1,e2){
 
   ### special treatment if e2>=0 and d.discrete(e1)>0
   if(d0 > ep){
-     d1 <- 1-(1-d0)^e2
-     su <- support(discretePart(e1))
-     pr <- d(discretePart(e1))(su)
-     acW <- acWeight(e1)/(1-d0)
-     discreteP <- DiscreteDistribution(
+     if(.isEqual(d00,1)){
+        e1 <- acPart(e1)
+     }else{
+        su <- support(discretePart(e1))
+        pr <- d(discretePart(e1))(su)
+        acW <- acWeight(e1)#/(1-d0)
+        discreteP <- DiscreteDistribution(
                      supp = su[su!=0],
                      prob = pr[su!=0]/(1-d00))
-     e1 <- UnivarLebDecDistribution(acPart = acPart(e1),
-           discretePart = discreteP, acWeight = acW)
+        e1 <- UnivarLebDecDistribution(acPart = acPart(e1),
+              discretePart = discreteP, acWeight = acW)
+     }
    }
 
    erg <- exp( e2 * log(e1))
 
    ### special treatment if e2>=0 and d.discrete(e1)>0
    if(d0 > ep){
-      dw <- discreteWeight(erg)
-      acW <- acWeight(erg) * (1-d1)
-      su <- support(discretePart(erg))
-      su0 <- c(su,0)
-      o <- order(su0)
-      pr <- c(d(discretePart(erg))(su) * dw * (1-d1), d1)
-      suo <- su0[o]
-      pro <- pr[o]/(1-acW)
-      discreteP <- DiscreteDistribution(supp = suo, prob = pro)
-      erg <- UnivarLebDecDistribution(acPart = acPart(erg),
-             discretePart = discreteP, acWeight = acW)
+      if(.isEqual(d00,1)){
+          erg <- UnivarLebDecDistribution(acPart = acPart(erg),
+                 discretePart = Dirac(0), acWeight = acW)
+      }else{
+#      d1 <- d0 # 1-(1-d0)^e2
+          acW <- acWeight(erg) #* (1-d1)
+          su <- support(discretePart(erg))
+          su0 <- c(su,0)
+          o <- order(su0)
+          pr <- c(d(discretePart(erg))(su) * (1-d00), d00)
+          suo <- su0[o]
+          pro <- pr[o] #/(1-acW)
+          discreteP <- DiscreteDistribution(supp = suo, prob = pro)
+          erg <- UnivarLebDecDistribution(acPart = acPart(erg),
+                      discretePart = discreteP, acWeight = acW)
+     }
    }
 
   if(getdistrOption("simplifyD"))

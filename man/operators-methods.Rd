@@ -323,6 +323,9 @@ a <- 3
 N + a
 N + P
 N - a
+
+## don't run: to reduce check time on CRAN
+\dontrun{
 a * N
 a * P
 N / a + sin( a * P - N)
@@ -331,6 +334,7 @@ N / N
 N ^ P
 1.2 ^ N
 abs(N) ^ 1.3
+}
 }
 \keyword{math}
 \keyword{distribution}

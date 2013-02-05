@@ -1,4 +1,4 @@
-.distrExInstalled <- ("distrEx" %in% installed.packages())
+.distrExInstalled <- !all(is.na(packageDescription("distrEx")))
 
 .distroptions <- list(
                       DefaultNrGridPoints = 2^12,
@@ -16,7 +16,9 @@
                       withSweave = FALSE,
                       ## new Items after mail by Jacob van Etter, 27-02-09
                       DistrCollapse.Unique.Warn = FALSE,
-                      use.generalized.inverse.by.default = TRUE
+                      use.generalized.inverse.by.default = TRUE,
+                      ## new Item after annoying warnings with GEV 28-01-13
+                      warn.makeDNew = TRUE
                       )
 distroptions <- function(...) {
   if (nargs() == 0) return(.distroptions)

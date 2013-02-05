@@ -16,20 +16,20 @@ qqbounds <- function(x,D,alpha,n,withConf.pw, withConf.sim,
    x.in <- x[SI.in]
    p.r <- p(D)(x.in)
    p.l <- p.l(D)(x.in)
-
-   if(withConf.sim)
-        c.crit <- try(.q2kolmogorov(alpha,n,exact.sCI), silent=TRUE)
-   if(withConf.pw)
-        c.crit.i <- try(
-            .q2pw(x.in,p.r,D,n,alpha,exact.pCI,nosym.pCI),silent=TRUE)
+   l.x <- length(x.in)
+   
+   c.crit <- if(withConf.sim) try(.q2kolmogorov(alpha,n,exact.sCI), silent=TRUE) else NULL
+   c.crit.i <- if(withConf.pw) try(.q2pw(x.in,p.r,D,n,alpha,exact.pCI,nosym.pCI),silent=TRUE) else NULL
 
    te.i <- withConf.pw  & !is(c.crit.i,"try-error")
    te.s <- withConf.sim & !is(c.crit,  "try-error")
 
    if(te.s){
       c.crit.r <- q.r(D)(pmax(1-p.r-c.crit/sqrt(n),
+                         # alternative: pmax(1-(1:l.x)/l.x-c.crit/sqrt(n),
                          getdistrOption("DistrResolution")),lower.tail=FALSE)
       c.crit.l <- q(D)(pmax(p.l-c.crit/sqrt(n),
+                       # alternative: pmax(((1:l.x)-1)/l.x-c.crit/sqrt(n),
                        getdistrOption("DistrResolution")))
       c.crit.l[abs(c.crit.l)==Inf] <- NA
       c.crit.r[abs(c.crit.r)==Inf] <- NA

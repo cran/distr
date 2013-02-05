@@ -508,3 +508,4 @@ setReplaceMethod("prob", "DiscreteDistribution",
                   )
 
 
+          

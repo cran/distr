@@ -2182,6 +2182,8 @@ plot(Binom(size = 4, prob = 0.3), verticals = FALSE)
 plot(Binom(size = 4, prob = 0.3), main = TRUE)
 plot(Binom(size = 4, prob = 0.3), main = FALSE)
 plot(Binom(size = 4, prob = 0.3), cex.points = 1.2, pch = 20)
+plot(Binom(size = 4, prob = 0.3), xlab = list("a1","a2", "a3"),
+           ylab=list("p"="U","q"="V","d"="W"))
 B <- Binom(size = 4, prob = 0.3)
 plot(B, col = "red", col.points = "green", main = TRUE, col.main = "blue", 
      col.sub = "orange", sub = TRUE, cex.sub = 0.6, col.inner = "brown")
@@ -2199,6 +2201,9 @@ plot(Norm(), main = "my Distribution: %A",
 plot(Cauchy())
 plot(Cauchy(), xlim = c(-4,4))
 plot(Chisq())
+### the next ylab argument is just for illustration purposes
+plot(Chisq(),mfColRow = FALSE,to.draw.arg="d",
+     xlab="x",ylab=list(expression(paste(lambda,"-density of %C(%P)"))))
 plot(Chisq(), log = "xy", ngrid = 100)
 Ch <- Chisq(); setgaps(Ch); plot(Ch, do.points = FALSE)
 setgaps(Ch, exactq = 3); plot(Ch, verticals = FALSE)
@@ -2231,6 +2236,9 @@ plot(myLC,mfColRow = FALSE,
 
 P <- Pois(2)
 plot(as(P,"UnivarLebDecDistribution"),mfColRow = FALSE,to.draw.arg=c("d.d"))
+### the next ylab argument is just for illustration purposes
+plot(as(P,"UnivarLebDecDistribution"),mfColRow = FALSE,to.draw.arg=c("d.d"),
+     xlab="x",ylab=list(expression(paste(lambda,"-density of %C(%P)"))))
 
 
 
