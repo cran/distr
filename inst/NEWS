@@ -8,6 +8,34 @@
  information)
  
 ##############
+v 2.5
+##############
+
+user-visible CHANGES:
+
+GENERAL ENHANCEMENTS:
++ cleaned DESCRIPTION and NAMESPACE file as to Imports/Depends
+
+under the hood:
++ added .Rbuildignore
++ exported some routines which had been internal so far to
+  avoid calls by :::
++ in order to avoid calls to non-exported C-Code from pkg stats
+  (for Kolmogorov-distribution) we integrated R-Core's C-code from  
+            /src/library/stats/src/ks.c rev60573
+   (with small changes to make it self-contained) to src folder of this pkg;
+    in addition, we now use the shakier .C - interface again...
+	in v 2.5.1 reverted the changes in /src/library/stats/src/ks.c:
+	including R.h etc is easier than thought...
+	
+BUGFIXES:
++ fixed .makedotsPt -issue discovered by Gerald --> thx
++ moved generics to "distribution" and "samplesize" to pkg distr to avoid 
+   conflict between pkgs distrMod and distrSim
+   v 2.5.1: same with "samplesize<-"  to avoid conflict between pkgs 
+   distrSim and RobAStBase
+
+##############
 v 2.4
 ##############
 
@@ -37,6 +65,7 @@ under the hood:
 + put some examples in "\dontrun" to reduce check time on CRAN
 + introduced new option warn.makeDNew to suppress annoying warnings when dealing with GEVD
 + deleted no longer needed chm folders
+
 
 BUGFIXES:
 

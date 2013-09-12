@@ -444,3 +444,13 @@ if(!isGeneric("SymmCenter")){
 if(!isGeneric("Symmetry")){
     setGeneric("Symmetry", function(object) standardGeneric("Symmetry"))
 }
+if(!isGeneric("distribution")){
+    setGeneric("distribution", function(object) standardGeneric("distribution"))
+}
+if(!isGeneric("samplesize")){
+    setGeneric("samplesize", function(object, ...) standardGeneric("samplesize"))
+}
+if(!isGeneric("samplesize<-")){
+    setGeneric("samplesize<-",
+        function(object, value) standardGeneric("samplesize<-"))
+}

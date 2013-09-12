@@ -1,8 +1,10 @@
+useDynLib("distr")
 import("methods")
 import("stats")
 importFrom("graphics", "plot")
 importFrom("sfsmisc", "D1ss")
 import("startupmsg")
+import("SweaveListingUtils")
 
 export("Beta", "Binom", "Cauchy", "Chisq",  
        "Dirac","Exp", "DExp", "Fd", "Gammad", 
@@ -93,3 +95,6 @@ export("NoSymmetry", "EllipticalSymmetry", "SphericalSymmetry",
        "DistrSymmList") 
 export("qqbounds","igamma")
 exportMethods("qqplot")
+export(".isEqual",".isEqual01", ".inArgs", ".fillList", 
+       ".presubs", ".makeLenAndOrder", ".DistrCollapse")
+export("samplesize", "distribution", "samplesize<-")	   

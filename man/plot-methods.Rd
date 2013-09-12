@@ -12,41 +12,41 @@
 \description{plot-methods}
 \usage{plot(x, y, ...)
 \S4method{plot}{AbscontDistribution,missing}(x, width = 10, height = 5.5,
-     withSweave = getdistrOption("withSweave"), xlim = NULL, ylim = NULL, ngrid = 1000,
-     verticals = TRUE, do.points = TRUE, main = FALSE, inner = TRUE,
-     sub = FALSE, bmar = par("mar")[1], tmar = par("mar")[3], ...,
+     withSweave = getdistrOption("withSweave"), xlim = NULL, ylim = NULL,
+     ngrid = 1000, verticals = TRUE, do.points = TRUE, main = FALSE,
+     inner = TRUE, sub = FALSE, bmar = par("mar")[1], tmar = par("mar")[3], ...,
      cex.main = par("cex.main"), cex.inner = 1.2, cex.sub = par("cex.sub"), 
      col.points = par("col"), col.vert = par("col"), col.main = par("col.main"),  
      col.inner = par("col.main"), col.sub = par("col.sub"), cex.points = 2.0, 
      pch.u = 21, pch.a = 16, mfColRow = TRUE,
      to.draw.arg = NULL)
 \S4method{plot}{DiscreteDistribution,missing}(x, width = 10, height = 5.5,
-     withSweave = getdistrOption("withSweave"), xlim = NULL, ylim = NULL, verticals = TRUE,
-     do.points = TRUE, main = FALSE, inner = TRUE, sub = FALSE, 
+     withSweave = getdistrOption("withSweave"), xlim = NULL, ylim = NULL,
+     verticals = TRUE, do.points = TRUE, main = FALSE, inner = TRUE, sub = FALSE,
      bmar = par("mar")[1], tmar = par("mar")[3], ..., 
      cex.main = par("cex.main"), cex.inner = 1.2, cex.sub = par("cex.sub"), 
      col.points = par("col"), col.hor = par("col"), col.vert = par("col"), 
      col.main = par("col.main"), col.inner = par("col.main"), 
-     col.sub = par("col.sub"),  cex.points = 2.0, pch.u = 21, pch.a = 16, mfColRow = TRUE,
-     to.draw.arg = NULL)
+     col.sub = par("col.sub"),  cex.points = 2.0, pch.u = 21, pch.a = 16,
+     mfColRow = TRUE, to.draw.arg = NULL)
 \S4method{plot}{AffLinUnivarLebDecDistribution,missing}(x, width = 10, 
-     height = 5.5, withSweave = getdistrOption("withSweave"), xlim = NULL, ylim = NULL, ngrid = 1000,
-     verticals = TRUE, do.points = TRUE, main = FALSE, inner = TRUE, sub = FALSE,
-     bmar = par("mar")[1], tmar = par("mar")[3], ..., cex.main = par("cex.main"), 
-     cex.inner = 1.2, cex.sub = par("cex.sub"), col.points = par("col"),
-     col.hor = par("col"), col.vert = par("col"), col.main = par("col.main"), 
-     col.inner = par("col.main"), col.sub = par("col.sub"),  cex.points = 2.0,
-     pch.u = 21, pch.a = 16, mfColRow = TRUE,
-     to.draw.arg = NULL)
+     height = 5.5, withSweave = getdistrOption("withSweave"), xlim = NULL,
+     ylim = NULL, ngrid = 1000, verticals = TRUE, do.points = TRUE, main = FALSE,
+     inner = TRUE, sub = FALSE, bmar = par("mar")[1], tmar = par("mar")[3], ...,
+     cex.main = par("cex.main"), cex.inner = 1.2, cex.sub = par("cex.sub"),
+     col.points = par("col"), col.hor = par("col"), col.vert = par("col"),
+     col.main = par("col.main"), col.inner = par("col.main"),
+     col.sub = par("col.sub"),  cex.points = 2.0, pch.u = 21, pch.a = 16,
+     mfColRow = TRUE, to.draw.arg = NULL)
 \S4method{plot}{UnivarLebDecDistribution,missing}(x, width = 10, 
-     height = 14.5, withSweave = getdistrOption("withSweave"), xlim = NULL, ylim = NULL, ngrid = 1000,
-     verticals = TRUE, do.points = TRUE, main = FALSE, inner = TRUE, sub = FALSE,
-     bmar = par("mar")[1], tmar = par("mar")[3], ..., cex.main = par("cex.main"), 
-     cex.inner = 0.9, cex.sub = par("cex.sub"), col.points = par("col"),
-     col.hor = par("col"), col.vert = par("col"), col.main = par("col.main"), 
-     col.inner = par("col.main"), col.sub = par("col.sub"),  cex.points = 2.0,
-     pch.u = 21, pch.a = 16, mfColRow = TRUE,
-     to.draw.arg = NULL)
+     height = 14.5, withSweave = getdistrOption("withSweave"), xlim = NULL,
+     ylim = NULL, ngrid = 1000, verticals = TRUE, do.points = TRUE, main = FALSE,
+     inner = TRUE, sub = FALSE, bmar = par("mar")[1], tmar = par("mar")[3], ...,
+     cex.main = par("cex.main"), cex.inner = 0.9, cex.sub = par("cex.sub"),
+     col.points = par("col"), col.hor = par("col"), col.vert = par("col"),
+     col.main = par("col.main"), col.inner = par("col.main"),
+     col.sub = par("col.sub"),  cex.points = 2.0, pch.u = 21, pch.a = 16,
+     mfColRow = TRUE, to.draw.arg = NULL)
 \S4method{plot}{DistrList,missing}(x, y, ...)
 \S4method{plot}{CompoundDistribution,missing}(x, y, ...)
 }

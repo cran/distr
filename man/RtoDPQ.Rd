@@ -4,7 +4,8 @@
 \description{
   function to do get empirical density, cumulative distribution and quantile function from random numbers}
 \usage{
-RtoDPQ(r, e = getdistrOption("RtoDPQ.e"), n = getdistrOption("DefaultNrGridPoints"), y = NULL)
+RtoDPQ(r, e = getdistrOption("RtoDPQ.e"), 
+       n = getdistrOption("DefaultNrGridPoints"), y = NULL)
 }
 \arguments{
   \item{r}{ the random number generator }

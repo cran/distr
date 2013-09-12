@@ -122,23 +122,23 @@ produces a QQ plot for two univariate distributions.}
 }
 \examples{
 qqplot(Norm(15,sqrt(30)), Chisq(df=15))
-
-## don't run: to reduce check time on CRAN
-\dontrun{
 ## some discrete Distributions:
 P <- Pois(5)
 B <- Binom(size=2000,prob=5/2000)
 qqplot(B,P)
+\dontrun{
+## takes too much time for R CMD check --as-cran
 qqplot(B,P, nosym.pCI=TRUE)
-
+}
 ## some Lebesgue-Decomposed distributions:
 mylist <- UnivarLebDecDistribution(discretePart=Binom(3,.3), acPart=Norm(2,2),
                acWeight=11/20)
 mylist2 <- mylist+0.1
 qqplot(mylist,mylist2)
 qqplot(mylist,mylist2,exact.pCI=FALSE,exact.sCI=FALSE)
+\dontrun{
+## takes too much time for R CMD check --as-cran
 qqplot(mylist,mylist2,nosym.pCI=TRUE)
-
 ## some ac. distribution with a gap
 mylist3 <- UnivarMixingDistribution(Unif(0,0.3),Unif(0.6,1),mixCoeff=c(0.8,0.2))
 gaps(mylist3)

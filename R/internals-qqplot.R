@@ -86,13 +86,19 @@
                  .C("pkolmogorov2x", p = as.double(p0),
                      as.integer(n), PACKAGE = "stats")$p
         }else function(p0,n){
-                 .Call(stats:::C_pKolmogorov2x, p0, n) #, PACKAGE = "stats")
+#                 .Call(stats:::C_pKolmogorov2x, p0, n) #, PACKAGE = "stats")
+#                 .C("pkolmogorov2x", p = as.double(p0),
+#                     as.integer(n))$p
+                 .Call("pKolmogorov2x", p0, n) #, PACKAGE = "stats")
         }
 .pks2 <- if(getRversion()<"2.16.0") function(x, tol){
                  .C("pkstwo", as.integer(1),
                     p = as.double(x), as.double(tol), PACKAGE = "stats")$p
         }else function(x, tol){
-                 .Call(stats:::C_pKS2, p = x, tol) #, PACKAGE = "stats")
+#                 .Call(stats:::C_pKS2, p = x, tol) #, PACKAGE = "stats")
+#                 .C("pkstwo", as.integer(1),
+#                    p = as.double(x), as.double(tol))$p
+                 .Call("pKS2", p = x, tol) #, PACKAGE = "stats")
         }
 
 
