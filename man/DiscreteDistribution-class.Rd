@@ -6,6 +6,7 @@
 \alias{initialize,AffLinDiscreteDistribution-method}
 \alias{sqrt,DiscreteDistribution-method}
 \alias{coerce,DiscreteDistribution,LatticeDistribution-method}
+\alias{coerce,AffLinDiscreteDistribution,LatticeDistribution-method}
 
 \title{Class "DiscreteDistribution"}
 \description{The \code{DiscreteDistribution}-class is the mother-class of the class \code{LatticeDistribution}.}

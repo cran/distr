@@ -247,15 +247,16 @@ function(e1,e2){
                      e0 <- LatticeDistribution(supp = sup00, prob = pr0, 
                                                lattice = lat, check = FALSE)           
                      if(L.inf){
-                         e0@lattice <- if(L.lr>0){ 
-                            Lattice(pivot = su12.l, width = wa, Length = Inf) 
+                         wa <- .getCommonWidth(abs(w1),abs(w2), tol=tol0)
+                         e0@lattice <- if(L.lr>0){
+                            Lattice(pivot = su12.l, width = wa, Length = Inf)
                                 }else{ 
                             Lattice(pivot = su12.r, width = -wa, Length = Inf)}
                      }       
                }
  
             ## step 1 common width
-            wa <- .getCommonWidth(abs(w1),abs(w2),
+              wa <- .getCommonWidth(abs(w1),abs(w2),
                       tol=tol0)
 
 
@@ -269,7 +270,8 @@ function(e1,e2){
             pi1 <- pivot(lat1)
             pi2 <- pivot(lat2)                        
             ### Step 2
-            supp0 <- seq(by = wa, from = min(sup1-pi1, sup2-pi2), to = max(sup1-pi1, sup2-pi2))
+            supp0 <- seq(by = wa, from = min(sup1-pi1, sup2-pi2),
+                                  to = max(sup1-pi1, sup2-pi2))
             s1 <- .inWithTol(supp0,sup1-pi1,tol0)
             s2 <- .inWithTol(supp0,sup2-pi2,tol0)
             d1 <- d2 <- 0*supp0

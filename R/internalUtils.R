@@ -1233,7 +1233,10 @@ return(function(q, lower.tail = TRUE, log.p = FALSE){
 #------------------------------------------------------------------------------
 # fill a list acc. recycling rules
 #------------------------------------------------------------------------------
+.List <- function(list0) if(is.list(list0)) list0 else list(list0)
+
 .fillList <- function(list0, len = length(list0)){
+            list0 <- .List(list0)
             if(len == length(list0)) 
                return(list0)
             i <- 0

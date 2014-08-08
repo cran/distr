@@ -24,7 +24,7 @@ qqplot(x, y, ...)
     jit.fac = 0, check.NotInSupport = TRUE,
     col.NotInSupport = "red", with.legend = TRUE, legend.bg = "white",
     legend.pos = "topleft", legend.cex = 0.8, legend.pref = "", 
-    legend.postf = "", legend.alpha = alpha.CI)
+    legend.postf = "", legend.alpha = alpha.CI, debug = FALSE)
 \S4method{qqplot}{ANY,ANY}(x, y,
     plot.it = TRUE, xlab = deparse(substitute(x)),
     ylab = deparse(substitute(y)), ...)
@@ -79,6 +79,7 @@ of class \code{"UnivariateDistribution"}.}
 \item{legend.pref}{character to be prepended to legend text}
 \item{legend.postf}{character to be appended to legend text}
 \item{legend.alpha}{nominal coverage probability}
+\item{debug}{logical; if \code{TRUE} additional output to debug confidence bounds.}
 }
 
 \description{
@@ -105,6 +106,11 @@ produces a QQ plot for two univariate distributions.}
   \item{x}{The x coordinates of the points that were/would be plotted}
   \item{y}{The corresponding quantiles of the second distribution,
            \emph{including \code{\link{NA}}s}.}
+  \item{crit}{A matrix with the lower and upper confidence bounds
+               (computed by \code{qqbounds}).}
+  \item{err}{logical vector of length 2.}
+  (elements \code{crit} and \code{err} are taken from the return
+   value(s) of \code{qqbounds}).
 }
 \references{
   Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988)

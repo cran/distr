@@ -8,6 +8,25 @@
  information)
  
 ##############
+v 2.5.3
+##############
+
+user-visible CHANGES:
++ CITATION file updated after JSS publication
+
+under the hood:
++ tests: long-running tests with large pre-calculated results successfully implemented
++ enhanced utility function .fillList by an automatic cast to list if the argument 
+  not yet is of class list.
++ some minor changes in qqplot 
+
+bug fixes:
++ bug in LatticeDistribution found by Mikhail.Spivakov@babraham.ac.uk 
++ found a missing drop=FALSE in .mergegaps2
++ fixed an issue with casting AffLinDiscreteDistributions to LatticeDistributions 
+ (discovered by Kostas Oikonomou, ko@research.att.com )
+
+##############
 v 2.5
 ##############
 

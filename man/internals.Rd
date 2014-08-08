@@ -124,6 +124,7 @@ These functions are used internally by package distr.}
 .csimpsum(fx)
 .primefun(f,x, nm = NULL)
 .IssueWarn(Arith,Sim)
+.List(list0)
 .fillList(list0, len=length(list0))
 .trunc.up(object, upper)
 .trunc.low(object, lower)
@@ -364,8 +365,13 @@ of the prime function on a grid; it is to mimick the behaviour
 of \code{cumsum}. \code{.primefun} is similar but more flexible and
 produces the prime function as a function.
 
+\code{.List} checks if argument already is a list, and if so leaves it as
+             it is, otherwise casts it to a list by a call to \code{list}.
+
 \code{.fillList} fills a new list with the elements of a given list \code{list0}
                  until length \code{len} is reached using recycling if necessary.
+                 Argument \code{list0} is cast to \code{list} by a call
+                 to \code{.List} if necessary.
 
 \code{.trunc.up}, \code{.trunc.low}  provide common routines for
 classes \code{DiscreteDistribution} and \code{AbscontDistribution} for 
@@ -442,6 +448,7 @@ with R versions < 2.8.0.
 \item{.csimpsum}{a vector of evaluations of the prime function at the grid points.}
 \item{.primefun}{the prime function as a function.}
 \item{.IssueWarn}{a list with two warnings to be issued each of which may be empty.}
+\item{.List}{a list.}
 \item{.fillList}{a list.}
 \item{.trunc.up,.trunc.low}{a list with elements \code{r,p,d,q} (in this order).}
 \item{.DistrCollapse}{upon a suggestion by Jacob van Etten, 

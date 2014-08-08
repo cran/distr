@@ -55,6 +55,22 @@ setAs("DiscreteDistribution", "LatticeDistribution",
                    slot(to, name = names(lst)[i]) <- lst[[i]]
               return(to)}
       })
+
+## if support is affine linear, a DiscreteDistribution is a LatticeDistribution
+setAs("AffLinDiscreteDistribution", "LatticeDistribution",
+      function(from){
+        if(!.is.vector.lattice(from@support))
+            return(from)
+        else{ to <- new("AffLinLatticeDistribution")
+              slotNames <- slotNames(from)
+              lst <- sapply(slotNames, function(x) slot(from,x))
+              names(lst) <- slotNames
+              lst$lattice <- .make.lattice.es.vector(from@support)
+              for (i in 1: length(lst))
+                   slot(to, name = names(lst)[i]) <- lst[[i]]
+              return(to)}
+      })
+
 #setIs("DiscreteDistribution", "LatticeDistribution",
 #      test = function(object) .is.vector.lattice(support(object)),
 #      coerce = function(from) 

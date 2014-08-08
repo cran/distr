@@ -33,14 +33,14 @@
 .q2kolmogorov(alpha,n,exact=(n<100))
 .q2pw(x,p.b,D,n,alpha,exact=(n<100),nosym=FALSE)
 
-.confqq(x,D, withConf.pw  = TRUE,  withConf.sim = TRUE, alpha,
+.confqq(x,D, datax=TRUE, withConf.pw  = TRUE,  withConf.sim = TRUE, alpha,
                     col.pCI, lty.pCI, lwd.pCI, pch.pCI, cex.pCI,
                     col.sCI, lty.sCI, lwd.sCI, pch.sCI, cex.sCI,
                     n,exact.sCI=(n<100),exact.pCI=(n<100),
                     nosym.pCI = FALSE, with.legend = TRUE,
                     legend.bg = "white", legend.pos = "topleft",
                     legend.cex = 0.8, legend.pref = "", legend.postf = "",
-                    legend.alpha = alpha)
+                    legend.alpha = alpha, qqb0 = NULL, debug = FALSE)
 
 .deleteItemsMCL(mcl)
 .distrExInstalled
@@ -54,6 +54,7 @@
   object.
   }
 \item{D}{object of class \code{"UnivariateDistribution"}}
+\item{datax}{logical; (to be used in \pkg{distrMod}) shall data be plotted on x-axis?}
 \item{ord}{integer; the result of a call to \code{order}}
 \item{alpha}{numeric in [0,1]; confidence level}
 \item{n}{integer; sample size}
@@ -92,6 +93,8 @@ are \code{x.i+t/sqrt(n)+del.i/sqrt(n)} and \code{x.i-t/sqrt(n)+del.i/sqrt(n)}.}
 \item{legend.postf}{character to be appended to legend text}
 \item{legend.alpha}{nominal coverage probability}
 \item{mcl}{arguments in call as a list}
+\item{qqb0}{precomputed return value of \code{qqbounds}}
+\item{debug}{logical; if \code{TRUE} additional output to debug confidence bounds.}
 }
 
 \details{
@@ -157,7 +160,7 @@ is only  available if \code{.distrExInstalled == TRUE}; otherwise the correspond
 columns will be filled with \code{NA}.
 
 \code{.confqq} calls \code{qqbound} to compute the confidence intervals
-and plots them.
+and plots them; returns the return value of qqbound.
 
 \code{.deleteItemsMCL} deletes arguments from a call list which
 functions like \code{plot}, \code{lines}, \code{points} cannot digest;

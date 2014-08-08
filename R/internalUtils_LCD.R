@@ -82,7 +82,7 @@
         state2 <- 0
        }
    }
- erg <- if (jj > 0) gaps.new[1:jj, ] else NULL
+ erg <- if (jj > 0) gaps.new[1:jj, ,drop=FALSE] else NULL
  return(.consolidategaps(erg))
 
 }

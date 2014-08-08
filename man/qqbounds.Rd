@@ -3,7 +3,7 @@
 \usage{
 qqbounds(x,D,alpha,n,withConf.pw, withConf.sim,
          exact.sCI=(n<100),exact.pCI=(n<100),
-         nosym.pCI = FALSE)
+         nosym.pCI = FALSE, debug = FALSE)
 
 }
 \alias{qqbounds}
@@ -19,6 +19,7 @@ distribution.}
 \item{exact.pCI}{logical; shall pointwise CIs be determined with exact Binomial distribution?}
 \item{exact.sCI}{logical; shall simultaneous CIs be determined with exact kolmogorov distribution?}
 \item{nosym.pCI}{logical; shall we use (shortest) asymmetric CIs?}
+\item{debug}{logical; if \code{TRUE} additional output to debug confidence bounds.}
 }
 \description{
   We compute confidence intervals for QQ plots.

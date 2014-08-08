@@ -86,18 +86,12 @@
                  .C("pkolmogorov2x", p = as.double(p0),
                      as.integer(n), PACKAGE = "stats")$p
         }else function(p0,n){
-#                 .Call(stats:::C_pKolmogorov2x, p0, n) #, PACKAGE = "stats")
-#                 .C("pkolmogorov2x", p = as.double(p0),
-#                     as.integer(n))$p
                  .Call("pKolmogorov2x", p0, n) #, PACKAGE = "stats")
         }
 .pks2 <- if(getRversion()<"2.16.0") function(x, tol){
                  .C("pkstwo", as.integer(1),
                     p = as.double(x), as.double(tol), PACKAGE = "stats")$p
         }else function(x, tol){
-#                 .Call(stats:::C_pKS2, p = x, tol) #, PACKAGE = "stats")
-#                 .C("pkstwo", as.integer(1),
-#                    p = as.double(x), as.double(tol))$p
                  .Call("pKS2", p = x, tol) #, PACKAGE = "stats")
         }
 
@@ -113,23 +107,10 @@
   }
  res <- uniroot(fct,lower=0,upper=1)$root*sqrt(n)
  }else{
- ### from ks.test from package stats:
- pkstwo <- function(x, tol = 1e-09) {
-        #if (is.numeric(x))
-        #    x <- as.vector(x)
-        #else stop("argument 'x' must be numeric")
-        #p <- rep(0, length(x))
-        #p[is.na(x)] <- NA
-        #IND <- which(!is.na(x) & (x > 0))
-        #if (length(IND)) {
-            .pks2(x,tol) -alpha
-        #}
-        # return(p)
-    }
- ###  end of code from package stats
  fct <- function(p0){
-      1 - pkstwo(p0)-alpha  }
- res <- uniroot(fct,lower=0,upper=sqrt(n))$root
+ ### from ks.test from package stats:
+      1 - .pks2(p0,1e-09)-alpha  }
+ res <- uniroot(fct,lower=1e-12,upper=sqrt(n))$root
  }
  return(res)
 }
@@ -184,7 +165,7 @@
  pq <- log(p.b)+log(1-p.b)
  if(is(D,"AbscontDistribution")){
     dp <- d(D)(x,log=TRUE)
-    dsupp.p <- dsupp.m<-1
+    dsupp.p <- dsupp.m <- 1
  }else{ ## have E and sd available ?
     if(!.distrExInstalled) stop("")
     supp.ind <- sapply(x, function(y)
@@ -205,14 +186,15 @@
 
 
 
-.confqq <- function(x,D, withConf.pw  = TRUE,  withConf.sim = TRUE, alpha,
+.confqq <- function(x,D, datax = TRUE, withConf.pw  = TRUE,
+                    withConf.sim = TRUE, alpha,
                     col.pCI, lty.pCI, lwd.pCI, pch.pCI, cex.pCI,
                     col.sCI, lty.sCI, lwd.sCI, pch.sCI, cex.sCI,
                     n,exact.sCI=(n<100),exact.pCI=(n<100), nosym.pCI = FALSE,
                     with.legend = TRUE, legend.bg = "white",
                     legend.pos = "topleft", legend.cex = 0.8,
                     legend.pref = "", legend.postf = "", 
-                    legend.alpha = alpha){
+                    legend.alpha = alpha, qqb0=NULL, debug = FALSE){
 
    x <- sort(unique(x))
    if("gaps" %in% names(getSlots(class(D))))
@@ -229,36 +211,65 @@
    x.d <- x.in[!SI.c]        
    
 
-   qqb <- qqbounds(x,D,alpha,n,withConf.pw, withConf.sim,
-                   exact.sCI,exact.pCI,nosym.pCI)
+   qqb <- if(is.null(qqb0)) qqbounds(x,D,alpha,n,withConf.pw, withConf.sim,
+                   exact.sCI,exact.pCI,nosym.pCI, debug) else qqb0
+                   
    qqb$crit <- qqb$crit[SI.in,]
 
    if(qqb$err["pw"]){
       if(sum(SI.c)>0){
-         lines(x.c, qqb$crit[SI.c,"pw.right"],
-            col=col.pCI,lty=lty.pCI,lwd=lwd.pCI)
-         lines(x.c, qqb$crit[SI.c,"pw.left"],
-            col=col.pCI,lty=lty.pCI,lwd=lwd.pCI)
+         if(datax){
+            lines(x.c, qqb$crit[SI.c,"pw.right"],
+               col=col.pCI,lty=lty.pCI,lwd=lwd.pCI)
+            lines(x.c, qqb$crit[SI.c,"pw.left"],
+               col=col.pCI,lty=lty.pCI,lwd=lwd.pCI)
+         }else{
+            lines(qqb$crit[SI.c,"pw.right"], x.c,
+               col=col.pCI,lty=lty.pCI,lwd=lwd.pCI)
+            lines(qqb$crit[SI.c,"pw.left"], x.c,
+               col=col.pCI,lty=lty.pCI,lwd=lwd.pCI)
+         }
       }
       if(sum(!SI.c)>0){
-         points(x.d, qqb$crit[!SI.c,"pw.right"],
-            col=col.pCI, pch=pch.pCI, cex = cex.pCI)
-         points(x.d, qqb$crit[!SI.c,"pw.left"],
-            col=col.pCI, pch=pch.pCI, cex = cex.pCI)
+         if(datax){
+            points(x.d, qqb$crit[!SI.c,"pw.right"],
+               col=col.pCI, pch=pch.pCI, cex = cex.pCI)
+            points(x.d, qqb$crit[!SI.c,"pw.left"],
+               col=col.pCI, pch=pch.pCI, cex = cex.pCI)
+         }else{
+            points(qqb$crit[!SI.c,"pw.right"], x.d,
+               col=col.pCI, pch=pch.pCI, cex = cex.pCI)
+            points(qqb$crit[!SI.c,"pw.left"], x.d,
+               col=col.pCI, pch=pch.pCI, cex = cex.pCI)
+         }
       }
    }
    if(qqb$err["sim"]){
       if(sum(SI.c)>0){
-         lines(x.c, qqb$crit[SI.c,"sim.right"],
+         if(datax){
+            lines(x.c, qqb$crit[SI.c,"sim.right"],
                col=col.sCI,lty=lty.sCI,lwd=lwd.sCI)
-         lines(x.c, qqb$crit[SI.c,"sim.left"],
+            lines(x.c, qqb$crit[SI.c,"sim.left"],
                col=col.sCI,lty=lty.sCI,lwd=lwd.sCI)
+         }else{
+            lines(qqb$crit[SI.c,"sim.right"], x.c,
+               col=col.sCI,lty=lty.sCI,lwd=lwd.sCI)
+            lines(qqb$crit[SI.c,"sim.left"], x.c,
+               col=col.sCI,lty=lty.sCI,lwd=lwd.sCI)
+         }
       }
       if(sum(!SI.c)>0){
-         points(x.d, qqb$crit[!SI.c,"sim.right"],
+         if(datax){
+            points(x.d, qqb$crit[!SI.c,"sim.right"],
                 col=col.sCI, pch=pch.sCI, cex = cex.sCI)
-         points(x.d, qqb$crit[!SI.c,"sim.left"],
+            points(x.d, qqb$crit[!SI.c,"sim.left"],
                 col=col.sCI, pch=pch.sCI, cex = cex.sCI)
+         }else{
+            points(qqb$crit[!SI.c,"sim.right"], x.d,
+                col=col.sCI, pch=pch.sCI, cex = cex.sCI)
+            points(qqb$crit[!SI.c,"sim.left"], x.d,
+                col=col.sCI, pch=pch.sCI, cex = cex.sCI)
+         }
       }
    }
    if(with.legend){
@@ -301,7 +312,7 @@
                                 merge = FALSE, cex = legend.cex), lcl))
       }
    }
-  return(invisible(NULL))
+  return(invisible(qqb))
 }
 
 .deleteItemsMCL <- function(mcl){

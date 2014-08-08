@@ -18,7 +18,7 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     jit.fac = 0, check.NotInSupport = TRUE,
     col.NotInSupport = "red", with.legend = TRUE, legend.bg = "white",
     legend.pos = "topleft", legend.cex = 0.8, legend.pref = "", 
-    legend.postf = "", legend.alpha = alpha.CI){
+    legend.postf = "", legend.alpha = alpha.CI, debug = FALSE){
 
     mc <- match.call(call = sys.call(sys.parent(1)))
     if(missing(xlab)) mc$xlab <- as.character(deparse(mc$x))
@@ -26,6 +26,7 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     mcl <- as.list(mc)[-1]
     mcl$withSweave <- NULL
     mcl$mfColRow <- NULL
+    mcl$debug <- NULL
 
     force(x)
 
@@ -73,9 +74,9 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     if(mfColRow) opar1 <- par(mfrow = c(1,1), no.readonly = TRUE)
 
     ret <- do.call(stats::qqplot, args=mcl)
-
-    if(withIdLine&& plot.it){
-       abline(0,1,col=col.IdL,lty=lty.IdL,lwd=lwd.IdL)
+    qqb <- NULL
+    if(withIdLine){
+       if(plot.it)abline(0,1,col=col.IdL,lty=lty.IdL,lwd=lwd.IdL)
        if(#is(y,"AbscontDistribution") &&
        withConf){
           xy <- unique(sort(c(xc.o,yc.o)))
@@ -97,16 +98,22 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
                 xy <- sort(c(xy,xy0,xy1))
              }
           }
-          .confqq(xy, y, withConf.pw, withConf.sim, alpha.CI,
+       if(plot.it){
+           qqb <- .confqq(xy, y, datax=TRUE, withConf.pw, withConf.sim, alpha.CI,
                       col.pCI, lty.pCI, lwd.pCI, pch.pCI, cex.pCI,
                       col.sCI, lty.sCI, lwd.sCI, pch.sCI, cex.sCI,
                   n, exact.sCI = exact.sCI, exact.pCI = exact.pCI,
                   nosym.pCI = nosym.pCI, with.legend = with.legend,
                   legend.bg = legend.bg, legend.pos = legend.pos,
                   legend.cex = legend.cex, legend.pref = legend.pref,
-                  legend.postf = legend.postf, legend.alpha = legend.alpha)
+                  legend.postf = legend.postf, legend.alpha = legend.alpha,
+                  debug = debug)
+          }else{
+           qqb <- qqbounds(sort(unique(xy)),y,alpha.CI,n,withConf.pw, withConf.sim,
+                   exact.sCI,exact.pCI,nosym.pCI,debug)
+          }
        }
     }
-    return(ret)
+    return(c(ret,qqb))
     })
     
