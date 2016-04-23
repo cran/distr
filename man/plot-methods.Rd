@@ -19,7 +19,7 @@
      col.points = par("col"), col.vert = par("col"), col.main = par("col.main"),  
      col.inner = par("col.main"), col.sub = par("col.sub"), cex.points = 2.0, 
      pch.u = 21, pch.a = 16, mfColRow = TRUE,
-     to.draw.arg = NULL)
+     to.draw.arg = NULL, withSubst = TRUE)
 \S4method{plot}{DiscreteDistribution,missing}(x, width = 10, height = 5.5,
      withSweave = getdistrOption("withSweave"), xlim = NULL, ylim = NULL,
      verticals = TRUE, do.points = TRUE, main = FALSE, inner = TRUE, sub = FALSE,
@@ -28,7 +28,7 @@
      col.points = par("col"), col.hor = par("col"), col.vert = par("col"), 
      col.main = par("col.main"), col.inner = par("col.main"), 
      col.sub = par("col.sub"),  cex.points = 2.0, pch.u = 21, pch.a = 16,
-     mfColRow = TRUE, to.draw.arg = NULL)
+     mfColRow = TRUE, to.draw.arg = NULL, withSubst = TRUE)
 \S4method{plot}{AffLinUnivarLebDecDistribution,missing}(x, width = 10, 
      height = 5.5, withSweave = getdistrOption("withSweave"), xlim = NULL,
      ylim = NULL, ngrid = 1000, verticals = TRUE, do.points = TRUE, main = FALSE,
@@ -37,7 +37,7 @@
      col.points = par("col"), col.hor = par("col"), col.vert = par("col"),
      col.main = par("col.main"), col.inner = par("col.main"),
      col.sub = par("col.sub"),  cex.points = 2.0, pch.u = 21, pch.a = 16,
-     mfColRow = TRUE, to.draw.arg = NULL)
+     mfColRow = TRUE, to.draw.arg = NULL, withSubst = TRUE)
 \S4method{plot}{UnivarLebDecDistribution,missing}(x, width = 10, 
      height = 14.5, withSweave = getdistrOption("withSweave"), xlim = NULL,
      ylim = NULL, ngrid = 1000, verticals = TRUE, do.points = TRUE, main = FALSE,
@@ -46,7 +46,7 @@
      col.points = par("col"), col.hor = par("col"), col.vert = par("col"),
      col.main = par("col.main"), col.inner = par("col.main"),
      col.sub = par("col.sub"),  cex.points = 2.0, pch.u = 21, pch.a = 16,
-     mfColRow = TRUE, to.draw.arg = NULL)
+     mfColRow = TRUE, to.draw.arg = NULL, withSubst = TRUE)
 \S4method{plot}{DistrList,missing}(x, y, ...)
 \S4method{plot}{CompoundDistribution,missing}(x, y, ...)
 }
@@ -127,6 +127,8 @@
   for c.d.f. and quantile function of the composed distribution and the respective
   three panels for the absolutely continuous and the discrete part, respectively; 
   }
+  \item{withSubst}{logical; if \code{TRUE} (default) pattern substitution for
+     titles and lables is used; otherwise no substitution is used. }
   \item{\dots}{addtional arguments for \code{plot} --- see 
                \code{\link[graphics]{plot}}, 
                \code{\link[graphics]{plot.default}}, 
@@ -164,7 +166,8 @@ class and (named) parameter slots of argument \code{x} in case of \code{inner},
 and a "generated on <data>"-tag in case of \code{sub}.
 Of course, if \code{main} / \code{inner} / \code{sub} are \code{character}, this
 is used for the title; in case of \code{inner} it is then checked whether it
-has length 3. In all title arguments, the following patterns are substituted:
+has length 3. In all title and axis label arguments, if \code{withSubst} is \code{TRUE},
+the following patterns are substituted:
 \describe{
 \item{\code{"\%C"}}{class of argument \code{x}}
 \item{\code{"\%P"}}{parameters of \code{x} in form of a comma-separated list of 
@@ -204,6 +207,13 @@ In these label arguments, the same pattern substitutions are made as
 for titles. If no character substitutions and mathematical expressions
 are needed, character vectors of respective length instead of lists are
 also allowed for arguments \code{xlab}, \code{ylab}.
+
+In addition, argument \code{\dots} may contain arguments \code{panel.first},
+\code{panel.last}, i.e., hook expressions to be evaluated at the very beginning
+and at the very end of each panel (within the then valid coordinates).
+To be able to use these hooks for each panel individually, they may also be
+lists of expressions (of the same length as the number of panels and
+run through in the same order as the panels).
 }
 
 \examples{
@@ -229,12 +239,22 @@ plot(Norm(), main = "my Distribution: \%A",
                   "Pseudo-inverse with param's \%N"), 
      sub = "this plot was correctly generated on \%D", 
      cex.inner = 0.9, cex.sub = 0.8)
+
+plot(Norm(),panel.first=grid(4,4))
+## does not (yet) work as desired:
+plot(Norm(),panel.first=list(grid(5,5),grid(3,3),grid(4,4)))
+li <- list(substitute(grid(5,5)),substitute(grid(3,3)),substitute(grid(4,4)))
+plot(Norm(),panel.first=li)
+
 plot(Cauchy())
 plot(Cauchy(), xlim = c(-4,4))
 plot(Chisq())
 ### the next ylab argument is just for illustration purposes
 plot(Chisq(),mfColRow = FALSE,to.draw.arg="d",
      xlab="x",ylab=list(expression(paste(lambda,"-density of \%C(\%P)"))))
+## substitution can be switched off
+plot(Chisq(),mfColRow = FALSE,to.draw.arg="d",
+     xlab="x",ylab=list(expression(paste(lambda,"-density of \%C(\%P)"))), withSubst=FALSE)
 plot(Chisq(), log = "xy", ngrid = 100)
 Ch <- Chisq(); setgaps(Ch); plot(Ch, do.points = FALSE)
 setgaps(Ch, exactq = 3); plot(Ch, verticals = FALSE)

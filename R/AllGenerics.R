@@ -20,13 +20,13 @@
 df <- function(x, ...)
        {
         dots <- list(...)
-        if(hasArg(df1)) df1 <- dots$"df1"
+        if(hasArg("df1")) df1 <- dots$"df1"
            else stop("Argument df1 missing")
-        if(hasArg(df2)) df2 <- dots$"df2"
+        if(hasArg("df2")) df2 <- dots$"df2"
            else stop("Argument df2 missing")
-        log.arg <- if(hasArg(log)) dots$"log" else FALSE 
+        log.arg <- if(hasArg("log")) dots$"log" else FALSE 
 
-        if(hasArg(ncp)) ncp <- dots$"ncp"
+        if(hasArg("ncp")) ncp <- dots$"ncp"
            else ncp <- 0
 
         if(isTRUE(all.equal(ncp,0))||(getRversion()>='2.4.0'))
@@ -54,7 +54,7 @@ df <- function(x, ...)
 
 sd <- function(x, ...){
       dots <- list(...)
-      na.rm <- ifelse(hasArg(na.rm), dots$"na.rm", FALSE)
+      na.rm <- ifelse(hasArg("na.rm"), dots$"na.rm", FALSE)
       stats::sd(x = x, na.rm = na.rm)
       }
 
@@ -185,6 +185,10 @@ if(!isGeneric("p.l"))
    setGeneric("p.l", function(object) standardGeneric("p.l"))
 if(!isGeneric("q.r"))
    setGeneric("q.r", function(object) standardGeneric("q.r"))
+if(!isGeneric("p.r"))
+   setGeneric("p.r", function(object) standardGeneric("p.r"))
+if(!isGeneric("q.l"))
+   setGeneric("q.l", function(object) standardGeneric("q.l"))
 
 if(!isGeneric("gaps"))
    setGeneric("gaps", function(object) standardGeneric("gaps"))

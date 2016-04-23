@@ -21,26 +21,26 @@
 
 \usage{
 .inGaps(x,gapm)
-.isReplicated(x)
+.isReplicated(x, tol = .Machine$double.eps)
 .NotInSupport(x,D)
 .SingleDiscrete(x,D)
 .makeLenAndOrder(x,ord)
 
 .BinomCI.in(t,p.bi,x.i, del.i=0,D.i,n.i,alpha.i)
-.BinomCI(x,p.b,D,n,alpha)
-.BinomCI.nosym(x,p.b,D,n,alpha)
+.BinomCI(x,p.b,D,n,alpha, silent0 = TRUE)
+.BinomCI.nosym(x,p.b,D,n,alpha, silent0 = TRUE)
 
-.q2kolmogorov(alpha,n,exact=(n<100))
-.q2pw(x,p.b,D,n,alpha,exact=(n<100),nosym=FALSE)
+.q2kolmogorov(alpha,n,exact=(n<100), silent0 = TRUE)
+.q2pw(x,p.b,D,n,alpha,exact=(n<100),nosym=FALSE, silent0 = TRUE)
 
-.confqq(x,D, datax=TRUE, withConf.pw  = TRUE,  withConf.sim = TRUE, alpha,
+.confqq(x,D, datax=FALSE, withConf.pw  = TRUE,  withConf.sim = TRUE, alpha,
                     col.pCI, lty.pCI, lwd.pCI, pch.pCI, cex.pCI,
                     col.sCI, lty.sCI, lwd.sCI, pch.sCI, cex.sCI,
                     n,exact.sCI=(n<100),exact.pCI=(n<100),
                     nosym.pCI = FALSE, with.legend = TRUE,
                     legend.bg = "white", legend.pos = "topleft",
                     legend.cex = 0.8, legend.pref = "", legend.postf = "",
-                    legend.alpha = alpha, qqb0 = NULL, debug = FALSE)
+                    legend.alpha = alpha, qqb0 = NULL, transf0=NULL, debug = FALSE)
 
 .deleteItemsMCL(mcl)
 .distrExInstalled
@@ -53,6 +53,7 @@
   an \code{"AbscontDistribution"} or \code{"UnivarLebDecDistribution"}
   object.
   }
+\item{tol}{numeric; tolerance for separating points.}
 \item{D}{object of class \code{"UnivariateDistribution"}}
 \item{datax}{logical; (to be used in \pkg{distrMod}) shall data be plotted on x-axis?}
 \item{ord}{integer; the result of a call to \code{order}}
@@ -94,7 +95,10 @@ are \code{x.i+t/sqrt(n)+del.i/sqrt(n)} and \code{x.i-t/sqrt(n)+del.i/sqrt(n)}.}
 \item{legend.alpha}{nominal coverage probability}
 \item{mcl}{arguments in call as a list}
 \item{qqb0}{precomputed return value of \code{qqbounds}}
-\item{debug}{logical; if \code{TRUE} additional output to debug confidence bounds.}
+\item{transf0}{optional transformation of x-values (by default \code{NULL} and then ignored)}
+\item{debug}{logical; if \code{TRUE} additional output to debug confidence bounds. }
+\item{silent0}{logical; it is used as argument \code{silent} in \code{try}-catches
+          within this function. }
 }
 
 \details{
@@ -198,7 +202,7 @@ with the corresponding pointwise confidence widths.}
 }
 
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de},
 }
 
 \seealso{\code{\link[stats]{ks.test}}, \code{\link[distr]{qqplot}}

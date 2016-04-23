@@ -79,7 +79,7 @@
   }
 }
 
-\author{Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}\cr
+\author{Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}\cr
 Matthias Kohl \email{matthias.kohl@stamats.de}
 Thomas Stabla \email{statho3@web.de}
 }
@@ -91,11 +91,10 @@ convpow(Exp()+Pois(),4)
 }
 
 \references{
-Kohl, M., Ruckdeschel, P., Stabla, T. (2005): 
+Kohl, M., Ruckdeschel, P., (2014):
    General purpose convolution algorithm for distributions 
-  in S4-Classes by means of FFT.
- Technical report, Feb. 2005. Also available in
-\url{http://www.uni-bayreuth.de/departments/math/org/mathe7/RUCKDESCHEL/pubs/comp.pdf}
+  in S4-Classes by means of FFT. \emph{J. Statist. Softw.}
+  \bold{59}(4): 1-25.
 }
 
 \concept{convolution for distributions}

@@ -67,7 +67,7 @@ This object is a double exponential (or Laplace) distribution.
 }
 
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}
 }
 \seealso{
 \code{\link{Exp-class}}

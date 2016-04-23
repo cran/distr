@@ -25,7 +25,7 @@ argument \code{withSimplify} is \code{TRUE} the result of
 i.e. an object of class \code{"UnivarLebDecDistribution"}, or if degenerate,
 of class \code{"AbscontDistribution"} or \code{"DiscreteDistribution"}.}
 %\references{}
-\author{Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}}
+\author{Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}}
 %\note{}
 \seealso{\code{\link{CompoundDistribution-class}},
   \code{\link{simplifyD}}}

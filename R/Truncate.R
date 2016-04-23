@@ -193,6 +193,7 @@ setMethod("Truncate", "DiscreteDistribution",
 setMethod("Truncate", "UnivarLebDecDistribution",
           function(object, lower = -Inf, upper = Inf, 
                    withSimplify = getdistrOption("simplifyD")){
+            ep <- .Machine$double.eps^2
             if(lower >= upper+ep) 
                stop("Argument 'lower' must be smaller than argument 'upper'")
             if((lower <= getLow(object))&&(upper >= getUp(object)))

@@ -58,7 +58,7 @@ halving of \code{x=0.5} in \code{q(object)(x, lower.tail)} for \code{lower.tail}
 
 
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}
   }
 
 \keyword{methods}

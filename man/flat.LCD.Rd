@@ -25,7 +25,7 @@ are equally weighted. It is used internally in our methods for \code{"*"}, \code
 \value{ \code{flat.LCD} returns an object of class \code{UnivarLebDecDistribution}.}
 
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}}
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}}
 
 \seealso{ 
 \code{\link{UnivarLebDecDistribution-class}}, 

@@ -1,7 +1,10 @@
 useDynLib("distr")
 import("methods")
 import("stats")
-importFrom("graphics", "plot")
+importFrom("grDevices", "dev.list", "dev.new", "xy.coords")
+importFrom("graphics", "plot", "abline", "layout", "legend", "lines", "mtext", "par", "points", "title")
+importFrom("MASS", "ginv")
+importFrom("utils", "str")
 importFrom("sfsmisc", "D1ss")
 import("startupmsg")
 import("SweaveListingUtils")
@@ -13,6 +16,7 @@ export("Beta", "Binom", "Cauchy", "Chisq",
        "RtoDPQ.d", "Td", "Unif", "Weibull", "Arcsine", 
        "distroptions", "getdistrOption", "simplifyr",
        "Lattice", "DiscreteDistribution",
+       "EmpiricalDistribution",
        "LatticeDistribution", "EuclideanSpace", "Reals", 
        "Naturals", "standardMethods", 
        "distrARITH", "distrMASK", "getLabel", "devNew")
@@ -80,7 +84,7 @@ exportMethods("mixCoeff", "mixCoeff<-", "mixDistr", "mixDistr<-",
               "discretePart", "discretePart<-", "acPart", "acPart<-",
               "discreteWeight", "discreteWeight<-", "acWeight", "acWeight<-",
               "p.discrete", "d.discrete", "q.discrete", "r.discrete",
-              "p.ac", "d.ac", "q.ac", "r.ac")
+              "p.ac", "d.ac", "q.ac", "r.ac", "p.r", "q.l")
 exportMethods("decomposePM", "simplifyD", "showobj")
 exportMethods("Truncate","Minimum","Maximum","Huberize")
 exportMethods("solve", "sqrt")

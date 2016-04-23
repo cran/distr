@@ -14,7 +14,7 @@ for the general documentation to these two functions,
 confer \code{\link[base]{options}}, \code{\link[base:options]{getOption}}. Here
 we only document added options.}
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr 
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de},\cr 
   Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 
 \section{Additionally available options in package 'distr'}{

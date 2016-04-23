@@ -93,7 +93,7 @@ distribution.}
   3rd ed. Wiley, New York.
 }
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}
 }
 \seealso{
   \code{\link[stats:qqnorm]{qqplot}} from package \pkg{stats} -- the standard QQ plot

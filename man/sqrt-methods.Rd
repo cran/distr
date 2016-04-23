@@ -16,7 +16,7 @@
 \item{sqrt}{\code{signature(x = "PosSemDefSymmMatrix")}: produces a symmetric,
  p.s.d. matrix \eqn{y} such that  \eqn{x = y^2}.}
 }}
-\author{Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}}
+\author{Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}}
 \seealso{
 \code{\link{solve}} }
 \keyword{algebra}

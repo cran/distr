@@ -142,12 +142,18 @@ K(int n, double d)
    int k, m, i, j, g, eH, eQ;
    double h, s, *H, *Q;
 
+   /* Change of P. Ruckdeschel w.r.t. the included version
+      from R-Core : the faster right-tail approximation
+	  omitted there is re-included 
+   */	  
    /* 
-      The faster right-tail approximation is omitted here.
+      Original comment R-Core:
+	  The faster right-tail approximation is omitted here.
+   */
       s = d*d*n; 
       if(s > 7.24 || (s > 3.76 && n > 99)) 
           return 1-2*exp(-(2.000071+.331/sqrt(n)+1.409/n)*s);
-   */
+   /* end of comment in original R-Core code */
    k = (int) (n * d) + 1;
    m = 2 * k - 1;
    h = k - n * d;

@@ -25,7 +25,7 @@ Class \code{"\linkS4class{vector}"}, by class "numeric", distance 2.
 }}
 %\references{ ~put references to the literature/web site here ~ }
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}
 }
 %\note{ ~~further notes~~ }
 \seealso{

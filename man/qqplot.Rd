@@ -24,7 +24,7 @@ qqplot(x, y, ...)
     jit.fac = 0, check.NotInSupport = TRUE,
     col.NotInSupport = "red", with.legend = TRUE, legend.bg = "white",
     legend.pos = "topleft", legend.cex = 0.8, legend.pref = "", 
-    legend.postf = "", legend.alpha = alpha.CI, debug = FALSE)
+    legend.postf = "", legend.alpha = alpha.CI, debug = FALSE, withSubst = TRUE)
 \S4method{qqplot}{ANY,ANY}(x, y,
     plot.it = TRUE, xlab = deparse(substitute(x)),
     ylab = deparse(substitute(y)), ...)
@@ -80,6 +80,8 @@ of class \code{"UnivariateDistribution"}.}
 \item{legend.postf}{character to be appended to legend text}
 \item{legend.alpha}{nominal coverage probability}
 \item{debug}{logical; if \code{TRUE} additional output to debug confidence bounds.}
+\item{withSubst}{logical; if \code{TRUE} (default) pattern substitution for
+      titles and lables is used; otherwise no substitution is used. }
 }
 
 \description{
@@ -91,6 +93,13 @@ of class \code{"UnivariateDistribution"}.}
    Graphical parameters may be given as arguments to \code{qqplot}.
    The \pkg{stats} function
   is just the method for signature \code{x=ANY,y=ANY}.
+  In all title and axis label arguments, if \code{withSubst} is \code{TRUE},
+  the following patterns are substituted:
+\describe{
+\item{\code{"\%C"}}{class of argument \code{x}}
+\item{\code{"\%A"}}{deparsed argument \code{x}}
+\item{\code{"\%D"}}{time/date-string when the plot was generated}
+}
 }
 \details{
 \describe{
@@ -101,8 +110,12 @@ produces a QQ plot for two univariate distributions.}
 }
 }
 \value{
-  As for function \code{\link[stats:qqnorm]{qqplot}} from package \pkg{stats}: a
-  list with components
+  A list of elements containing the information needed to compute the 
+  respective QQ plot, in particular it extends the elements of the 
+  return value of function \code{\link[stats:qqnorm]{qqplot}} 
+  from package \pkg{stats}, i.e., a
+  list with components \code{x} and \code{y} for x and y coordinates
+  of the plotted points; more specifically it contains
   \item{x}{The x coordinates of the points that were/would be plotted}
   \item{y}{The corresponding quantiles of the second distribution,
            \emph{including \code{\link{NA}}s}.}
@@ -111,6 +124,8 @@ produces a QQ plot for two univariate distributions.}
   \item{err}{logical vector of length 2.}
   (elements \code{crit} and \code{err} are taken from the return
    value(s) of \code{qqbounds}).
+   The return value allows to recover all information used to produce the plot
+   for later use in enhanced graphics (e.g. with ggplot).   
 }
 \references{
   Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988)
@@ -124,7 +139,7 @@ produces a QQ plot for two univariate distributions.}
    intervals.
 }
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}
 }
 \examples{
 qqplot(Norm(15,sqrt(30)), Chisq(df=15))

@@ -264,7 +264,7 @@ setMethod("convpow",
              {if( !.isNatural0(N))
                   stop("N has to be a natural (or 0)")
               if (N==0) return(Dirac(0))
-              Dirac(shape=N*location(D1))}
+              Dirac(location =N*location(D1))}
           )
 
 setMethod("convpow",

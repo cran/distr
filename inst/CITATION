@@ -14,7 +14,6 @@ citEntry(entry="Article",
   number       = 2,
   pages        = "2--6",
   month        = "May",
-  url = "http://www.uni-bayreuth.de/departments/math/org/mathe7/DISTR/distr.pdf",
   pdf          = "http://CRAN.R-project.org/doc/Rnews/Rnews_2006-2.pdf",
   textVersion  =
   paste("Peter Ruckdeschel, Matthias Kohl, Thomas Stabla, Florian Camphausen (2006).",
@@ -39,4 +38,5 @@ citEntry(entry = "Article",
         "URL http://www.jstatsoft.org/v59/i04/."),
   header       = "If you employ convolution, please also cite:"
 )
+					
 					

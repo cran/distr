@@ -18,15 +18,26 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     jit.fac = 0, check.NotInSupport = TRUE,
     col.NotInSupport = "red", with.legend = TRUE, legend.bg = "white",
     legend.pos = "topleft", legend.cex = 0.8, legend.pref = "", 
-    legend.postf = "", legend.alpha = alpha.CI, debug = FALSE){
+    legend.postf = "", legend.alpha = alpha.CI, debug = FALSE, withSubst = TRUE){
 
     mc <- match.call(call = sys.call(sys.parent(1)))
-    if(missing(xlab)) mc$xlab <- as.character(deparse(mc$x))
-    if(missing(ylab)) mc$ylab <- as.character(deparse(mc$y))
+    xcc <- as.character(deparse(mc$x))
+    ycc <- as.character(deparse(mc$y))
+    if(missing(xlab)) mc$xlab <- xcc
+    if(missing(ylab)) mc$ylab <- ycc
+
     mcl <- as.list(mc)[-1]
     mcl$withSweave <- NULL
     mcl$mfColRow <- NULL
     mcl$debug <- NULL
+
+   .mpresubs <- if(withSubst){
+                 function(inx) 
+                    .presubs(inx, c("%C", "%A", "%D" ),
+                          c(as.character(class(x)[1]), 
+                            as.character(date()), 
+                            xcc))
+                }else function(inx) inx
 
     force(x)
 
@@ -66,6 +77,15 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     mcl$cex <- .makeLenAndOrder(cex.pch,ord.x)
     mcl$col <- .makeLenAndOrder(col.pch,ord.x)
 
+    mcl$xlab <- .mpresubs(mcl$xlab)
+    mcl$ylab <- .mpresubs(mcl$ylab)
+
+    if (!is.null(eval(mcl$main)))
+        mcl$main <- .mpresubs(eval(mcl$main))
+    if (!is.null(eval(mcl$sub)))
+        mcl$sub <- .mpresubs(eval(mcl$sub))
+
+
     if (!withSweave){
            devNew(width = width, height = height)
     }
@@ -98,6 +118,24 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
                 xy <- sort(c(xy,xy0,xy1))
              }
           }
+        qqplotInfo <- list(xy.0=xy, y.0=y, 
+                         withConf.pw=withConf.pw, 
+                         withConf.sim=withConf.sim, 
+                         alpha.CI=alpha.CI ,
+                         col.pCI = col.pCI , lty.pCI = lty.pCI , 
+                         lwd.pCI = lwd.pCI , pch.pCI = pch.pCI, 
+                         cex.pCI = cex.pCI , 
+                         col.sCI = col.sCI , lty.sCI = lty.sCI , 
+                         lwd.sCI = lwd.sCI , pch.sCI = pch.sCI, 
+                         cex.sCI = cex.sCI , 
+                         n = n , 
+                         exact.sCI = exact.sCI, exact.pCI = exact.pCI,
+                  nosym.pCI = nosym.pCI, with.legend = with.legend,
+                  legend.bg = legend.bg, legend.pos = legend.pos,
+                  legend.cex = legend.cex, legend.pref = legend.pref,
+                  legend.postf = legend.postf, legend.alpha = legend.alpha, debug = debug,
+                  args.stats.qqplot = mcl
+                  )
        if(plot.it){
            qqb <- .confqq(xy, y, datax=TRUE, withConf.pw, withConf.sim, alpha.CI,
                       col.pCI, lty.pCI, lwd.pCI, pch.pCI, cex.pCI,
@@ -114,6 +152,8 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
           }
        }
     }
-    return(c(ret,qqb))
+    qqplotInfo <- c(ret, qqplotInfo, qqb)
+    class(qqplotInfo) <- c("qqplotInfo","DiagnInfo")
+    return(invisible(qqplotInfo))
     })
     

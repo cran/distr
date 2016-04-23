@@ -75,7 +75,7 @@ negative Binomial distribution with parameters \code{size = 1, prob = prob(obj)}
 \author{
 Thomas Stabla \email{statho3@web.de},\cr 
 Florian Camphausen \email{fcampi@gmx.de},\cr
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
 \note{Working with a computer, we use a finite interval as support which carries 

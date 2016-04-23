@@ -137,7 +137,7 @@ To enhance accuracy of several functionals on distributions,
  which cancels out support points with probability 0.
 }
 
-\author{Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}}
+\author{Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}}
 
 \note{ Working with a computer, we use a finite interval as support which 
 carries at least mass \code{1-getdistrOption("TruncQuantile")}. }

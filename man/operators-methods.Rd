@@ -335,6 +335,13 @@ N ^ P
 1.2 ^ N
 abs(N) ^ 1.3
 }
+\references{
+Ruckdeschel, P., Kohl, M.(2014):
+   General purpose convolution algorithm for distributions 
+  in S4-Classes by means of FFT. \emph{J. Statist. Softw.}
+  \bold{59}(4): 1-25.
+}
+
 \keyword{math}
 \keyword{distribution}
 \keyword{arith}

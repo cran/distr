@@ -10,7 +10,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
             col.vert = par("col"), col.main = par("col.main"), 
             col.inner = par("col.main"), col.sub = par("col.sub"), 
             cex.points = 2.0, pch.u = 21, pch.a = 16, mfColRow = TRUE,
-            to.draw.arg = NULL){
+            to.draw.arg = NULL, withSubst = TRUE){
 
      xc <- match.call(call = sys.call(sys.parent(1)))$x
      ### manipulating the ... - argument
@@ -28,6 +28,18 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
       l.draw <- length(to.draw)
 
      
+     pF <- expression({})
+     if(!is.null(dots[["panel.first"]])){
+         pF <- .panel.mingle(dots,"panel.first")
+     }
+     pF <- .fillList(pF, l.draw)
+     pL <- expression({})
+     if(!is.null(dots[["panel.last"]])){
+          pL <- .panel.mingle(dots,"panel.last")
+     }
+     pL <- .fillList(pL, l.draw)
+
+     dots$panel.first <- dots$panel.last <- NULL
      dots$col.hor <- NULL
 
      dots.for.points <- .makedotsPt(dots)
@@ -43,25 +55,25 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
             #stop("Argument 'inner' must either be 'logical' or a 'list'")
           inner <- .fillList(inner,l.draw)          
          }
-     cex <- if (hasArg(cex)) dots$cex else 1
+     cex <- if (hasArg("cex")) dots$cex else 1
 
-     if (hasArg(cex) && missing(cex.points)) 
+     if (hasArg("cex") && missing(cex.points)) 
          cex.points <- 2.0 * cex
 
-     if (hasArg(pch) && missing(pch.u))
+     if (hasArg("pch") && missing(pch.u))
           pch.u <- dots$pch
-     if (hasArg(pch) && missing(pch.a))
+     if (hasArg("pch") && missing(pch.a))
           pch.a <- dots$pch
      
-     if (hasArg(col) && missing(col.points))
+     if (hasArg("col") && missing(col.points))
          col.points <- dots$col
-     if (hasArg(col) && missing(col.vert))
+     if (hasArg("col") && missing(col.vert))
          col.vert <- dots$col
-     if (hasArg(col) && missing(col.main))
+     if (hasArg("col") && missing(col.main))
         col.main <- dots$col
-     if (hasArg(col) && missing(col.inner))
+     if (hasArg("col") && missing(col.inner))
         col.inner <- dots$col
-     if (hasArg(col) && missing(col.sub))
+     if (hasArg("col") && missing(col.sub))
         col.sub <- dots$col
 
      if (!withSweave){
@@ -89,7 +101,8 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      }
      else paramstring <- qparamstring <- nparamstring <- ""
 
-     .mpresubs <- function(inx) 
+     .mpresubs <- if(withSubst){
+             function(inx) 
                     .presubs(inx, c("%C", "%D", "%N", "%P", "%Q", "%A"),
                           c(as.character(class(x)[1]), 
                             as.character(date()), 
@@ -97,7 +110,8 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
                             paramstring, 
                             qparamstring,
                             as.character(deparse(xc))))
-     
+            }else function(inx) inx
+            
      xlab0 <- list("d"="x", "p"="q", "q"="p")
      iL <- 1:length(to.draw)
      .mp2 <- function(dlb = dots$xlab, lb0 = list("d"="x", "p"="q", "q"="p")){
@@ -115,6 +129,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
                                 if(is.call(res)) res <- res[-1]
                                 return(res)}
                                 }else function(x,i){
+                                  if(length(x)==1) return(x[1])
                                   res <- x[i]
                                   if(length(res)==0) return(NULL)
                                   if(is.na(res)) return(NULL)
@@ -134,7 +149,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      ylab0 <- .mp2(dlb=dots$ylab, lb0=list("d"="d(x)", "p"="p(q)", "q"="q(p)"))
      dots$ylab <- NULL
 
-     if (hasArg(main)){
+     if (hasArg("main")){
          mainL <- TRUE
          if (is.logical(main)){
              if (!main) mainL <-  FALSE 
@@ -151,7 +166,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
              lineT <- 0.6
              }
      }
-     if (hasArg(sub)){ 
+     if (hasArg("sub")){ 
          subL <- TRUE
          if (is.logical(sub)){
              if (!sub) subL <-  FALSE 
@@ -197,7 +212,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      ## is less than 10^-exactq in abs. value  
 
      dist <- upper - lower
-     if(hasArg(xlim)) 
+     if(hasArg("xlim")) 
          {if(length(xlim)!=2) stop("Wrong length of Argument xlim");
              grid <- seq(xlim[1], xlim[2], length = ngrid)}
      else grid <- seq(from = lower - 0.1 * dist, to = upper + 0.1 * dist, 
@@ -207,7 +222,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      pxg <- p(x)(grid)
      
      
-     if(hasArg(ylim))
+     if(hasArg("ylim"))
          {if (3 %in% to.draw && any( c(1,2) %in% to.draw)){
                  if(! length(ylim) %in% c(2,4)) 
                      stop("Wrong length of Argument ylim")
@@ -220,7 +235,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
            }
      else {ylim1 <- c(0,max(dxg[dxg<50])); ylim2 <- c(-0.05,1.05)}
 
-     if(hasArg(log))
+     if(hasArg("log"))
          {logpd <- dots$log
           logq <- gsub("u","y",gsub("y","x",gsub("x", "u", logpd)))
           if(length(grep("y",logpd))){ 
@@ -231,12 +246,19 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
              }
           }
 
+     plotCount <- 1
      o.warn <- getOption("warn"); options(warn = -1)
      if(1%in%to.draw){
          on.exit(options(warn=o.warn))
-         do.call(plot, c(list(x = grid, dxg, type = "l", 
+         dots.lowlevel$panel.first <- pF[[plotCount]]
+         dots.lowlevel$panel.last  <- pL[[plotCount]]
+         dots.lowlevel$xlim <- xlim
+         do.call(plot, c(list(x = grid, dxg, type = "l",
              ylim = ylim1,  ylab = ylab0[["d"]], xlab = xlab0[["d"]], log = logpd),
-             dots.without.pch))
+             dots.lowlevel))
+         dots.lowlevel$panel.first <- dots.lowlevel$panel.last <- NULL
+         dots.lowlevel$xlim <- NULL
+         plotCount <- plotCount + 1
          options(warn = o.warn)
      
          title(main = inner.d, line = lineT, cex.main = cex.inner,
@@ -249,9 +271,15 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      if(is.finite(q(x)(1))) {grid <- c(grid,q(x)(1)); pxg <- c(pxg,1)}
 
      if(2%in%to.draw){
-        do.call(plot, c(list(x = grid, pxg, type = "l", 
+        dots.lowlevel$panel.first <- pF[[plotCount]]
+        dots.lowlevel$panel.last  <- pL[[plotCount]]
+        dots.lowlevel$xlim <- xlim
+        do.call(plot, c(list(x = grid, pxg, type = "l",
              ylim = ylim2, ylab = ylab0[["p"]], xlab = xlab0[["p"]], log = logpd),
-             dots.without.pch))
+             dots.lowlevel))
+        dots.lowlevel$panel.first <- dots.lowlevel$panel.last <- NULL
+        dots.lowlevel$xlim <- NULL
+        plotCount <- plotCount + 1
         options(warn = o.warn)
       
         title(main = inner.p, line = lineT, cex.main = cex.inner,
@@ -289,9 +317,13 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      
      if(3%in%to.draw){
         options(warn = -1)
-        do.call(plot, c(list(x = po, xo, type = "n", 
+        dots.lowlevel$panel.first <- pF[[plotCount]]
+        dots.lowlevel$panel.last  <- pL[[plotCount]]
+        do.call(plot, c(list(x = po, xo, type = "n",
              xlim = ylim2, ylim = xlim, ylab = ylab0[["q"]], xlab = xlab0[["q"]],
-             log = logq), dots.without.pch))
+             log = logq), dots.lowlevel))
+        dots.lowlevel$panel.first <- dots.lowlevel$panel.last <- NULL
+        plotCount <- plotCount + 1
         options(warn = o.warn)
     
         
@@ -341,7 +373,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
              col.main = par("col.main"), col.inner = par("col.main"), 
              col.sub = par("col.sub"),  cex.points = 2.0, 
              pch.u = 21, pch.a = 16, mfColRow = TRUE,
-             to.draw.arg = NULL){
+             to.draw.arg = NULL, withSubst = TRUE){
 
       xc <- match.call(call = sys.call(sys.parent(1)))$x
       ### manipulating the ... - argument
@@ -358,10 +390,21 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
       }
       l.draw <- length(to.draw)
 
+      pF <- expression({})
+      if(!is.null(dots[["panel.first"]])){
+         pF <- .panel.mingle(dots,"panel.first")
+      }
+      pF <- .fillList(pF, l.draw)
+      pL <- expression({})
+      if(!is.null(dots[["panel.last"]])){
+          pL <- .panel.mingle(dots,"panel.last")
+      }
+      pL <- .fillList(pL, l.draw)
+      dots$panel.first <- dots$panel.last <- NULL
+
       dots$ngrid <- NULL
 
       dots.for.points <- .makedotsPt(dots)
-      print(dots.for.points)
       dots.lowlevel <- .makedotsLowLevel(dots)
       dots.without.pch <- dots.lowlevel[! (names(dots.lowlevel) %in% c("col", "pch"))]
       ###
@@ -375,27 +418,27 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
           inner <- .fillList(inner,l.draw)          
          }
 
-     cex <- if (hasArg(cex)) dots$cex else 1
+     cex <- if (hasArg("cex")) dots$cex else 1
 
-     if (hasArg(cex) && missing(cex.points)) 
+     if (hasArg("cex") && missing(cex.points)) 
          cex.points <- 2.0 * cex
 
-     if (hasArg(pch) && missing(pch.u))
+     if (hasArg("pch") && missing(pch.u))
           pch.u <- dots$pch
-     if (hasArg(pch) && missing(pch.a))
+     if (hasArg("pch") && missing(pch.a))
           pch.a <- dots$pch
      
-     if (hasArg(col) && missing(col.points))
+     if (hasArg("col") && missing(col.points))
          col.points <- dots$col
-     if (hasArg(col) && missing(col.vert))
+     if (hasArg("col") && missing(col.vert))
          col.vert <- dots$col
-     if (hasArg(col) && missing(col.hor))
+     if (hasArg("col") && missing(col.hor))
          col.hor <- dots$col
-     if (hasArg(col) && missing(col.main))
+     if (hasArg("col") && missing(col.main))
         col.main <- dots$col
-     if (hasArg(col) && missing(col.inner))
+     if (hasArg("col") && missing(col.inner))
         col.inner <- dots$col
-     if (hasArg(col) && missing(col.sub))
+     if (hasArg("col") && missing(col.sub))
         col.sub <- dots$col
 
      if (!withSweave){
@@ -425,14 +468,16 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
      else paramstring <- qparamstring <- nparamstring <- ""
 
 
-     .mpresubs <- function(inx)
+     .mpresubs <- if(withSubst){
+             function(inx) 
                     .presubs(inx, c("%C", "%D", "%N", "%P", "%Q", "%A"),
-                          c(as.character(class(x)[1]),
-                            as.character(date()),
-                            nparamstring,
-                            paramstring,
+                          c(as.character(class(x)[1]), 
+                            as.character(date()), 
+                            nparamstring, 
+                            paramstring, 
                             qparamstring,
                             as.character(deparse(xc))))
+            }else function(inx) inx
 
      xlab0 <- list("d"="x", "p"="q", "q"="p")
      iL <- 1:length(to.draw)
@@ -451,6 +496,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
                                 if(is.call(res)) res <- res[-1]
                                 return(res)}
                                 }else function(x,i){
+                                  if(length(x)==1) return(x[1])
                                   res <- x[i]
                                   if(length(res)==0) return(NULL)
                                   if(is.na(res)) return(NULL)
@@ -470,7 +516,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
      ylab0 <- .mp2(dlb=dots$ylab, lb0=list("d"="d(x)", "p"="p(q)", "q"="q(p)"))
      dots$ylab <- NULL
 
-     if (hasArg(main)){
+     if (hasArg("main")){
          mainL <- TRUE
          if (is.logical(main)){
              if (!main) mainL <-  FALSE 
@@ -487,7 +533,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
              lineT <- 0.6
              }
      }
-     if (hasArg(sub)){ 
+     if (hasArg("sub")){ 
          subL <- TRUE
          if (is.logical(sub)){
              if (!sub) subL <-  FALSE 
@@ -527,7 +573,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
 
       supp <- support(x); 
       
-      if(hasArg(xlim)) 
+      if(hasArg("xlim")) 
             {if(length(xlim) != 2) 
                 stop("Wrong length of Argument xlim")
              supp <- supp[(supp >= xlim[1]) & (supp <= xlim[2])]         
@@ -537,7 +583,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
 
        dx <- d(x)(supp)
 
-     if(hasArg(ylim))
+     if(hasArg("ylim"))
          {if (3 %in% to.draw && any( c(1,2) %in% to.draw)){
                  if(! length(ylim) %in% c(2,4)) 
                      stop("Wrong length of Argument ylim")
@@ -552,7 +598,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
               ylim2 <- c(-0.05,1.05)
               }
 
-      if(hasArg(log))
+      if(hasArg("log"))
           {logpd <- dots$log
            logq <- gsub("u","y",gsub("y","x",gsub("x", "u", logpd)))
            if(length(grep("y",logpd))){ 
@@ -566,10 +612,17 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
        o.warn <- getOption("warn")
        options(warn = -1)
        on.exit(options(warn=o.warn))
+
+     plotCount <- 1
+
      if(1%in%to.draw){
+       dots.without.pch$panel.first <- pF[[plotCount]]
+       dots.without.pch$panel.last  <- pL[[plotCount]]
        do.call(plot, c(list(x = supp, dx, type = "h", pch = pch.a,
             ylim = ylim1, xlim=xlim, ylab = ylab0[["d"]], xlab = xlab0[["d"]],
             log = logpd), dots.without.pch))
+       dots.without.pch$panel.first <- dots.without.pch$panel.last <- NULL
+       plotCount <- plotCount + 1
        options(warn = o.warn)
 
 
@@ -588,12 +641,16 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
      psupp1 <- c(0,p(x)(supp1))
 
      if(2%in%to.draw){
-       do.call(plot, c(list(x = stepfun(x = supp1, y = psupp1), 
+       dots.without.pch$panel.first <- pF[[plotCount]]
+       dots.without.pch$panel.last  <- pL[[plotCount]]
+       do.call(plot, c(list(x = stepfun(x = supp1, y = psupp1),
                      main = "", verticals = verticals, 
                      do.points = FALSE, 
                      ylim = ylim2, ylab = ylab0[["p"]], xlab = xlab0[["p"]],
                      col.hor = col.hor, col.vert = col.vert, 
                      log = logpd), dots.without.pch))
+       dots.without.pch$panel.first <- dots.without.pch$panel.last <- NULL
+       plotCount <- plotCount + 1
        if(do.points)
           {if(ngrid>1){
               do.call(points, c(list(x = supp, y = psupp1[1:ngrid], pch = pch.u, 
@@ -621,7 +678,9 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
 
      if(3%in%to.draw){
        options(warn = -1)
-       do.call(plot, c(list(x = stepfun(c(0,p(x)(supp)), 
+       dots.without.pch$panel.first <- pF[[plotCount]]
+       dots.without.pch$panel.last  <- pL[[plotCount]]
+       do.call(plot, c(list(x = stepfun(c(0,p(x)(supp)),
                             c(NA,supp,NA), right = TRUE), 
             main = "", xlim = ylim2, ylim = c(min(supp),max(supp)),
             ylab = ylab0[["q"]], xlab = xlab0[["q"]],
@@ -630,6 +689,8 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
             col.points = col.points,
             col.hor = col.hor, col.vert = col.vert, 
             log = logq), dots.without.pch))
+       dots.without.pch$panel.first <- dots.without.pch$panel.last <- NULL
+       plotCount <- plotCount + 1
        options(warn = o.warn)
 
       

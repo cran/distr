@@ -1236,19 +1236,21 @@ return(function(q, lower.tail = TRUE, log.p = FALSE){
 .List <- function(list0) if(is.list(list0)) list0 else list(list0)
 
 .fillList <- function(list0, len = length(list0)){
+            if(is.null(list0)) return(vector("list",len))
             list0 <- .List(list0)
             if(len == length(list0)) 
                return(list0)
             i <- 0
             ll0 <- length(list0)
             li0 <- vector("list",len)
-            if(ll0)
-            while(i < len){
-               j <- 1 + ( i %% ll0)
-               i <- i + 1
-               li0[[i]] <- list0[[j]]
+            if(ll0){
+              while(i < len){
+                 j <- 1 + ( i %% ll0)
+                 i <- i + 1
+                 li0[[i]] <- list0[[j]]
+              }
             }
-           return(li0)
+            return(li0)
 }
 
 #------------------------------------------------------------------------------
@@ -1270,4 +1272,18 @@ return(function(q, lower.tail = TRUE, log.p = FALSE){
 }
 
 
-           
+.panel.mingle <- function(dots, element){
+  pF <- dots[[element]]
+  if(is.list(pF)) return(pF)
+  pFr <- if(typeof(pF)=="symbol") eval(pF) else{
+     pFc <- as.call(pF)
+     if(as.list(pFc)[[1]] == "list"){
+        lis <- vector("list",length(as.list(pFc))-1)
+        for(i in 1:length(lis)){
+            lis[[i]] <- pFc[[i+1]]
+        }
+        lis
+     }else pF
+  }
+  return(pFr)
+}

@@ -1,34 +1,37 @@
 Package: distr
-Version: 2.5.3
-Date: 2014-08-08
-Title: Object oriented implementation of distributions
-Description: S4 Classes and Methods for distributions
-Authors@R: c(person("Florian", "Camphausen", role=c("aut")),
-        person("Matthias", "Kohl", role=c("aut", "cph")), 
-		person("Peter", "Ruckdeschel", role=c("cre", "cph"), email="Peter.Ruckdeschel@itwm.fraunhofer.de"), 
-		person("Thomas", "Stabla", role=c("aut", "cph")),
-        person("R Core Team", role = c("ctb", "cph"), 
-		comment="for source file ks.c/ routines 'pKS2' and 'pKolmogorov2x'"))
+Version: 2.6
+Date: 2016-04-23
+Title: Object Oriented Implementation of Distributions
+Description: S4-classes and methods for distributions.
+Authors@R: c(person("Florian", "Camphausen", role="ctb", comment="contributed as student in the
+        initial phase --2005"), person("Matthias", "Kohl", role=c("aut", "cph")),
+        person("Peter", "Ruckdeschel", role=c("cre", "cph"),
+        email="peter.ruckdeschel@uni-oldenburg.de"), person("Thomas", "Stabla", role="ctb",
+        comment="contributed as student in the initial phase --2005"), person("R Core Team",
+        role = c("ctb", "cph"), comment="for source file ks.c/ routines 'pKS2' and
+        'pKolmogorov2x'"))
 Depends: R(>= 2.14.0), methods, graphics, startupmsg, sfsmisc,
         SweaveListingUtils
 Suggests: distrEx, svUnit (>= 0.7-11)
-Imports: stats
+Imports: stats, grDevices, utils, MASS
 ByteCompile: yes
 Encoding: latin1
 License: LGPL-3
 URL: http://distr.r-forge.r-project.org/
-LastChangedDate: {$LastChangedDate: 2014-08-08 18:34:53 +0200 (Fr, 08
-        Aug 2014) $}
-LastChangedRevision: {$LastChangedRevision: 947 $}
-SVNRevision: 947
-Packaged: 2014-08-08 16:45:36 UTC; ruckdesc
-Author: Florian Camphausen [aut],
+LastChangedDate: {$LastChangedDate: 2015-11-07 22:47:41 +0100 (Sa, 07
+        Nov 2015) $}
+LastChangedRevision: {$LastChangedRevision: 1073 $}
+SVNRevision: 1088
+NeedsCompilation: yes
+Packaged: 2016-04-23 11:08:00 UTC; ruckdesc
+Author: Florian Camphausen [ctb] (contributed as student in the initial phase
+    --2005),
   Matthias Kohl [aut, cph],
   Peter Ruckdeschel [cre, cph],
-  Thomas Stabla [aut, cph],
+  Thomas Stabla [ctb] (contributed as student in the initial phase
+    --2005),
   R Core Team [ctb, cph] (for source file ks.c/ routines 'pKS2' and
     'pKolmogorov2x')
-Maintainer: Peter Ruckdeschel <Peter.Ruckdeschel@itwm.fraunhofer.de>
-NeedsCompilation: yes
+Maintainer: Peter Ruckdeschel <peter.ruckdeschel@uni-oldenburg.de>
 Repository: CRAN
-Date/Publication: 2014-08-09 06:47:54
+Date/Publication: 2016-04-23 15:07:57

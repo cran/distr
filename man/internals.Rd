@@ -59,6 +59,7 @@
 \alias{.DistrCollapse}
 \alias{.convDiscrDiscr}
 \alias{.inWithTol}
+\alias{.panel.mingle}
 \alias{devNew}
 
 \title{Internal functions of package distr}
@@ -134,6 +135,7 @@ These functions are used internally by package distr.}
 .getCommonWidth(x1,x2, tol=.Machine$double.eps)
 .convDiscrDiscr(e1,e2)
 .inWithTol(x,y,tol=.Machine$double.eps)
+.panel.mingle(dots,element)
 devNew(...)
 }
 
@@ -241,6 +243,8 @@ devNew(...)
  \item{n2}{integer argument for \code{.EuclidAlgo}}
  \item{x1}{width argument for \code{.getCommonWidth}}
  \item{x2}{width argument for \code{.getCommonWidth}}
+ \item{dots}{the unevaluated \code{\dots} argument}
+ \item{element}{the name of the item in the unevaluated \code{\dots} argument}
  \item{...}{arguments passed through to other functions}
 }
 
@@ -392,6 +396,13 @@ log-tricks as indicated in
 \code{.convDiscrDiscr} computes the convolution of two discrete distributions by
     brute force.
 \code{.inWithTol} works like \code{\%in\%} but with a given tolerance.
+
+\code{.panel.mingle} is used for mingling arguments \code{panel.first},
+\code{panel.last} in a plot; it returns the evaluated argument \code{element}
+within dots, if it is a symbol; else if it can be interpreted as a call, and if
+the top call is \code{list}, it returns a list of the items of the call to \code{list},
+unevaluated, and otherwise the unchanged argument.
+
 \code{devNew} opens a new device. This function is for back compatibility
 with R versions < 2.8.0.
 }
@@ -464,12 +475,17 @@ with R versions < 2.8.0.
 \item{.convDiscrDiscr}{returns the convolution of two discrete distributions.}
 \item{.inWithTol}{returns a logical vector of same lenght as \code{x} for the
     matches (up to tolerance) with vector \code{y}.}
-\item{devNew}{returns the return value of the device opened, 
+\item{.panel.mingle}{used for mingling arguments \code{panel.first},
+\code{panel.last}; returns the evaluated argument \code{element} within dots,
+if it is a symbol; else if it can be interpreted as a call, and if the top
+call is \code{list}, it returns a list of the items of the call to \code{list},
+unevaluated, and otherwise the unchanged argument.}
+\item{devNew}{returns the return value of the device opened,
 usually invisible \code{NULL}.}
 }
 
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de},
   Matthias Kohl \email{Matthias.Kohl@stamats.de}
 }
 

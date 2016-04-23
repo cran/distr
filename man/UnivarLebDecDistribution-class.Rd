@@ -245,7 +245,7 @@ in particular methods for \code{"*"}, \code{"/"},
  class union.   
 }
 \author{
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}
   }
 
 \seealso{

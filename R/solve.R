@@ -11,7 +11,7 @@ setMethod("solve", signature(a = "ANY", b = "ANY"), function(a,b,
                             }, silent = TRUE), "try-error")){
              if (!missing(b))
                 if(!(length(b)==nrow(a))) stop("non-conformable arguments")
-             a.m <- ginv(a)
+             a.m <- MASS::ginv(a)
              dimnames(a.m) <- rev(dimnames(a))             
              if (missing(b)) return(a.m) 
              else return(a.m %*% b)

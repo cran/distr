@@ -44,7 +44,7 @@ decomposition of \code{a} and then simply "pseudo-inverts" the corresponding dia
 \code{eigen(a)$values}, while for \code{signature(a = "ANY", b = "ANY")}  it uses the svd 
 decomposition of \code{a} and then simply "pseudo-inverts" the corresponding diagonal matrix built from
 \code{svd(a)$d}.}
-\author{Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}}
+\author{Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}}
 \seealso{
 \code{\link[base]{solve}} for the default method, \code{\link[base]{eigen}} and \code{\link[base]{svd}} 
 for the pseudo inversion}

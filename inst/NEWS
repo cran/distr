@@ -8,6 +8,64 @@
  information)
  
 ##############
+v 2.6
+##############
+
+user-visible CHANGES:
++ title changed to title style / capitalization
++ added reference to JSS paper in IllustCLT
++ updated references in vignette 'newDistributions'
++ added generating function "EmpiricalDistribution" which is a simple
+  wrapper to function "DiscreteDistribution"
++ arguments panel.first, panel.last for plot-methods can now be lists
++ qqplot gains pattern substitution like plot in titles and x/y axis lables
++ pattern substitution can now be switched on and off in all plot 
+  functions according to argument withSubst
++ new methods q.l and p.r as synonyma for slot accessors q and p --
+  the former one is useful in particular when using RStudio, as they
+  catch calls to q() [quitting an R session] and treat them separately
+  which renders calls to our method q() (with respective signature,
+  i.e., with a distribution as [first] argument) inaccessible from 
+  the console... so far only a call to distr::q was helping...
+  
+under the hood:
+
+-qqplot: 
+ + (already there for a while) gains argument 'debug' to be able to
+   trace where computation of confidence bounds fails; this 'debug'
+   argument has now been enhanced in the sense that now more detailed
+   information about which helper function was the culprit and where 
+   (uniroot/optimize) this happens
+ + now returns an object of S3-classes "qqplotInfo","DiagnInfo"
+   to be able to recover all information used to produce the plot
+   for later use in enhanced graphics (e.g. with ggplot)   
+-qqbounds:
+ + the respective helper functions .BinomCI.nosym, .BinomCI,
+   .q2kolmogorov capsulate their calls to uniroot / optimize in 
+   individual try-catches (instead of / on top of the one in 
+   qqbounds itself) so that in case of several evaluations (e.g. in
+   pointwise CIs) at least a subset of valid points is produced.
+   In addition the search interval is now more flexible: it is bound
+   away from 0 below and from the upper bound from above, and this
+   bound moves to the respective lower/upper bounds in up to 20 trials.
+   Also, the search interval for .q2kolmogorov if argument 'exact' is
+   TRUE (i.e., if pKolmogorov2x is called) has been refined. This 
+   should make the simultaneous intervals more stable.
+ + re-included faster right-tail approximation in C-code K(int n, double d)  
+   included from R-Core (was commented out there) [ks.c in folder src in
+   tar-ball, ll 153-155]
+-plot: 
+ + fixed some issues with plotting of distributions: xlim, ylim were not 
+   correctly passed on, same for col => now use dots.lowlevel ... 
+-helper function .isReplicated gains an optional argument tol
+   
+- bug fixes:
+  + fixed a bug in plot (q) for LebDec-Distributions (verticals were not plotted correctly)
+  + panel selection mechanism had a bug for LebDec-Distributions 
+  + fixed axis annotation: if xlab="" or ylab="" the respective lab are "" for all panels
+  
+ 
+##############
 v 2.5.3
 ##############
 
@@ -26,7 +84,7 @@ bug fixes:
 + fixed an issue with casting AffLinDiscreteDistributions to LatticeDistributions 
  (discovered by Kostas Oikonomou, ko@research.att.com )
 
-##############
+ ##############
 v 2.5
 ##############
 
@@ -191,7 +249,7 @@ Changes after changes in R , R-forge
     *** Weave Errors ***
     File /home/hornik/tmp/R.check/r-devel/Work/PKGS/distr.Rcheck/inst/doc/newDistributions.Rnw :
     chunk 20 (label=cleanup) 
-    Error : package ‘SweaveListingUtils’ is required by ‘distr’ so will not be detached
+    Error : package ?SweaveListingUtils? is required by ?distr? so will not be detached
 
 
   => removed tag in distr.Rnw in distrDoc

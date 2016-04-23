@@ -17,7 +17,7 @@ igamma(v)
   [digamma(1e-5);digamma(1e8)] or [-100000,18].
 }
 \value{\code{igamma(x)} is a value \code{u} such that \code{digamma(u} is approximately \code{x}.}
-\author{Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}}
+\author{Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}}
 %\note{}
 \seealso{\code{digamma}}
 \examples{

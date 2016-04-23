@@ -90,7 +90,7 @@ a Gamma distribution with parameters \code{shape = df(obj)/2, scale = 2}.
 \author{
   Thomas Stabla \email{statho3@web.de},\cr 
   Florian Camphausen \email{fcampi@gmx.de},\cr
-  Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de},\cr
+  Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de},\cr
   Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 \note{
 Warning: The code for pchisq and qchisq is unreliable for values of ncp above approximately 290. 

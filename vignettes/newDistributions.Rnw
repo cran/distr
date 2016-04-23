@@ -20,8 +20,8 @@
 % Version control information:
 \svnidlong
 {$HeadURL: svn+ssh://ruckdeschel@svn.r-forge.r-project.org/svnroot/distr/pkg/distr/vignettes/newDistributions.Rnw $}
-{$LastChangedDate: 2011-11-18 12:48:06 +0100 (Fr, 18 Nov 2011) $}
-{$LastChangedRevision: 753 $}
+{$LastChangedDate: 2015-11-06 18:17:45 +0100 (Fr, 06 Nov 2015) $}
+{$LastChangedRevision: 1068 $}
 {$LastChangedBy: ruckdeschel $}
 %\svnid{$Id: example_main.tex 146 2008-12-03 13:29:19Z martin $}
 % Don't forget to set the svn property 'svn:keywords' to
@@ -93,7 +93,7 @@ setToBeDefinedPkgs(pkgs = c("distr","distrEx"),
 \small Fraunhofer Platz 1\\[-.5ex]
 \small 67663 Kaiserslautern\\[-.5ex]
 \small Germany\\
-\small e-Mail: {\small \tt Peter.Ruckdeschel@itwm.fraunhofer.de}\medskip\\
+\small e-Mail: {\small \tt peter.ruckdeschel@uni-oldenburg.de}\medskip\\
 \parbox[t]{5cm}{
 \footnotesize\sffamily
  Version control information:
@@ -390,14 +390,13 @@ With this you should be able to start working.
 \begin{thebibliography}{2}
 
 \bibitem{K:R:S:04}
-Kohl M., Ruckdeschel P. and Stabla T.
+Ruckdeschel P. and Kohl, M. (2014):
 \newblock {General Purpose Convolution Algorithm for Distributions in S4-Classes 
 by means of FFT}.
-\newblock unpublished manual
-
+\newblock {\em J. Statist. Software\/}, {\bf 59}(4): 1--25.
 
 \bibitem{R:K:S:C:04}
-Ruckdeschel P., Kohl M., Stabla T., and Camphausen F. 
+Ruckdeschel P., Kohl M., Stabla T., and Camphausen F. (2006):
 \newblock {S4 Classes for Distributions.} 
 \newblock {\em R-News\/}, {\bf 6}(2): 10--13.
 \newblock http://CRAN.R-project.org/doc/Rnews/Rnews\_2006-2.pdf

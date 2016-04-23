@@ -56,7 +56,7 @@ UnivarLebDecDistribution(acPart, discretePart, acWeight, discreteWeight,
          }
 \value{Object of class \code{"UnivarLebDecDistribution"}.}
 %\references{}
-\author{Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}}
+\author{Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}}
 %\note{}
 \seealso{\code{\link{UnivarLebDecDistribution-class}},
   \code{\link{simplifyD}}}
