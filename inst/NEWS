@@ -8,6 +8,13 @@
  information)
  
 ##############
+v 2.6.2
+##############
++ fixed internals as triggered by mail "CRAN package distr" 
+  by Kurt Hornik from Apr 07 2017; most importantly, we 
+  registered native code and took out some usage example of sqrt(). 
+
+##############
 v 2.6
 ##############
 

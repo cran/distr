@@ -95,8 +95,8 @@ flat.mix <- function(object){
     for(i in seq(length(mixDistr)))
         {if ( is(mixDistr[[i]],"UnivarMixingDistribution") &&
              !is(mixDistr[[i]],"UnivarLebDecDistribution"))
-             mixDistr2[i] <- flat.mix(mixDistr[[i]])
-         else mixDistr2[i] <- as(mixDistr[[i]],"UnivarLebDecDistribution")
+             mixDistr2[[i]] <- flat.mix(mixDistr[[i]])
+         else mixDistr2[[i]] <- as(mixDistr[[i]],"UnivarLebDecDistribution")
          }
     erg <- do.call(flat.LCD, c(mixDistr2, alist(mixCoeff = mixCoeff)))
     simplifyD(erg)

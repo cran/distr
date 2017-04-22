@@ -3,7 +3,7 @@
 \alias{distr}
 \docType{package}
 \title{
-distr -- Object Orientated Implementation of Distributions
+distr -- Object Oriented Implementation of Distributions
 }
 \description{
 \pkg{distr} provides a conceptual treatment of distributions by means of S4
@@ -43,15 +43,15 @@ corresponding image distributions.
 \details{
 \tabular{ll}{
 Package: \tab distr \cr
-Version: \tab 2.6 \cr
-Date: \tab 2016-04-23 \cr
+Version: \tab 2.6.2 \cr
+Date: \tab 2017-04-22 \cr
 Depends: \tab R(>= 2.14.0), methods, graphics, startupmsg, sfsmisc, SweaveListingUtils \cr
 Suggests: \tab distrEx, svUnit (>= 0.7-11) \cr
 Imports: \tab stats, grDevices, utils, MASS \cr
 LazyLoad: \tab yes \cr
 License: \tab LGPL-3 \cr
 URL: \tab http://distr.r-forge.r-project.org/\cr
-SVNRevision: \tab 1088 \cr
+SVNRevision: \tab 1132 \cr
 }}
 
 
@@ -335,7 +335,7 @@ Matthias Kohl \email{Matthias.Kohl@stamats.de}\cr
 \references{
 P. Ruckdeschel, M. Kohl, T. Stabla, F. Camphausen (2006):
 S4 Classes for Distributions, \emph{R News}, \emph{6}(2), 2-6.
-\url{http://CRAN.R-project.org/doc/Rnews/Rnews_2006-2.pdf}
+\url{https://CRAN.R-project.org/doc/Rnews/Rnews_2006-2.pdf}
 
 P. Ruckdeschel and M. Kohl (2014):
    General purpose convolution algorithm for distributions

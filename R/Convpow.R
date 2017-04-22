@@ -4,13 +4,8 @@
 ##########################################################
 
 ##implentation of Algorithm 3.4. of
-# Kohl, M., Ruckdeschel, P., Stabla, T. (2005):
-#   General purpose convolution algorithm for distributions
-#   in S4-Classes by means of FFT.
-# Technical report, Feb. 2005. Also available in
-# http://www.uni-bayreuth.de/departments/math/org/mathe7/
-#       /RUCKDESCHEL/pubs/comp.pdf
-
+#P. Ruckdeschel, M. Kohl (2014): General Purpose Convolution Algorithm for
+# Distributions in S4 Classes by Means of FFT. J. Statist. Softw. 59(4), 1-25.
 
 setMethod("convpow",
           signature(D1 = "AbscontDistribution"),

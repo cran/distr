@@ -6,7 +6,7 @@
 \title{ Methods for Function sqrt in Package `distr' }
 \description{sqrt-methods using generalized inverses for p.s.d. matrices}
 
-\usage{sqrt(x)
+\usage{
 \S4method{sqrt}{PosSemDefSymmMatrix}(x)
 }
 \arguments{
@@ -18,7 +18,7 @@
 }}
 \author{Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}}
 \seealso{
-\code{\link{solve}} }
+\code{\link{solve}}}
 \keyword{algebra}
 \keyword{array}
 \concept{pseudo inverse}

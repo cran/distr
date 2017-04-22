@@ -29,6 +29,7 @@
 #include <R.h>
 #include <Rinternals.h>
 #include <Rmath.h>		/* constants */
+#include <R_ext/Visibility.h>
 
 static double K(int n, double d);
 static void m_multiply(double *A, double *B, double *C, int m);
@@ -245,7 +246,7 @@ m_power(double *A, int eA, double *V, int *eV, int m, int n)
 }
 
 /* Two-sided two-sample */
-SEXP pSmirnov2x(SEXP statistic, SEXP snx, SEXP sny)
+SEXP attribute_hidden pSmirnov2x(SEXP statistic, SEXP snx, SEXP sny)
 {
     int nx = asInteger(snx), ny = asInteger(sny);
     double st = asReal(statistic);
@@ -253,7 +254,7 @@ SEXP pSmirnov2x(SEXP statistic, SEXP snx, SEXP sny)
 }
 
 /* Two-sample two-sided asymptotic distribution */
-SEXP pKS2(SEXP statistic, SEXP stol)
+SEXP attribute_hidden pKS2(SEXP statistic, SEXP stol)
 {
     int n = LENGTH(statistic);
     double tol = asReal(stol);
@@ -264,7 +265,7 @@ SEXP pKS2(SEXP statistic, SEXP stol)
 
 
 /* The two-sided one-sample 'exact' distribution */
-SEXP pKolmogorov2x(SEXP statistic, SEXP sn)
+SEXP attribute_hidden pKolmogorov2x(SEXP statistic, SEXP sn)
 {
     int n = asInteger(sn);
     double st = asReal(statistic), p;

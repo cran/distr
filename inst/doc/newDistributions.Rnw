@@ -20,8 +20,8 @@
 % Version control information:
 \svnidlong
 {$HeadURL: svn+ssh://ruckdeschel@svn.r-forge.r-project.org/svnroot/distr/pkg/distr/vignettes/newDistributions.Rnw $}
-{$LastChangedDate: 2015-11-06 18:17:45 +0100 (Fr, 06 Nov 2015) $}
-{$LastChangedRevision: 1068 $}
+{$LastChangedDate: 2017-04-21 17:56:01 +0200 (Fr, 21 Apr 2017) $}
+{$LastChangedRevision: 1132 $}
 {$LastChangedBy: ruckdeschel $}
 %\svnid{$Id: example_main.tex 146 2008-12-03 13:29:19Z martin $}
 % Don't forget to set the svn property 'svn:keywords' to
@@ -85,13 +85,15 @@ setToBeDefinedPkgs(pkgs = c("distr","distrEx"),
 % -------------------------------------------------------------------------------
 \title{How to generate new distributions in packages \pkg{distr}, \pkg{distrEx}}
 %,version \pkgExversion}
-\author{\small Peter Ruckdeschel\thanks{Fraunhofer ITWM, Kaiserslautern}
+\author{\small Peter Ruckdeschel\thanks{Universit\"at Oldenburg, Oldenburg}
 \\[-.5ex]
 \small Matthias Kohl\thanks{FH Furtwangen}
 \smallskip\\
-\small Fraunhofer ITWM\\[-.5ex]
-\small Fraunhofer Platz 1\\[-.5ex]
-\small 67663 Kaiserslautern\\[-.5ex]
+\small Institut f\"ur Mathematik\\[-0.5ex]
+\small Fakult\"at V - Mathematik und Naturwissenschaften\\[-.5ex]
+\small Carl von Ossietzky Universit\"at Oldenburg\\[-0.5ex]
+\small PObox 2503\\[-.5ex]
+\small 26111 Oldenburg (Oldb)\\[-.5ex]
 \small Germany\\
 \small e-Mail: {\small \tt peter.ruckdeschel@uni-oldenburg.de}\medskip\\
 \parbox[t]{5cm}{
@@ -203,7 +205,7 @@ plot(AC, panel.first = grid(), lwd = 2)
 If you would like to create new parametric distributions, using already 
 implemented {\tt r}, {\tt d}, {\tt p}, and {\tt q} functions
 (e.g.\ implementing additional distributions realized in another 
-\href{http://cran.r-project.org}{\tt CRAN} package), 
+\href{https://cran.r-project.org}{\tt CRAN} package),
 you should probably envisage introducing new distribution {\tt S4} (sub-)classes
 and hence better look at the implementation of some discrete and 
 continuous parametric distribution classes in package \pkg{distr}.
@@ -399,7 +401,7 @@ by means of FFT}.
 Ruckdeschel P., Kohl M., Stabla T., and Camphausen F. (2006):
 \newblock {S4 Classes for Distributions.} 
 \newblock {\em R-News\/}, {\bf 6}(2): 10--13.
-\newblock http://CRAN.R-project.org/doc/Rnews/Rnews\_2006-2.pdf
+\newblock https://CRAN.R-project.org/doc/Rnews/Rnews\_2006-2.pdf
 %\newblock See also {http://www.uni-bayreuth.de/departments/math/org/mathe7/RUCKDESCHEL/pubs/distr.pdf}
 
 \end{thebibliography}

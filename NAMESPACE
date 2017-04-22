@@ -1,4 +1,4 @@
-useDynLib("distr")
+useDynLib(distr, .registration = TRUE, .fixes = "C_")
 import("methods")
 import("stats")
 importFrom("grDevices", "dev.list", "dev.new", "xy.coords")
