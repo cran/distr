@@ -87,8 +87,8 @@ setMethod("Truncate", "AbscontDistribution",
             xseq <- seq(from = qL1, to = qU1, by = h)
             px.l <- pnew(xseq, lower.tail = TRUE)
             px.u <- pnew(xseq, lower.tail = FALSE)
-            qL2 <- max(q(object)(0),lower)
-            qU2 <- min(q(object)(1),upper)
+            qL2 <- max(q.l(object)(0),lower)
+            qU2 <- min(q.l(object)(1),upper)
 
             qnew <- .makeQNew(xseq, px.l, px.u, FALSE, qL2, qU2)
 
@@ -113,9 +113,9 @@ setMethod("Truncate", "LatticeDistribution",
             if(is.finite(Length(lattice(object)))||
                !.logExact(object)||
                (width(lattice(object)) < 0 && 
-                      lower > q(object)(getdistrOption("TruncQuantile")))||
+                      lower > q.l(object)(getdistrOption("TruncQuantile")))||
                (width(lattice(object)) > 0 && 
-                      upper < q(object)(getdistrOption("TruncQuantile"), 
+                      upper < q.l(object)(getdistrOption("TruncQuantile"),
                                         lower.tail = FALSE))               
                ){
                erg <- getMethod("Truncate","DiscreteDistribution")(object, 

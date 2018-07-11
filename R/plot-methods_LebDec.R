@@ -361,7 +361,7 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
      upper0 <- max(getUp(x@mixDistr[[1]],
                       eps = getdistrOption("TruncQuantile")*2),
                   getUp(x@mixDistr[[2]]))
-     me <- q(x)(1/2); s <- q(x)(3/4)-q(x)(1/4)
+     me <- q.l(x)(1/2); s <- q.l(x)(3/4)-q.l(x)(1/4)
      lower1 <- me - 6 * s
      upper1 <- me + 6 * s
      lower <- max(lower0, lower1)
@@ -454,11 +454,11 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
      ### quantiles
 
      ### fix finite support bounds
-     ixg  <-  grid>=max(q(x)(0),lower) & grid <= min(q(x)(1),upper)
+     ixg  <-  grid>=max(q.l(x)(0),lower) & grid <= min(q.l(x)(1),upper)
      pxg  <-   pxg[ixg]
      grid <-  grid[ixg]
-     if(is.finite(q(x)(0))) {grid <- c(q(x)(0),grid); pxg <- c(0,pxg)}
-     if(is.finite(q(x)(1))) {grid <- c(grid,q(x)(1)); pxg <- c(pxg,1)}
+     if(is.finite(q.l(x)(0))) {grid <- c(q.l(x)(0),grid); pxg <- c(0,pxg)}
+     if(is.finite(q.l(x)(1))) {grid <- c(grid,q.l(x)(1)); pxg <- c(pxg,1)}
 
 #     ### fix constancy regions of p(x)
 #     if(isOldVersion(x)) x <- conv2NewVersion(x)
@@ -526,11 +526,11 @@ setMethod("plot", signature(x = "UnivarLebDecDistribution", y = "missing"),
         }
 
         if(do.points){
-           if(is.finite(q(x)(0))) 
-              do.call(points, c(list(x = 0, y = q(x)(0), pch = pch.u,
+           if(is.finite(q.l(x)(0)))
+              do.call(points, c(list(x = 0, y = q.l(x)(0), pch = pch.u,
                    cex = cex.points, col = col.points), dots.for.points) )
-           if(is.finite(q(x)(1))) 
-              do.call(points, c(list(x = 1, y = q(x)(1), pch = pch.a,
+           if(is.finite(q.l(x)(1)))
+              do.call(points, c(list(x = 1, y = q.l(x)(1), pch = pch.a,
                    cex = cex.points, col = col.points), dots.for.points) )
         }
         if (mainL)

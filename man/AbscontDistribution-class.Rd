@@ -169,6 +169,7 @@ r(A3)(1) # one random number generated from this distribution, e.g. -0.7150937
 d(A3)(0) # The (approximated) density for x=0 is 0.43799.
 p(A3)(0) # The (approximated) probability that x <= 0 is 0.45620.
 q(A3)(.1) # The (approximated) 10 percent quantile is -1.06015.
+## in RStudio or Jupytier IRKernel, use q.l(.)(.) instead of q(.)(.)
 }
 \keyword{distribution}
 \concept{absolutely continuous distribution}

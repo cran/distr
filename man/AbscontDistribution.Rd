@@ -80,6 +80,7 @@ r\tab d\tab p\tab q\tab proceding\cr
 +\tab +\tab -\tab +\tab p by \code{.Q2P}\cr
 +\tab -\tab +\tab +\tab d by \code{.P2D}\cr
 +\tab +\tab +\tab +\tab nothing\cr}
+
 For this purpose, one may alternatively give arguments \code{low1} and \code{up1} (\code{NULL} each by default,
 and determined through slot \code{q}, resp. \code{p}, resp. \code{d}, resp. \code{r} in this order
 according to availability),
@@ -87,6 +88,7 @@ for the (finite) range of values in the support of this distribution,
 as well as the possibly infinite theoretical range given by
 arguments \code{low} and \code{up} with default values \code{-Inf}, \code{Inf}, respectively.
 Of course all other slots may be specified as arguments.}
+
 
 \value{Object of class \code{"AbscontDistribution"}}
 

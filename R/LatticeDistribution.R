@@ -82,7 +82,7 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
         }
         
         return(new("LatticeDistribution", r = r(D), d = d(D), 
-                    q = q(D), p = p(D), support = supp, 
+                    q = q.l(D), p = p(D), support = supp,
                     lattice = lattice, .withArith = .withArith, 
                     .withSim = .withSim, Symmetry = Symmetry))
        }
@@ -99,7 +99,7 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                                              .withSim = .withSim, 
                                              Symmetry = Symmetry )
                   return(new("LatticeDistribution", r = r(D), d = d(D), 
-                          q = q(D), p = p(D), support = supp, 
+                          q = q.l(D), p = p(D), support = supp,
                           lattice = lattice, .withArith = .withArith, 
                           .withSim = .withSim, Symmetry = Symmetry))
                   }else{ 
@@ -118,7 +118,7 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                                                    .withSim = .withSim, 
                                                    Symmetry = Symmetry )
                          return(new("LatticeDistribution", r = r(D), d = d(D), 
-                                q = q(D), p = p(D), support = supp, 
+                                q = q.l(D), p = p(D), support = supp,
                                 lattice = lattice, .withArith = .withArith, 
                                 .withSim = .withSim, Symmetry = Symmetry))
                         }                  

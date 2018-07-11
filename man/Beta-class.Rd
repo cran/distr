@@ -107,6 +107,7 @@ B0 <- Bn; ncp(B0) <- 0;
 # B0 is just the same beta distribution as Bn but with ncp = 0
 q(B0)(0.1) ## 
 q(Bn)(0.1) ## => from R 2.3.0 on ncp no longer ignored...
+## in RStudio or Jupyter IRKernel, use q.l(.)(.) instead of q(.)(.)
 }
 \keyword{distribution}
 \concept{absolutely continuous distribution}

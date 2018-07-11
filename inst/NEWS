@@ -8,6 +8,38 @@
  information)
  
 ##############
+v 2.7
+##############
+
+user-visible CHANGES:
++ new Methods p.r and q.l, synonyma for p and q (useful for use in RStudio and 
+  in Jupyter IRKernel)
++ more precise formulation of how to use calls to q() for RStudio
+  and Jupyter IRKernel (i.e., use q.l)
++ switch from SweaveListingUtils to knitr in vignettes
++ replaced http://CRAN... by https://CRAN... (also in CITATION and similar files) 
++ updated address (Oldenburg) in several vignettes 
++ minor fix in doc to Arcsine distribution
+
+under the hood:
++ wherever possible also use q.l internally instead of q to 
+  provide functionality in IRKernel
++ registered native code 
+
+bug fixes
++ fixed a bug in plot (q) for LebDec-Distributions (verticals were not plotted correctly)
++ panel selection mechanism had a bug for LebDec-Distributions 
++ fixed axis annotation: if xlab="" or ylab="" the respective lab are "" for all panels
++ in a loop the names of slots acWeight, discreteWeight will grow; 
+  fix this by setting the prior names to NULL
++ the gaps matrix could have zero rows 
++ fixed an issue with <distr>/<distr> or <number>/<distr> spotted by JJ (JJ APONTE VARON)
++ fixed usage issue with sqrt 
++ fixed http(s)-warning
++ fixed [[]] issue in flat.R 
++ bug fix in Compound distribution bug detected by Wolfgang Kreitmeier <wkreitmeier@gmx.de> 29.07.2016
+  
+##############
 v 2.6.2
 ##############
 + fixed internals as triggered by mail "CRAN package distr" 
@@ -34,6 +66,7 @@ user-visible CHANGES:
   which renders calls to our method q() (with respective signature,
   i.e., with a distribution as [first] argument) inaccessible from 
   the console... so far only a call to distr::q was helping...
+  
   
 under the hood:
 
@@ -71,7 +104,6 @@ under the hood:
   + panel selection mechanism had a bug for LebDec-Distributions 
   + fixed axis annotation: if xlab="" or ylab="" the respective lab are "" for all panels
   
- 
 ##############
 v 2.5.3
 ##############

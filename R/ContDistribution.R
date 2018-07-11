@@ -22,6 +22,7 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
   d1 <-  d
   wS <- .withSim
   wA <- .withArith
+  q.l0 <- q
   if(is.null(r)){
       if(is.null(q)){
           if(is.null(p)){
@@ -72,9 +73,9 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                            }      
               }
               p <- .D2P(d = d1, ql = low1, qu = up1,  ngrid = ngrid)
-              q <- .P2Q(p = p, ql = low1, qu = up1,  ngrid = ngrid,
+              q <- q.l0 <- .P2Q(p = p, ql = low1, qu = up1,  ngrid = ngrid,
                         qL = low, qU = up)
-              r <- function(n) q(runif(n)) 
+              r <- function(n) q.l0(runif(n))
           }else{ 
               if(is.null(low1)){
                   i <- 0; x0 <- -1
@@ -87,21 +88,22 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                   up1 <- x0
               }
 
-              q <- .P2Q(p = p, ql = low1, qu = up1,  ngrid = ngrid,
+              q <- q.l0 <- .P2Q(p = p, ql = low1, qu = up1,  ngrid = ngrid,
                        qL = low, qU = up)
-              r <- function(n) q(runif(n))
+              r <- function(n) q.l0(runif(n))
               if( is.null(d))
                  d <- .P2D(p = p, ql = low1, qu = up1,  ngrid = ngrid)
           }
       }else{
+          q.l0 <- q
           if(is.null(p))
-             p <- .Q2P(q, ngrid = ngrid)
-          r <- function(n) q(runif(n))
+             p <- .Q2P(q.l0, ngrid = ngrid)
+          r <- function(n) q.l0(runif(n))
           if( is.null(d)){
               if(is.null(low1))
-                 low1 <- q(ep)
+                 low1 <- q.l0(ep)
               if(is.null(up1))
-                 up1 <- q(1-ep)
+                 up1 <- q.l0(1-ep)
               d <- .P2D(p = p, ql = low1, qu = up1,  ngrid = ngrid)
               }
       }
@@ -111,14 +113,15 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
               if(is.null(q)){
                   erg <- RtoDPQ(r = r, e = e, n = ngrid)
                   wS <- TRUE
-                  d <- erg$d; p <- erg$p; q<- erg$q
+                  d <- erg$d; p <- erg$p; q<- q.l0<- erg$q
               }else{
+                  q.l0 <- q
                   p <- .Q2P(q, ngrid = ngrid)
                   if( is.null(d)){
                       if(is.null(low1))
-                         low1 <- q(ep)
+                         low1 <- q.l0(ep)
                       if(is.null(up1))
-                         up1 <- q(1-ep)
+                         up1 <- q.l0(1-ep)
                       d <- .P2D(p = p, ql = low1, qu = up1,  ngrid = ngrid)
                   }
               }
@@ -134,7 +137,7 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                       while(p(x0)< 1-ep && i < 20) x0 <- x0 * 2
                       up1 <- x0
                   }
-                  q <- .P2Q(p = p, ql = low1, qu = up1,  ngrid = ngrid,
+                  q <- q.l0 <- .P2Q(p = p, ql = low1, qu = up1,  ngrid = ngrid,
                            qL = low, qU = up)
                   d <- .P2D(p = p, ql = low1, qu = up1,  ngrid = ngrid)
               }
@@ -192,7 +195,7 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                   }
         
                   p <- .D2P(d = d1, ql = low1, qu=up1,  ngrid = ngrid)
-                  q <- .P2Q(p = p, ql = low1, qu=up1,  ngrid = ngrid,
+                  q <- q.l0 <- .P2Q(p = p, ql = low1, qu=up1,  ngrid = ngrid,
                             qL = low, qU = up)
               }else
                   p <- .Q2P(q, ngrid = ngrid)
@@ -208,13 +211,13 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
                       while(p(x0)< 1-ep && i < 20) x0 <- x0 * 2
                       up1 <- x0
                   }
-                  q <- .P2Q(p = p, ql = low1, qu=up1,  ngrid = ngrid,
+                  q <- q.l0 <- .P2Q(p = p, ql = low1, qu=up1,  ngrid = ngrid,
                             qL = low, qU = up)
               }          
           }
       }
   }
-  obj <- new("AbscontDistribution", r = r, d = d1, p = p, q = q, 
+  obj <- new("AbscontDistribution", r = r, d = d1, p = p, q = q.l0,
       gaps = gaps, param = param, img = img, .withSim = wS,
       .withArith = wA, .lowerExact = .lowerExact, .logExact = .logExact,
       Symmetry = Symmetry)
@@ -256,8 +259,8 @@ function(object, exactq = 6, ngrid = 50000, ...){
        upper <- getUp(object, eps = getdistrOption("TruncQuantile")*2)
        #lower <- 0 ; upper <- 8
        dist <- upper - lower
-       low1 <- max(q(object)(0),lower-0.1*dist)
-       upp1 <- min(q(object)(1),upper+0.1*dist)
+       low1 <- max(q.l(object)(0),lower-0.1*dist)
+       upp1 <- min(q.l(object)(1),upper+0.1*dist)
        grid <- seq(from = low1, to = upp1, length = ngrid) 
        dxg <- d(object)(grid)
        
@@ -322,9 +325,9 @@ function(e1,e2){
 
 
             ## quantile function
-            yL <-  if ((q(e1)(0) == -Inf)||(q(e2)(0) == -Inf))
+            yL <-  if ((q.l(e1)(0) == -Inf)||(q.l(e2)(0) == -Inf))
                  -Inf else getLow(e1)+getLow(e2)
-            yR <-  if ((q(e1)(1) ==  Inf)||(q(e2)(1) ==  Inf))
+            yR <-  if ((q.l(e1)(1) ==  Inf)||(q.l(e2)(1) ==  Inf))
                   Inf else getUp(e1)+getUp(e2)
 
             px.l <- pfun(x + 0.5*h)
@@ -352,8 +355,8 @@ function(e1,e2){
 
 ###setMethod("m1df", "AbscontDistribution",
 ###   function(object){
-###     lower <- q(object)(TruncQuantile)
-###     upper <- q(object)(1 - TruncQuantile)
+###     lower <- q.l(object)(TruncQuantile)
+###     upper <- q.l(object)(1 - TruncQuantile)
 ###     
 ###     gitter.x <- seq(from = lower, to = upper, length = DefaultNrGridPoints)
 ###     
@@ -369,8 +372,8 @@ function(e1,e2){
 
 ###setMethod("m2df", "AbscontDistribution", 
 ###   function(object){
-###     lower <- q(object)(TruncQuantile)
-###     upper <- q(object)(1 - TruncQuantile)
+###     lower <- q.l(object)(TruncQuantile)
+###     upper <- q.l(object)(1 - TruncQuantile)
 ###     
 ###     gitter.x <- seq(from = lower, to = upper, length = DefaultNrGridPoints)
 ###     
@@ -426,7 +429,7 @@ setMethod("Math", "AbscontDistribution",
             
             n <- 10^getdistrOption("RtoDPQ.e")+1
             u <- seq(0,1,length=n+1); u <- (u[1:n]+u[2:(n+1)])/2
-            y <- callGeneric(q(x)(u))
+            y <- callGeneric(q.l(x)(u))
             DPQnew <- RtoDPQ(r=rnew, y=y)
                        
             object <- AbscontDistribution(d = DPQnew$d, p = DPQnew$p, 
@@ -466,18 +469,18 @@ setMethod("abs", "AbscontDistribution",
                    else
                         quote({log(1-p(xx)(q))})
 
-          qxlog <- if("lower.tail" %in% names(formals(q(xx)))) 
+          qxlog <- if("lower.tail" %in% names(formals(q.l(xx))))
                           quote({qx <- if(lower.tail)
-                                          q(xx)((1+p1)/2)
+                                          q.l(xx)((1+p1)/2)
                                        else
-                                          q(xx)(p1/2,lower.tail=FALSE)}) 
+                                          q.l(xx)(p1/2,lower.tail=FALSE)})
                       else
-                          quote({qx <- q(xx)(if(lower.tail) (1+p1)/2 else 1-p1/2)})
-          if("lower.tail" %in% names(formals(q(xx)))&& 
-             "log.p" %in% names(formals(q(xx))))           
-              qxlog <- quote({qx <- if(lower.tail) q(xx)((1+p1)/2)
+                          quote({qx <- q.l(xx)(if(lower.tail) (1+p1)/2 else 1-p1/2)})
+          if("lower.tail" %in% names(formals(q.l(xx)))&&
+             "log.p" %in% names(formals(q.l(xx))))
+              qxlog <- quote({qx <- if(lower.tail) q.l(xx)((1+p1)/2)
                                        else
-                                          q(xx)(if(log.p)p-log(2)
+                                          q.l(xx)(if(log.p)p-log(2)
                                                else p1/2,lower.tail=FALSE,log.p=log.p)}) 
           dnew <- function(x, log = FALSE){}
           body(dnew) <- substitute({
@@ -552,7 +555,7 @@ setMethod("abs", "AbscontDistribution",
             px.l <- pnew(x.g + 0.5*h)
             px.u <- pnew(x.g + 0.5*h, lower.tail = FALSE)
             
-            yR <- max(q(xx)(1), abs(q(xx)(0)))
+            yR <- max(q.l(xx)(1), abs(q.l(xx)(0)))
 
             qnew <- .makeQNew(x.g + 0.5*h, px.l, px.u,
                               notwithLLarg = FALSE,  lower, yR)
@@ -650,7 +653,7 @@ setMethod("lgamma", "AbscontDistribution",
 
             n <- 10^getdistrOption("RtoDPQ.e")+1
             u <- seq(0,1,length=n+1); u <- (u[1:n]+u[2:(n+1)])/2
-            y <- lgamma(q(x)(u))
+            y <- lgamma(q.l(x)(u))
             DPQnew <- RtoDPQ(r=rnew, y=y)
             
             object <- AbscontDistribution( r = rnew, d = DPQnew$d, p = DPQnew$p,
@@ -664,7 +667,7 @@ setMethod("gamma", "AbscontDistribution",
             body(rnew) <- substitute({ gamma(g(n, ...)) }, list(g = x@r))
             n <- 10^getdistrOption("RtoDPQ.e")+1
             u <- seq(0,1,length=n+1); u <- (u[1:n]+u[2:(n+1)])/2
-            y <- gamma(q(x)(u))
+            y <- gamma(q.l(x)(u))
             DPQnew <- RtoDPQ(r=rnew, y=y)
 
             object <- AbscontDistribution( r = rnew, d = DPQnew$d, p = DPQnew$p,
@@ -687,8 +690,8 @@ setMethod("p.l", signature(object = "AbscontDistribution"),
 setMethod("q.r", signature(object = "AbscontDistribution"),  
            function(object){
                 if(!is.null(gaps(object))) 
-                   .modifyqgaps(pfun = p(object), qfun = q(object), 
+                   .modifyqgaps(pfun = p(object), qfun = q.l(object),
                                 gaps = gaps(object), leftright = "right")
                 else
-                    q(object)
+                    q.l(object)
             })

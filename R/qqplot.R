@@ -42,8 +42,8 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     force(x)
 
     pp <- ppoints(n)
-    xc <- q(x)(pp)
-    yc <- q(y)(pp)
+    xc <- q.l(x)(pp)
+    yc <- q.l(y)(pp)
 
     col.pch <- rep(col.pch,length.out=n)
 

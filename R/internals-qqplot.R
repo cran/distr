@@ -18,8 +18,8 @@
 
 .NotInSupport <- function(x,D){
   if(length(x)==0) return(logical(0))
-  nInSupp <- which(x < q(D)(0))
-  nInSupp <- unique(sort(c(nInSupp,which(x > q(D)(1)))))
+  nInSupp <- which(x < q.l(D)(0))
+  nInSupp <- unique(sort(c(nInSupp,which(x > q.l(D)(1)))))
 
   nInSuppo <-
       if("support" %in% names(getSlots(class(D))))
@@ -48,7 +48,7 @@
 
   lx[.NotInSupport(x,D)] <- 4
 
-  idx.0 <- ((x>q(D)(1)) | (x<q(D)(0)))
+  idx.0 <- ((x>q.l(D)(1)) | (x<q.l(D)(0)))
   iG <- rep(FALSE,length(x))
 
   if(is(D, "DiscreteDistribution")){

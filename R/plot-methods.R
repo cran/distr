@@ -201,7 +201,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
 
      lower0 <- getLow(x, eps = getdistrOption("TruncQuantile")*2)
      upper0 <- getUp(x, eps = getdistrOption("TruncQuantile")*2)
-     me <- q(x)(1/2); s <- q(x)(3/4)-q(x)(1/4)
+     me <- q.l(x)(1/2); s <- q.l(x)(3/4)-q.l(x)(1/4)
      lower1 <- me - 6 * s
      upper1 <- me + 6 * s
      lower <- max(lower0, lower1)
@@ -267,8 +267,8 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      
          options(warn = -1)
      }
-     if(is.finite(q(x)(0))) {grid <- c(q(x)(0),grid); pxg <- c(0,pxg)}
-     if(is.finite(q(x)(1))) {grid <- c(grid,q(x)(1)); pxg <- c(pxg,1)}
+     if(is.finite(q.l(x)(0))) {grid <- c(q.l(x)(0),grid); pxg <- c(0,pxg)}
+     if(is.finite(q.l(x)(1))) {grid <- c(grid,q.l(x)(1)); pxg <- c(pxg,1)}
 
      if(2%in%to.draw){
         dots.lowlevel$panel.first <- pF[[plotCount]]
@@ -288,7 +288,7 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
      ### quantiles
 
      ### fix finite support bounds
-     ixg  <-  grid>=max(q(x)(0),lower) & grid <= min(q(x)(1),upper)
+     ixg  <-  grid>=max(q.l(x)(0),lower) & grid <= min(q.l(x)(1),upper)
      pxg  <-   pxg[ixg]
      grid <-  grid[ixg]
 

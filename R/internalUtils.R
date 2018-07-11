@@ -268,7 +268,11 @@ return(outC)
 .isIn <- function(p0, pmat, tol = min( getdistrOption("TruncQuantile")/2,
                                           .Machine$double.eps^.7
                                           ))
-                  {list1 <- lapply(1:nrow(pmat), function(x){ 
+                  {## PR 2018 04 13
+                   ## detected by Tuomo.OJALA@3ds.com: the gaps matrix can
+                   ## have zero rows -> check this in the following line
+                   if(nrow(pmat)==0) return(FALSE)
+                   list1 <- lapply(1:nrow(pmat), function(x){
                             (p0+tol > pmat[x,1]) & (p0-tol < pmat[x,2]) })
                    apply(matrix(unlist(list1), ncol = nrow(pmat)), 1, any)}           
 

@@ -185,7 +185,7 @@
 .loupmixfun <- function(mixDistr){
     if(length(mixDistr)==0) return(list(qL = NA, ql = NA, qU = NA, qu = NA))
     if(length(mixDistr)==1){
-      q1 <- q(mixDistr[[1]])
+      q1 <- q.l(mixDistr[[1]])
       return(list(qL = q1(p = 0, lower.tail = TRUE),
                   ql = q1(p = getdistrOption("TruncQuantile"), lower.tail = TRUE),
                   qU = q1(p = 0, lower.tail = FALSE),

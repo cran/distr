@@ -98,10 +98,10 @@ setMethod("p.l", signature(object = "UnivarMixingDistribution"),
 setMethod("q.r", signature(object = "UnivarMixingDistribution"),  
            function(object){
                 if(!is.null(gaps(object))) 
-                   .modifyqgaps(pfun = p(object), qfun = q(object), 
+                   .modifyqgaps(pfun = p(object), qfun = q.l(object),
                                 gaps = gaps(object), leftright = "right")
                 else
-                    q(object)
+                    q.l(object)
             })
 
 #------------------------------------------------------------------------

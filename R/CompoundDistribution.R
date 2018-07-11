@@ -23,16 +23,18 @@ CompoundDistribution<- function( NumbOfSummandsDistr, SummandsDistr, .withSim = 
   is0 <- 0 %in% supp
   lI <- vector("list", length(supp))
   if(is0) lI[[1]] <- Dirac(0)
+  ##  bugfix :: bug detected by Wolfgang Kreitmeier <wkreitmeier@gmx.de> 29.07.2016
   if(length(suppNot0)){
      if(is(SummandsDistr,"UnivariateDistribution")){
-        dsuppNot0 <- c(suppNot0,diff(suppNot0))
-        S <- 0
+#        dsuppNot0 <- c(suppNot0,diff(suppNot0))
+#        S <- 0
         for (i in 1:length(suppNot0)){
-             x0 <- convpow(SummandsDistr,dsuppNot0[i])
-             S <- S + x0
+#             x0 <- convpow(SummandsDistr,suppNot0[i])
+             S <- convpow(SummandsDistr,suppNot0[i])
+#             S <- S + x0
              lI[[i+is0]] <- S
-        Symmetry <- Symmetry(SummandsDistr)
-        }
+        }     
+      Symmetry <- Symmetry(SummandsDistr)
      }else{
        supp <- min(supp):max(supp)
        if( (length(supp)!=length(SummandsDistr)) &&

@@ -55,8 +55,8 @@ setMethod("convpow",
             ## continuity correction by h/2
 
             ## quantile function
-            yL <-  if  (q(D1)(0) == -Inf) -Inf  else  N*lower
-            yR <-  if  (q(D1)(1) ==  Inf)  Inf  else  N*upper
+            yL <-  if  (q.l(D1)(0) == -Inf) -Inf  else  N*lower
+            yR <-  if  (q.l(D1)(1) ==  Inf)  Inf  else  N*upper
             px.l <- pfun(x + 0.5*h)
             px.u <- pfun(x + 0.5*h, lower.tail = FALSE)
             qfun <- .makeQNew(x + 0.5*h, px.l, px.u, .notwithLArg(D1), yL, yR)

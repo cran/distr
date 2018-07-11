@@ -117,8 +117,8 @@ setMethod("p.l", "DiscreteDistribution", function(object){
 ### right continuous quantile function
 
 setMethod("q.r", "DiscreteDistribution", function(object){
-    if (.inArgs("log.p", q(object))){
-       if (.inArgs("lower.tail", q(object))){
+    if (.inArgs("log.p", q.l(object))){
+       if (.inArgs("lower.tail", q.l(object))){
            function(p, lower.tail = TRUE, log.p = FALSE){
                 s <- support(object)
                 psx <- p(object)(s, lower.tail = lower.tail,
@@ -127,7 +127,7 @@ setMethod("q.r", "DiscreteDistribution", function(object){
 
                 o.warn <- getOption("warn"); options(warn = -2)
                 on.exit(options(warn=o.warn))
-                qx0 <- q(object)(ps0, lower.tail = lower.tail,
+                qx0 <- q.l(object)(ps0, lower.tail = lower.tail,
                                  log.p = log.p)
                 options(warn = o.warn)
 
@@ -151,7 +151,7 @@ setMethod("q.r", "DiscreteDistribution", function(object){
 
                 o.warn <- getOption("warn"); options(warn = -2)
                 on.exit(options(warn=o.warn))
-                qx0 <- q(object)(ps0, lower.tail = lower.tail,
+                qx0 <- q.l(object)(ps0, lower.tail = lower.tail,
                                  log.p = log.p)
                 options(warn = o.warn)
 
@@ -168,7 +168,7 @@ setMethod("q.r", "DiscreteDistribution", function(object){
                 }
        }
     }else{
-       if (.inArgs("lower.tail", q(object))){
+       if (.inArgs("lower.tail", q.l(object))){
            function(p, lower.tail = TRUE, log.p = FALSE){
                 if (log.p) p <- exp(p)
                 s <- support(object)
@@ -177,7 +177,7 @@ setMethod("q.r", "DiscreteDistribution", function(object){
 
                 o.warn <- getOption("warn"); options(warn = -2)
                 on.exit(options(warn=o.warn))
-                qx0 <- q(object)(ps0, lower.tail = lower.tail,
+                qx0 <- q.l(object)(ps0, lower.tail = lower.tail,
                                  log.p = log.p)
                 options(warn = o.warn)
 
@@ -202,7 +202,7 @@ setMethod("q.r", "DiscreteDistribution", function(object){
 
                 o.warn <- getOption("warn"); options(warn = -2)
                 on.exit(options(warn=o.warn))
-                qx0 <- q(object)(ps0, lower.tail = lower.tail,
+                qx0 <- q.l(object)(ps0, lower.tail = lower.tail,
                                  log.p = log.p)
                 options(warn = o.warn)
 
@@ -332,18 +332,18 @@ setMethod("abs", "DiscreteDistribution",function(x){
                         quote({log(1-p(x)(q))})
 
 
-          qxlog <- if("lower.tail" %in% names(formals(q(x))))
+          qxlog <- if("lower.tail" %in% names(formals(q.l(x))))
                           quote({qx <- if(lower.tail)
-                                          q(x)((1+p1)/2)
+                                          q.l(x)((1+p1)/2)
                                        else
-                                          q(x)(p1/2,lower.tail=FALSE)})
+                                          q.l(x)(p1/2,lower.tail=FALSE)})
                       else
-                          quote({qx <- q(x)(if(lower.tail) (1+p1)/2 else 1-p1/2)})
-          if("lower.tail" %in% names(formals(q(x)))&&
-             "log.p" %in% names(formals(q(x))))
-              qxlog <- quote({qx <- if(lower.tail) q(x)((1+p1)/2)
+                          quote({qx <- q.l(x)(if(lower.tail) (1+p1)/2 else 1-p1/2)})
+          if("lower.tail" %in% names(formals(q.l(x)))&&
+             "log.p" %in% names(formals(q.l(x))))
+              qxlog <- quote({qx <- if(lower.tail) q.l(x)((1+p1)/2)
                                        else
-                                          q(x)(if(log.p)p-log(2)
+                                          q.l(x)(if(log.p)p-log(2)
                                                else p1/2,lower.tail=FALSE,log.p=log.p)})
 
 

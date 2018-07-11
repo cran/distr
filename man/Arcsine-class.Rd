@@ -6,9 +6,9 @@
 \title{Class "Arcsine"}
 \description{
   The Arcsine distribution has density
-  \deqn{f(x)=\frac{1}{\pi \sqrt{1-x^2)}%
+  \deqn{f(x)=\frac{1}{\pi \sqrt{1-x^2}%
   }}{1/sqrt(1+x^2)/pi}
-  for \eqn{-1 \le x \le 1}{-1 <= x <= 1}.
+  for \eqn{-1 < x < 1}{-1 < x < 1}.
 }
 
 \section{Objects from the Class}{
@@ -67,6 +67,7 @@ r(A)(3) # three random number generated from this distribution, e.g. 0.6979795
 d(A)(c(-2,-1,-0.2,0,0.2,1,2)) # Density at x=c(-1,-0.2,0,0.2,1).
 p(A)(c(-2,-1,-0.2,0,0.2,1,2)) # cdf at q=c(-1,-0.2,0,0.2,1).
 q(A)(c(0,0.2,1,2)) # quantile function at at x=c(0,0.2,1).
+## in RStudio or Jupyter IRKernel, use q.l(A)(c(0,0.2,1,2)) instead
 }
 \keyword{distribution}
 \concept{absolutely continuous distribution}

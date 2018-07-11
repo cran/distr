@@ -21,6 +21,14 @@ UnivarLebDecDistribution <- function(acPart, discretePart, acWeight, discreteWei
        if(discreteWeight <0 || acWeight<0 || acWeight+discreteWeight>1)
              stop("no proper weights given")
     }
+
+## PR 2018 04 13
+## detected by Tuomo.OJALA@3ds.com:
+## in a loop the names of slots acWeight, discreteWeight will grow;
+## fix this by setting the prior names to NULL
+                       names(acWeight) <- NULL
+    names(discreteWeight) <- NULL
+
     if(discreteWeight > 1 - getdistrOption("TruncQuantile"))
        {return(
            new("UnivarLebDecDistribution", p = discretePart@p,
@@ -47,6 +55,7 @@ UnivarLebDecDistribution <- function(acPart, discretePart, acWeight, discreteWei
     mixDistr <- new("UnivarDistrList", list(acPart = acPart,
                      discretePart = discretePart))
     mixCoeff <- c(acWeight = acWeight, discreteWeight = discreteWeight)
+
     rnew <- function(n)
              {U <- rbinom(n, size = 1, prob = acWeight)
               AC <- acPart@r(n); DISCRETE <- discretePart@r(n)
@@ -226,7 +235,7 @@ setMethod("p.l", "UnivarLebDecDistribution", function(object){
 
 setMethod("q.r", "UnivarLebDecDistribution", function(object){
     ep <- getdistrOption("TruncQuantile")
-    if(discreteWeight(object)<ep) return(q(object))
+    if(discreteWeight(object)<ep) return(q.l(object))
     supp <- support(object)
     gaps <- gaps(object)
     aP <- acPart(object)

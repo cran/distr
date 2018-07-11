@@ -96,6 +96,7 @@ r(B)(1) # # one random number generated from this distribution, e.g. 1
 d(B)(1) # Density of this distribution is  0.5 for x=1.
 p(B)(0.4) # Probability that x<0.4 is 0.5.
 q(B)(.1) # x=0 is the smallest value x such that p(B)(x)>=0.1.
+## in RStudio or Jupyter IRKernel, use q.l(.)(.) instead of q(.)(.)
 size(B) # size of this distribution is 1.
 size(B) <- 2 # size of this distribution is now 2.
 C <- Binom(prob = 0.5, size = 1) # C is a binomial distribution with prob=0.5 and size=1.

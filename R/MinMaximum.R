@@ -42,8 +42,8 @@ setMethod("Minimum",
             xseq <- seq(from = qL1, to = qU1, by = h)
             px.l <- pnew(xseq, lower.tail = TRUE)
             px.u <- pnew(xseq, lower.tail = FALSE)
-            qL2 <- min(q(e1)(0),q(e2)(0))
-            qU2 <- max(q(e1)(1),q(e2)(1))
+            qL2 <- min(q.l(e1)(0),q.l(e2)(0))
+            qU2 <- max(q.l(e1)(1),q.l(e2)(1))
 
             qnew <- .makeQNew(xseq, px.l, px.u, FALSE, qL2, qU2)
 
@@ -183,8 +183,8 @@ setMethod("Minimum",
             }
 
             ## new quantile function
-            qL <- q(e1)(0)
-            qU <- q(e1)(1)
+            qL <- q.l(e1)(0)
+            qU <- q.l(e1)(1)
 
             ql <- getLow(e1)
             qu <- getUp(e1)

@@ -81,6 +81,7 @@ r(D)(1)
 d(D)(0) # Density of this distribution is 1 for x = 0.
 p(D)(1) # Probability that x < 1 is 1.
 q(D)(.1) # q(D)(x) is always 0 (= location).
+## in RStudio or Jupyter IRKernel, use q.l(.)(.) instead of q(.)(.)
 location(D) # location of this distribution is 0.
 location(D) <- 2 # location of this distribution is now 2.
 }

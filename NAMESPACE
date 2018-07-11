@@ -7,7 +7,6 @@ importFrom("MASS", "ginv")
 importFrom("utils", "str")
 importFrom("sfsmisc", "D1ss")
 import("startupmsg")
-import("SweaveListingUtils")
 
 export("Beta", "Binom", "Cauchy", "Chisq",  
        "Dirac","Exp", "DExp", "Fd", "Gammad", 

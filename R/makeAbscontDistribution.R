@@ -8,8 +8,8 @@ makeAbscontDistribution <- function(object, gaps = NULL,
    if(missing(img)) img0 <- img(object)
    if(is.null(img)) img0 <- img(object)
    pfun <- p(object)
-   low0 <- q(object)(0)*1.001
-   up0 <- q(object)(1)*1.001
+   low0 <- q.l(object)(0)*1.001
+   up0 <- q.l(object)(1)*1.001
    low1 <- getLow(object,ep)*1.001
    up1 <- getUp(object,ep)*1.001
    wS <- object@.withSim

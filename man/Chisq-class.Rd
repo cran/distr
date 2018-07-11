@@ -107,6 +107,7 @@ r(C)(1) # one random number generated from this distribution, e.g. 0.2557184
 d(C)(1) # Density of this distribution is 0.2264666 for x = 1.
 p(C)(1) # Probability that x < 1 is 0.4772499.
 q(C)(.1) # Probability that x < 0.04270125 is 0.1.
+## in RStudio or Jupyter IRKernel, use q.l(.)(.) instead of q(.)(.)
 df(C) # df of this distribution is 1.
 df(C) <- 2 # df of this distribution is now 2.
 is(C, "Gammad") # no

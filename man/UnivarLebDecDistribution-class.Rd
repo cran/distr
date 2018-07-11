@@ -265,6 +265,7 @@ myLC
 p(myLC)(0.3)
 r(myLC)(30)
 q(myLC)(0.9)
+## in RStudio or Jupyter IRKernel, use q.l(.)(.) instead of q(.)(.)
 acPart(myLC)
 plot(myLC)
 d.discrete(myLC)(2)

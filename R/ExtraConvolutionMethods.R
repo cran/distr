@@ -117,9 +117,9 @@ function(e1,e2){
                         .notwithLArg(e1)||.notwithLArg(e2), pxl = pl , pxu = pu)
      }
      ## quantile function
-     yL <-  if ((q(e1)(0) == -Inf)||(q(e2)(0) == -Inf))
+     yL <-  if ((q.l(e1)(0) == -Inf)||(q.l(e2)(0) == -Inf))
           -Inf else lower
-     yR <-  if ((q(e1)(1) ==  Inf)||(q(e2)(1) ==  Inf))
+     yR <-  if ((q.l(e1)(1) ==  Inf)||(q.l(e2)(1) ==  Inf))
            Inf else upper
      
      ## contintuity correction

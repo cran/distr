@@ -31,6 +31,7 @@ package, but so far have refused to do so, as they claim overloading
 require(distr)
 N <- Norm()
 q(N)(0.3)
+## in RStudio or Jupyter IRKernel, use q.l(.)(.) instead of q(.)(.)
 q.l(N)(0.3)
 }
 

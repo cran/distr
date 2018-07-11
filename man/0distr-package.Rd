@@ -33,6 +33,14 @@ For the arguments of these function slots see e.g. \code{\link{rnorm}}.
 Note that, as usual, slots \code{d}, \code{p}, and \code{q} are vectorized
 in their first argument, but are not on the subsequent ones.
 
+In the environments of RStudio, see \url{https://www.rstudio.com/} and
+Jupyter IRKernel, see \url{https://github.com/IRkernel/IRkernel},
+calls to \code{q} are caught away from standard R evaluation and are treated
+in a non-standard way. This non-standard evaluation in particular throws
+errors at calls to our accessor methods \code{q} to slot \code{q} of the
+respective distribution object. To amend this, we provide function \code{q.l}
+as alias to our accessors \code{q}, so that our packages also become available
+ in these environments.
 
 Arithmetics and unary mathematical transformations for distributions are
 available: For \code{Distribution} objects \code{X} and \code{Y} expressions
@@ -43,15 +51,15 @@ corresponding image distributions.
 \details{
 \tabular{ll}{
 Package: \tab distr \cr
-Version: \tab 2.6.2 \cr
-Date: \tab 2017-04-22 \cr
-Depends: \tab R(>= 2.14.0), methods, graphics, startupmsg, sfsmisc, SweaveListingUtils \cr
+Version: \tab 2.7.0 \cr
+Date: \tab 2018-07-08 \cr
+Depends: \tab R(>= 2.14.0), methods, graphics, startupmsg, sfsmisc \cr
 Suggests: \tab distrEx, svUnit (>= 0.7-11) \cr
 Imports: \tab stats, grDevices, utils, MASS \cr
 LazyLoad: \tab yes \cr
 License: \tab LGPL-3 \cr
 URL: \tab http://distr.r-forge.r-project.org/\cr
-SVNRevision: \tab 1132 \cr
+SVNRevision: \tab 1186 \cr
 }}
 
 

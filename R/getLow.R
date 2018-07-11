@@ -4,51 +4,51 @@
 
  setMethod("getLow", "AbscontDistribution",
             function(object, eps = getdistrOption("TruncQuantile")) {
-                 q0 <- q(object)(0)
+                 q0 <- q.l(object)(0)
                  if (q0 > - Inf){
                    return(q0)
                 }else{
-                   qF <- q(object)
+                   qF <- q.l(object)
                    qe <- qF(eps)
                    if (!is.na(qe) && qe > -Inf)
                       return(qe)
                    else{
                       if(.inArgs("log.p",qF))
-                         return(qF(p = .fm(x = .5, f = q(object)), 
+                         return(qF(p = .fm(x = .5, f = q.l(object)),
                                log.p = TRUE))
                       else
-                         return(qF(p = exp(.fm(x = .5, f = q(object)))))
+                         return(qF(p = exp(.fm(x = .5, f = q.l(object)))))
                    }
                 }  
             })
  setMethod("getUp", "AbscontDistribution",
             function(object, eps = getdistrOption("TruncQuantile")) {
-                 q1 <- q(object)(1)
+                 q1 <- q.l(object)(1)
                  if (q1 < Inf){
                    return(q1)
                  }else{
-                    qF <- q(object)
+                    qF <- q.l(object)
                     if (.inArgs("lower.tail", qF)){
                           qe <- qF(eps, lower.tail = FALSE)
                           if (!is.na(qe) && qe < Inf)
                                return(qe)
                           else{
                              if(.inArgs("log.p",qF))
-                                return(qF(p = .fM2(x = .5, f = q(object)), 
+                                return(qF(p = .fM2(x = .5, f = q.l(object)),
                                       log.p = TRUE))
                              else
-                                return(qF(p = exp(.fM2(x = .5, f = q(object)))))
+                                return(qF(p = exp(.fM2(x = .5, f = q.l(object)))))
                           }
                       }else{
-                          qe <- q(object)(1-eps)
+                          qe <- q.l(object)(1-eps)
                           if (!is.na(qe) && qe < Inf)
                                return(qe)
                           else{
                              if(.inArgs("log.p",qF))
-                               return(qF(p = .fM(x = .5, f = q(object)), 
+                               return(qF(p = .fM(x = .5, f = q.l(object)),
                                       log.p = TRUE))
                              else
-                               return(qF(p = exp(.fM(x = .5, f = q(object))))) 
+                               return(qF(p = exp(.fM(x = .5, f = q.l(object)))))
                           }
                       }
                  }
@@ -61,32 +61,32 @@
  setMethod("getLow", "LatticeDistribution",
             function(object, ...){ 
                 lattice <- lattice(object) 
-                qF <- q(object)
+                qF <- q.l(object)
                 if(is.finite(Length(lattice)) || width(lattice)>0)
                    return(min(support(object)))
                 if(.inArgs("log.p",qF))
-                   return(qF(p = .fm(x = .5, f = q(object)), log.p = TRUE))
+                   return(qF(p = .fm(x = .5, f = q.l(object)), log.p = TRUE))
                 else 
-                   return(qF(p = exp(.fm(x = .5, f = q(object)))))
+                   return(qF(p = exp(.fm(x = .5, f = q.l(object)))))
                 })
  setMethod("getUp", "LatticeDistribution",
             function(object, ...){
                 lattice <- lattice(object) 
                 if(is.finite(Length(lattice)) || width(lattice)<0)
                    return(max(support(object)))
-                qF <- q(object)
+                qF <- q.l(object)
                 if (.inArgs("lower.tail", qF)){
                     if(.inArgs("log.p",qF))
-                       return(qF(p = .fM(x = .5, f = q(object)), 
+                       return(qF(p = .fM(x = .5, f = q.l(object)),
                                         log.p = TRUE))
                     else
-                       return(qF(p = exp(.fM(x = .5, f = q(object)))))
+                       return(qF(p = exp(.fM(x = .5, f = q.l(object)))))
                 }
                 if(.inArgs("log.p",qF))
-                   return(qF(p = .fM2(x = .5, f = q(object)), 
+                   return(qF(p = .fM2(x = .5, f = q.l(object)),
                              lower.tail = FALSE, log.p = TRUE))               
                 else
-                   return(qF(p = exp(.fM2(x = .5, f = q(object))), 
+                   return(qF(p = exp(.fM2(x = .5, f = q.l(object))),
                              lower.tail = FALSE))               
                 
                 })   
