@@ -33,27 +33,56 @@ function(e1,e2){
                        as(exp(log(e1DC$pos$D)+log(e2DC$pos$D)),
                           "UnivarLebDecDistribution")
                   else as(Dirac(1), "UnivarLebDecDistribution")
+         e12pp.f <- discretePart(e1DC$pos$D)@.finSupport[2] &
+                    discretePart(e2DC$pos$D)@.finSupport[2]
+         d12pp <- discretePart(e12pp)
+         d12pp@.finSupport <- e12pp.f
+         discretePart(e12pp) <- d12pp
 
          e12mm <- if(w12mm>ep)
                        as(exp(log(-e1DC$neg$D)+log(-e2DC$neg$D)),
                           "UnivarLebDecDistribution")
                   else as(Dirac(1), "UnivarLebDecDistribution")
+         e12mm.f <- discretePart(e1DC$neg$D)@.finSupport[1]&
+                    discretePart(e2DC$neg$D)@.finSupport[1]
+         d12mm <- discretePart(e12mm)
+         d12mm@.finSupport <- e12mm.f
+         discretePart(e12mm) <- d12mm
+
          e12pm <- if(w12pm>ep)
                        as(-exp(log(e1DC$pos$D)+log(-e2DC$neg$D)),
                           "UnivarLebDecDistribution")
                   else as(Dirac(-1), "UnivarLebDecDistribution")
-         if(identical(e1,e2)) e12mp <- e12pm
-         else e12mp <- if(w12mp>ep)
+         e12pm.f <- discretePart(e1DC$pos$D)@.finSupport[2] &
+                    discretePart(e2DC$neg$D)@.finSupport[1]
+         d12pm <- discretePart(e12pm)
+         d12pm@.finSupport <- e12pm.f
+         discretePart(e12pm) <- d12pm
+
+         if(identical(e1,e2)){
+            e12mp <- e12pm
+            e12mp.f <- e12pm.f
+         }else{ e12mp <- if(w12mp>ep)
                             as( -exp(log(-e1DC$neg$D)+log(e2DC$pos$D)),
                                  "UnivarLebDecDistribution")
                        else as(Dirac(-1), "UnivarLebDecDistribution")
-
+                e12mp.f <- discretePart(e1DC$neg$D)@.finSupport[1] &
+                           discretePart(e2DC$pos$D)@.finSupport[2]
+                d12mp <- discretePart(e12mp)
+                d12mp@.finSupport <- e12mp.f
+                discretePart(e12mp) <- d12mp
+         }
          e12pm <- .del0dmixfun(e12pm)
          e12mp <- .del0dmixfun(e12mp)
 
          obj <- flat.LCD(mixCoeff = mixCoeff,
                          e12pp, e12mm, e12pm, e12mp,
                          as(Dirac(0),"UnivarLebDecDistribution"))
+
+         dP <- discretePart(obj)
+         dP@.finSupport <- c((w12pm+w12mp<ep^2)|(e12pm.f&e12mp.f),
+                              (w12pp+w12pp<ep^2)|(e12pp.f&e12mm.f))
+         discretePart(obj) <- dP
 
          if(getdistrOption("simplifyD"))
             obj <- simplifyD(obj)
@@ -101,9 +130,21 @@ function(e1,e2){
          w2m <- e2DC$neg$w
 
          e2p <- as(exp(-log(e2DC$pos$D)), "UnivarLebDecDistribution")
+         d2p <- discretePart(e2p)
+         d2p@.finSupport <- c(TRUE,TRUE) # as both pos&neg part are bounded away from 0
+         discretePart(e2p) <- d2p
+
          e2m <- as(-exp(-log(-e2DC$neg$D)), "UnivarLebDecDistribution")
+         d2m <- discretePart(e2m)
+         d2m@.finSupport <- c(TRUE,TRUE) # as both pos&neg part are bounded away from 0
+         discretePart(e2m) <- d2m
 
          e2D <- flat.LCD(mixCoeff = c(w2p, w2m), e2p, e2m)
+
+         dP <- discretePart(e2D)
+         dP@.finSupport <- c(TRUE,TRUE) # as both pos&neg part are bounded away from 0
+         discretePart(e2D) <- dP
+
 
          if(getdistrOption("simplifyD"))
             e2D <- simplifyD(e2D)
@@ -118,6 +159,8 @@ function(e1,e2){
           if(is(e2@Symmetry,"SphericalSymmetry"))
              if(.isEqual(SymmCenter(e2@Symmetry),0))
                   obj@Symmetry <-  SphericalSymmetry(0)   
+
+
 
          return(obj)
          })
@@ -181,15 +224,29 @@ function(e1,e2){
                 }
                }
 
+           f.0 <- discretePart(e1)@.finSupport
+           if(e2 > 0){
+              e1pf <- f.0[2] & (f.0[1]|(e2%%2 == 1L))
+              e1mf <- f.0[1] | (e2%%2 == 0L)
+           }else{
+              e1pf <- e1mf <- TRUE
+           }
+
            e1DC <- decomposePM(e1)
            mixCoeff <- c(e1DC$pos$w,e1DC$neg$w)
            mixCoeff <- mixCoeff/sum(mixCoeff)
            e1p <- if(mixCoeff[1]>ep)
                     as(exp(e2*log(e1DC$pos$D)),"UnivarLebDecDistribution")
                  else as(Dirac(1), "UnivarLebDecDistribution")
+           d1p <- discretePart(e1p)
+           d1p@.finSupport <- c(TRUE,e1pf)
+           discretePart(e1p) <- d1p
            e1m <- if(mixCoeff[2]>ep)
                     as((-1)^e2*exp(e2*log(-e1DC$neg$D)),"UnivarLebDecDistribution")
                  else as(Dirac((-1)^e2), "UnivarLebDecDistribution")
+           d1m <- discretePart(e1m)
+           d1m@.finSupport <- c(e1mf,TRUE)
+           discretePart(e1m) <- d1m
            erg <- flat.LCD(mixCoeff = mixCoeff, e1p, e1m)
 
 #
@@ -205,6 +262,7 @@ function(e1,e2){
                     suo <- su0[o]
                     pro <- pr[o]
                     discreteP <- DiscreteDistribution(supp = suo, prob = pro)
+                    discreteP@.finSupport <- c(e1mf,e1pf)
                     erg <- UnivarLebDecDistribution(acPart = acPart(erg),
                            discretePart = discreteP, acWeight = acW)
                 }
@@ -251,17 +309,20 @@ function(e1,e2){
       stop(gettextf("%s^%s is not well-defined with positive probability ",
                     e1s, e2s))
 
-  ### special treatment if e2>=0 and d.discrete(e1)>0
+  ### special treatment if e2>=0 and d.discrete(e1)(0)>0
+
+  d1 <- discretePart(e1)
   if(d0 > ep){
      if(.isEqual(d00,1)){
         e1 <- acPart(e1)
      }else{
-        su <- support(discretePart(e1))
-        pr <- d(discretePart(e1))(su)
+        su <- support(d1)
+        pr <- d(d1)(su)
         acW <- acWeight(e1)#/(1-d0)
         discreteP <- DiscreteDistribution(
                      supp = su[su!=0],
                      prob = pr[su!=0]/(1-d00))
+        discreteP@.finSupport <- c(TRUE, d1@.finSupport)
         e1 <- UnivarLebDecDistribution(acPart = acPart(e1),
               discretePart = discreteP, acWeight = acW)
      }
@@ -269,21 +330,22 @@ function(e1,e2){
 
    erg <- exp( e2 * log(e1))
 
-   ### special treatment if e2>=0 and d.discrete(e1)>0
+   ### special treatment if e2>=0 and d.discrete(e1)(0)>0
    if(d0 > ep){
       if(.isEqual(d00,1)){
           erg <- UnivarLebDecDistribution(acPart = acPart(erg),
                  discretePart = Dirac(0), acWeight = acW)
       }else{
-#      d1 <- d0 # 1-(1-d0)^e2
-          acW <- acWeight(erg) #* (1-d1)
-          su <- support(discretePart(erg))
+          acW <- acWeight(erg)
+          erg.d <- discretePart(erg)
+          su <- support(erg.d)
           su0 <- c(su,0)
           o <- order(su0)
-          pr <- c(d(discretePart(erg))(su) * (1-d00), d00)
+          pr <- c(d(erg.d)(su) * (1-d00), d00)
           suo <- su0[o]
           pro <- pr[o] #/(1-acW)
           discreteP <- DiscreteDistribution(supp = suo, prob = pro)
+          discreteP@.finSupport <- c(TRUE, d1@.finSupport)
           erg <- UnivarLebDecDistribution(acPart = acPart(erg),
                       discretePart = discreteP, acWeight = acW)
      }
@@ -379,6 +441,7 @@ function(e1,e2){
  le1 <- log(e1)
  le <- le1 * e2
  erg <- exp(le)
+
  if(getdistrOption("simplifyD")) erg <- simplifyD(erg)
 
  rnew <- function(n, ...){}
@@ -419,6 +482,16 @@ function(e1,e2){
          if ((discreteWeight(e2)>1-ep) && all(.isInteger(support(e2)))){
               erg <- DiscreteDistribution(e1^support(e2),
                                           d.discrete(e2)(support(e2)))
+              erg@.finSupport <- c(TRUE, discretePart(e2)@.finSupport[2])
+              if(e1<0){
+                 de2 <- discretePart(e2)
+                 su <- support(e2)
+                 oddS <- su[su%%2==1L]
+                 podd <- sum(d.discrete(e2)(oddS))
+                 peven <- 1-podd
+                 erg@.finSupport <- c(de2@.finSupport[2]|(podd<ep^2),
+                                         de2@.finSupport[2]|(peven<ep^2))
+              }
               if(!getdistrOption("simplifyD"))
                   erg <- as(erg,"UnivarLebDecDistribution")
               return(erg)
@@ -434,6 +507,16 @@ function(e1,e2){
          if ((discreteWeight(e2)>1-ep) && all(.isInteger(support(e2)))){
               erg <- DiscreteDistribution(e1^support(e2),
                                           d.discrete(e2)(support(e2)))
+              erg@.finSupport <- c(TRUE, discretePart(e2)@.finSupport[2])
+              if(e1<0){
+                 de2 <- discretePart(e2)
+                 su <- support(e2)
+                 oddS <- su[su%%2==1L]
+                 podd <- sum(d.discrete(e2)(oddS))
+                 peven <- 1-podd
+                 erg@.finSupport <- c(de2@.finSupport[2]|(podd<ep^2),
+                                         de2@.finSupport[2]|(peven<ep^2))
+              }
              if(!getdistrOption("simplifyD"))
                  erg <- as(erg,"UnivarLebDecDistribution")
              return(erg)
@@ -479,3 +562,4 @@ setMethod("sqrt", "AcDcLcDistribution",
 
 setMethod("Math", "AcDcLcDistribution",
           function(x) callGeneric(.ULC.cast(x)))
+

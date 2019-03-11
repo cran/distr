@@ -51,15 +51,15 @@ corresponding image distributions.
 \details{
 \tabular{ll}{
 Package: \tab distr \cr
-Version: \tab 2.7.0 \cr
-Date: \tab 2018-07-08 \cr
+Version: \tab 2.8.0 \cr
+Date: \tab 2019-03-11 \cr
 Depends: \tab R(>= 2.14.0), methods, graphics, startupmsg, sfsmisc \cr
 Suggests: \tab distrEx, svUnit (>= 0.7-11) \cr
 Imports: \tab stats, grDevices, utils, MASS \cr
 LazyLoad: \tab yes \cr
 License: \tab LGPL-3 \cr
 URL: \tab http://distr.r-forge.r-project.org/\cr
-SVNRevision: \tab 1186 \cr
+VCS/SVNRevision: \tab 1314 \cr
 }}
 
 

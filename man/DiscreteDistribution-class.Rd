@@ -36,6 +36,9 @@ This generating function, from version 1.9 on, has been moved to this package fr
     \item{\code{.lowerExact}}{logical: used internally to flag the case where 
     there are explicit formulae for the lower tail version of cdf and quantile 
     function}
+    \item{\code{.finSupport}}{logical: used internally to check whether the
+     true support is finite; in case \code{img} is one-dimensional, it is
+     of length 2 (left and right end).}
     \item{\code{Symmetry}}{object of class \code{"DistributionSymmetry"};
      used internally to avoid unnecessary calculations.}
   }

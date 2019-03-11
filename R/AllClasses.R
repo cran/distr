@@ -196,16 +196,17 @@ setClass("BinomParameter",
 ## no longer needed: this is a negBinom with size 1 no longer 
 #-
 ### !!! deprecated as of version 1.9 !!!
+## defunct as of 2.8.0
 ##
 ## Class: GeomParameter   
-setClass("GeomParameter", 
-          representation = representation(prob = "numeric"), 
-          prototype = prototype(prob = 0.5, name = 
-                      gettext("Parameter of a Geometric distribution")
-                      ), 
-          contains = "Parameter"
-          )
-### !!! end of deprecated !!! 
+#setClass("GeomParameter",
+#          representation = representation(prob = "numeric"),
+#          prototype = prototype(prob = 0.5, name =
+#                      gettext("Parameter of a Geometric distribution")
+#                      ),
+#          contains = "Parameter"
+#          )
+### !!! end of deprecated !!! of defunct
 
 ## Class: CauchyParameter
 setClass("CauchyParameter", 
@@ -812,7 +813,7 @@ setClass("AffLinAbscontDistribution",
 
 ## DiscreteDistribution
 setClass("DiscreteDistribution", 
-          representation = representation(support = "numeric"),
+          representation = representation(support = "numeric", .finSupport = "logical"),
           prototype = prototype(
                       r = function(n){ rbinom(n, size=1, prob=0.5) },
                       d = function(x, log = FALSE)
@@ -824,7 +825,8 @@ setClass("DiscreteDistribution",
                               { qbinom(p, size=1, prob=0.5, 
                                        lower.tail = lower.tail, log.p = log.p) },
                       img = new("Reals"),
-                      support = 0:1 
+                      support = 0:1,
+                      .finSupport = c(TRUE,TRUE)
                       ), 
           contains = "UnivariateDistribution"
           )
@@ -868,7 +870,8 @@ setClass("Dirac",
                                 gettext("lattice of a Dirac distribution")
                                 ),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     .finSupport = c(TRUE,TRUE)
                       ),
           contains = "LatticeDistribution"
           )
@@ -897,7 +900,8 @@ setClass("Pois",
                                 gettext("lattice of a Poisson distribution")
                                 ),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     .finSupport = c(TRUE,FALSE)
                       ),
           contains = "LatticeDistribution"
           )
@@ -933,7 +937,8 @@ setClass("Nbinom",
                                        )
                                 ),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     .finSupport = c(TRUE,FALSE)
                       ),
           contains = "LatticeDistribution"
           )
@@ -963,7 +968,8 @@ setClass("Hyper",
                                        )
                                 ),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     .finSupport = c(TRUE,TRUE)
                       ),
           contains = "LatticeDistribution"
           )
@@ -993,7 +999,8 @@ setClass("Binom",
                                        )
                                 ),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     .finSupport = c(TRUE,TRUE)
                       ),
           contains = "LatticeDistribution"
           )
@@ -1025,7 +1032,8 @@ setClass("Geom",
                                        )
                                 ),
                      .logExact = TRUE,
-                     .lowerExact = TRUE
+                     .lowerExact = TRUE,
+                     .finSupport = c(TRUE, FALSE)
                       ),
           contains = "Nbinom"
           )

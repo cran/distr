@@ -25,17 +25,18 @@ setMethod("initialize", "Naturals",
 ## PARAMETERS
 ################################################################################
 
-setMethod("initialize", "GeomParameter",
-          function(.Object, prob = .5) {
-            .Deprecated(new = "new(\"NbinomParameter\"(size = 1, prob, name)",
-                        package = "distr", 
-                        msg = gettext(
-"Class 'GeomParameter' is no longer needed and will be replaced by \nclass 'NbinomParameter' soon."                        
-                        ))
-            .Object@prob <- prob
-            .Object@name <- gettext("Parameter of a Geometric distribution")
-            .Object
-          })
+# defunct as of 2.8.0
+#setMethod("initialize", "GeomParameter",
+#          function(.Object, prob = .5) {
+#            .Deprecated(new = "new(\"NbinomParameter\"(size = 1, prob, name)",
+#                        package = "distr",
+#                        msg = gettext(
+#"Class 'GeomParameter' is no longer needed and will be replaced by \nclass 'NbinomParameter' soon."
+#                        ))
+#            .Object@prob <- prob
+#            .Object@name <- gettext("Parameter of a Geometric distribution")
+#            .Object
+#          })
 ################################################################################
 ## DISTRIBUTIONS
 ################################################################################
@@ -163,6 +164,7 @@ setMethod("initialize", "DiscreteDistribution",
                     support = NULL, param = NULL, img = new("Reals"), 
                     .withSim = FALSE, .withArith = FALSE,
                    .lowerExact = FALSE, .logExact = FALSE,
+                   .finSupport = c(TRUE,TRUE),
                    Symmetry = NoSymmetry()) {
 
             ## don't use this if the call is new("DiscreteDistribution")
@@ -224,6 +226,7 @@ setMethod("initialize", "DiscreteDistribution",
             .Object@.lowerExact <- .lowerExact
             .Object@.logExact <- .logExact
             .Object@Symmetry <- Symmetry
+            .Object@.finSupport <- .finSupport
             .Object
           })
 
@@ -233,14 +236,14 @@ setMethod("initialize", "AffLinDiscreteDistribution",
                    support = NULL, a = 1, b = 0, X0 = Binom(), param = NULL, 
                    img = new("Reals"), .withSim = FALSE, .withArith = FALSE,
                    .lowerExact = FALSE, .logExact = FALSE,
-                   Symmetry = NoSymmetry()) {
+                   Symmetry = NoSymmetry(), .finSupport = c(TRUE,TRUE)) {
    ## don't use this if the call is new("DiscreteDistribution")
    LL <- length(sys.calls())
    if(sys.calls()[[LL-3]] == "new(\"AffLinDiscreteDistribution\")")
         X <- new("DiscreteDistribution")
    else X <- new("DiscreteDistribution", r = r, d = d, p = p, q = q, support = support, 
              param = param, img = img, .withSim = .withSim, 
-            .withArith = .withArith)
+            .withArith = .withArith, .finSupport = .finSupport)
   .Object@support  <- X@support 
   .Object@img <- X@img
   .Object@param <- X@param
@@ -256,6 +259,7 @@ setMethod("initialize", "AffLinDiscreteDistribution",
   .Object@.lowerExact <- .lowerExact
   .Object@.logExact <- .logExact
   .Object@Symmetry <- Symmetry
+  .Object@.finSupport <- .finSupport
   .Object
 })
 
@@ -265,7 +269,7 @@ setMethod("initialize", "LatticeDistribution",
                     support = NULL, lattice = NULL, param = NULL, 
                     img = new("Reals"), .withSim = FALSE, .withArith = FALSE,
                    .lowerExact = FALSE, .logExact = FALSE,
-                   Symmetry = NoSymmetry()) {
+                   Symmetry = NoSymmetry(), .finSupport = c(TRUE,TRUE)) {
 
 
              LL <- length(sys.calls())
@@ -274,7 +278,8 @@ setMethod("initialize", "LatticeDistribution",
              else
              D <- new("DiscreteDistribution", r = r, d = d, p = p, 
                        q = q, support = support, param = param, img = img, 
-                     .withSim = .withSim, .withArith = .withArith)
+                     .withSim = .withSim, .withArith = .withArith,
+                     .finSupport = .finSupport)
 
             
              OS  <- D@support 
@@ -301,6 +306,7 @@ setMethod("initialize", "LatticeDistribution",
             .Object@.lowerExact <- .lowerExact
             .Object@.logExact <- .logExact
             .Object@Symmetry <- Symmetry
+            .Object@.finSupport <- .finSupport
             .Object
           })
 
@@ -310,7 +316,7 @@ setMethod("initialize", "AffLinLatticeDistribution",
                    support = NULL, lattice = NULL, a = 1, b = 0, X0 = Binom(), 
                    param = NULL, img = new("Reals"), .withSim = FALSE, 
                    .withArith = FALSE, .lowerExact = FALSE, .logExact = FALSE,
-                   Symmetry = NoSymmetry()) {
+                   Symmetry = NoSymmetry(), .finSupport = c(TRUE, TRUE)) {
 
    LL <- length(sys.calls())
    if(sys.calls()[[LL-3]] == "new(\"AffLinLatticeDistribution\")")
@@ -318,7 +324,7 @@ setMethod("initialize", "AffLinLatticeDistribution",
    else X <- new("LatticeDistribution", r = r, d = d, p = p, q = q, 
                   support = support, lattice = lattice, param = param, 
                   img = img, .withSim = .withSim, 
-                 .withArith = .withArith)
+                 .withArith = .withArith, .finSupport = .finSupport)
 
   .Object@support  <- X@support 
   .Object@lattice <-  X@lattice 
@@ -336,6 +342,7 @@ setMethod("initialize", "AffLinLatticeDistribution",
   .Object@.lowerExact <- .lowerExact
   .Object@.logExact <- .logExact
   .Object@Symmetry <- Symmetry
+  .Object@.finSupport <- .finSupport
   .Object
 })
 
@@ -384,6 +391,7 @@ setMethod("initialize", "Dirac",
             .Object@lattice <- new("Lattice", pivot = location, width = 1, 
                                     Length = 1)
             .Object@.withArith <- .withArith
+            .Object@.finSupport <- c(TRUE,TRUE)&(location> -Inf & location < Inf)
             .Object
           })
 
@@ -420,6 +428,7 @@ setMethod("initialize", "Binom",
             .Object@lattice = new("Lattice", pivot = 0, width = 1, 
                                    Length = size+1)
             .Object@.withArith <- .withArith
+            .Object@.finSupport <- c(TRUE,TRUE)
             .Object
           })
 
@@ -458,6 +467,7 @@ setMethod("initialize", "Hyper",
             .Object@lattice <-  new("Lattice", pivot = 0, width = 1,
                                      Length = min(k,m)+1 )
             .Object@.withArith <- .withArith
+            .Object@.finSupport <- c(TRUE,TRUE)
             .Object
           })
 
@@ -495,6 +505,7 @@ setMethod("initialize", "Pois",
             .Object@lattice <- new("Lattice", pivot = 0, width = 1, 
                                     Length = Inf)
             .Object@.withArith <- .withArith
+            .Object@.finSupport <- c(TRUE,FALSE)
             .Object
           })
 
@@ -534,6 +545,7 @@ setMethod("initialize", "Nbinom",
                                     )
             .Object@lattice <-  new("Lattice", pivot = 0, width = 1, 
                                      Length = Inf)
+            .Object@.finSupport <- c(TRUE,FALSE)
             .Object
           })
 
@@ -564,6 +576,7 @@ setMethod("initialize", "Geom",
                                                   log.p = log.p) },
                                           list(probSub = prob))
             .Object@.withArith <- .withArith
+            .Object@.finSupport <- c(TRUE,FALSE)
             .Object
           })
 
@@ -896,17 +909,12 @@ setMethod("initialize", "DExp",
             body(.Object@q) <- substitute(
                            {  if (log.p) p <- exp(p)
                               if (!lower.tail) p <- 1-p
-                              ifelse( p <= 0.25,          
-                                  -qexp(2*p, rate = rateSub, lower.tail =FALSE),
-                                  ifelse( p <= 0.5,
-                                      -qexp(1-2*p, rate = rateSub),
-                                      ifelse( p <= 0.75   ,
-                                          qexp(2*p - 1, rate = rateSub),
-                                          qexp(2*(1-p), rate = rateSub, 
-                                               lower.tail = FALSE) 
-                                            ) 
-                                         ) 
-                                     )
+                              q0 <- p
+                              q0[p <=0.25] <- -qexp(2*p[p <=0.25], rate = rateSub, lower.tail =FALSE)
+                              q0[p>0.25&p<=.50] <- -qexp(1-2*p[p>0.25&p<=.50], rate = rateSub)
+                              q0[p>0.5&p<=.75] <- qexp(2*p[p>0.5&p<=.75] - 1, rate = rateSub)
+                              q0[p>0.75] <- qexp(2*(1-p[p>0.75]), rate = rateSub, lower.tail = FALSE)
+                              return(q0)
                            }, list(rateSub = rate)
                                           )
             .Object@.withSim   <- FALSE
@@ -1026,7 +1034,7 @@ setMethod("initialize", "Logis",
 
 ## Class: Weibull distribution
 setMethod("initialize", "Weibull",
-          function(.Object, shape = 1, scale = 1) {
+          function(.Object, shape = 1, scale = 1, .withArith = FALSE) {
             .Object@img <- new("Reals")
             .Object@param <- new("WeibullParameter", 
                                   shape = shape, scale = scale
@@ -1054,7 +1062,7 @@ setMethod("initialize", "Weibull",
                                       lower.tail = lower.tail, log.p = log.p) },
                              list(shapeSub = shape, scaleSub = scale)
                                          )
-            .Object@.withArith <- FALSE
+            .Object@.withArith <- .withArith
             .Object
           })
 

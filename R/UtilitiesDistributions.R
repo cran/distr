@@ -85,13 +85,14 @@ RtoDPQ.LC <- function(r, e = getdistrOption("RtoDPQ.e"),
   rm(zz.T)
 
   f.d <- Dirac(0)
-  if(w.d)
-  {hasDis <- TRUE
+  if(w.d){
+   hasDis <- TRUE
    zz.nr <- zz[! zz %in% zz.replic]
    d.r <- zz.T1/sum(zz.T1)
    f.d <- DiscreteDistribution(supp = zz.replic, prob = d.r,
                      .withSim = TRUE, .withArith = TRUE,
                      .lowerExact = FALSE, .logExact = FALSE)
+   f.d@.finSupport <- c(TRUE,TRUE)
    rm(d.r,zz.replic,zz.T1)
   }
   rm(zz)

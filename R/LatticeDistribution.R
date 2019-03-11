@@ -8,6 +8,13 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                        .withArith = FALSE, .withSim = FALSE, 
                        DiscreteDistribution = NULL, check = TRUE,
                        Symmetry = NoSymmetry()){
+    if(is(lattice,"Lattce")){
+       if(width(lattice)>0){
+          .finS <- c(TRUE,is.finite(Length(lattice)))
+       }else{
+          .finS <- c(is.finite(Length(lattice)), TRUE)
+       }
+    }else .finS <- c(TRUE,TRUE)
     if (is(DiscreteDistribution, "AffLinDiscreteDistribution"))
         {  D <- DiscreteDistribution
            if (is(lattice, "Lattice")) 
@@ -18,12 +25,13 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                             " the support of argument 'DiscreteDistribution'." , 
                             sep = ""))
               }           
-              return(new("AffLinLatticeDistribution", r = D@r, d = D@d, 
+              return(new("AffLinLatticeDistribution", r = D@r, d = D@d,
                           q = D@q, p = D@p, support = D@support, 
                           a = D@a, b = D@b, X0 = D@X0,
                           lattice = lattice, .withArith = .withArith, 
                           .withSim = .withSim, img = D@img,
-                          param = D@param, Symmetry = Symmetry))
+                          param = D@param, Symmetry = Symmetry,
+                          .finSupport = .finS))
               }else{
                if (check){
                    if( !.is.vector.lattice(support(D)))
@@ -36,7 +44,8 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                           a = D@a, b = D@b, X0 = D@X0,
                           .withArith = .withArith, 
                           .withSim = .withSim, img = D@img,
-                          param = D@param, Symmetry = Symmetry))                           
+                          param = D@param, Symmetry = Symmetry,
+                          .finSupport = .finS))
               }                 
         }
 
@@ -54,7 +63,8 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                           q = D@q, p = D@p, support = D@support, 
                           lattice = lattice, .withArith = .withArith, 
                           .withSim = .withSim, img = D@img,
-                          param = D@param, Symmetry = Symmetry))
+                          param = D@param, Symmetry = Symmetry,
+                          .finSupport = .finS))
               }else{
                if (check){
                    if( !.is.vector.lattice(support(D)))
@@ -67,7 +77,8 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                           lattice = .make.lattice.es.vector(D@support), 
                           .withArith = .withArith, 
                           .withSim = .withSim, img = D@img,
-                          param = D@param, Symmetry = Symmetry))                           
+                          param = D@param, Symmetry = Symmetry,
+                          .finSupport = .finS))
               }                 
         }
 
@@ -84,7 +95,8 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
         return(new("LatticeDistribution", r = r(D), d = d(D), 
                     q = q.l(D), p = p(D), support = supp,
                     lattice = lattice, .withArith = .withArith, 
-                    .withSim = .withSim, Symmetry = Symmetry))
+                    .withSim = .withSim, Symmetry = Symmetry,
+                    .finSupport = .finS))
        }
 
     if (is(lattice, "Lattice"))
@@ -101,7 +113,8 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                   return(new("LatticeDistribution", r = r(D), d = d(D), 
                           q = q.l(D), p = p(D), support = supp,
                           lattice = lattice, .withArith = .withArith, 
-                          .withSim = .withSim, Symmetry = Symmetry))
+                          .withSim = .withSim, Symmetry = Symmetry,
+                          .finSupport = .finS))
                   }else{ 
                    #if (check)
                        stop("Lengths of lattice and probabilities differ.")
@@ -120,7 +133,8 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                          return(new("LatticeDistribution", r = r(D), d = d(D), 
                                 q = q.l(D), p = p(D), support = supp,
                                 lattice = lattice, .withArith = .withArith, 
-                                .withSim = .withSim, Symmetry = Symmetry))
+                                .withSim = .withSim, Symmetry = Symmetry,
+                                .finSupport = .finS))
                         }                  
              }
        }else if (!is.null(supp))
@@ -136,7 +150,8 @@ LatticeDistribution <- function(lattice = NULL, supp = NULL, prob = NULL,
                              lattice = .make.lattice.es.vector(D@support), 
                              .withArith = D@.withArith, 
                              .withSim = D@.withSim, img = D@img,
-                             param = D@param, Symmetry = Symmetry))                           
+                             param = D@param, Symmetry = Symmetry,
+                            .finSupport = .finS))
             }else 
              stop("Insufficient information given to determine distribution.")
 }
@@ -335,8 +350,10 @@ function(e1,e2){
                                               SymmCenter(e2@Symmetry))   
 
             if( length(supp1) >= 2 * length(supp2)){
-               return(DiscreteDistribution(supp = supp2, prob = newd2,
-                                           .withArith = TRUE, Symmetry = Symmetry))
+               res <- DiscreteDistribution(supp = supp2, prob = newd2,
+                                           .withArith = TRUE, Symmetry = Symmetry)
+               res@.finSupport <- e1@.finSupport & e2@.finSupport
+               return(res)
             }else{
                lat <- Lattice(pivot=supp1[1],width=wa, Length=length(supp1))
 
@@ -350,6 +367,7 @@ function(e1,e2){
                          }else{ 
                             Lattice(pivot = su12.r, width = -wa, Length = Inf)}
                }
+               e0@.finSupport <- e1@.finSupport & e2@.finSupport
                return(e0)
             }
           })
@@ -369,17 +387,19 @@ setMethod("+", c("LatticeDistribution", "numeric"),
               if(is(e1@Symmetry,"SphericalSymmetry"))
                  Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry)+e2)   
               
-              LatticeDistribution(lattice = L, 
+              res <- LatticeDistribution(lattice = L,
                      DiscreteDistribution = Distr, Symmetry = Symmetry, 
-                     check = FALSE)                                        
+                     check = FALSE)
+              res@.finSupport <- e1@.finSupport & c(e2>(-Inf),(e2<Inf))
+              return(res)
               })       
 
 setMethod("*", c("LatticeDistribution", "numeric"),
           function(e1, e2) 
              {if (.isEqual(e2,0))
                   return(Dirac( location = 0 ))
-              else     
-                { L <- lattice(e1)
+              else{
+                  L <- lattice(e1)
                   pivot(L) <- pivot(L) * e2
                   width(L) <- width(L) * e2
                   Distr <- as(e1, "DiscreteDistribution") * e2 
@@ -390,9 +410,17 @@ setMethod("*", c("LatticeDistribution", "numeric"),
                   if(is(e1@Symmetry,"SphericalSymmetry"))
                      Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry) * e2)   
               
-                  return(LatticeDistribution(lattice = L, 
+                  res <- LatticeDistribution(lattice = L,
                           DiscreteDistribution = Distr, Symmetry = Symmetry, 
-                          check = FALSE))
+                          check = FALSE)
+                  if(is.finite(e2)){
+                      res@.finSupport <- e1@.finSupport
+                  }else{
+                      ep <- .Machine$double.eps
+                      res@.finSupport <- c((p(e1)(0)<=  ep),(p(e1)(0)>=1-ep))
+                  }
+                  if(e2<0) res@.finSupport <- rev(res@.finSupport)
+                  return(res)
                 }
              }
           )              
@@ -404,12 +432,14 @@ setMethod("+", c("AffLinLatticeDistribution", "numeric"),
               Symmetry <- NoSymmetry()
               if(is(e1@Symmetry,"SphericalSymmetry"))
                  Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry) + e2)   
-              LatticeDistribution(lattice = L, 
+              res <- LatticeDistribution(lattice = L,
                      DiscreteDistribution = 
                         as(e1, "AffLinDiscreteDistribution") + e2,
                         Symmetry = Symmetry, 
                      check = FALSE)                     
-              })       
+              res@.finSupport <- e1@.finSupport & c(e2>(-Inf),(e2<Inf))
+              return(res)
+              })
 
 setMethod("*", c("AffLinLatticeDistribution", "numeric"),
           function(e1, e2) 
@@ -422,11 +452,19 @@ setMethod("*", c("AffLinLatticeDistribution", "numeric"),
                   Symmetry <- NoSymmetry()
                   if(is(e1@Symmetry,"SphericalSymmetry"))
                      Symmetry <- SphericalSymmetry(SymmCenter(e1@Symmetry) * e2)   
-                  return(LatticeDistribution(lattice = L, 
+                  res <- LatticeDistribution(lattice = L,
                           DiscreteDistribution = 
                              as(e1, "AffLinDiscreteDistribution") * 
                              e2, Symmetry = Symmetry, 
-                             check = FALSE))
+                             check = FALSE)
+                  if(is.finite(e2)){
+                      res@.finSupport <- e1@.finSupport
+                  }else{
+                      ep <- .Machine$double.eps
+                      res@.finSupport <- c((p(e1)(0)<=  ep),(p(e1)(0)>=1-ep))
+                  }
+                  if(e2<0) res@.finSupport <- rev(res@.finSupport)
+                  return(res)
                 }
              }
           )              

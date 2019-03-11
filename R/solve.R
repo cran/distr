@@ -1,21 +1,26 @@
 setMethod("solve", signature(a = "ANY", b = "ANY"), function(a,b, 
              generalized = getdistrOption("use.generalized.inverse.by.default"),
-          tol = .Machine$double.eps, ...) {
-                 if(!generalized) return(base::solve(a,b, tol = tol, ...))
-                 else if(is(try({
-                            ab <- base::solve(a,b, tol = tol, ...)
-                            if(missing(b))
-                                 dimnames(ab) <-  rev(dimnames(a))
-                            else names(ab) <-  colnames(a)
-                            return(ab)
-                            }, silent = TRUE), "try-error")){
-             if (!missing(b))
-                if(!(length(b)==nrow(a))) stop("non-conformable arguments")
-             a.m <- MASS::ginv(a)
-             dimnames(a.m) <- rev(dimnames(a))             
-             if (missing(b)) return(a.m) 
-             else return(a.m %*% b)
-             }})
+             tol = .Machine$double.eps, ...) {
+          if(!generalized|is.null(dim(a))) return(base::solve(a,b, tol = tol, ...))
+          else if(nrow(a)==ncol(a)){
+             abtry <- try({
+                 ab <- base::solve(a,b, tol = tol, ...)
+                 if(missing(b)){
+                    dimnames(ab) <-  rev(dimnames(a))
+                 }else{
+                    names(ab) <-  colnames(a)
+                 }
+                 return(ab)
+             }, silent = TRUE)
+             if(!is(abtry, "try-error")) return(abtry)
+          }
+          if (!missing(b))
+              if(!(length(b)==nrow(a))) stop("non-conformable arguments")
+          a.m <- MASS::ginv(a)
+          dimnames(a.m) <- rev(dimnames(a))
+          if (missing(b)) return(a.m)
+              else return(a.m %*% b)
+          })
 
 setMethod("solve", signature(a = "PosSemDefSymmMatrix", b = "ANY"), 
            function(a,b, 

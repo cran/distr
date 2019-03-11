@@ -404,7 +404,11 @@ the top call is \code{list}, it returns a list of the items of the call to \code
 unevaluated, and otherwise the unchanged argument.
 
 \code{devNew} opens a new device. This function is for back compatibility
-with R versions < 2.8.0.
+with R versions < 2.8.0. To control the number of opened devices, when
+\code{length(dev.list())>20}, in interactive mode we ask the user to shut
+some windows until \code{length(dev.list())<=20}; in non-interactive mode
+we shut the first 15 open devices (except for the first one) before opening
+a new one.
 }
 
 

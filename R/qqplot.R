@@ -20,7 +20,37 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     legend.pos = "topleft", legend.cex = 0.8, legend.pref = "", 
     legend.postf = "", legend.alpha = alpha.CI, debug = FALSE, withSubst = TRUE){
 
+
+    args0 <- list(x = x, y = y, n = n, withIdLine = withIdLine,
+     withConf = withConf, withConf.pw  = withConf.pw,
+     withConf.sim = if(missing(withConf.sim)) {
+        if(missing(withConf)) NULL else withConf} else withConf.sim,
+     plot.it = plot.it, xlab = xlab, ylab = ylab, width = width,
+     height = height, withSweave = withSweave, mfColRow=mfColRow,
+     n.CI = if(!missing(n.CI)) n.CI else if(!missing(n)) n else NULL,
+     col.IdL = col.IdL, lty.IdL = lty.IdL, lwd.IdL = lwd.IdL,
+     alpha.CI = alpha.CI,
+     exact.pCI = if(!missing(exact.pCI)) exact.pCI else if(!missing(n)) (n<100) else NULL,
+     exact.sCI = if(!missing(exact.pCI)) exact.sCI else if(!missing(n)) (n<100) else NULL,
+     nosym.pCI = nosym.pCI, col.pCI = col.pCI, lty.pCI = lty.pCI,
+     lwd.pCI = lwd.pCI, pch.pCI = pch.pCI, cex.pCI = cex.pCI, col.sCI = col.sCI,
+     lty.sCI = lty.sCI, lwd.sCI = lwd.sCI, pch.sCI = pch.sCI, cex.sCI = cex.sCI,
+     cex.pch = cex.pch, col.pch = col.pch, jit.fac = jit.fac,
+     check.NotInSupport = check.NotInSupport,
+     col.NotInSupport = col.NotInSupport, with.legend = with.legend,
+     legend.bg = legend.bg, legend.pos = legend.pos, legend.cex = legend.cex,
+     legend.pref = legend.pref, legend.postf = legend.postf,
+     legend.alpha = if(!missing(legend.alpha)) legend.alpha else if(!missing(alpha.CI)) alpha.CI else NULL,
+     debug = debug, withSubst = withSubst)
+
+
+
     mc <- match.call(call = sys.call(sys.parent(1)))
+    dots <- match.call(call = sys.call(sys.parent(1)), expand.dots = FALSE)$"..."
+
+    plotInfo <- list(call = mc, dots=dots, args=args0)
+
+
     xcc <- as.character(deparse(mc$x))
     ycc <- as.character(deparse(mc$y))
     if(missing(xlab)) mc$xlab <- xcc
@@ -94,6 +124,7 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
     if(mfColRow) opar1 <- par(mfrow = c(1,1), no.readonly = TRUE)
 
     ret <- do.call(stats::qqplot, args=mcl)
+    qq.usr <- par("usr")
     qqb <- NULL
     if(withIdLine){
        if(plot.it)abline(0,1,col=col.IdL,lty=lty.IdL,lwd=lwd.IdL)
@@ -152,7 +183,7 @@ setMethod("qqplot", signature(x = "UnivariateDistribution",
           }
        }
     }
-    qqplotInfo <- c(ret, qqplotInfo, qqb)
+    qqplotInfo <- c(plotInfo, ret=ret, usr=qq.usr, qqplotInfo=qqplotInfo, qqb=qqb)
     class(qqplotInfo) <- c("qqplotInfo","DiagnInfo")
     return(invisible(qqplotInfo))
     })

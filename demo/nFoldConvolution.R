@@ -32,11 +32,11 @@ setMethod("convpow",
 
     ##STEP 1
 
-            lower <- ifelse((q(D1)(0) > - Inf), q(D1)(0), 
-                             q(D1)(getdistrOption("TruncQuantile"))
+            lower <- ifelse((q.l(D1)(0) > - Inf), q.l(D1)(0),
+                             q.l(D1)(getdistrOption("TruncQuantile"))
                            ) 
-            upper <- ifelse((q(D1)(1) < Inf), q(D1)(1), 
-                             q(D1)(getdistrOption("TruncQuantile"),
+            upper <- ifelse((q.l(D1)(1) < Inf), q.l(D1)(1),
+                             q.l(D1)(getdistrOption("TruncQuantile"),
                                    lower.tail = FALSE)
                            )
 
@@ -95,10 +95,10 @@ setMethod("convpow",
 
 
             ## quantile with continuity correction h/2
-            yleft <- ifelse(((q(D1)(0) == -Inf)|
-                             (q(D1)(0) == -Inf)), -Inf, N*lower)
-            yright <- ifelse(((q(D1)(1) == Inf)|
-                              (q(D1)(1) == Inf)), Inf, N*upper)    
+            yleft <- ifelse(((q.l(D1)(0) == -Inf)|
+                             (q.l(D1)(0) == -Inf)), -Inf, N*lower)
+            yright <- ifelse(((q.l(D1)(1) == Inf)|
+                              (q.l(D1)(1) == Inf)), Inf, N*upper)
             w0 <- options("warn")
             options(warn = -1)
             qnfun1 <- approxfun(x = pnfun2(x+0.5*h), y = x+0.5*h, 
@@ -138,8 +138,8 @@ AN1 <- Norm(mean=0, sd=sqrt(N))
 ## plots of the results
 eps <- getdistrOption("TruncQuantile")
 par(mfrow=c(1,3))
-low <- q(AN1)(eps)
-upp <- q(AN1)(eps, lower.tail = FALSE)
+low <- q.l(AN1)(eps)
+upp <- q.l(AN1)(eps, lower.tail = FALSE)
 x <- seq(from = low, to = upp, length = 10000)
 
 ## densities
@@ -158,8 +158,8 @@ legend("topleft", legend=c("exact", "FFT"),
 
 ## quantile functions
 x <- seq(from = eps, to = 1-eps, length = 1000)
-plot(x, q(AN1)(x), type = "l", lwd = 5)
-lines(x , q(AN)(x), col = "orange", lwd = 1) 
+plot(x, q.l(AN1)(x), type = "l", lwd = 5)
+lines(x , q.l(AN)(x), col = "orange", lwd = 1)
 title("Quantile functions")
 legend("topleft",
        legend = c("exact", "FFT"), 

@@ -19,7 +19,7 @@ setMethod("Minimum",
               p1 <- p(e1)(q, lower.tail = FALSE)
               p2 <- p(e2)(q, lower.tail = FALSE)
               p0 <- if(lower.tail) 1 - p1 * p2  else p1 * p2
-              if (log.p) p0 <- log(p)
+              if (log.p) p0 <- log(p0)
               return(p0)
             }
 
@@ -75,7 +75,10 @@ setMethod("Minimum",
           p1 <- p(e1)(supp,lower.tail = FALSE)
           p2 <- p(e2)(supp,lower.tail = FALSE)
           d0 <- d1*p2 + d2*p1 + d1*d2
-          DiscreteDistribution(supp=supp, prob=d0, .withArith= TRUE)
+          res <- DiscreteDistribution(supp=supp, prob=d0, .withArith= TRUE)
+          res@.finSupport <- c(e1@.finSupport[1]&e2@.finSupport[1],
+                               e1@.finSupport[2]|e2@.finSupport[2])
+          res
           })
 
 setMethod("Minimum",
@@ -213,7 +216,9 @@ setMethod("Minimum", signature(e1 = "DiscreteDistribution",
         supp <- support(e1)
         pnew <- 1 - (p(e1)(supp, lower.tail = FALSE))^e2
         dnew <- c(pnew[1],diff(pnew))
-        DiscreteDistribution(supp = supp, prob = dnew, .withArith = TRUE)
+        res <- DiscreteDistribution(supp = supp, prob = dnew, .withArith = TRUE)
+        res@.finSupport = e1@.finSupport
+        res
     })
 
 setMethod("Minimum",

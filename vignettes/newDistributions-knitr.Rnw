@@ -20,9 +20,9 @@
 \usepackage{svn-multi}
 % Version control information:
 \svnidlong
-{$HeadURL: svn+ssh://ruckdeschel@svn.r-forge.r-project.org/svnroot/distr/branches/distr-2.7/pkg/distr/vignettes/newDistributions-knitr.Rnw $}
-{$LastChangedDate: 2018-07-08 13:38:54 +0200 (So, 08 Jul 2018) $}
-{$LastChangedRevision: 1149 $}
+{$HeadURL: svn+ssh://ruckdeschel@svn.r-forge.r-project.org/svnroot/distr/pkg/distr/vignettes/newDistributions-knitr.Rnw $}
+{$LastChangedDate: 2019-03-01 17:00:34 +0100 (Fr, 01 Mrz 2019) $}
+{$LastChangedRevision: 1298 $}
 {$LastChangedBy: ruckdeschel $}
 %\svnid{$Id: example_main.tex 146 2008-12-03 13:29:19Z martin $}
 % Don't forget to set the svn property 'svn:keywords' to
@@ -617,7 +617,7 @@ G <- B + as(D,"DiscreteDistribution") ## DiscreteDistribution
 \item {\footnotesize you could have: \file{man/Binom.Rd}
       for the generating function; in the Binomial case, documentation is in
       \file{Binom-class.Rd}; but in case of the Gumbel distribution,
-      in package \pkg{distrEx}, there is such an extra {\tt .Rd} file}
+      in package \pkg{RobExtremes}, there is such an extra {\tt .Rd} file}
 %
 \end{itemize}
 %
@@ -712,7 +712,7 @@ The procedure will be similar for \textit{any} new class of distributions.\medsk
   \item[Comment] In the classes in package \pkg{distr} (historically the ``oldest''
   in the development of this project), we still use \code{initialize} methods;
   this is no longer needed, if you provide generating functions; for this ``more
-  recent'' approach, confer the realization of class \code{Gumbel} in package \pkg{distrEx}.
+  recent'' approach, confer the realization of class \code{Gumbel} in package \pkg{RobExtremes}.
 \end{itemize}
 
 % -------------------------------------------------------------------------------

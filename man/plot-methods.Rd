@@ -216,6 +216,14 @@ lists of expressions (of the same length as the number of panels and
 run through in the same order as the panels).
 }
 
+\value{An S3 object of class \code{c("plotInfo","DiagnInfo")}, i.e., a list
+  containing the information needed to produce the
+  respective plot, which at a later stage could be used by different
+  graphic engines (like, e.g. \code{ggplot}) to produce the plot
+  in a different framework. A more detailed description will follow in
+  a subsequent version.
+}
+
 \examples{
 plot(Binom(size = 4, prob = 0.3))
 plot(Binom(size = 4, prob = 0.3), do.points = FALSE)
@@ -261,6 +269,7 @@ setgaps(Ch, exactq = 3); plot(Ch, verticals = FALSE)
 plot(Ch, cex = 1.2, pch.u = 20, pch.a = 10, col.points = "green", 
      col.vert = "red")
 
+\dontrun{ # to save time 
 ## some distribution with gaps
 wg <- flat.mix(UnivarMixingDistribution(Unif(0,1),Unif(4,5), 
                withSimplify=FALSE))
@@ -290,7 +299,7 @@ plot(as(P,"UnivarLebDecDistribution"),mfColRow = FALSE,to.draw.arg=c("d.d"))
 ### the next ylab argument is just for illustration purposes
 plot(as(P,"UnivarLebDecDistribution"),mfColRow = FALSE,to.draw.arg=c("d.d"),
      xlab="x",ylab=list(expression(paste(lambda,"-density of \%C(\%P)"))))
-
+}
 }
 \seealso{\code{\link[graphics]{plot}},\code{\link[graphics]{plot.default}}, 
          \code{\link[stats]{plot.stepfun}},  \code{\link[graphics]{par}}}

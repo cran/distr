@@ -11,8 +11,8 @@ setMethod("E",
         function(object, fun){
             integrand <- function(x) fun(x) * d(object)(x)
             return(integrate(f = integrand,
-                             lower = q(object)(0),
-                             upper = q(object)(1))$value)
+                             lower = q.l(object)(0),
+                             upper = q.l(object)(1))$value)
           })
 
 setMethod("E",

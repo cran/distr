@@ -12,9 +12,10 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
             cex.points = 2.0, pch.u = 21, pch.a = 16, mfColRow = TRUE,
             to.draw.arg = NULL, withSubst = TRUE){
 
-     xc <- match.call(call = sys.call(sys.parent(1)))$x
+     mc <- match.call(call = sys.call(sys.parent(1)))
+     xc <- mc$x
      ### manipulating the ... - argument
-     dots <- match.call(call = sys.call(sys.parent(1)), 
+     dots <- match.call(call = sys.call(sys.parent(1)),
                         expand.dots = FALSE)$"..."
 
       to.draw <- 1:3
@@ -38,6 +39,26 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
           pL <- .panel.mingle(dots,"panel.last")
      }
      pL <- .fillList(pL, l.draw)
+
+     plotInfo <- list(call = mc, dots=dots,
+                      args = list(width = width, height = height,
+                      withSweave = withSweave,
+                      xlim = xlim, ylim = ylim, ngrid = ngrid,
+                      verticals = verticals, do.points = do.points,
+                      main = main, inner = inner, sub = sub,
+                      bmar = bmar, tmar = tmar, cex.main = cex.main,
+                      cex.inner = cex.inner, cex.sub = cex.sub,
+                      col.points = col.points, col.vert = col.vert,
+                      col.main = col.main, col.inner = col.inner,
+                      col.sub = col.sub, cex.points = cex.points,
+                      pch.u = pch.u, pch.a = pch.a, mfColRow = mfColRow,
+                      to.draw.arg = to.draw.arg, withSubst = withSubst),
+                      to.draw=to.draw, panelFirst = pF,
+                      panelLast = pL)
+
+     plotInfo$to.draw <- to.draw
+     plotInfo$panelFirst <- pF
+     plotInfo$panelLast <- pL
 
      dots$panel.first <- dots$panel.last <- NULL
      dots$col.hor <- NULL
@@ -253,14 +274,21 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
          dots.lowlevel$panel.first <- pF[[plotCount]]
          dots.lowlevel$panel.last  <- pL[[plotCount]]
          dots.lowlevel$xlim <- xlim
+         plotInfo$dplot$plot <- c(list(x = grid, dxg, type = "l",
+             ylim = ylim1,  ylab = ylab0[["d"]], xlab = xlab0[["d"]], log = logpd),
+             dots.lowlevel)
          do.call(plot, c(list(x = grid, dxg, type = "l",
              ylim = ylim1,  ylab = ylab0[["d"]], xlab = xlab0[["d"]], log = logpd),
              dots.lowlevel))
+         plotInfo$dplot$usr <- par("usr")
          dots.lowlevel$panel.first <- dots.lowlevel$panel.last <- NULL
          dots.lowlevel$xlim <- NULL
          plotCount <- plotCount + 1
          options(warn = o.warn)
      
+         plotInfo$dplot$title <- list(main = inner.d, line = lineT,
+               cex.main = cex.inner, col.main = col.inner)
+
          title(main = inner.d, line = lineT, cex.main = cex.inner,
                col.main = col.inner)
      
@@ -274,14 +302,20 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
         dots.lowlevel$panel.first <- pF[[plotCount]]
         dots.lowlevel$panel.last  <- pL[[plotCount]]
         dots.lowlevel$xlim <- xlim
+        plotInfo$pplot$plot <- c(list(x = grid, pxg, type = "l",
+             ylim = ylim2, ylab = ylab0[["p"]], xlab = xlab0[["p"]], log = logpd),
+             dots.lowlevel)
         do.call(plot, c(list(x = grid, pxg, type = "l",
              ylim = ylim2, ylab = ylab0[["p"]], xlab = xlab0[["p"]], log = logpd),
              dots.lowlevel))
+        plotInfo$pplot$usr <- par("usr")
         dots.lowlevel$panel.first <- dots.lowlevel$panel.last <- NULL
         dots.lowlevel$xlim <- NULL
         plotCount <- plotCount + 1
         options(warn = o.warn)
-      
+        plotInfo$pplot$title <- list(main = inner.p, line = lineT,
+                  cex.main = cex.inner, col.main = col.inner)
+
         title(main = inner.p, line = lineT, cex.main = cex.inner,
               col.main = col.inner)
      }
@@ -319,14 +353,20 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
         options(warn = -1)
         dots.lowlevel$panel.first <- pF[[plotCount]]
         dots.lowlevel$panel.last  <- pL[[plotCount]]
+        plotInfo$qplot$plot <- c(list(x = po, xo, type = "n",
+             xlim = ylim2, ylim = xlim, ylab = ylab0[["q"]], xlab = xlab0[["q"]],
+             log = logq), dots.lowlevel)
         do.call(plot, c(list(x = po, xo, type = "n",
              xlim = ylim2, ylim = xlim, ylab = ylab0[["q"]], xlab = xlab0[["q"]],
              log = logq), dots.lowlevel))
+        plotInfo$qplot$usr <- par("usr")
         dots.lowlevel$panel.first <- dots.lowlevel$panel.last <- NULL
         plotCount <- plotCount + 1
         options(warn = o.warn)
     
         
+        plotInfo$qplot$title <- list(main = inner.q, line = lineT,
+              cex.main = cex.inner, col.main = col.inner)
         title(main = inner.q, line = lineT, cex.main = cex.inner,
               col.main = col.inner)
         
@@ -340,6 +380,8 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
             dots.without.pch0$col <- NULL
             do.call(lines, c(list(pu[o], xu[o], 
                     col = col.vert), dots.without.pch0))    
+            plotInfo$qplot$vlines <- c(list(x=pu[o], y=xu[o],
+                    col = col.vert), dots.without.pch0)
         }
         options(warn = o.warn)
      
@@ -348,16 +390,28 @@ setMethod("plot", signature(x = "AbscontDistribution", y = "missing"),
                    cex = cex.points, col = col.points), dots.for.points) )
            do.call(points, c(list(x = pu1, y = gaps(x)[,2], pch = pch.u,
                    cex = cex.points, col = col.points), dots.for.points) )
+           plotInfo$qplot$vpoints.l <- c(list(x=pu1, y=gaps(x)[,1],
+                   pch = pch.a, cex = cex.points, col = col.points),
+                   dots.for.points)
+           plotInfo$qplot$vpoints.r <- c(list(x=pu1, y=gaps(x)[,2],
+                   pch = pch.a, cex = cex.points, col = col.points),
+                   dots.for.points)
         }
      }      
-     if (mainL)
+     if (mainL){
          mtext(text = main, side = 3, cex = cex.main, adj = .5, 
                outer = TRUE, padj = 1.4, col = col.main)                            
-    
-     if (subL)
+         plotInfo$mainL <- list(text = main, side = 3, cex = cex.main, adj = .5,
+               outer = TRUE, padj = 1.4, col = col.main)
+     }
+     if (subL){
          mtext(text = sub, side = 1, cex = cex.sub, adj = .5,
                outer = TRUE, line = -1.6, col = col.sub)                            
-   return(invisible())
+         plotInfo$subL <- list(text = sub, side = 1, cex = cex.sub, adj = .5,
+               outer = TRUE, line = -1.6, col = col.sub)
+     }
+   class(plotInfo) <- c("plotInfo","DiagnInfo")
+   return(invisible(plotInfo))
    }
    )
 # -------- DiscreteDistribution -------- #
@@ -375,11 +429,25 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
              pch.u = 21, pch.a = 16, mfColRow = TRUE,
              to.draw.arg = NULL, withSubst = TRUE){
 
-      xc <- match.call(call = sys.call(sys.parent(1)))$x
+      mc <- match.call(call = sys.call(sys.parent(1)))
+      xc <- mc$x
       ### manipulating the ... - argument
       dots <- match.call(call = sys.call(sys.parent(1)), 
                        expand.dots = FALSE)$"..."
 
+      plotInfo <- list(call = mc, dots=dots,
+                      args = list(width = width, height = height,
+                         withSweave = withSweave,
+                         xlim = xlim, ylim = ylim, verticals = verticals,
+                         do.points = do.points, main = main, inner = inner,
+                         sub = sub, bmar = bmar, tmar = tmar, cex.main = cex.main,
+                         cex.inner = cex.inner, cex.sub = cex.sub,
+                         col.points = col.points, col.hor = col.hor,
+                         col.vert = col.vert, col.main = col.main,
+                         col.inner = col.inner, col.sub = col.sub,
+                         cex.points = cex.points, pch.u = pch.u,
+                         pch.a = pch.a, mfColRow = mfColRow,
+                         to.draw.arg = to.draw.arg, withSubst = withSubst))
       to.draw <- 1:3
       names(to.draw) <- c("d","p","q")
       if(! is.null(to.draw.arg)){
@@ -400,6 +468,11 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
           pL <- .panel.mingle(dots,"panel.last")
       }
       pL <- .fillList(pL, l.draw)
+
+      plotInfo$to.draw <- to.draw
+      plotInfo$panelFirst <- pF
+      plotInfo$panelLast <- pL
+
       dots$panel.first <- dots$panel.last <- NULL
 
       dots$ngrid <- NULL
@@ -618,9 +691,13 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
      if(1%in%to.draw){
        dots.without.pch$panel.first <- pF[[plotCount]]
        dots.without.pch$panel.last  <- pL[[plotCount]]
+       plotInfo$dplot$plot <- c(list(x = supp, dx, type = "h", pch = pch.a,
+            ylim = ylim1, xlim=xlim, ylab = ylab0[["d"]], xlab = xlab0[["d"]],
+            log = logpd), dots.without.pch)
        do.call(plot, c(list(x = supp, dx, type = "h", pch = pch.a,
             ylim = ylim1, xlim=xlim, ylab = ylab0[["d"]], xlab = xlab0[["d"]],
             log = logpd), dots.without.pch))
+       plotInfo$dplot$usr <- par("usr")
        dots.without.pch$panel.first <- dots.without.pch$panel.last <- NULL
        plotCount <- plotCount + 1
        options(warn = o.warn)
@@ -628,11 +705,15 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
 
        title(main = inner.d, line = lineT, cex.main = cex.inner,
              col.main = col.inner)
+       plotInfo$dplot$title <- list(main = inner.d, line = lineT,
+             cex.main = cex.inner, col.main = col.inner)
 
-       if(do.points)
-          do.call(points, c(list(x = supp, y = dx, pch = pch.a, 
+       if(do.points){
+          do.call(points, c(list(x = supp, y = dx, pch = pch.a,
                   cex = cex.points, col = col.points), dots.for.points))
-       
+       plotInfo$dplot$points <- c(list(x = supp, y = dx, pch = pch.a,
+                  cex = cex.points, col = col.points), dots.for.points)
+       }
        options(warn = -1)
        }
      ngrid <- length(supp)
@@ -643,12 +724,19 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
      if(2%in%to.draw){
        dots.without.pch$panel.first <- pF[[plotCount]]
        dots.without.pch$panel.last  <- pL[[plotCount]]
+       plotInfo$pplot$plot <- c(list(x = stepfun(x = supp1, y = psupp1),
+                     main = "", verticals = verticals,
+                     do.points = FALSE,
+                     ylim = ylim2, ylab = ylab0[["p"]], xlab = xlab0[["p"]],
+                     col.hor = col.hor, col.vert = col.vert,
+                     log = logpd), dots.without.pch)
        do.call(plot, c(list(x = stepfun(x = supp1, y = psupp1),
                      main = "", verticals = verticals, 
                      do.points = FALSE, 
                      ylim = ylim2, ylab = ylab0[["p"]], xlab = xlab0[["p"]],
                      col.hor = col.hor, col.vert = col.vert, 
                      log = logpd), dots.without.pch))
+       plotInfo$pplot$usr <- par("usr")
        dots.without.pch$panel.first <- dots.without.pch$panel.last <- NULL
        plotCount <- plotCount + 1
        if(do.points)
@@ -657,11 +745,19 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
                   cex = cex.points, col = col.points), dots.for.points))
               do.call(points, c(list(x = supp, y = psupp1[2:(ngrid+1)], pch = pch.a, 
                   cex = cex.points, col = col.points), dots.for.points))
+              plotInfo$pplot$points.u <- c(list(x = supp, y = psupp1[1:ngrid], pch = pch.u,
+                  cex = cex.points, col = col.points), dots.for.points)
+              plotInfo$pplot$points.a <- c(list(x = supp, y = psupp1[2:(ngrid+1)], pch = pch.a,
+                  cex = cex.points, col = col.points), dots.for.points)
               }else{
               do.call(points, c(list(x = supp, y = 0, pch = pch.u, 
                   cex = cex.points, col = col.points), dots.for.points))           
               do.call(points, c(list(x = supp, y = 1, pch = pch.a, 
                   cex = cex.points, col = col.points), dots.for.points))           
+              plotInfo$pplot$points.u <- c(list(x = supp, y = 0, pch = pch.u,
+                  cex = cex.points, col = col.points), dots.for.points)
+              plotInfo$pplot$points.a <- c(list(x = supp, y = 1, pch = pch.a,
+                  cex = cex.points, col = col.points), dots.for.points)
               }
            }       
        options(warn = o.warn)
@@ -669,17 +765,33 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
        
        title(main = inner.p, line = lineT, cex.main = cex.inner, 
              col.main = col.inner)
+       plotInfo$pplot$title <- c(main = inner.p, line = lineT,
+             cex.main = cex.inner, col.main = col.inner)
 
-       if(do.points)
+
+       if(do.points){
           do.call(points, c(list(x = supp, 
                   y = c(0,p(x)(supp[-length(supp)])), pch = pch.u, 
                   cex = cex.points, col = col.points), dots.for.points))
-     }  
+          plotInfo$pplot$points <- c(list(x = supp,
+                  y = c(0,p(x)(supp[-length(supp)])), pch = pch.u,
+                  cex = cex.points, col = col.points), dots.for.points)
+       }
+     }
 
      if(3%in%to.draw){
        options(warn = -1)
        dots.without.pch$panel.first <- pF[[plotCount]]
        dots.without.pch$panel.last  <- pL[[plotCount]]
+       plotInfo$qplot$plot <- c(list(x = stepfun(c(0,p(x)(supp)),
+                            c(NA,supp,NA), right = TRUE),
+            main = "", xlim = ylim2, ylim = c(min(supp),max(supp)),
+            ylab = ylab0[["q"]], xlab = xlab0[["q"]],
+            verticals = verticals, do.points = do.points,
+            cex.points = cex.points, pch = pch.a,
+            col.points = col.points,
+            col.hor = col.hor, col.vert = col.vert,
+            log = logq), dots.without.pch)
        do.call(plot, c(list(x = stepfun(c(0,p(x)(supp)),
                             c(NA,supp,NA), right = TRUE), 
             main = "", xlim = ylim2, ylim = c(min(supp),max(supp)),
@@ -689,6 +801,7 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
             col.points = col.points,
             col.hor = col.hor, col.vert = col.vert, 
             log = logq), dots.without.pch))
+       plotInfo$qplot$usr <- par("usr")
        dots.without.pch$panel.first <- dots.without.pch$panel.last <- NULL
        plotCount <- plotCount + 1
        options(warn = o.warn)
@@ -696,19 +809,29 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
       
        title(main = inner.q, line = lineT, cex.main = cex.inner,
              col.main = col.inner)
+       plotInfo$qplot$title <- c(main = inner.q, line = lineT,
+             cex.main = cex.inner, col.main = col.inner)
 
        dots.without.pch0 <- dots.without.pch
        dots.without.pch0$col <- NULL
 
        do.call(lines, c(list(x = c(0,p(x)(supp[1])), y = rep(supp[1],2),  
                   col = col.vert), dots.without.pch0))           
+       plotInfo$qplot$lines <- c(list(x = c(0,p(x)(supp[1])), y = rep(supp[1],2),
+                  col = col.vert), dots.without.pch0)
 
-       if(do.points)
-          {do.call(points, c(list(x = p(x)(supp[-length(supp)]),
+       if(do.points){
+           do.call(points, c(list(x = p(x)(supp[-length(supp)]),
                   y = supp[-1], pch = pch.u, cex = cex.points, 
                   col = col.points), dots.for.points))
            do.call(points, c(list(x = 0, y = supp[1], pch = pch.u, 
-                  cex = cex.points, col = col.points), dots.for.points))}           
+                  cex = cex.points, col = col.points), dots.for.points))
+           plotInfo$qplot$points.u <- c(list(x = p(x)(supp[-length(supp)]),
+                  y = supp[-1], pch = pch.u, cex = cex.points,
+                  col = col.points), dots.for.points)
+           plotInfo$qplot$points.a <- c(list(x = 0, y = supp[1], pch = pch.u,
+                  cex = cex.points, col = col.points), dots.for.points)
+       }
         
        if(verticals && ngrid>1)
           {dots.without.pch0 <- dots.without.pch
@@ -716,17 +839,25 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
 
            do.call(lines, c(list(x = rep(p(x)(supp[1]),2), y = c(supp[1],supp[2]),  
                   col = col.vert), dots.without.pch0))
+           plotInfo$qplot$vlines <- c(list(x = rep(p(x)(supp[1]),2), y = c(supp[1],supp[2]),
+                  col = col.vert), dots.without.pch0)
           }
        }                      
        
-     if (mainL)
+     if (mainL){
            mtext(text = main, side = 3, cex = cex.main, adj = .5, 
                  outer = TRUE, padj = 1.4, col = col.main)                            
-       
-     if (subL)
+           plotInfo$mainL <- list(text = main, side = 3, cex = cex.main, adj = .5,
+               outer = TRUE, padj = 1.4, col = col.main)
+     }
+     if (subL){
            mtext(text = sub, side = 1, cex = cex.sub, adj = .5,
                  outer = TRUE, line = -1.6, col = col.sub)                            
-   return(invisible())
+           plotInfo$subL <- list(text = sub, side = 1, cex = cex.sub, adj = .5,
+               outer = TRUE, line = -1.6, col = col.sub)
+     }
+   class(plotInfo) <- c("plotInfo","DiagnInfo")
+   return(invisible(plotInfo))
    }
 )
 
@@ -734,9 +865,14 @@ setMethod("plot", signature(x = "DiscreteDistribution", y = "missing"),
 
 setMethod("plot", signature(x =  "DistrList", y = "missing"),
     function(x, ...){ 
+        mc <- as.list(match.call(call = sys.call(sys.parent(1)),
+                            expand.dots = TRUE)[-1])
+        plotInfoList <- vector("list",length(x))
+        plotInfoList$call <- mc
         for(i in 1:length(x)){
-            devNew()
-            plot(x[[i]],...)
+            #devNew()
+            plotInfoList[[i]] <- plot(x[[i]],...)
         }
-        return(invisible())
+        class(plotInfoList) <- c("plotInfo","DiagnInfo")
+        return(invisible(plotInfoList))
     })

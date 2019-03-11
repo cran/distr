@@ -110,6 +110,9 @@ setMethod("Truncate", "LatticeDistribution",
             if(lower == -Inf && upper == Inf) return(object)
             if(lower >= upper+ep) 
                stop("Argument 'lower' must be smaller than argument 'upper'")
+            .finS <- object@.finSupport
+            .finS[1] <- .finS[1]|(lower > -Inf)
+            .finS[2] <- .finS[2]|(upper <  Inf)
             if(is.finite(Length(lattice(object)))||
                !.logExact(object)||
                (width(lattice(object)) < 0 && 
@@ -120,7 +123,9 @@ setMethod("Truncate", "LatticeDistribution",
                ){
                erg <- getMethod("Truncate","DiscreteDistribution")(object, 
                                  lower, upper)
-               LatticeDistribution(DiscreteDistribution = erg, check = FALSE)
+               erg <- LatticeDistribution(DiscreteDistribution = erg, check = FALSE)
+               erg@.finSupport <- .finS
+               erg
             }else{
                if(p(object)(lower)>=0.5 && upper < Inf) 
                   return(Truncate(Truncate(object,lower=lower),
@@ -160,6 +165,8 @@ setMethod("Truncate", "LatticeDistribution",
                           .withArith = TRUE, .withSim = object@.withSim,
                           .logExact = TRUE, .lowerExact = .lowerExact(object),
                           support = support))
+
+                X@.finSupport <- .finS
                 if(is(object@Symmetry,"SphericalSymmetry"))
                       if(.isEqual(lower+upper,2*SymmCenter(object@Symmetry))) 
                        X@Symmetry <- SphericalSymmetry(SymmCenter(object@Symmetry))        
@@ -175,6 +182,9 @@ setMethod("Truncate", "DiscreteDistribution",
                stop("Argument 'lower' must be smaller than argument 'upper'")
             if((lower <= getLow(object))&&(upper >= getUp(object)))
                return(object)
+            .finS <- object@.finSupport
+            .finS[1] <- .finS[1]|(lower > -Inf)
+            .finS[2] <- .finS[2]|(upper < Inf)
             supp <- support(object)
             newsupport <- supp[supp<=upper & supp>=lower]
             if(! length(newsupport))
@@ -187,6 +197,7 @@ setMethod("Truncate", "DiscreteDistribution",
             if(is(object@Symmetry,"SphericalSymmetry"))
                if(.isEqual(lower+upper,2*SymmCenter(object@Symmetry))) 
                   erg@Symmetry <- SphericalSymmetry(SymmCenter(object@Symmetry))        
+            erg@.finSupport <- .finS
             erg      
           })
 

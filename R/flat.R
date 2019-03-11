@@ -31,6 +31,7 @@ flat.LCD <- function(..., mixCoeff = NULL, withgaps = getdistrOption("withgaps")
                         acWeight(x))))* mixCoeff
     mixCoeff0.d <-  as.vector(unlist(lapply(ldots, function(x)
                         discreteWeight(x))))* mixCoeff
+
     w.c <- sum(mixCoeff0.c)
     w.d <- sum(mixCoeff0.d)
     w.c <- w.c/(w.c+w.d)
@@ -46,7 +47,11 @@ flat.LCD <- function(..., mixCoeff = NULL, withgaps = getdistrOption("withgaps")
     mixDistr.d <- mixDistr.d[mixCoeff.d >ep]
     mixCoeff.d <- mixCoeff.d[mixCoeff.d >ep]
     l.d <- length(mixDistr.d)
-
+    finSupport <- c(TRUE,TRUE)
+    if(l.d>0){
+       mixDistr.dfs <- sapply(mixDistr.d, function(x) x@.finSupport)
+       finSupport <- apply(mixDistr.dfs,1,all)
+    }
     if(l.c){
     rnew.c <- .rmixfun(mixDistr = mixDistr.c, mixCoeff = mixCoeff.c)
     pnew.c <- .pmixfun(mixDistr = mixDistr.c, mixCoeff = mixCoeff.c)
@@ -77,6 +82,8 @@ flat.LCD <- function(..., mixCoeff = NULL, withgaps = getdistrOption("withgaps")
             else DiscreteDistribution(supp = supp, prob = dnew.d(supp),
                            .withSim = FALSE, .withArith = TRUE)}
     }else f.d <- Dirac(0)            
+
+    f.d@.finSupport <- finSupport
 
     UnivarLebDecDistribution(
                      discretePart = f.d, acPart = f.c,

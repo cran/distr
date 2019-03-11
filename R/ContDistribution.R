@@ -223,8 +223,12 @@ AbscontDistribution <- function(r = NULL, d = NULL, p = NULL, q = NULL,
       Symmetry = Symmetry)
 
   if(is.null(gaps) && withgaps) setgaps(obj)
-  if(!is.null(obj@gaps)) 
+  if(!is.null(obj@gaps)&&length(obj@gaps)){
      obj@q <- .modifyqgaps(pfun = obj@p, qfun = obj@q, gaps = obj@gaps)
+  }else{
+     if(exists("..q0fun", envir=environment(obj@q)))
+        obj@q <- get("..q0fun", envir=environment(obj@q))
+  }
   return(obj)
 }
 
@@ -285,6 +289,9 @@ function(object, exactq = 6, ngrid = 50000, ...){
           if(nrow(mattab.d)==0) mattab.d <- NULL
           if(length(mattab.d)==0) mattab.d <- NULL
           } else mattab.d <- NULL
+          finit <- if(is.null(dim(mattab.d))) 0 else
+                   apply(mattab.d, 1, function(x) all(is.finite(x)))
+          mattab.d <- if(sum(finit)>0) mattab.d[finit,,drop=FALSE] else NULL
           eval(substitute( "slot<-"(object,'gaps', value = mattab.d)))
        return(invisible())
 })
@@ -689,7 +696,7 @@ setMethod("p.l", signature(object = "AbscontDistribution"),
 
 setMethod("q.r", signature(object = "AbscontDistribution"),  
            function(object){
-                if(!is.null(gaps(object))) 
+                if(!is.null(gaps(object))&&length(gaps(object)))
                    .modifyqgaps(pfun = p(object), qfun = q.l(object),
                                 gaps = gaps(object), leftright = "right")
                 else

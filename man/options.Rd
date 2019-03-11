@@ -20,8 +20,8 @@ we only document added options.}
 \section{Additionally available options in package 'distr'}{
 \describe{
 \item{\code{"newDevice"}}{logical; controls behaviour when generating several plots within
-one function; if \code{TRUE} a call to \code{\link{devNew}} is inserted to hook function
-\code{\link[graphics:frame]{plot.new}}; if \code{FALSE}, we reproduce the usual behaviour 
+one function; if \code{TRUE}, before each call to  call to \code{\link[graphics:frame]{plot.new}},
+a call to \code{\link{devNew}} is inserted; if \code{FALSE}, we reproduce the usual behaviour
 in \pkg{graphics}, i.e.; we do not call \code{\link{devNew}}. Defaults to \code{FALSE}.}
 }
 } 

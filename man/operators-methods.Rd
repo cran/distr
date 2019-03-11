@@ -328,7 +328,7 @@ a * P
 N / a + sin( a * P - N)
 N * P
 N / N
-\dontrun{
+\donttest{
 ## takes a little time
 N ^ P
 }

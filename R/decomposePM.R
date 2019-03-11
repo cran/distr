@@ -98,9 +98,12 @@ setMethod("decomposePM", "DiscreteDistribution",
          Dm <- if(length(suppm))
                DiscreteDistribution(supp = suppm, prob = d(object)(suppm)/pm)
          else  Dirac(-1)
+         Dm@.finSupport <- c(object@.finSupport[1],TRUE)
          Dp <- if(length(suppp))
               DiscreteDistribution(supp = suppp, prob = d(object)(suppp)/pp)
          else Dirac(1)
+         Dp@.finSupport <- c(TRUE, object@.finSupport[2])
+
          D0 <- Dirac(0)
          list("neg" = list( D = Dm, w = pm),
               "0"   = list( D = D0, w = p0),

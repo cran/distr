@@ -237,9 +237,14 @@ function(e1,e2){
                    W <- sort(abs(c(w1,w2)))
                    if (abs(abs(w1)-abs(w2))<getdistrOption("DistrResolution") ||
                        W[2] %% W[1] < getdistrOption("DistrResolution") )
-                       return(e1.L + e2.L)
+                       res <- e1.L + e2.L
+                       res@.finSupport <- e1.L@.finSupport&e2.L@.finSupport
+                       return(res)
                   }
-            .convDiscrDiscr(e1,e2)})
+            res <- .convDiscrDiscr(e1,e2)
+            res@.finSupport <- e1@.finSupport&e2@.finSupport
+            return(res)
+            })
 
 setMethod("+", c("Dirac","DiscreteDistribution"),
       function(e1,e2){e2+location(e1)})
@@ -256,7 +261,14 @@ setMethod("*", c("DiscreteDistribution","numeric"),
                                  Distr@Symmetry <-
                                    SphericalSymmetry(SymmCenter(e1@Symmetry)*e2)
 
-                              Distr
+                              if(is.finite(e2)){
+                                 Distr@.finSupport <- e1@.finSupport
+                              }else{
+                                 ep <- .Machine$double.eps
+                                 Distr@.finSupport <- c(p(e1)(0)<ep,p(e1)(0)>1-ep)
+                              }
+                              if(e2<0) Distr@.finSupport <- rev(Distr@.finSupport)
+                              return(Distr)
                              })
 setMethod("+", c("DiscreteDistribution","numeric"),
            function(e1, e2) { Distr <- .plusm(e1,e2, "DiscreteDistribution")
@@ -267,7 +279,9 @@ setMethod("+", c("DiscreteDistribution","numeric"),
                                  Distr@Symmetry <-
                                    SphericalSymmetry(SymmCenter(e1@Symmetry)+e2)
 
-                              Distr
+                              isfe2 <- c(e2 >(-Inf), e2<Inf)
+                              Distr@.finSupport <- e1@.finSupport & isfe2
+                              return(Distr)
                              })
 
 setMethod("*", c("AffLinDiscreteDistribution","numeric"),
@@ -276,7 +290,14 @@ setMethod("*", c("AffLinDiscreteDistribution","numeric"),
                 if(is(e1@Symmetry,"SphericalSymmetry"))
                       Distr@Symmetry <-
                         SphericalSymmetry(SymmCenter(e1@Symmetry)*e2)
-                Distr
+                if(is.finite(e2)){
+                   Distr@.finSupport <- e1@.finSupport
+                }else{
+                   ep <- .Machine$double.eps
+                   Distr@.finSupport <- c(p(e1)(0)<ep,p(e1)(0)>1-ep)
+                }
+                if(e2<0) Distr@.finSupport <- rev(Distr@.finSupport)
+                return(Distr)
                 })
 setMethod("+", c("AffLinDiscreteDistribution","numeric"),
            function(e1, e2) {
@@ -284,7 +305,9 @@ setMethod("+", c("AffLinDiscreteDistribution","numeric"),
                 if(is(e1@Symmetry,"SphericalSymmetry"))
                       Distr@Symmetry <-
                         SphericalSymmetry(SymmCenter(e1@Symmetry)*e2)
-                Distr
+                isfe2 <- c(e2 >(-Inf), e2<Inf)
+                Distr@.finSupport <- e1@.finSupport & isfe2
+                return(Distr)
                 })
 
 ## Group Math for discrete distributions
@@ -295,12 +318,16 @@ setMethod("Math", "DiscreteDistribution",
                                          list(f = as.name(.Generic), g = x@r))
             object <- new("DiscreteDistribution", r = rnew,
                            .withSim = TRUE, .withArith = TRUE)
+            object@.finSupport <- x@.finSupport&NA
             object
           })
 setMethod("Math", "Dirac",
           function(x){ loc <- location(x)
                        lc <- callGeneric(loc)
-                       Dirac(lc)})
+                       object <- Dirac(lc)
+                       object@.finSupport <- x@.finSupport&NA
+                       object
+                       })
 
 ## exact: abs for discrete distributions
 setMethod("abs", "DiscreteDistribution",function(x){
@@ -417,12 +444,17 @@ setMethod("abs", "DiscreteDistribution",function(x){
                         q = qnew, d = dnew, support = supportnew,
                         .withSim = x@.withSim, .withArith = TRUE,
                         .lowerExact = .lowerExact(x))
+         object@.finSupport <- c(TRUE, all(x@.finSupport))
          object
 })
 
-## exact: abs for discrete distributions
+## exact: eps for discrete distributions
 setMethod("exp", "DiscreteDistribution",
-           function(x) .expm.d(x))
+           function(x){ obj <- .expm.d(x)
+                        obj@.finSupport <- c(TRUE, x@.finSupport[2])
+                        obj 
+           }
+           )
 
 
 ### preliminary to export special functions
@@ -436,7 +468,11 @@ setMethod("log", "DiscreteDistribution",
            basl <- log(base)
            if(p(x)(0)>ep)
                 stop(gettextf("log(%s) is not well-defined with positive probability ", xs))
-           else return(.logm.d(x)/basl)})
+           else{
+                obj <- .logm.d(x)/basl
+                obj@.finSupport <- c(TRUE, x@.finSupport[2])
+                return(obj)
+           }})
 
 setMethod("log", "Dirac",
           function(x, base = exp(1)){
@@ -472,6 +508,8 @@ setMethod("digamma", "DiscreteDistribution",
             object <- DiscreteDistribution(
                      supp=digamma(support(x)),
                      prob=prob(x), .withArith = TRUE)
+
+            object@.finSupport <- c(TRUE, x@.finSupport[2])
             object
           })
 
@@ -481,6 +519,7 @@ setMethod("lgamma", "DiscreteDistribution",
             body(rnew) <- substitute({ lgamma(g(n, ...)) }, list(g = x@r))
             object <- new("DiscreteDistribution", r = rnew,
                            .withSim = TRUE, .withArith = TRUE)
+            object@.finSupport <- c(TRUE, x@.finSupport[2])
             object
           })
 
@@ -490,6 +529,7 @@ setMethod("gamma", "DiscreteDistribution",
             body(rnew) <- substitute({ gamma(g(n, ...)) }, list(g = x@r))
             object <- new("DiscreteDistribution", r = rnew,
                            .withSim = TRUE, .withArith = TRUE)
+            object@.finSupport <- c(TRUE, x@.finSupport[2])
             object
           })
 setMethod("sqrt", "DiscreteDistribution",

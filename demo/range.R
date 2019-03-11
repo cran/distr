@@ -28,7 +28,7 @@ setMethod("Range",
             fnt0 <- function(u0,s) d(object)(s)*d(object)(s+u0)*(p(object)(s+u0)-p(object)(s))^(e2-2)*e2*(e2-1)
             fu0 <- function(u) integrate(fnt0, lower=-Inf, upper=Inf, u0=u)$value*(u>0)
             xgrid <- seq(0,
-                         q(object)(1e-6, lower.tail = FALSE)-q(object)(1e-6),
+                         q.l(object)(1e-6, lower.tail = FALSE)-q.l(object)(1e-6),
                          length = getdistrOption("DefaultNrGridPoints")/10)
             fx <- sapply(xgrid, fu)
             pnew <- approxfun(xgrid, fx, yleft = 0, yright = 1)
@@ -36,11 +36,11 @@ setMethod("Range",
             dnew <- approxfun(xgrid, fx0, yleft = 0, yright = 0)
 
             ## new quantile function
-            lower <- q(object)(0)
-            upper <- q(object)(1)
+            lower <- q.l(object)(0)
+            upper <- q.l(object)(1)
 
-            maxquantile = q(object)(1e-6, lower.tail = FALSE)
-            minquantile = q(object)(1e-6)
+            maxquantile = q.l(object)(1e-6, lower.tail = FALSE)
+            minquantile = q.l(object)(1e-6)
 
             qfun1 <- function(x){
               if(x == 0) return(lower)

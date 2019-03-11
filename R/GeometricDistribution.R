@@ -9,36 +9,43 @@
 
 ### Replaced by NbinomParameter ....
 ### pre v1.9 /deprecated  
-setMethod("prob", "GeomParameter", function(object) 
-     {.Deprecated(new = "",
-                        package = "distr", 
-                        msg = gettext(
-"Class 'GeomParameter' is no longer needed and will be replaced by \nclass 'NbinomParameter' soon."                        
-                                     )
-                 )
-      object@prob
-     }
-     )
-setMethod("prob", "NbinomParameter", function(object) object@prob)
+### defunct as of 2.8.0
+#setMethod("prob", "GeomParameter", function(object)
+#     {.Defunct(new = "",
+#                        package = "distr",
+#                        msg = gettext(
+#"Class 'GeomParameter' is no longer needed and will be replaced by \nclass 'NbinomParameter' soon."
+#                                     )
+#                 )
+#      object@prob
+#     }
+#     )
+
+
+## code is in NegbinomDistribution.R
+# setMethod("prob", "NbinomParameter", function(object) object@prob)
 
 
 ## Replace Methods
 ### Replaced by NbinomParameter ....
 ### pre v1.9:  /deprecated
-setReplaceMethod("prob", "GeomParameter", 
-                             function(object, value)
-                                      {.Deprecated(new = "",
-                                                   package = "distr", 
-                                                   msg = gettext(
-"Class 'GeomParameter' is no longer needed and will be replaced by \nclass 'NbinomParameter' soon."                        
-                                                                )
-                                                  )
-                                       object@prob <- value; 
-                                       object})
-setReplaceMethod("prob", "NbinomParameter", 
-                  function(object, value)
-                          { object@prob <- value; object}
-                  )
+### defunct as of 2.8.0
+#setReplaceMethod("prob", "GeomParameter",
+#                             function(object, value)
+#                                      {.Defunct(new = "",
+#                                                   package = "distr",
+#                                                   msg = gettext(
+#"Class 'GeomParameter' is no longer needed and will be replaced by \nclass 'NbinomParameter' soon."
+#                                                                )
+#                                                  )
+#                                       object@prob <- value;
+#                                       object})
+
+## code is in NegbinomDistribution.R
+#setReplaceMethod("prob", "NbinomParameter",
+#                  function(object, value)
+#                          { object@prob <- value; object}
+#                  )
 
 
 ### no longer needed from version 1.9 on

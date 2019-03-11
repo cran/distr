@@ -40,8 +40,8 @@ X <- Norm(sd=sqrt(1/(1-phi^2)))
 ## plots of the results
 #############################
 par(mfrow=c(1,3))
-low <- q(X)(1e-15)
-upp <- q(X)(1e-15, lower.tail = FALSE)
+low <- q.l(X)(1e-15)
+upp <- q.l(X)(1e-15, lower.tail = FALSE)
 x <- seq(from = low, to = upp, length = 10000)
 
 ## densities
@@ -60,8 +60,8 @@ legend("topleft", legend=c("exact", "FFT"),
 
 ## quantile functions
 x <- seq(from = eps, to = 1-eps, length = 1000)
-plot(x, q(X)(x),type = "l", lwd = 5)
-lines(x , q(H)(x), col = "orange", lwd = 1)
+plot(x, q.l(X)(x),type = "l", lwd = 5)
+lines(x , q.l(H)(x), col = "orange", lwd = 1)
 title("Quantile functions")
 legend( "topleft", 
         legend=c("exact", "FFT"), 

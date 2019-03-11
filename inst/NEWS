@@ -8,6 +8,50 @@
  information)
  
 ##############
+v 2.8
+##############
+
+user-visible CHANGES:
++ DESCRIPTION tag SVNRevision changed to VCS/SVNRevision
++ plot methods now return an S3 object of class \code{c("plotInfo","DiagnInfo")}, i.e., a list containing the 
+  information needed to produce the respective plot, which at a later stage could be used by different graphic engines (like, e.g. 
+  \code{ggplot}) to produce the plot in a different framework. A more detailed description will follow in a subsequent version.
++ accessor & replacer for prob, GeomParameter are finally Defunct
++ liesInSupport gains an argument checkFin; in case of DiscreteDistributions, it tries to use 
+  additional information from internal slot .finSupport, and e.g. if there is a lattice.  
++ liesInSupport now also is available for UnivarLebDecDistribution, LatticeDistribution, and UnivarMixingDistribution
++ clarified that the Gumbel distribution has been moved to RobExtremes in vignette newDistributions-knitr.Rnw
++ modified devNew(): in interactive mode it now asks the user to shut some devices first when 
+  length(dev.list())>20; and in non-interactive mode, when length(dev.list())>20, it shuts 
+  the first 15 open devices first; this is documented now in ?devNew
+under the hood:
++ DiscreteDistribution(s) gain a logical slot .finSupport to better control whether the 
+  "true" support (not the possibly truncated one in slot support) is infinite (more precisely
+  it is of length 2 -- first coordinate if the lower bound of the support is finite, second if 
+  the upper bound is finite)
++ changed definition of q(DExp(..)) in initialize method in AllInitialize.R 
+  from ifelse expressions to index operations  to avoid warnings 
++ in distr::solve only try base::solve if arg "a" has no dim or if it has then 
+  if nrow(a)==nrow(b); otherwise directly use MASS::ginv
++ introduced particular liesInSupport methods for all specific abs.cont distributions in distr
++ in reaction to mail by B.Ripley Feb 20, 19/ explanation by T. Kalibera, that our code to 
+  look into system.call() stack was buggy and failed in staged installation, we revised code to .modifyqgaps completely;
+  we now compute p(obj)(gaps) and check if any argument p of q(obj) falls within the gap range and then shift it to either 
+  the left or right endpoint of the gap acc. to args lower.tail and leftright. To avoid redoing this whenever slot gaps 
+  is changed, we store the unmodified q(obj) function in an internal variable ..q0fun which can also be used 
+  (if existant in the env() of q(obj)) to revert the gaps modification, and any gaps modification, instead of starting 
+  from q(obj) starts with ..q0fun (if this exists); otherwise, i.e., if ..q0fun does not exist, it uses q(obj) and 
+  afterwords stores the old q(obj) as ..q0fun ... 
++ .modifyqgaps can now digest args pfun and qfun with or without arguments log.p and lower.tail
+  
+bug fixes
++ fixed a (newly introduced) bug in exp() for DiscreteDistribution -- forgot to return obj ...
++ Bernhard discovered a bug in devNew() -- it opened new devices even if option("newDevice"==FALSE)  
++ detected that the initialize method of Weibull lacked a .withArith argument to capture the scale structure
++ unknown variable p in S4method to Minimum(absCont,absCont)
+
+
+##############
 v 2.7
 ##############
 

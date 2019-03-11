@@ -1,7 +1,7 @@
 useDynLib(distr, .registration = TRUE, .fixes = "C_")
 import("methods")
 import("stats")
-importFrom("grDevices", "dev.list", "dev.new", "xy.coords")
+importFrom("grDevices", "dev.list", "dev.new", "xy.coords", "dev.off")
 importFrom("graphics", "plot", "abline", "layout", "legend", "lines", "mtext", "par", "points", "title")
 importFrom("MASS", "ginv")
 importFrom("utils", "str")
@@ -30,7 +30,7 @@ exportClasses("BetaParameter", "BinomParameter",
               "CauchyParameter", "ChisqParameter",
               "DiracParameter", "ExpParameter", 
               "FParameter", "GammaParameter", 
-              "HyperParameter", "GeomParameter",
+              "HyperParameter",
               "LogisParameter", "LnormParameter",
               "NbinomParameter", "NormParameter", 
               "PoisParameter", "TParameter",

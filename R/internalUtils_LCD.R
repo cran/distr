@@ -175,9 +175,13 @@
   px.l <- pnew(xseq, lower.tail = TRUE)
   px.u <- pnew(xseq, lower.tail = FALSE)
   qnew <- .makeQNew(xseq, px.l, px.u, TRUE, lo, up, Cont = Cont)
-  if(!is.null(gaps)) 
+  if(!is.null(gaps)&&length(gaps)){
       qnew <- .modifyqgaps(pfun = pnew, qfun = qnew, gaps = gaps, 
                            leftright = leftright)
+  }else{
+     if(exists("..q0fun", envir=environment(qnew)))
+        qnew <- get("..q0fun", envir=environment(qnew))
+  }
   return(qnew)
 }
 

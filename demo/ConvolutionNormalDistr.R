@@ -22,8 +22,8 @@ oldeps <- getdistrOption("TruncQuantile")
 eps <- 1e-8
 distroptions("TruncQuantile" = eps)
 ## support of A1+B1 for FFT convolution is
-## [q(A1)(TruncQuantile), 
-##  q(B1)(TruncQuantile, lower.tail = FALSE)]
+## [q.l(A1)(TruncQuantile),
+##  q.l(B1)(TruncQuantile, lower.tail = FALSE)]
 
 ## convolution via FFT
 AB1 <- A1+B1
@@ -32,8 +32,8 @@ AB1 <- A1+B1
 ## plots of the results
 #############################
 par(mfrow=c(1,3))
-low <- q(AB)(1e-15)
-upp <- q(AB)(1e-15, lower.tail = FALSE)
+low <- q.l(AB)(1e-15)
+upp <- q.l(AB)(1e-15, lower.tail = FALSE)
 x <- seq(from = low, to = upp, length = 10000)
 
 ## densities
@@ -52,10 +52,10 @@ legend("topleft", legend=c("exact", "FFT"),
 
 ## quantile functions
 x <- seq(from = eps, to = 1-eps, length = 1000)
-plot(x, q(AB)(x), type = "l", lwd = 5) 
-lines(x , q(AB1)(x), col = "orange", lwd = 1) 
+plot(x, q.l(AB)(x), type = "l", lwd = 5)
+lines(x , q.l(AB1)(x), col = "orange", lwd = 1)
 title("Quantile functions")
-legend(0, q(AB)(eps, lower.tail = FALSE), 
+legend(0, q.l(AB)(eps, lower.tail = FALSE),
        legend = c("exact", "FFT"), 
         fill = c("black", "orange"))
 

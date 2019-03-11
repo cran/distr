@@ -26,7 +26,7 @@ UnivarLebDecDistribution <- function(acPart, discretePart, acWeight, discreteWei
 ## detected by Tuomo.OJALA@3ds.com:
 ## in a loop the names of slots acWeight, discreteWeight will grow;
 ## fix this by setting the prior names to NULL
-                       names(acWeight) <- NULL
+    names(acWeight) <- NULL
     names(discreteWeight) <- NULL
 
     if(discreteWeight > 1 - getdistrOption("TruncQuantile"))
