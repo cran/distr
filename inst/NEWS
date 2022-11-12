@@ -8,6 +8,41 @@
  information)
  
 ##############
+v 2.9
+##############
+
+user-visible CHANGES:
++ replaced obsolete URLs to JSS papers by respective DOIs
+  
+bug fixes
++ fixed a glitch in catching argument names in bAcDcLcDistribution.R 
+  detected by Elio Campitelli <elio.campitelli@cima.fcen.uba.ar>
++ fixed some error in distributional arithmetics brought up by Andrew Robinson <apro@unimelb.edu.au>
+    to produce meaningful error messages we had code that tried to deparse operands in operations
+	with restricted definition domains like "/", "^"; it turned our that our idea to catch errors
+	in this deparsing within a try()-catch did not work any longer when called from within a function; 
+	as way out, we now have code which no longer needs the try()-catch and instead climbs up the 
+	parsing tree and searches for the first occurrence of "/" resp. "^" and deparses this
+
+under the hood:
++ triggered by an email by Santhosh V <Santhosh.V@se.com>, we added a patch to be more careful when producing
+  slot q for compound and mixing distributions
++ detected by Vlada Milchevskaya vmilchev@uni-koeln.de:
+  CompoundDistribution(): special treatment of case that NumbOfSummandsDistr is a Dirac distribution
+  (and detect that for prob in {0,1} Binom(size, prob) is in fact a Dirac distribution)
++ fixed some broken URLs and changed URLs from http to https where possible
+  changed rstudio.com to posit.co
+
+##############
+v 2.8.1
+##############
+
+under the hood:
++ triggered by new NOTES uncovered by R CMD check, we deleted duplicate entries for items f and supp
+  in internals.Rd, and cross references for packages distrMod and RobAStBase, which need not be available. 
++ fixed URL references to nabble.com which are no longer available
+
+##############
 v 2.8
 ##############
 
@@ -24,6 +59,7 @@ user-visible CHANGES:
 + modified devNew(): in interactive mode it now asks the user to shut some devices first when 
   length(dev.list())>20; and in non-interactive mode, when length(dev.list())>20, it shuts 
   the first 15 open devices first; this is documented now in ?devNew
++ included pkgs distrMod and ROptEst into suggested pkgs in DESCRIPTION 
 under the hood:
 + DiscreteDistribution(s) gain a logical slot .finSupport to better control whether the 
   "true" support (not the possibly truncated one in slot support) is infinite (more precisely
@@ -43,6 +79,7 @@ under the hood:
   from q(obj) starts with ..q0fun (if this exists); otherwise, i.e., if ..q0fun does not exist, it uses q(obj) and 
   afterwords stores the old q(obj) as ..q0fun ... 
 + .modifyqgaps can now digest args pfun and qfun with or without arguments log.p and lower.tail
+
   
 bug fixes
 + fixed a (newly introduced) bug in exp() for DiscreteDistribution -- forgot to return obj ...

@@ -1,11 +1,13 @@
 
-R Under development (unstable) (2019-02-27 r76167) -- "Unsuffered Consequences"
-Copyright (C) 2019 The R Foundation for Statistical Computing
+R Under development (unstable) (2022-09-25 r82916 ucrt) -- "Unsuffered Consequences"
+Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -28,7 +30,7 @@ Loading required package: startupmsg
 
 Loading required package: sfsmisc
 :distr>  Object Oriented Implementation of Distributions (version
-:distr>  2.8.0)
+:distr>  2.9.0)
 :distr> 
 :distr>  Attention: Arithmetics on distribution objects are
 :distr>  understood as operations on corresponding random variables
@@ -2009,23 +2011,23 @@ function(x, log = FALSE)
                           d0 <-    log(df1(x))-log(stand)
                      else d0 <- df1(x) / stand
                      return (d0)}
-<bytecode: 0x0000000009f7a470>
-<environment: 0x000000000add1338>
+<bytecode: 0x0000026e095f0de8>
+<environment: 0x0000026e0c5b6f38>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
 {
     p0 <- if (lower.tail) 
         (function (v) 
-        .approxfun(x, y, v, method, yleft, yright, f))(q)
+        .approxfun(x, y, v, method, yleft, yright, f, na.rm))(q)
     else 1 - (function (v) 
-    .approxfun(x, y, v, method, yleft, yright, f))(q)
+    .approxfun(x, y, v, method, yleft, yright, f, na.rm))(q)
     p0 <- if (log.p) 
         log(p0) - log(nm)
     else p0/nm
     return(p0)
 }
-<environment: 0x000000000abcb3d0>
+<environment: 0x0000026e0c3a9a38>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2043,7 +2045,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l0(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x000000000ab8a048>
+<environment: 0x0000026e12383518>
 
 > 
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -2085,23 +2087,23 @@ function(x, log = FALSE)
                           d0 <-    log(df1(x))-log(stand)
                      else d0 <- df1(x) / stand
                      return (d0)}
-<bytecode: 0x0000000009f7a470>
-<environment: 0x000000000f4754e8>
+<bytecode: 0x0000026e095f0de8>
+<environment: 0x0000026e0ffb81a8>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
 {
     p0 <- if (lower.tail) 
         (function (v) 
-        .approxfun(x, y, v, method, yleft, yright, f))(q)
+        .approxfun(x, y, v, method, yleft, yright, f, na.rm))(q)
     else 1 - (function (v) 
-    .approxfun(x, y, v, method, yleft, yright, f))(q)
+    .approxfun(x, y, v, method, yleft, yright, f, na.rm))(q)
     p0 <- if (log.p) 
         log(p0) - log(nm)
     else p0/nm
     return(p0)
 }
-<environment: 0x000000000f1cac70>
+<environment: 0x0000026e0fd68ac8>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2119,7 +2121,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l0(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x000000000f182ad8>
+<environment: 0x0000026e0fd2baa0>
 
 > 
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -3662,7 +3664,7 @@ $crit
 [27,] 4.156142251 33.376842 4.6697545  9.002701
 [28,] 4.226693260 33.376842 4.6697545  9.002701
 [29,] 4.624060013 33.376842 5.5034154 11.218259
-[30,] 5.151578574 33.376842 6.8356100 17.736666
+[30,] 5.151578574 33.376842 6.8356099 17.736666
 
 $err
  sim   pw 
@@ -3827,11 +3829,11 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > F <- ( Norm() + Binom() + Pois() + Exp() ) * 2 - 10
 > system.time(r(F)(10^6))
    user  system elapsed 
-   0.44    0.00    0.50 
+    0.3     0.0     0.3 
 > simplifyr(F, size = 10^6)
 > system.time(r(F)(10^6))
    user  system elapsed 
-   0.20    0.00    0.33 
+   0.09    0.00    0.10 
 > 
 > 
 > cleanEx()
@@ -3866,7 +3868,7 @@ setReplaceMethod("b", "testclass", function(object, value){ object@b <- value; o
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  137.19 9.99 188.2 NA NA 
+Time elapsed:  90.1 4.19 104.75 NA NA 
 > grDevices::dev.off()
 pdf 
  19 

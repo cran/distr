@@ -1,8 +1,8 @@
-## ----knitRPreparations,include=FALSE-------------------------------------
+## ----knitRPreparations,include=FALSE------------------------------------------
 library(knitr)
 opts_chunk$set(tidy=FALSE)
 
-## ----Prepa0, include=FALSE, results="hide"-------------------------------
+## ----Prepa0, include=FALSE, results="hide"------------------------------------
 require(distr)
 
 ## ----Prepa, echo=FALSE, results="asis"------------------------------

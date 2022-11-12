@@ -143,9 +143,10 @@ devNew(...)
 \arguments{
   \item{x}{a (numeric) vector, or (in case of \code{.ULC.cast}) an object of class \code{"AcDcLcDistribution"}}
   \item{y}{a (numeric) vector}
-  \item{f}{a function in one (numeric) argument}
+  \item{f}{in function \code{.primefun}: a function in one (numeric) argument; 
+           in functions \code{.fm}, \code{.fM}, \code{.fM2} a vector of function evaluations}
   \item{lattice}{a lattice (of class \code{Lattice})}
-  \item{support}{a support vector}
+  \item{support}{a support vector / support vector of a univariate discrete distribution}
   \item{eq.space}{logical: shall we check for the support to be equally spaced?} 
   \item{arg}{a formal argument as character}
   \item{fct}{a function}
@@ -202,7 +203,6 @@ devNew(...)
           in \code{\link{gsub}}--- but possibly of length >1).}
  \item{gaps,gaps1,gaps2}{matrices \code{m} with two columns, 
              such that \code{t(m)}, interpreted as vector, is ordered}         
- \item{support}{support vector of a univariate discrete distribution}         
  \item{prob}{probability vector for a univariate discrete distribution}         
  \item{mixDistr}{an object of class \code{UnivarDistrList}}
  \item{mixCoeff}{an object of class \code{numeric}; a probability vector}
@@ -223,7 +223,6 @@ devNew(...)
  \item{qL,qU}{argmin / argmax of p()-method}  
  \item{ngrid}{number of gridpoints}
  \item{fx}{a vector of function evaluations multiplied by the gridwidth}
- \item{f}{a vector of function evaluations}
  \item{nm}{an optional right asymptotic value}
  \item{Arith}{logical; slot \code{.withArith} of a distribution object,
               or logically-``any'' of these slots in a collection of such objects} 
@@ -381,7 +380,7 @@ produces the prime function as a function.
 classes \code{DiscreteDistribution} and \code{AbscontDistribution} for 
 one-sided truncation, using (for slot \code{r}) Peter Dalgaard's clever 
 log-tricks as indicated in 
-\url{http://r.789695.n4.nabble.com/help-on-sampling-from-the-truncated-normal-gamma-distribution-on-the-far-end-probability-is-very-low-td868119.html#a868120}.
+\url{https://stat.ethz.ch/pipermail/r-help/2008-September/174321.html}.
 
 \code{.modifyqgaps} modifies slot \code{q} for objects of class 
      \code{AbscontDistribution} in the presence of gaps, i.e.; if slot

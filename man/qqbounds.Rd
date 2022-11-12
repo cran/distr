@@ -101,8 +101,8 @@ distribution.}
   for the implementation of the Kolmogorov distributions;
   \code{\link[distr]{qqplot}} from package \pkg{distr} for
   comparisons of distributions, and
- \code{\link[distrMod]{qqplot}} from package \pkg{distrMod} for comparisons
- of data with models, as well as  \code{\link[RobAStBase]{qqplot}} for
+ \code{qqplot} from package \pkg{distrMod} for comparisons
+ of data with models, as well as  \code{RobAStBase::qqplot} from package \pkg{RobAStBase} for
  checking of corresponding robust esimators.
 }
 \examples{

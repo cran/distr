@@ -425,7 +425,7 @@ setMethod("initialize", "Binom",
                              list(sizeSub = size, probSub = prob)
                                          )
             .Object@support = 0:size
-            .Object@lattice = new("Lattice", pivot = 0, width = 1, 
+            .Object@lattice = new("Lattice", pivot = 0, width = 1,
                                    Length = size+1)
             .Object@.withArith <- .withArith
             .Object@.finSupport <- c(TRUE,TRUE)

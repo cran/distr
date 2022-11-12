@@ -30,7 +30,7 @@ citEntry(entry = "Article",
   volume       = "59",
   number       = "4",
   pages        = "1--25",
-  url          = "http://www.jstatsoft.org/v59/i04/",
+  doi          =  "10.18637/jss.v059.i04",
   textVersion  =
   paste("Peter Ruckdeschel, Matthias Kohl (2014).",
         "General Purpose Convolution Algorithm in S4 Classes by Means of FFT.",

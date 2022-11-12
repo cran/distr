@@ -38,7 +38,16 @@ setValidity("BinomParameter", function(object){
 ##
 ################################
 
-Binom <- function(size = 1,prob = 0.5) new("Binom", size = size, prob = prob)
+Binom <- function(size = 1,prob = 0.5){
+   if(length(size)!=1 || length(prob)!=1)
+      stop("Arguments 'size' and 'prob' must be of length 1")
+   if(!.isInteger(size) || size < 1 )
+      stop("Argument 'size' must be a positive integer")
+   if(prob < 0  || prob > 1 )
+      stop("Argument 'prob' must be in [0,1]")
+   if(!.isEqual01(prob)) return(new("Binom", size = size, prob = prob))
+   if(prob < 0.1) return(Dirac(0)) else return(Dirac(size))
+}
 
 ## wrapped access methods
 setMethod("prob", "Binom", function(object) prob(param(object)))

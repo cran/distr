@@ -104,10 +104,17 @@ function(e1,e2){
 setMethod("/", c("numeric",
                  "AcDcLcDistribution"),
 function(e1,e2){
-  if (is((e2s <- as.character(deparse(match.call(
-                call = sys.call(sys.parent(1)))$e2))), "try-error"))
-      e2s <- "e2"
-
+  i <- 1; stopit <- FALSE; sL <- length(sys.calls())
+  e2s <- "e2"
+  while(!stopit && i <= sL){
+    i <- i + 1
+	trcall <- sys.call(sys.parent(i))
+    myc <- paste(as.list(trcall)[[1]])
+	if(any(myc == "/")){
+	   e2s <- as.character(deparse(match.call(call=trcall)$e2))
+	   stopit <- TRUE
+	}
+  }  
  e2 <- .ULC.cast(e2)
 
 #         if( is(e2,"AffLinUnivarLebDecDistribution"))
@@ -168,9 +175,17 @@ function(e1,e2){
 setMethod("/", c("AcDcLcDistribution",
                  "AcDcLcDistribution"),
 function(e1,e2){
-  if (is((e2s <- as.character(deparse(match.call(
-                call = sys.call(sys.parent(1)))$e2))), "try-error"))
-      e2s <- "e2"
+  i <- 1; stopit <- FALSE; sL <- length(sys.calls())
+  e2s <- "e2"
+  while(!stopit && i <= sL){
+    i <- i + 1
+	trcall <- sys.call(sys.parent(i))
+    myc <- paste(as.list(trcall)[[1]])
+	if(any(myc == "/")){
+	   e2s <- as.character(deparse(match.call(call=trcall)$e2))
+	   stopit <- TRUE
+	}
+  }  
 
 #         if( is(e2,"AbscontDistribution"))
 #             e2 <- as(as(e2,"AbscontDistribution"), "UnivarLebDecDistribution")
@@ -279,11 +294,19 @@ function(e1,e2){
 
 setMethod("^", c("AcDcLcDistribution","numeric"),
 function(e1,e2){
-  if (is(try(mc <- match.call(call = sys.call(sys.parent(1))),
-         silent=TRUE), "try-error"))
-      {e1s <- "e1"; e2s <- "e2"}
-  else {e1s <- as.character(deparse(mc$e1))
-        e2s <- as.character(deparse(mc$e2))}
+  i <- 1; stopit <- FALSE; sL <- length(sys.calls())
+  e1s <- "e1"; e2s <- "e2"
+  while(!stopit && i <= sL){
+    i <- i + 1
+	trcall <- sys.call(sys.parent(i))
+    myc <- paste(as.list(trcall)[[1]])
+	if(any(myc == "^")){
+	   mc <- match.call(call=trcall)
+	   e1s <- as.character(deparse(mc$e1))
+	   e2s <- as.character(deparse(mc$e2))
+	   stopit <- TRUE
+	}
+  }  
 
   if (length(e2)>1) stop("length of operator must be 1")
   if (isTRUE(all.equal(e2,1))) return(e1)
@@ -369,13 +392,19 @@ function(e1,e2)e1^location(e2))
 setMethod("^", c("AcDcLcDistribution","AcDcLcDistribution"),
 function(e1,e2){
  ### check if there are problems
-  if (is((e1s <- as.character(deparse(match.call(
-                call = sys.call(sys.parent(1)))$e1))), "try-error"))
-      e1s <- "e1"
-  if (is((e2s <- as.character(deparse(match.call(
-                call = sys.call(sys.parent(1)))$e2))), "try-error"))
-      e2s <- "e2"
-
+  i <- 1; stopit <- FALSE; sL <- length(sys.calls())
+  e1s <- "e1"; e2s <- "e2"
+  while(!stopit && i <= sL){
+    i <- i + 1
+	trcall <- sys.call(sys.parent(i))
+    myc <- paste(as.list(trcall)[[1]])
+	if(any(myc == "/")){
+	   mc <- match.call(call=trcall)
+	   e1s <- as.character(deparse(mc$e1))
+	   e2s <- as.character(deparse(mc$e2))
+	   stopit <- TRUE
+	}
+  }  
 # if( is(e1,"AffLinUnivarLebDecDistribution"))
 #     e1 <- as(e1, "UnivarLebDecDistribution")
 # if( is(e2,"AffLinUnivarLebDecDistribution"))
@@ -456,12 +485,19 @@ function(e1,e2){
 setMethod("^", c("numeric","AcDcLcDistribution"),
 function(e1,e2){
  ### check if there are problems
-  if (is((e1s <- as.character(deparse(match.call(
-                call = sys.call(sys.parent(1)))$e1))), "try-error"))
-      e1s <- "e1"
-  if (is((e2s <- as.character(deparse(match.call(
-                call = sys.call(sys.parent(1)))$e2))), "try-error"))
-      e2s <- "e2"
+  i <- 1; stopit <- FALSE; sL <- length(sys.calls())
+  e1s <- "e1"; e2s <- "e2"
+  while(!stopit && i <= sL){
+    i <- i + 1
+	trcall <- sys.call(sys.parent(i))
+    myc <- paste(as.list(trcall)[[1]])
+	if(any(myc == "^")){
+	   mc <- match.call(call=trcall)
+	   e1s <- as.character(deparse(mc$e1))
+	   e2s <- as.character(deparse(mc$e2))
+	   stopit <- TRUE
+	}
+  }  
 
  e2 <- .ULC.cast(e2)
  #e2 <- .if( is(e2,"AffLinUnivarLebDecDistribution"))
