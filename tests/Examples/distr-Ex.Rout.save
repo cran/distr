@@ -30,7 +30,7 @@ Loading required package: startupmsg
 
 Loading required package: sfsmisc
 :distr>  Object Oriented Implementation of Distributions (version
-:distr>  2.9.0)
+:distr>  2.9.1)
 :distr> 
 :distr>  Attention: Arithmetics on distribution objects are
 :distr>  understood as operations on corresponding random variables
@@ -221,6 +221,7 @@ The following objects are masked from 'package:stats':
  [988]  3.547097  3.797206  6.858631  6.332270  3.515725  3.371685  4.436701
  [995]  5.742429 10.011101  6.046900  4.371818  6.658157  7.529650
 > plot(Z+sin(Norm()))
+> 
 > 
 > 
 > cleanEx()
@@ -1649,12 +1650,11 @@ Warning in (new("standardGeneric", .Data = function (object)  :
 > 
 > ### ** Examples
 > 
+> ## IGNORE_RDIFF_BEGIN
 > plot(Maximum(Unif(0,1), Minimum(Unif(0,1), Unif(0,1))))
 > plot(Minimum(Exp(4),4))
-> ## a sometimes lengthy example...
-> ## No test: 
-> plot(Minimum(Norm(),Pois()))
-> ## End(No test)
+> ## IGNORE_RDIFF_END
+> 
 > 
 > 
 > 
@@ -2002,6 +2002,7 @@ Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
 > # squared standard normal distribution
 > x$dfun(4)
 [1] 0.02970112
+> ## IGNORE_RDIFF_BEGIN
 > RtoDPQ(r = rn2, e = 5, n = 1024) # for a better result
 Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
   'integrate()' threw an error ---result may be inaccurate.
@@ -2011,8 +2012,8 @@ function(x, log = FALSE)
                           d0 <-    log(df1(x))-log(stand)
                      else d0 <- df1(x) / stand
                      return (d0)}
-<bytecode: 0x0000026e095f0de8>
-<environment: 0x0000026e0c5b6f38>
+<bytecode: 0x000001a2449549b8>
+<environment: 0x000001a249a93c70>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2027,7 +2028,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x0000026e0c3a9a38>
+<environment: 0x000001a24a6e2820>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2045,9 +2046,9 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l0(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x0000026e12383518>
+<environment: 0x000001a24aa063a8>
 
-> 
+> ## IGNORE_RDIFF_END
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
 > x <- RtoDPQ.d(r = rp2, e = 5)
 > # returns density, cumulative distribution and quantile function of
@@ -2075,9 +2076,9 @@ Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
   'integrate()' threw an error ---result may be inaccurate.
 > # returns density, cumulative distribution and quantile function of
 > # squared standard  normal distribution
-> 
 > x$dfun(4)
 [1] 0.02970112
+> ## IGNORE_RDIFF_BEGIN
 > RtoDPQ(r = rn2, e = 5, n = 1024) # for a better result
 Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
   'integrate()' threw an error ---result may be inaccurate.
@@ -2087,8 +2088,8 @@ function(x, log = FALSE)
                           d0 <-    log(df1(x))-log(stand)
                      else d0 <- df1(x) / stand
                      return (d0)}
-<bytecode: 0x0000026e095f0de8>
-<environment: 0x0000026e0ffb81a8>
+<bytecode: 0x000001a2449549b8>
+<environment: 0x000001a247a3fcc0>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2103,7 +2104,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x0000026e0fd68ac8>
+<environment: 0x000001a247804248>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2121,9 +2122,9 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l0(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x0000026e0fd2baa0>
+<environment: 0x000001a24a7caef0>
 
-> 
+> ## IGNORE_RDIFF_END
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
 > x <- RtoDPQ.d(r = rp2, e = 5)
 > # returns density, cumulative distribution and quantile function of
@@ -3311,24 +3312,6 @@ Distribution Object of Class: AbscontDistribution
 Warning in (new("standardGeneric", .Data = function (object)  :
   arithmetics on distributions are understood as operations on r.v.'s
 see 'distrARITH()'; for switching off this warning see '?distroptions'
-> ## No test: 
-> ## takes a little time
-> N ^ P
-An object of class "UnivarLebDecDistribution"
- --- a Lebesgue decomposed distribution:
-
-    Its discrete part (with weight 0.018000) is a
- Distribution Object of Class: Dirac
- location: 1
- This part is accessible with 'discretePart(<obj>)'.
-
-    Its absolutely continuous part (with weight 0.982000) is a
- Distribution Object of Class: AbscontDistribution
- This part is accessible with 'acPart(<obj>)'.
-Warning in (new("standardGeneric", .Data = function (object)  :
-  arithmetics on distributions are understood as operations on r.v.'s
-see 'distrARITH()'; for switching off this warning see '?distroptions'
-> ## End(No test)
 > 1.2 ^ N
 Distribution Object of Class: AbscontDistribution
 Warning in (new("standardGeneric", .Data = function (object)  :
@@ -3547,83 +3530,87 @@ dev.new(): using pdf(file="Rplots25.pdf")
 > qqplot(Norm(15,sqrt(30)), Chisq(df=15))
 dev.new(): using pdf(file="Rplots26.pdf")
 > ## uses:
+> old.digits <- getOption("digits")
+> on.exit(options(digits = old.digits))
+> options(digits = 6)
 > qqbounds(x = rnorm(30),Norm(),alpha=0.95,n=30,
 +         withConf.pw = TRUE, withConf.sim  = TRUE,
 +         exact.sCI=TRUE ,exact.pCI= TRUE,
 +         nosym.pCI = FALSE)
 $crit
-         sim.left   sim.right     pw.left    pw.right
- [1,] -4.75342431 -0.65851338 -3.20489720 -1.22450257
- [2,] -4.75342431 -0.62786859 -2.96878387 -1.00991953
- [3,] -4.75342431 -0.48907906 -2.12551157 -0.81599319
- [4,] -4.75342431 -0.14236527 -1.34430939 -0.32694784
- [5,] -4.75342431 -0.13150381 -1.32377622 -0.31716055
- [6,] -1.98101408  0.01810505 -1.11760167 -0.13530595
- [7,] -1.95136440  0.02239731 -1.10367551 -0.13880565
- [8,] -1.44266175  0.14586373 -0.94198708 -0.01431303
- [9,] -1.08789212  0.31007752 -0.75820863  0.14743186
-[10,] -0.85461092  0.46717014 -0.60643706  0.29484604
-[11,] -0.71953455  0.58086251 -0.50255647  0.39029899
-[12,] -0.70512476  0.59414947 -0.49050250  0.40063529
-[13,] -0.66874999  0.62878508 -0.46448322  0.43210269
-[14,] -0.55922007  0.74357570 -0.37559435  0.52472432
-[15,] -0.43676870  0.89485306 -0.26811071  0.63539736
-[16,] -0.28610141  1.13031316 -0.12775496  0.78677051
-[17,] -0.22764800  1.24474679 -0.06761286  0.84729933
-[18,] -0.20114842  1.30303675 -0.04422508  0.88010820
-[19,] -0.13752218  1.46644652  0.02299388  0.95186422
-[20,] -0.06043474  1.74299007  0.10343863  1.04812407
-[21,] -0.04514184  1.81743531  0.11945865  1.06834399
-[22,] -0.02356467  1.94359023  0.13794016  1.10171134
-[23,]  0.07056397  4.75342431  0.23448070  1.24216871
-[24,]  0.10350510  4.75342431  0.28501253  1.27926007
-[25,]  0.13204599  4.75342431  0.31768400  1.32475839
-[26,]  0.19993037  4.75342431  0.40195248  1.43600227
-[27,]  0.21639356  4.75342431  0.42090631  1.46676611
-[28,]  0.32650020  4.75342431  0.53689189  1.71296994
-[29,]  0.50434755  4.75342431  0.74664924  2.27691310
-[30,]  0.53293715  4.75342431  0.86771051  2.32285109
+        sim.left  sim.right    pw.left  pw.right
+ [1,] -4.7534243 -0.6585134 -3.2048972 -1.224503
+ [2,] -4.7534243 -0.6278686 -2.9687839 -1.009920
+ [3,] -4.7534243 -0.4890791 -2.1255116 -0.815993
+ [4,] -4.7534243 -0.1423653 -1.3443094 -0.326948
+ [5,] -4.7534243 -0.1315038 -1.3237762 -0.317161
+ [6,] -1.9810141  0.0181051 -1.1176017 -0.135306
+ [7,] -1.9513644  0.0223973 -1.1036755 -0.138806
+ [8,] -1.4426618  0.1458637 -0.9419871 -0.014313
+ [9,] -1.0878921  0.3100775 -0.7582086  0.147432
+[10,] -0.8546109  0.4671701 -0.6064371  0.294846
+[11,] -0.7195346  0.5808625 -0.5025565  0.390299
+[12,] -0.7051248  0.5941495 -0.4905025  0.400635
+[13,] -0.6687500  0.6287851 -0.4644832  0.432103
+[14,] -0.5592201  0.7435757 -0.3755944  0.524724
+[15,] -0.4367687  0.8948531 -0.2681107  0.635397
+[16,] -0.2861014  1.1303132 -0.1277550  0.786771
+[17,] -0.2276480  1.2447468 -0.0676129  0.847299
+[18,] -0.2011484  1.3030367 -0.0442251  0.880108
+[19,] -0.1375222  1.4664465  0.0229939  0.951864
+[20,] -0.0604347  1.7429901  0.1034386  1.048124
+[21,] -0.0451418  1.8174353  0.1194586  1.068344
+[22,] -0.0235647  1.9435902  0.1379402  1.101711
+[23,]  0.0705640  4.7534243  0.2344807  1.242169
+[24,]  0.1035051  4.7534243  0.2850125  1.279260
+[25,]  0.1320460  4.7534243  0.3176840  1.324758
+[26,]  0.1999304  4.7534243  0.4019525  1.436002
+[27,]  0.2163936  4.7534243  0.4209063  1.466766
+[28,]  0.3265002  4.7534243  0.5368919  1.712970
+[29,]  0.5043475  4.7534243  0.7466492  2.276913
+[30,]  0.5329372  4.7534243  0.8677105  2.322851
 
 $err
  sim   pw 
 TRUE TRUE 
 
+> ## other calls:
 > qqbounds(x = rchisq(30,df=4),Chisq(df=4),alpha=0.95,n=30,
 +         withConf.pw = TRUE, withConf.sim  = TRUE,
 +         exact.sCI=FALSE ,exact.pCI= FALSE,
 +         nosym.pCI = FALSE)
 $crit
-         sim.left sim.right     pw.left   pw.right
- [1,] 0.002829761  1.137748 -0.17992340  0.9644015
- [2,] 0.002829761  1.211608 -0.06987765  1.1192553
- [3,] 0.002829761  1.243264 -0.02805790  1.1781644
- [4,] 0.002829761  1.459659  0.21758339  1.5251510
- [5,] 0.866278815  1.979070  0.69889246  2.2122824
- [6,] 0.981404844  2.070123  0.77625753  2.3239269
- [7,] 1.063259165  2.138420  0.83340990  2.4066552
- [8,] 1.470582031  2.514171  1.13688816  2.8499458
- [9,] 1.519153595  2.562366  1.17466419  2.9056414
-[10,] 1.630010561  2.674699  1.26182304  3.0346230
-[11,] 2.068834428  3.148061  1.61671662  3.5674033
-[12,] 2.086637689  3.168164  1.63137488  3.5896954
-[13,] 2.151673235  3.242171  1.68506016  3.6715499
-[14,] 2.202073110  3.300138  1.72680626  3.7354336
-[15,] 2.223362005  3.324783  1.74447525  3.7625351
-[16,] 2.429944589  3.568874  1.91692198  4.0290884
-[17,] 2.519105281  3.677009  1.99184783  4.1461183
-[18,] 3.039770110  4.343959  2.43407284  4.8539351
-[19,] 3.078091024  4.395623  2.46688549  4.9077451
-[20,] 3.259054816  4.644932  2.62224862  5.1652524
-[21,] 3.789577518  5.435110  3.08115703  5.9557985
-[22,] 3.822100350  5.486964  3.10943980  6.0061854
-[23,] 3.943245077  5.684252  3.21493261  6.1960534
-[24,] 4.122356205  5.989142  3.37130226  6.4834571
-[25,] 4.306747173  6.322229  3.53276372  6.7884558
-[26,] 4.320203869  6.347404  3.54456576  6.8111041
-[27,] 4.879536610  7.535746  4.03724746  7.8077080
-[28,] 5.145028093  8.245187  4.27238525  8.3266723
-[29,] 5.756700694 10.847667  4.81521851  9.6869349
-[30,] 5.994361608 13.316045  5.02483153 10.3027427
+        sim.left sim.right    pw.left  pw.right
+ [1,] 0.00282976   1.13775 -0.1799234  0.964402
+ [2,] 0.00282976   1.21161 -0.0698776  1.119255
+ [3,] 0.00282976   1.24326 -0.0280579  1.178164
+ [4,] 0.00282976   1.45966  0.2175834  1.525151
+ [5,] 0.86627881   1.97907  0.6988925  2.212282
+ [6,] 0.98140484   2.07012  0.7762575  2.323927
+ [7,] 1.06325917   2.13842  0.8334099  2.406655
+ [8,] 1.47058203   2.51417  1.1368882  2.849946
+ [9,] 1.51915360   2.56237  1.1746642  2.905641
+[10,] 1.63001056   2.67470  1.2618230  3.034623
+[11,] 2.06883443   3.14806  1.6167166  3.567403
+[12,] 2.08663769   3.16816  1.6313749  3.589695
+[13,] 2.15167324   3.24217  1.6850602  3.671550
+[14,] 2.20207311   3.30014  1.7268063  3.735434
+[15,] 2.22336201   3.32478  1.7444752  3.762535
+[16,] 2.42994459   3.56887  1.9169220  4.029088
+[17,] 2.51910528   3.67701  1.9918478  4.146118
+[18,] 3.03977011   4.34396  2.4340728  4.853935
+[19,] 3.07809102   4.39562  2.4668855  4.907745
+[20,] 3.25905482   4.64493  2.6222486  5.165252
+[21,] 3.78957752   5.43511  3.0811570  5.955798
+[22,] 3.82210035   5.48696  3.1094398  6.006185
+[23,] 3.94324508   5.68425  3.2149326  6.196053
+[24,] 4.12235620   5.98914  3.3713023  6.483457
+[25,] 4.30674717   6.32223  3.5327637  6.788456
+[26,] 4.32020387   6.34740  3.5445658  6.811104
+[27,] 4.87953661   7.53575  4.0372475  7.807708
+[28,] 5.14502809   8.24519  4.2723853  8.326672
+[29,] 5.75670069  10.84767  4.8152185  9.686935
+[30,] 5.99436161  13.31605  5.0248315 10.302743
 
 $err
  sim   pw 
@@ -3631,45 +3618,46 @@ TRUE TRUE
 
 > qqbounds(x = rchisq(30,df=4),Chisq(df=4),alpha=0.95,n=30,
 +         withConf.pw = TRUE, withConf.sim  = TRUE,
-+         exact.sCI=TRUE ,exact.pCI= TRUE,
++         exact.sCI = TRUE ,exact.pCI= TRUE,
 +         nosym.pCI = TRUE)
 $crit
-         sim.left sim.right   pw.left  pw.right
- [1,] 0.002829761  2.134126 0.2156880  1.410666
- [2,] 0.002829761  2.152425 0.2156880  1.410666
- [3,] 0.002829761  2.531086 0.5574596  1.938538
- [4,] 0.002829761  2.585570 0.5574596  1.938538
- [5,] 0.002829761  2.737564 0.7135654  2.169473
- [6,] 0.002829761  2.853570 0.8642217  2.391145
- [7,] 0.002829761  3.085659 1.0115330  2.607870
- [8,] 0.915890180  3.764304 1.4471670  3.254050
- [9,] 1.134329326  4.004773 1.5936432  3.474249
-[10,] 1.376484707  4.316657 1.7421406  3.699448
-[11,] 1.379814589  4.321280 1.7421406  3.699448
-[12,] 1.818514452  5.015942 2.2075257  4.420700
-[13,] 1.972568372  5.305346 2.3720386  4.682284
-[14,] 1.993472522  5.346754 2.3720386  4.682284
-[15,] 2.159465356  5.696018 2.5428143  4.958088
-[16,] 2.384328379  6.238461 2.7209896  5.250935
-[17,] 2.687374258  7.153446 2.9079005  5.564306
-[18,] 2.860531931  7.830148 3.1051539  5.902610
-[19,] 2.933702632  8.169784 3.3147278  6.271588
-[20,] 3.041497970  8.756687 3.3147278  6.271588
-[21,] 3.149613509  9.503283 3.5391176  6.678941
-[22,] 3.292519069 10.988746 3.5391176  6.678941
-[23,] 3.311602828 11.272295 3.7815571  7.135376
-[24,] 3.717589134 33.376842 4.0463677  7.656423
-[25,] 3.836525955 33.376842 4.3395390  8.265854
-[26,] 4.003591043 33.376842 4.6697545  9.002701
-[27,] 4.156142251 33.376842 4.6697545  9.002701
-[28,] 4.226693260 33.376842 4.6697545  9.002701
-[29,] 4.624060013 33.376842 5.5034154 11.218259
-[30,] 5.151578574 33.376842 6.8356099 17.736666
+        sim.left sim.right  pw.left pw.right
+ [1,] 0.00282976   2.13413 0.215688  1.41067
+ [2,] 0.00282976   2.15243 0.215688  1.41067
+ [3,] 0.00282976   2.53109 0.557460  1.93854
+ [4,] 0.00282976   2.58557 0.557460  1.93854
+ [5,] 0.00282976   2.73756 0.713565  2.16947
+ [6,] 0.00282976   2.85357 0.864222  2.39115
+ [7,] 0.00282976   3.08566 1.011533  2.60787
+ [8,] 0.91589018   3.76430 1.447167  3.25405
+ [9,] 1.13432933   4.00477 1.593643  3.47425
+[10,] 1.37648471   4.31666 1.742141  3.69945
+[11,] 1.37981459   4.32128 1.742141  3.69945
+[12,] 1.81851445   5.01594 2.207526  4.42070
+[13,] 1.97256837   5.30535 2.372039  4.68228
+[14,] 1.99347252   5.34675 2.372039  4.68228
+[15,] 2.15946536   5.69602 2.542814  4.95809
+[16,] 2.38432838   6.23846 2.720990  5.25094
+[17,] 2.68737426   7.15345 2.907901  5.56431
+[18,] 2.86053193   7.83015 3.105154  5.90261
+[19,] 2.93370263   8.16978 3.314728  6.27159
+[20,] 3.04149797   8.75669 3.314728  6.27159
+[21,] 3.14961351   9.50328 3.539118  6.67894
+[22,] 3.29251907  10.98875 3.539118  6.67894
+[23,] 3.31160283  11.27230 3.781557  7.13538
+[24,] 3.71758913  33.37684 4.046368  7.65642
+[25,] 3.83652596  33.37684 4.339539  8.26585
+[26,] 4.00359104  33.37684 4.669754  9.00270
+[27,] 4.15614225  33.37684 4.669754  9.00270
+[28,] 4.22669326  33.37684 4.669754  9.00270
+[29,] 4.62406001  33.37684 5.503415 11.21826
+[30,] 5.15157857  33.37684 6.835610 17.73667
 
 $err
  sim   pw 
 TRUE TRUE 
 
+> options(digits = old.digits)
 > 
 > 
 > 
@@ -3687,6 +3675,7 @@ TRUE TRUE
 > 
 > ### ** Examples
 > 
+> ## IGNORE_RDIFF_BEGIN
 > qqplot(Norm(15,sqrt(30)), Chisq(df=15))
 dev.new(): using pdf(file="Rplots27.pdf")
 > ## some discrete Distributions:
@@ -3694,34 +3683,19 @@ dev.new(): using pdf(file="Rplots27.pdf")
 > B <- Binom(size=2000,prob=5/2000)
 > qqplot(B,P)
 dev.new(): using pdf(file="Rplots28.pdf")
-> ## No test: 
-> ## takes too much time for R CMD check --as-cran
-> qqplot(B,P, nosym.pCI=TRUE)
-dev.new(): using pdf(file="Rplots29.pdf")
-> ## End(No test)
+> ## IGNORE_RDIFF_END
 > ## some Lebesgue-Decomposed distributions:
 > mylist <- UnivarLebDecDistribution(discretePart=Binom(3,.3), acPart=Norm(2,2),
 +                acWeight=11/20)
 > mylist2 <- mylist+0.1
+> 
+> ## IGNORE_RDIFF_BEGIN
 > qqplot(mylist,mylist2)
-dev.new(): using pdf(file="Rplots30.pdf")
+dev.new(): using pdf(file="Rplots29.pdf")
 > qqplot(mylist,mylist2,exact.pCI=FALSE,exact.sCI=FALSE)
-dev.new(): using pdf(file="Rplots31.pdf")
-> ## No test: 
-> ## takes too much time for R CMD check --as-cran
-> qqplot(mylist,mylist2,nosym.pCI=TRUE)
-dev.new(): using pdf(file="Rplots32.pdf")
-> ## some ac. distribution with a gap
-> mylist3 <- UnivarMixingDistribution(Unif(0,0.3),Unif(0.6,1),mixCoeff=c(0.8,0.2))
-> gaps(mylist3)
-          [,1]      [,2]
-[1,] 0.3000069 0.5999908
-> mylist4 <- UnivarMixingDistribution(Unif(0,0.3),Unif(0.6,1),mixCoeff=c(0.6,0.4))
-> qqplot(mylist3,mylist4)
-dev.new(): using pdf(file="Rplots33.pdf")
-> qqplot(mylist3,mylist4,nosym.pCI=TRUE)
-dev.new(): using pdf(file="Rplots34.pdf")
-> ## End(No test)
+dev.new(): using pdf(file="Rplots30.pdf")
+> ## IGNORE_RDIFF_END
+> 
 > 
 > 
 > 
@@ -3827,13 +3801,18 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > ### ** Examples
 > 
 > F <- ( Norm() + Binom() + Pois() + Exp() ) * 2 - 10
+> ## IGNORE_RDIFF_BEGIN
 > system.time(r(F)(10^6))
    user  system elapsed 
-    0.3     0.0     0.3 
+   0.28    0.02    0.30 
+> ## IGNORE_RDIFF_END
 > simplifyr(F, size = 10^6)
+> ## IGNORE_RDIFF_BEGIN
 > system.time(r(F)(10^6))
    user  system elapsed 
-   0.09    0.00    0.10 
+   0.11    0.00    0.11 
+> ## IGNORE_RDIFF_END
+> 
 > 
 > 
 > cleanEx()
@@ -3868,7 +3847,7 @@ setReplaceMethod("b", "testclass", function(object, value){ object@b <- value; o
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  90.1 4.19 104.75 NA NA 
+Time elapsed:  23.19 1.83 25.23 NA NA 
 > grDevices::dev.off()
 pdf 
  19 

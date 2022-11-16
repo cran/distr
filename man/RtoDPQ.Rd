@@ -49,8 +49,9 @@ x <- RtoDPQ(r = rn2, e = 4, n = 512)
 # returns density, cumulative distribution and quantile function of
 # squared standard normal distribution
 x$dfun(4)
+## IGNORE_RDIFF_BEGIN
 RtoDPQ(r = rn2, e = 5, n = 1024) # for a better result
-
+## IGNORE_RDIFF_END
 rp2 <- function(n){rpois(n, lambda = 1)^2}
 x <- RtoDPQ.d(r = rp2, e = 5)
 # returns density, cumulative distribution and quantile function of

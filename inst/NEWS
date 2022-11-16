@@ -23,6 +23,9 @@ bug fixes
 	in this deparsing within a try()-catch did not work any longer when called from within a function; 
 	as way out, we now have code which no longer needs the try()-catch and instead climbs up the 
 	parsing tree and searches for the first occurrence of "/" resp. "^" and deparses this
+	... in the end this was more complicated than expected, as the parsing tree could give
+	paste()-results of length > 1... (only popped up in a reverse dependency check through 
+	package distrEllipse)
 
 under the hood:
 + triggered by an email by Santhosh V <Santhosh.V@se.com>, we added a patch to be more careful when producing
@@ -32,6 +35,8 @@ under the hood:
   (and detect that for prob in {0,1} Binom(size, prob) is in fact a Dirac distribution)
 + fixed some broken URLs and changed URLs from http to https where possible
   changed rstudio.com to posit.co
++ triggered by a mail by B. Ripley, for more significant Rdiff's, we delegated some blocks of
+  examples to ## IGNORE_RDIFF_BEGIN <code..> ## IGNORE_RDIFF_END
 
 ##############
 v 2.8.1

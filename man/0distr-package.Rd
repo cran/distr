@@ -44,15 +44,15 @@ corresponding image distributions.
 \details{
 \tabular{ll}{
 Package: \tab distr \cr
-Version: \tab 2.9.0 \cr
-Date: \tab 2022-11-12 \cr
+Version: \tab 2.9.1 \cr
+Date: \tab 2022-11-14 \cr
 Depends: \tab R(>= 3.4), methods, graphics, startupmsg, sfsmisc \cr
 Suggests: \tab distrEx, svUnit (>= 0.7-11), knitr, distrMod, ROptEst \cr
 Imports: \tab stats, grDevices, utils, MASS \cr
 LazyLoad: \tab yes \cr
 License: \tab LGPL-3 \cr
 URL: \tab https://distr.r-forge.r-project.org/\cr
-VCS/SVNRevision: \tab 1370 \cr
+VCS/SVNRevision: \tab 1395 \cr
 }}
 \section{Classes}{
 Distribution classes have a slot \code{param} the class of which
@@ -349,4 +349,5 @@ Y <- Pois(lambda = 3)
 Z <- X+Y  # generates Law of corresponding independent variables
 p(Z)(0.2)
 r(Z)(1000)
-plot(Z+sin(Norm()))}
+plot(Z+sin(Norm()))
+}

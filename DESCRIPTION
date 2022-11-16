@@ -1,6 +1,6 @@
 Package: distr
-Version: 2.9.0
-Date: 2022-11-12
+Version: 2.9.1
+Date: 2022-11-14
 Title: Object Oriented Implementation of Distributions
 Description: S4-classes and methods for distributions.
 Authors@R: c(person("Florian", "Camphausen", role="ctb", comment="contributed as student in
@@ -18,12 +18,12 @@ ByteCompile: yes
 Encoding: latin1
 License: LGPL-3
 URL: http://distr.r-forge.r-project.org/
-LastChangedDate: {$LastChangedDate: 2022-11-12 14:43:27 +0100 (Sa, 12.
+LastChangedDate: {$LastChangedDate: 2022-11-14 20:48:44 +0100 (Mo, 14.
         Nov 2022) $}
-LastChangedRevision: {$LastChangedRevision: 1371 $}
-VCS/SVNRevision: 1370
+LastChangedRevision: {$LastChangedRevision: 1399 $}
+VCS/SVNRevision: 1395
 NeedsCompilation: yes
-Packaged: 2022-11-12 18:25:26 UTC; ruckdesc
+Packaged: 2022-11-14 20:20:11 UTC; ruckdesc
 Author: Florian Camphausen [ctb] (contributed as student in the initial phase
     --2005),
   Matthias Kohl [aut, cph],
@@ -34,4 +34,4 @@ Author: Florian Camphausen [ctb] (contributed as student in the initial phase
     'pKolmogorov2x')
 Maintainer: Peter Ruckdeschel <peter.ruckdeschel@uni-oldenburg.de>
 Repository: CRAN
-Date/Publication: 2022-11-12 19:10:02 UTC
+Date/Publication: 2022-11-16 12:11:00 UTC

@@ -22,10 +22,14 @@ that your numbers are really random. }
 
 \examples{
 F <- ( Norm() + Binom() + Pois() + Exp() ) * 2 - 10
+## IGNORE_RDIFF_BEGIN
 system.time(r(F)(10^6))
+## IGNORE_RDIFF_END
 simplifyr(F, size = 10^6)
-system.time(r(F)(10^6))}
-
+## IGNORE_RDIFF_BEGIN
+system.time(r(F)(10^6))
+## IGNORE_RDIFF_END
+}
 \keyword{math}
 \keyword{distribution}
 \keyword{arith}

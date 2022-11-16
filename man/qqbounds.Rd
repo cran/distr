@@ -108,18 +108,23 @@ distribution.}
 \examples{
 qqplot(Norm(15,sqrt(30)), Chisq(df=15))
 ## uses:
+old.digits <- getOption("digits")
+on.exit(options(digits = old.digits))
+options(digits = 6)
 qqbounds(x = rnorm(30),Norm(),alpha=0.95,n=30,
         withConf.pw = TRUE, withConf.sim  = TRUE,
         exact.sCI=TRUE ,exact.pCI= TRUE,
         nosym.pCI = FALSE)
+## other calls:
 qqbounds(x = rchisq(30,df=4),Chisq(df=4),alpha=0.95,n=30,
         withConf.pw = TRUE, withConf.sim  = TRUE,
         exact.sCI=FALSE ,exact.pCI= FALSE,
         nosym.pCI = FALSE)
 qqbounds(x = rchisq(30,df=4),Chisq(df=4),alpha=0.95,n=30,
         withConf.pw = TRUE, withConf.sim  = TRUE,
-        exact.sCI=TRUE ,exact.pCI= TRUE,
+        exact.sCI = TRUE ,exact.pCI= TRUE,
         nosym.pCI = TRUE)
+options(digits = old.digits)
 }
 \keyword{hplot}
 \keyword{distribution}
