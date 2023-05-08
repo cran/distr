@@ -43,12 +43,15 @@ and, as well as the quantile function, is also created on the basis of \eqn{n} p
 \code{\link{approxfun}}, 
 \code{\link{ecdf}}}
 \examples{
+set.seed(20230508)
 rn2 <- function(n)ifelse(rbinom(n,1,0.3),rnorm(n)^2,rbinom(n,4,.3))
 x <- RtoDPQ.LC(r = rn2, e = 4, n = 512)
 plot(x)
 # returns density, cumulative distribution and quantile function of
 # squared standard normal distribution
+## IGNORE_RDIFF_BEGIN
 d.discrete(x)(4)
+## IGNORE_RDIFF_END
 x2 <- RtoDPQ.LC(r = rn2, e = 5, n = 1024) # for a better result
 plot(x2)
 }

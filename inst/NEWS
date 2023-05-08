@@ -8,6 +8,16 @@
  information)
  
 ##############
+v 2.9.2
+##############
+under the hood:
++ included pkg RobAStBase into "Enhances" in the DESCRIPTION file
++ moved some code in the help to RtoDPQ.d relying on the RNG into IGNORE_RDIFF 
++ transformed CITATION file to new format, i.e., bibentry() instead of citEntry(),
+        c(as.person( .... ), as.person( .... ), ...), instead of 
+		as.personList(....) 
+
+##############
 v 2.9
 ##############
 

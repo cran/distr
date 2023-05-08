@@ -1,4 +1,4 @@
-## to be exported: berechnet Konfidenzbänder, simultan und punktweise
+## to be exported: computes confidence bands, both simultaneously and pointwise
 qqbounds <- function(x,D,alpha,n,withConf.pw, withConf.sim,
                      exact.sCI=(n<100),exact.pCI=(n<100),
                      nosym.pCI = FALSE, debug = FALSE){

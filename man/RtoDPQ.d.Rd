@@ -37,12 +37,13 @@ RtoDPQ.d(r, e = getdistrOption("RtoDPQ.e"))
 \code{\link{approxfun}}, 
 \code{\link{ecdf}}}
 \examples{
+set.seed(20230508)
 rn2 <- function(n){rnorm(n)^2}
 x <- RtoDPQ(r = rn2, e = 4, n = 512)
 # returns density, cumulative distribution and quantile function of
 # squared standard  normal distribution
-x$dfun(4)
 ## IGNORE_RDIFF_BEGIN
+x$dfun(4)
 RtoDPQ(r = rn2, e = 5, n = 1024) # for a better result
 ## IGNORE_RDIFF_END
 rp2 <- function(n){rpois(n, lambda = 1)^2}
