@@ -62,6 +62,44 @@ setMethod("initialize", "Naturals",
 #            .Object@.withArith <- .withArith
 #            .Object })
 
+   ### -------------------------------------------------------------
+   ### Comment added 20240127
+   ### -------------------------------------------------------------
+   ### We alway had to do some fiddling with the interaction of setting a 
+   ### prototype in our S4 class definitions, and, at the same time using a user-defined 
+   ### initialize method. 
+   ###
+   ### This initialize method is called automatically in every call to new("<class>", ... )
+   ### whether or not arg "..." is empty or not. 
+   ###
+   ### Our system was (and is) to allow for new("<class>"), i.e., with empty "...", 
+   ### and if so, filling all slots in a consistent way through the prototype.
+   ### Otherwise "..." is not empty, so [for our classes] must contain information
+   ### on the distribution in respective r, d, p, and q arguments.
+   ### Non of them is obligatory, i.e., any of these can be left NULL (but not all of
+   ### them). So the task of our initialize method then is to check whether the 
+   ### inforamtion passed on the r, d, p, and q slots through the "..." arg of new(...)
+   ### is sufficient to create the respective distribution.
+   ###
+   ### In a clean code world, ideally this check whether "..." is empty or not 
+   ### should be done in the code of new(...), which is not ours though; so this
+   ### is not feasible.
+   ### Hence, our initialize method must find out whether the new() call, from which
+   ### the initialize method itself has been called, has an empty "..." argument or not. 
+   ### This has always been done through mounting up the system.call stack.
+   ### More specifically, we get the calling new() call mounting up three nodes, 
+   ### i.e., through sys.calls()[[LL-3]], where LL is the depth of the initialize call. 
+   ###
+   ### By a change made by R Core in Dec 2023 to robustify calls to functions
+   ### in the methods package, these (automatic) calls to new() now have a NAMESPACE
+   ### qualifier "methods::" prepended. 
+   ###
+   ### So to get everything right in our package, instead of checking whether 
+   ### sys.calls()[[LL-3]] == "new(toDef)" or sys.calls()[[LL-3]] == "new(<Classname>)",
+   ### we now also include the checks with the prepended "methods::"
+   ### -------------------------------------------------------------
+
+
 ## class AbscontDistribution
 setMethod("initialize", "AbscontDistribution",
           function(.Object, r = NULL, d = NULL, p = NULL, q = NULL, 
@@ -73,11 +111,12 @@ setMethod("initialize", "AbscontDistribution",
                    ) {
             ## don't use this if the call is new("AbscontDistribution")
             LL <- length(sys.calls())
-            if(sys.calls()[[LL-3]] == "new(toDef)")
-               {return(.Object)}
-            if(sys.calls()[[LL-3]] == "new(\"AbscontDistribution\")")
-               {return(.Object)}
-            
+			
+			if((sys.calls()[[LL-3]]=="new(\"AbscontDistribution\")")||
+			   (sys.calls()[[LL-3]]=="methods::new(\"AbscontDistribution\")")||
+			   (sys.calls()[[LL-3]]=="new(toDef)")||
+		       (sys.calls()[[LL-3]]=="methods::new(toDef)")) return(.Object)
+			   
             if(is.null(r))
                warning("you have to specify slot r at least")
                           
@@ -167,12 +206,13 @@ setMethod("initialize", "DiscreteDistribution",
                    .finSupport = c(TRUE,TRUE),
                    Symmetry = NoSymmetry()) {
 
-            ## don't use this if the call is new("DiscreteDistribution")
+            ## don't use this if the call is [methods::]new("DiscreteDistribution")
+            ## or if the call is [methods::]new(toDef)
             LL <- length(sys.calls())
-            if(sys.calls()[[LL-3]] == "new(toDef)")
-               {return(.Object)}
-            if(sys.calls()[[LL-3]] == "new(\"DiscreteDistribution\")")
-               {return(.Object)}
+			if((sys.calls()[[LL-3]]=="new(\"DiscreteDistribution\")")||
+			   (sys.calls()[[LL-3]]=="methods::new(\"DiscreteDistribution\")")|| 
+			   (sys.calls()[[LL-3]]=="new(toDef)")|| 
+			   (sys.calls()[[LL-3]]=="methods::new(toDef)")) return(.Object)
             
             if(is.null(r))
                warning("you have to specify slot r at least")
@@ -239,7 +279,8 @@ setMethod("initialize", "AffLinDiscreteDistribution",
                    Symmetry = NoSymmetry(), .finSupport = c(TRUE,TRUE)) {
    ## don't use this if the call is new("DiscreteDistribution")
    LL <- length(sys.calls())
-   if(sys.calls()[[LL-3]] == "new(\"AffLinDiscreteDistribution\")")
+   if((sys.calls()[[LL-3]] == "new(\"AffLinDiscreteDistribution\")" )||
+      (sys.calls()[[LL-3]] == "methods::new(\"AffLinDiscreteDistribution\")" ))
         X <- new("DiscreteDistribution")
    else X <- new("DiscreteDistribution", r = r, d = d, p = p, q = q, support = support, 
              param = param, img = img, .withSim = .withSim, 
@@ -273,7 +314,9 @@ setMethod("initialize", "LatticeDistribution",
 
 
              LL <- length(sys.calls())
-             if(sys.calls()[[LL-3]] == "new(\"LatticeDistribution\")")
+             syscl <- sys.calls()[[LL-3]]
+             if((sys.calls()[[LL-3]] == "new(\"LatticeDistribution\")" )||
+			    (sys.calls()[[LL-3]] == "methods::new(\"LatticeDistribution\")" ))
              D <- new("DiscreteDistribution")
              else
              D <- new("DiscreteDistribution", r = r, d = d, p = p, 
@@ -319,7 +362,9 @@ setMethod("initialize", "AffLinLatticeDistribution",
                    Symmetry = NoSymmetry(), .finSupport = c(TRUE, TRUE)) {
 
    LL <- length(sys.calls())
-   if(sys.calls()[[LL-3]] == "new(\"AffLinLatticeDistribution\")")
+   syscl <- sys.calls()[[LL-3]]
+   if((sys.calls()[[LL-3]] == "new(\"AffLinLatticeDistribution\")" )||
+      (sys.calls()[[LL-3]] == "methods::new(\"AffLinLatticeDistribution\")" ))
         X <- new("LatticeDistribution")
    else X <- new("LatticeDistribution", r = r, d = d, p = p, q = q, 
                   support = support, lattice = lattice, param = param, 

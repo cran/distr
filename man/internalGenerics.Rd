@@ -13,7 +13,7 @@
 \usage{
 distribution(object)
 samplesize(object, ...)
-x <- samplesize(object, value)
+samplesize(object) <- value
 }
 \arguments{
   \item{object}{ the first argument to dispatch on in the actual methods. }

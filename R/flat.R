@@ -22,7 +22,12 @@ flat.LCD <- function(..., mixCoeff = NULL, withgaps = getdistrOption("withgaps")
     
     ldots <- ldots[mixCoeff >ep]
     l <- length(ldots)
-    mixCoeff <- mixCoeff[mixCoeff >ep]
+	### new 20240127: if only one mixCoeff is really different from 0 catch this
+	if(l == 1) 
+       return( ldots[mixCoeff >ep] )
+    
+	mixCoeff <- mixCoeff[mixCoeff >ep]
+	
         
     mixDistr.c <- lapply(ldots, function(x)acPart(x))
     mixDistr.d <- lapply(ldots, function(x)discretePart(x))
@@ -50,7 +55,10 @@ flat.LCD <- function(..., mixCoeff = NULL, withgaps = getdistrOption("withgaps")
     finSupport <- c(TRUE,TRUE)
     if(l.d>0){
        mixDistr.dfs <- sapply(mixDistr.d, function(x) x@.finSupport)
-       finSupport <- apply(mixDistr.dfs,1,all)
+       ## 20230720: detected by Christoph Dalitz <christoph.dalitz@hs-niederrhein.de>
+       ## can be a vector if the list elements are all Dirac distributions55 	  	            
+	   if(is.null(dim(mixDistr.dfs))) mixDistr.dfs <- matrix(mixDistr.dfs,nrow=1)       
+	   finSupport <- apply(mixDistr.dfs,1,all)
     }
     if(l.c){
     rnew.c <- .rmixfun(mixDistr = mixDistr.c, mixCoeff = mixCoeff.c)

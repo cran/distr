@@ -1,7 +1,7 @@
 
-R version 4.1.2 Patched (2022-01-17 r81511) -- "Bird Hippie"
-Copyright (C) 2022 The R Foundation for Statistical Computing
-Platform: i386-w64-mingw32/i386 (32-bit)
+R Under development (unstable) (2024-01-25 r85826 ucrt) -- "Unsuffered Consequences"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -30,7 +30,7 @@ Loading required package: startupmsg
 
 Loading required package: sfsmisc
 :distr>  Object Oriented Implementation of Distributions (version
-:distr>  2.9.2)
+:distr>  2.9.3)
 :distr> 
 :distr>  Attention: Arithmetics on distribution objects are
 :distr>  understood as operations on corresponding random variables
@@ -2006,16 +2006,18 @@ Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
 > # squared standard normal distribution
 > ## IGNORE_RDIFF_BEGIN
 > x$dfun(4)
-[1] 0.0254851
+[1] 0.02548597
 > RtoDPQ(r = rn2, e = 5, n = 1024) # for a better result
+Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
+  'integrate()' threw an error ---result may be inaccurate.
 $dfun
 function(x, log = FALSE)
                     {if (log)
                           d0 <-    log(df1(x))-log(stand)
                      else d0 <- df1(x) / stand
                      return (d0)}
-<bytecode: 0x09c2ef58>
-<environment: 0x0f6c8ee0>
+<bytecode: 0x00000151e3e59ca8>
+<environment: 0x00000151ed43d9a8>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2030,7 +2032,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x06fd13f0>
+<environment: 0x00000151ea9a1628>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2048,7 +2050,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l0(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x0afadf58>
+<environment: 0x00000151e625e970>
 
 > ## IGNORE_RDIFF_END
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -2079,16 +2081,18 @@ function (p, lower.tail = TRUE, log.p = FALSE)
 > # squared standard  normal distribution
 > ## IGNORE_RDIFF_BEGIN
 > x$dfun(4)
-[1] 0.0254851
+[1] 0.02548597
 > RtoDPQ(r = rn2, e = 5, n = 1024) # for a better result
+Warning in .makeDNew(dxy$x, dxy$y, standM = "int") :
+  'integrate()' threw an error ---result may be inaccurate.
 $dfun
 function(x, log = FALSE)
                     {if (log)
                           d0 <-    log(df1(x))-log(stand)
                      else d0 <- df1(x) / stand
                      return (d0)}
-<bytecode: 0x09c2ef58>
-<environment: 0x0a602690>
+<bytecode: 0x00000151e3e59ca8>
+<environment: 0x00000151eef26f10>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2103,7 +2107,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x0a49bf18>
+<environment: 0x00000151e7cbb740>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2121,7 +2125,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l0(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x0a483368>
+<environment: 0x00000151e7c87b68>
 
 > ## IGNORE_RDIFF_END
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -3625,11 +3629,11 @@ $crit
         sim.left sim.right   pw.left pw.right
  [1,] 0.00282976   1.90952 0.0323441  1.04733
  [2,] 0.00282976   1.94981 0.0323440  1.04733
- [3,] 0.00282976   2.03254 0.0323440  1.04733
+ [3,] 0.00282976   2.03254 0.0323441  1.04733
  [4,] 0.00282976   2.22519 0.2156880  1.41067
  [5,] 0.00282976   2.70502 0.7135654  2.16947
  [6,] 0.00282976   2.71956 0.7135654  2.16947
- [7,] 0.00282976   3.02067 1.0115330  2.60787
+ [7,] 0.00282976   3.02067 1.0115331  2.60787
  [8,] 0.00282976   3.15281 1.0115330  2.60787
  [9,] 0.20789178   3.28363 1.1570344  2.82255
 [10,] 0.78261897   3.63713 1.4471670  3.25405
@@ -3648,11 +3652,11 @@ $crit
 [23,] 3.22446707  10.17629 3.5391176  6.67894
 [24,] 3.43239404  14.95072 3.7815571  7.13538
 [25,] 3.75255614  33.37684 4.3395390  8.26585
-[26,] 3.76891063  33.37684 4.3395390  8.26585
+[26,] 3.76891063  33.37684 4.3395389  8.26585
 [27,] 4.23622865  33.37684 5.0503475  9.93760
 [28,] 4.29137291  33.37684 5.0503475  9.93760
 [29,] 4.30493804  33.37684 5.0503475  9.93760
-[30,] 4.68094638  33.37684 5.5034154 11.21826
+[30,] 4.68094638  33.37684 5.5034155 11.21826
 
 $err
  sim   pw 
@@ -3806,13 +3810,13 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > ## IGNORE_RDIFF_BEGIN
 > system.time(r(F)(10^6))
    user  system elapsed 
-   0.38    0.00    0.37 
+   0.31    0.01    0.33 
 > ## IGNORE_RDIFF_END
 > simplifyr(F, size = 10^6)
 > ## IGNORE_RDIFF_BEGIN
 > system.time(r(F)(10^6))
    user  system elapsed 
-   0.13    0.00    0.13 
+   0.11    0.00    0.11 
 > ## IGNORE_RDIFF_END
 > 
 > 
@@ -3849,7 +3853,7 @@ setReplaceMethod("b", "testclass", function(object, value){ object@b <- value; o
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  25.75 2.3 29.29 NA NA 
+Time elapsed:  25.53 1.97 28.05 NA NA 
 > grDevices::dev.off()
 pdf 
  19 

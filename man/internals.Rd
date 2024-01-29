@@ -60,6 +60,8 @@
 \alias{.convDiscrDiscr}
 \alias{.inWithTol}
 \alias{.panel.mingle}
+\alias{.consolidategaps}
+\alias{.List}
 \alias{devNew}
 
 \title{Internal functions of package distr}
@@ -169,7 +171,7 @@ devNew(...)
   \item{lastCall}{unevaluated R-Code ---gives how the result of a call to 
                    \code{q(e1)} is further transformed}
   \item{Cont}{logical: \code{TRUE} if \code{object} is continuous}
-  \item{DClass}{character: name of distribution class}
+  \item{Dclass}{character: name of distribution class}
   \item{D}{a distribution object}
   \item{i}{an integer}
   \item{yleft, yright}{extrapolation value beyond left/right endpoint of grid}

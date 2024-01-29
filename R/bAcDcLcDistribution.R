@@ -36,7 +36,11 @@ function(e1,e2){
          e12pp.f <- discretePart(e1DC$pos$D)@.finSupport[2] &
                     discretePart(e2DC$pos$D)@.finSupport[2]
          d12pp <- discretePart(e12pp)
-         d12pp@.finSupport <- e12pp.f
+       ## 20230720: detected by Christoph Dalitz <christoph.dalitz@hs-niederrhein.de>
+	   ## concerns lines 43, 53, 63, and 76
+	   ## .finSupport must a vector of length 2, 
+	   ## pops up if all e12pp, e12pm, e12mp, e12mm are Dirac distributions 
+         d12pp@.finSupport <- c(TRUE,e12pp.f)
          discretePart(e12pp) <- d12pp
 
          e12mm <- if(w12mm>ep)
@@ -46,7 +50,7 @@ function(e1,e2){
          e12mm.f <- discretePart(e1DC$neg$D)@.finSupport[1]&
                     discretePart(e2DC$neg$D)@.finSupport[1]
          d12mm <- discretePart(e12mm)
-         d12mm@.finSupport <- e12mm.f
+         d12mm@.finSupport <- c(TRUE,e12mm.f)
          discretePart(e12mm) <- d12mm
 
          e12pm <- if(w12pm>ep)
@@ -56,7 +60,7 @@ function(e1,e2){
          e12pm.f <- discretePart(e1DC$pos$D)@.finSupport[2] &
                     discretePart(e2DC$neg$D)@.finSupport[1]
          d12pm <- discretePart(e12pm)
-         d12pm@.finSupport <- e12pm.f
+         d12pm@.finSupport <- c(e12pm.f,TRUE)
          discretePart(e12pm) <- d12pm
 
          if(identical(e1,e2)){
@@ -69,7 +73,7 @@ function(e1,e2){
                 e12mp.f <- discretePart(e1DC$neg$D)@.finSupport[1] &
                            discretePart(e2DC$pos$D)@.finSupport[2]
                 d12mp <- discretePart(e12mp)
-                d12mp@.finSupport <- e12mp.f
+                d12mp@.finSupport <- c(e12mp.f,TRUE)
                 discretePart(e12mp) <- d12mp
          }
          e12pm <- .del0dmixfun(e12pm)

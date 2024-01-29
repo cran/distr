@@ -236,10 +236,11 @@ function(e1,e2){
                    w2 <- width(lattice(e2.L))
                    W <- sort(abs(c(w1,w2)))
                    if (abs(abs(w1)-abs(w2))<getdistrOption("DistrResolution") ||
-                       W[2] %% W[1] < getdistrOption("DistrResolution") )
+                       W[2] %% W[1] < getdistrOption("DistrResolution") ){
                        res <- e1.L + e2.L
                        res@.finSupport <- e1.L@.finSupport&e2.L@.finSupport
                        return(res)
+					   }
                   }
             res <- .convDiscrDiscr(e1,e2)
             res@.finSupport <- e1@.finSupport&e2@.finSupport

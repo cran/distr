@@ -8,6 +8,27 @@
  information)
  
 ##############
+v 2.9.3
+##############
+bug fixes
++ detected by Christoph Dalitz <christoph.dalitz@hs-niederrhein.de>
+  when multiplying DiscreteDistributions, the positive and negative parts of 
+  which are Dirac Distributions, .finSupport was not returned of length 2 
+  (as needed), 
++ fixed a glitch in "+"("DiscreteDistribution","DiscreteDistribution") as 
+  spotted by christoph.dalitz@hs-niederrhein.de
++ fixed some documentation glitches in internal .Rd files as noted in a mail
+  by K. Hornik, Dec, 15, 2023, with some helpful hints by Michael Lawrence
+  in a mail Dec, 19, 2023
+
+under the hood:
++ in changes in R-Core in the methods package, internal calls to new()
+  were prepended by a NAMESPACE qualifier methods:: in Dec 2023;
+  we had to accomodate for this in our initialize methods; for details
+  see ll.64-100 in code file initialize.R
+
+
+##############
 v 2.9.2
 ##############
 under the hood:
