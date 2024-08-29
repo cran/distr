@@ -1,4 +1,4 @@
-16aef97ccebd105074984c12ce31e668 *DESCRIPTION
+40b92f3e8570264722594cd8f62875f1 *DESCRIPTION
 e37c3e357e2ad3783ab86d6380bd52a3 *NAMESPACE
 696b3ef579225ae9744146e2843fbb13 *R/0distrOptions.R
 949a80d37311304a620c5ac521b77dc7 *R/0pre230.R
@@ -63,7 +63,7 @@ dc7a5b7700c094da4b79d902fdc04744 *R/internalUtils_trunc.R
 9033f9540bfee118be7eb728b1e341b3 *R/internals-qqplot.R
 4ecad5a4810a03275b010bf6fd28a02f *R/liesInSupport.R
 5021fe6e123a2bc703af98d116c87dd0 *R/makeAbscontDistribution.R
-ae96935a420b127ffbbf076aa0bc107c *R/makedots.R
+2dca1fc20365b51518374238cdd8ccfb *R/makedots.R
 bea7ae4dfb9e7ab226ca558e5fc2140b *R/plot-methods.R
 a05bf69e6cfaa17d4317a438e2761b1b *R/plot-methods_LebDec.R
 edefb047d333823061e67f1ad5ae9e07 *R/print-show-methods.R
@@ -74,7 +74,7 @@ c4db8249838eccc3f812d99cdf434757 *R/solve.R
 99927a00fe5497c7dcf24962dc526593 *R/sqrt.R
 322356fb8b12ede0e68e78473e3d882b *R/standardMethods.R
 a155f59fc7d1df5e0d7caa432252c375 *R/versionManagement.R
-3eaf37ddc43a0ce6caaeb5fa22e9ca32 *build/vignette.rds
+a32f674f9627cba07df0f07956850a4c *build/vignette.rds
 fd00a28325a3cc35aa698c74b0d17288 *demo/00Index
 634b4288cd2e515a73538da5037c8088 *demo/ComparisonFFTandRtoDPQ.R
 936d4064bfee1998acd839abd2d10136 *demo/ConvolutionNormalDistr.R
@@ -87,12 +87,12 @@ cac010d5cb45ebfd07f82ea5807cfa59 *demo/StationaryRegressorDistr.R
 eb180e9dabf167eb83a2f55803bfb360 *inst/ARITHMETICS
 13c6ed5f24746dde091251e9dd9263f9 *inst/CITATION
 d368bc5784520ffb7b24b61c10449ba4 *inst/MASKING
-da3a11ea00eb8b81a7e0c3446a3595bc *inst/NEWS
+feabe4266f32acda0bc6235a49961d94 *inst/NEWS
 1d30d9747b10820dbd230ce89d38aedc *inst/TOBEDONE
 6be554af0b37a6322ad7c7acfeaa5d54 *inst/doc/newDistributions-knitr.R
 523120ace0167e6ac89ad090d8d07852 *inst/doc/newDistributions-knitr.Rnw
-1de119fc768177605cb241e35cce769e *inst/doc/newDistributions-knitr.pdf
-eb9e30e28f4572fd8085ab398b782ee0 *man/0distr-package.Rd
+5ad08f7e98df25689d7342af0c421c69 *inst/doc/newDistributions-knitr.pdf
+8edd2ae98714cf5ba476c643bb066c22 *man/0distr-package.Rd
 442cb000b5378a88f611c3937ce9b3e7 *man/AbscontDistribution-class.Rd
 ac02e6ecc222f330284da9b1fd4a9fd6 *man/AbscontDistribution.Rd
 2bb9a21db40b39dbab2c378443447c95 *man/Arcsine-class.Rd
@@ -190,8 +190,8 @@ fa643cda1d7c96c4b6d48500124992c6 *man/df2-methods.Rd
 fef156158d9377bfe9fb870cf6a130a2 *man/dim-methods.Rd
 61169fda5e75a31e7c54315d124645c3 *man/dimension-methods.Rd
 cb7b703de63b68d4667938d79fec0e3c *man/distr-defunct.Rd
-52a2c171a83f8c73edc744d4bb96f79d *man/distrARITH.Rd
-3ad3ae7e683e6f2d81fc24e758c6e07e *man/distrMASK.Rd
+c7e4814e3f1b145052dada8b05960e73 *man/distrARITH.Rd
+994cc0984b62d211ed55ad7a713a5fff *man/distrMASK.Rd
 5d1b64cb3132beecc1131b3c3438e3ca *man/distroptions.Rd
 2e1d64c79a9930f0e44c32ac98906932 *man/flat.LCD.Rd
 55b6a0b930a302412e9f61e9697086c7 *man/flat.mix.Rd
@@ -249,8 +249,8 @@ a92ef43f0d3d247e1eae31a07168fa50 *man/versionmanagement.Rd
 9672ea38bf1ed08811e61942f2070e6f *man/width-methods.Rd
 7c80273a5d30d8b1aa9004dd7a32eda0 *src/distr.h
 615cc0dbcef269d8f940bd973772fff4 *src/init.c
-ce1906a10b91d7d8256c3992cb7cdadf *src/ks.c
-d73821c67efd5366ff5f3fa78fc04575 *tests/Examples/distr-Ex.Rout.save
+e5537846e07896b0efe648693664d33e *src/ks.c
+7d30681ac323dfd0bff7a93264f06b22 *tests/Examples/distr-Ex.Rout.save
 eb8eeadcc51cc4f759c95a241a517d92 *tests/doSvUnit.R
 b97dcd531faf153ca9bdb41bed31332a *tests/unitTests/runit.dontrunMinimum.R
 413c9d30a61f6f0c78608ebf9315e842 *tests/unitTests/runit.dontrunMinimum.save

@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2024-01-25 r85826 ucrt) -- "Unsuffered Consequences"
+R Under development (unstable) (2024-08-17 r87027 ucrt) -- "Unsuffered Consequences"
 Copyright (C) 2024 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64
 
@@ -23,14 +23,14 @@ Type 'q()' to quit R.
 > options(pager = "console")
 > library('distr')
 Loading required package: startupmsg
-:startupmsg>  Utilities for Start-Up Messages (version 0.9.6)
+:startupmsg>  Utilities for Start-Up Messages (version 0.9.7)
 :startupmsg> 
 :startupmsg>  For more information see ?"startupmsg",
 :startupmsg>  NEWS("startupmsg")
 
 Loading required package: sfsmisc
 :distr>  Object Oriented Implementation of Distributions (version
-:distr>  2.9.3)
+:distr>  2.9.5)
 :distr> 
 :distr>  Attention: Arithmetics on distribution objects are
 :distr>  understood as operations on corresponding random variables
@@ -2016,8 +2016,8 @@ function(x, log = FALSE)
                           d0 <-    log(df1(x))-log(stand)
                      else d0 <- df1(x) / stand
                      return (d0)}
-<bytecode: 0x00000151e3e59ca8>
-<environment: 0x00000151ed43d9a8>
+<bytecode: 0x000002453f54a140>
+<environment: 0x0000024542e328b8>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2032,7 +2032,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x00000151ea9a1628>
+<environment: 0x000002453ed26e80>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2050,7 +2050,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l0(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x00000151e625e970>
+<environment: 0x000002453d54fda0>
 
 > ## IGNORE_RDIFF_END
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -2091,8 +2091,8 @@ function(x, log = FALSE)
                           d0 <-    log(df1(x))-log(stand)
                      else d0 <- df1(x) / stand
                      return (d0)}
-<bytecode: 0x00000151e3e59ca8>
-<environment: 0x00000151eef26f10>
+<bytecode: 0x000002453f54a140>
+<environment: 0x00000245421bfb20>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2107,7 +2107,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x00000151e7cbb740>
+<environment: 0x000002453f8677b8>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2125,7 +2125,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l0(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x00000151e7c87b68>
+<environment: 0x000002454402d548>
 
 > ## IGNORE_RDIFF_END
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -2795,6 +2795,7 @@ discreteWeight
 > 
 > ### ** Examples
 > 
+> ## IGNORE_RDIFF_BEGIN
 > distrARITH()
 ######################################################################
 #  On arithmetics operating on distributions in package "distr"       
@@ -2870,6 +2871,7 @@ filled by simulating a large number of random variables, hence they are
 stochastic estimates. 
 
 So don't be surprised if they will change from call to call.
+> ## IGNORE_RDIFF_END
 > 
 > 
 > 
@@ -2886,6 +2888,7 @@ So don't be surprised if they will change from call to call.
 > 
 > ### ** Examples
 > 
+> ## IGNORE_RDIFF_BEGIN
 > distrMASK()
 ######################################################################
 #  On masking of and by other functions in package "distr"       
@@ -2923,6 +2926,7 @@ matrices and an adapted eigen decomposition for 'PosSemDefSymmMatrix'.
 *** non-intentional masking: ***
 
 ... nothing discovered so far ...
+> ## IGNORE_RDIFF_END
 > 
 > 
 > 
@@ -3810,7 +3814,7 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > ## IGNORE_RDIFF_BEGIN
 > system.time(r(F)(10^6))
    user  system elapsed 
-   0.31    0.01    0.33 
+   0.37    0.00    0.39 
 > ## IGNORE_RDIFF_END
 > simplifyr(F, size = 10^6)
 > ## IGNORE_RDIFF_BEGIN
@@ -3853,7 +3857,7 @@ setReplaceMethod("b", "testclass", function(object, value){ object@b <- value; o
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  25.53 1.97 28.05 NA NA 
+Time elapsed:  27.81 2.26 30.89 NA NA 
 > grDevices::dev.off()
 pdf 
  19 
