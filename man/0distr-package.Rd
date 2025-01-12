@@ -44,15 +44,15 @@ corresponding image distributions.
 \details{
 \tabular{ll}{
 Package: \tab distr \cr
-Version: \tab 2.9.5 \cr
-Date: \tab 2024-08-29 \cr
-Depends: \tab R(>= 3.4), methods, graphics, startupmsg, sfsmisc \cr
+Version: \tab 2.9.7 \cr
+Date: \tab 2025-01-11 \cr
+Depends: \tab R(>= 3.4), methods, graphics, startupmsg (>=1.0.0), sfsmisc \cr
 Suggests: \tab distrEx, svUnit (>= 0.7-11), knitr, distrMod, ROptEst \cr
 Imports: \tab stats, grDevices, utils, MASS \cr
 LazyLoad: \tab yes \cr
 License: \tab LGPL-3 \cr
 URL: \tab https://distr.r-forge.r-project.org/\cr
-VCS/SVNRevision: \tab 1448 \cr
+VCS/SVNRevision: \tab 1482 \cr
 }}
 \section{Classes}{
 Distribution classes have a slot \code{param} the class of which

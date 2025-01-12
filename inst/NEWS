@@ -8,6 +8,18 @@
  information)
  
 ##############
+v 2.9.7 
+##############
+under the hood:
++ adapted reference output for new startupmsg
+
+##############
+v 2.9.6 (not submitted to CRAN)
+##############
+under the hood:
++ fixed some (LaTeX-)encoding issue
+
+##############
 v 2.9.5
 ##############
 under the hood:

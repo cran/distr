@@ -1,6 +1,6 @@
 
-R Under development (unstable) (2024-08-17 r87027 ucrt) -- "Unsuffered Consequences"
-Copyright (C) 2024 The R Foundation for Statistical Computing
+R Under development (unstable) (2025-01-10 r87562 ucrt) -- "Unsuffered Consequences"
+Copyright (C) 2025 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -23,31 +23,28 @@ Type 'q()' to quit R.
 > options(pager = "console")
 > library('distr')
 Loading required package: startupmsg
-:startupmsg>  Utilities for Start-Up Messages (version 0.9.7)
+:startupmsg>  *** Utilities for Start-Up Messages ***
 :startupmsg> 
-:startupmsg>  For more information see ?"startupmsg",
-:startupmsg>  NEWS("startupmsg")
-
+:startupmsg>  Version information in start-up messages is
+:startupmsg>  currently suppressed. To see such information on
+:startupmsg>  startup as in versions of this pkg prior to this
+:startupmsg>  versionr, set option "StartupBanner" to a value
+:startupmsg>  different to {"off", "no-version", "no -
+:startupmsg>  version"}, e.g., by options("StartupBanner" =
+:startupmsg>  "complete") or by options("StartupBanner" = NULL)
+:startupmsg>  or by options("StartupBanner" = "something else").
+:startupmsg> 
+:startupmsg>  Detailed information about which packages are
+:startupmsg>  currently loaded or attached at which version
+:startupmsg>  (regardless of whether these have start-up
+:startupmsg>  messages managed by this package) can be obtained
+:startupmsg>  by "sessionInfo()".
+:startupmsg> 
+:startupmsg> 
 Loading required package: sfsmisc
-:distr>  Object Oriented Implementation of Distributions (version
-:distr>  2.9.5)
+:distr>  *** Object Oriented Implementation of Distributions ***
 :distr> 
-:distr>  Attention: Arithmetics on distribution objects are
-:distr>  understood as operations on corresponding random variables
-:distr>  (r.v.s); see distrARITH().
 :distr> 
-:distr>  Some functions from package 'stats' are intentionally masked
-:distr>  ---see distrMASK().
-:distr> 
-:distr>  Note that global options are controlled by distroptions()
-:distr>  ---c.f. ?"distroptions".
-:distr> 
-:distr>  For more information see ?"distr", NEWS("distr"), as well as
-:distr>    http://distr.r-forge.r-project.org/
-:distr>  Package "distrDoc" provides a vignette to this package as
-:distr>  well as to several extension packages; try
-:distr>  vignette("distr").
-
 
 Attaching package: 'distr'
 
@@ -2016,8 +2013,8 @@ function(x, log = FALSE)
                           d0 <-    log(df1(x))-log(stand)
                      else d0 <- df1(x) / stand
                      return (d0)}
-<bytecode: 0x000002453f54a140>
-<environment: 0x0000024542e328b8>
+<bytecode: 0x000001789f195268>
+<environment: 0x000001789d19fc08>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2032,7 +2029,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x000002453ed26e80>
+<environment: 0x000001789c106d60>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2050,7 +2047,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l0(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x000002453d54fda0>
+<environment: 0x000001789bfb67b0>
 
 > ## IGNORE_RDIFF_END
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -2091,8 +2088,8 @@ function(x, log = FALSE)
                           d0 <-    log(df1(x))-log(stand)
                      else d0 <- df1(x) / stand
                      return (d0)}
-<bytecode: 0x000002453f54a140>
-<environment: 0x00000245421bfb20>
+<bytecode: 0x000001789f195268>
+<environment: 0x00000178a4097e70>
 
 $pfun
 function (q, lower.tail = TRUE, log.p = FALSE) 
@@ -2107,7 +2104,7 @@ function (q, lower.tail = TRUE, log.p = FALSE)
     else p0/nm
     return(p0)
 }
-<environment: 0x000002453f8677b8>
+<environment: 0x00000178a37bdea8>
 
 $qfun
 function (p, lower.tail = TRUE, log.p = FALSE) 
@@ -2125,7 +2122,7 @@ function (p, lower.tail = TRUE, log.p = FALSE)
     else q.l0(1 - p01)
     return(as.numeric(q0))
 }
-<environment: 0x000002454402d548>
+<environment: 0x00000178a3778c78>
 
 > ## IGNORE_RDIFF_END
 > rp2 <- function(n){rpois(n, lambda = 1)^2}
@@ -3814,13 +3811,13 @@ see 'distrARITH()'; for switching off this warning see '?distroptions'
 > ## IGNORE_RDIFF_BEGIN
 > system.time(r(F)(10^6))
    user  system elapsed 
-   0.37    0.00    0.39 
+   0.25    0.00    0.23 
 > ## IGNORE_RDIFF_END
 > simplifyr(F, size = 10^6)
 > ## IGNORE_RDIFF_BEGIN
 > system.time(r(F)(10^6))
    user  system elapsed 
-   0.11    0.00    0.11 
+   0.06    0.00    0.07 
 > ## IGNORE_RDIFF_END
 > 
 > 
@@ -3857,7 +3854,7 @@ setReplaceMethod("b", "testclass", function(object, value){ object@b <- value; o
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  27.81 2.26 30.89 NA NA 
+Time elapsed:  18.86 1.75 22.03 NA NA 
 > grDevices::dev.off()
 pdf 
  19 

@@ -23,7 +23,7 @@
 }
 .makedotsPt <- function(dots){
     dots <- dots[names(dots) %in% c("bg", "lwd", "lty")]
-    dots["pch"] <- NULL
+    dots$pch <- NULL
     if (length(dots) == 0 ) dots <- NULL
     dots
 }

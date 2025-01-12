@@ -21,8 +21,8 @@
 % Version control information:
 \svnidlong
 {$HeadURL: svn+ssh://ruckdeschel@svn.r-forge.r-project.org/svnroot/distr/pkg/distr/vignettes/newDistributions-knitr.Rnw $}
-{$LastChangedDate: 2022-11-12 14:50:48 +0100 (Sa, 12. Nov 2022) $}
-{$LastChangedRevision: 1374 $}
+{$LastChangedDate: 2024-11-05 21:43:18 +0100 (Di, 05 Nov 2024) $}
+{$LastChangedRevision: 1481 $}
 {$LastChangedBy: ruckdeschel $}
 %\svnid{$Id: example_main.tex 146 2008-12-03 13:29:19Z martin $}
 % Don't forget to set the svn property 'svn:keywords' to
@@ -40,6 +40,7 @@
 \svnRegisterAuthor{kowzar}{Kouros Owzar}
 %
 \usepackage{geometry}
+\usepackage[T1]{fontenc}
 %
 \usepackage{color}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.75}
